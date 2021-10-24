@@ -392,7 +392,7 @@ With AEGIS-128L, random nonces are also safe to encrypt up to 2^32 messages usin
 
 With AEGIS-256, random nonces are safe to use with no practical limits.
 
-However, for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the plaintext difference between two messages.
+However, for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 # IANA Considerations
 
