@@ -54,10 +54,10 @@ The AEGIS cipher family offers optimal performance on CPUs with hardware support
 # Notation and Conventions
 
 - `|x|`: the length of `x` in bits
-- `a ^ b`: bit-wise exclusive OR operation between `a` and `b`
-- `a & b`: bit-wise AND operation between `a` and `b`
-- `||`: concatenation
-- `LE64(x)`: little-endian encoding of 64-bit integer `x`
+- `a ^ b`: the bit-wise exclusive OR operation between `a` and `b`
+- `a & b`: the bit-wise AND operation between `a` and `b`
+- `a || b`: the concatenation of `a` and `b`
+- `LE64(x)`: the little-endian encoding of 64-bit integer `x`
 - `Pad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks.
