@@ -110,8 +110,8 @@ Update(Ma, Mb)
 ~~~
 
 Inputs:
-- `Ma`: the first 128-bit value to be absorbed
-- `Mb`: the second 128-bit vlue to be absorbed
+- `Ma`: the first 128-bit block to be absorbed
+- `Mb`: the second 128-bit block to be absorbed
 
 Modifies:
 - `{S0, ...S7}`: the state
@@ -316,10 +316,22 @@ The comparison of the authentication tag `tag` with the expected tag should be d
 
 AEGIS-256 has a 768 bit state, made of six 128-bit blocks.
 
-## The Update() Function
+## The Update Function
 
-The state update function Update(M) of AEGIS-256 is defined as follows:
+Tue `Update` function is the core of the AEGIS-256 algorithm.
+It updates the state `{S0, ...S5}` using a 128-bit value.
 
+~~~
+Update(M)
+~~~
+
+Inputs:
+- `M`: the 128-bit block to be absorbed
+
+Modifies:
+- `{S0, ...S5}`: the state
+
+Steps:
 ~~~
 S'0 = AESRound(S5, S0 ^ M)
 S'1 = AESRound(S0, S1);
@@ -336,10 +348,22 @@ S4  = S'4
 S5  = S'5
 ~~~
 
-## The Init(k, iv) Function
+## The Init Function
 
-The AEGIS-256 state is initialized as follows:
+The `Init` function constructs the initial state `{S0, ...S5}` using the key `k` and the nonce `iv`.
 
+~~~
+Init(k, iv)
+~~~
+
+Inputs:
+- `k`: the 128-bit encryption key
+- `iv`: the 128-bit nonce
+
+Defines:
+- `{S0, ...S5}`: the initial state
+
+Steps:
 ~~~
 k0, k1 = Split(k, 128)
 iv0, iv1 = Split(iv, 128)
@@ -359,38 +383,66 @@ Repeat(4,
 )
 ~~~
 
-## The Enc(xi) Function
+## The Enc Function
 
-The 128-bit block encryption function is defined as follows:
+The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...S5}`.
 
+~~~
+Enc(xi)
+~~~
+
+Inputs:
+- `xi`: the 128-bit encrypted input block
+
+Outputs:
+- `ci`: the 128-bit decrypted output block
+
+Steps:
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
-out = xi ^ z
+ci = xi ^ z
+
+Update(xi)
+~~~
+
+## The Dec Function
+
+The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...S5}`.
+
+Inputs:
+- `ci`: the 128-bit encrypted input block
+
+Outputs:
+- `xi`: the 128-bit decrypted output block
+
+Steps:
+~~~
+z = S1 ^ S4 ^ S5 ^ (S2 & S3)
+
+xi = ci ^ z
 
 Update(xi)
 ~~~
 
 It returns the 128-bit block `out`.
 
-## The Dec(xi) Function
+## The Finalize Function
 
-The 128-bit block decryption function is defined as follows:
+The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
 
 ~~~
-z = S1 ^ S4 ^ S5 ^ (S2 & S3)
-
-out = xi ^ z
-
-Update(out)
+Finalize(adlen, mlen)
 ~~~
 
-It returns the 128-bit block `out`.
+Inputs:
+- `adlen`: the length of the associated data in bits
+- `mlen`: the length of the message in bits
 
-## The Finalize(adlen, mlen) Function
+Outputs:
+- `tag`: the 128-bit authentication tag
 
-The finalization function computes the authentication tag as follows:
-
+Steps:
 ~~~
 t = S3 ^ (LE64(adlen) || LE64(mlen))
 
@@ -399,12 +451,25 @@ Repeat(7, Update(t))
 tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 ~~~
 
-The function returns the 128-bit authentication tag.
-
 ## Authenticated Encryption
 
-Encryption of a message `m` with associated data `ad` using a key `k` and a nonce `iv` is done as follows:
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, optionally, of associated data.
 
+~~~
+Encrypt(m, ad, k, iv)
+~~~
+
+Inputs:
+- `m`: the message to be encrypted
+- `ad`: the associated data to authenticate
+- `k`: the encryption key
+- `iv`: the public nonce
+
+Outputs:
+- `c`: the ciphertext
+- `tag`: the 128-bit authentication tag
+
+Steps:
 ~~~
 Init(k, iv)
 
@@ -421,12 +486,24 @@ for xi in m_blocks:
 tag = Finalize(|ad|, |m|)
 ~~~
 
-The function returns the ciphertext `c` and the 128-bit authentication tag `tag`.
-
 ## Authenticated Decryption
 
-Decryption of a ciphertext `c` with associated data `ad` using a key `k`, a nonce `iv` and an authentication tag `tag` is done as follows:
+The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
 
+~~~
+Decrypt(c, tag, ad, k, iv)
+~~~
+
+Inputs:
+- `c`: the ciphertext to be decrypted
+- `ad`: the associated data to authenticate
+- `k`: the encryption key
+- `iv`: the public nonce
+
+Outputs:
+- either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+
+Steps:
 ~~~
 Init(k, iv)
 
@@ -443,8 +520,6 @@ for xi in c_blocks:
 m = Truncate(m, |c|)
 expected_tag = Finalize(|ad|, |m|)
 ~~~
-
-If `expected_tag = tag`, the function returns the decrypted message `m`. Otherwise, an authentication error is returned.
 
 The comparison of the authentication tag `tag` with the expected tag should be done in constant time.
 
