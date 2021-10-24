@@ -13,7 +13,7 @@ pi: [toc, sortrefs, symrefs]
 author:
  -
     name: Frank Denis
-    organization: Fastly
+    organization: Fastly Inc.
     email: fd@00f.net
 
 informative:
@@ -21,13 +21,19 @@ informative:
   FIPS-AES:
     title: "Specification for the ADVANCED ENCRYPTION STANDARD (AES)"
     venue: Federal Information Processing Standard (FIPS) Publication 197
-    url: https://csrc.nist.gov/publications/detail/fips/197/final
+    target: https://csrc.nist.gov/publications/detail/fips/197/final
 
   AEGIS:
     title: "AEGIS: A fast encryption algorithm"
     venue: CAESAR competition
-    url: https://competitions.cr.yp.to/round3/aegisv11.pdf
-    authors: Hongjun Wu, Bart Preneel
+    target: https://competitions.cr.yp.to/round3/aegisv11.pdf
+    authors:
+      -
+        ins: Hongjun Wu
+        org: Nanyang Technological University
+      -
+        ins: Bart Preneel
+        org: KU Leuven
 
 --- abstract
 
@@ -38,9 +44,9 @@ This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated en
 
 # Introduction
 
-This document describes the AEGIS-128L and AEGIS-256 authenticated encryption algorithms [AEGIS].
+This document describes the AEGIS-128L and AEGIS-256 authenticated encryption algorithms {{AEGIS}}.
 
-Both are constructed from the AES encryption round function [FIPS-AES] and target a 128-bit security level.
+Both are constructed from the AES encryption round function {{FIPS-AES}} and target a 128-bit security level.
 
 - AEGIS-128L has a 128-bit key, a 128-bit nonce, a 1024 bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256 has a 256-bit key, a 256-bit nonce, a 768-bit state and a 128-bit authentication tag, and processes 128-bit input blocks.
@@ -246,7 +252,6 @@ However, for a given key `k`, a nonce must only be used once. Failure to do so w
 # IANA Considerations
 
 This document has no IANA actions.
-
 
 # Test Vectors
 
