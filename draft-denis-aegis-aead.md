@@ -84,7 +84,7 @@ AES blocks:
 
 - `Si`: the `i`-th 128-bit block of the current state
 - `S'i`: the `i`-th 128-bit block of the next state
-- `C0`: the 128-bit constant `0x101020305080d1522375990e97962` as an AES block
+- `C0`: the 128-bit constant `0x000101020305080d1522375990e97962` as an AES block
 - `C1`: the 128-bit constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block
 
 Input and output values:
