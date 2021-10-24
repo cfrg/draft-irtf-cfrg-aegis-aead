@@ -102,12 +102,12 @@ AEGIS-128L has a 1024 bit state, made of eight 128-bit blocks.
 
 ## The Update Function
 
-Tue `Update` function is the core of the AEGIS-128L algorithm.
-It updates the state `{S0, ...S7}` using two 128-bit values.
-
 ~~~
 Update(Ma, Mb)
 ~~~
+
+The `Update` function is the core of the AEGIS-128L algorithm.
+It updates the state `{S0, ...S7}` using two 128-bit values.
 
 Inputs:
 
@@ -142,11 +142,11 @@ S7  = S'7
 
 ## The Init Function
 
-The `Init` function constructs the initial state `{S0, ...S7}` using the key `k` and the nonce `iv`.
-
 ~~~
 Init(k, iv)
 ~~~
+
+The `Init` function constructs the initial state `{S0, ...S7}` using the key `k` and the nonce `iv`.
 
 Inputs:
 
@@ -174,11 +174,11 @@ Repeat(10, Update(iv, k))
 
 ## The Enc Function
 
-The `Enc` function encrypts a 256-bit input block `xi` using the state `{S0, ...S7}`.
-
 ~~~
 Enc(xi)
 ~~~
+
+The `Enc` function encrypts a 256-bit input block `xi` using the state `{S0, ...S7}`.
 
 Inputs:
 
@@ -203,6 +203,10 @@ ci = out0 || out1
 ~~~
 
 ## The Dec Function
+
+~~~
+Dec(ci)
+~~~
 
 The `Dec` function decrypts a 256-bit input block `ci` using the state `{S0, ...S7}`.
 
@@ -230,11 +234,11 @@ xi = out0 || out1
 
 ## The Finalize Function
 
-The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
-
 ~~~
 Finalize(adlen, mlen)
 ~~~
+
+The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
 
 Inputs:
 
@@ -339,12 +343,12 @@ AEGIS-256 has a 768 bit state, made of six 128-bit blocks.
 
 ## The Update Function
 
-Tue `Update` function is the core of the AEGIS-256 algorithm.
-It updates the state `{S0, ...S5}` using a 128-bit value.
-
 ~~~
 Update(M)
 ~~~
+
+The `Update` function is the core of the AEGIS-256 algorithm.
+It updates the state `{S0, ...S5}` using a 128-bit value.
 
 Inputs:
 
@@ -374,11 +378,11 @@ S5  = S'5
 
 ## The Init Function
 
-The `Init` function constructs the initial state `{S0, ...S5}` using the key `k` and the nonce `iv`.
-
 ~~~
 Init(k, iv)
 ~~~
+
+The `Init` function constructs the initial state `{S0, ...S5}` using the key `k` and the nonce `iv`.
 
 Inputs:
 
@@ -412,11 +416,11 @@ Repeat(4,
 
 ## The Enc Function
 
-The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...S5}`.
-
 ~~~
 Enc(xi)
 ~~~
+
+The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...S5}`.
 
 Inputs:
 
@@ -437,6 +441,10 @@ Update(xi)
 ~~~
 
 ## The Dec Function
+
+~~~
+Dec(ci)
+~~~
 
 The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...S5}`.
 
@@ -462,11 +470,11 @@ It returns the 128-bit block `out`.
 
 ## The Finalize Function
 
-The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
-
 ~~~
 Finalize(adlen, mlen)
 ~~~
+
+The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
 
 Inputs:
 
@@ -489,11 +497,11 @@ tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 
 ## Authenticated Encryption
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, optionally, of associated data.
-
 ~~~
 Encrypt(m, ad, k, iv)
 ~~~
+
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, optionally, of associated data.
 
 Inputs:
 
