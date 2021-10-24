@@ -78,8 +78,8 @@ The AEGIS cipher family offers optimal performance on CPUs with hardware support
 - `S'i`: the `i`-th 128-bit block of the next state
 - `C0`: the 128-bit constant `0x101020305080d1522375990e97962`
 - `C1`: the 128-bit constant `0xdb3d18556dc22ff12011314273b528dd`
-- `k`: the 128-bit key
-- `iv`: the 128-bit nonce
+- `k`: the encryption key (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
+- `iv`: the public nonce (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
 - `ad`: the associated data
 - `m`: the cleartext input
 - `c`: the ciphertext
