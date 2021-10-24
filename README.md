@@ -1,6 +1,6 @@
-# The AEGIS Authenticated Encryption Algorithm
+# The AEGIS Family Of Authenticated Encryption Algorithms
 
-This is the working area for the individual Internet-Draft, "The AEGIS authenticated encryption algorithm".
+This is the working area for the individual Internet-Draft, "The AEGIS family of authenticated encryption algorithms".
 
 * [Editor's Copy](https://jedisct1.github.io/draft-aegis-aead/#go.draft-aegis-aead.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-aegis-aead)

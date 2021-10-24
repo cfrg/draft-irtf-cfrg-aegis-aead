@@ -1,5 +1,5 @@
 ---
-title: "The AEGIS authenticated encryption algorithm"
+title: "The AEGIS family of authenticated encryption algorithms"
 docname: draft-aegis-aead-latest
 category: info
 
