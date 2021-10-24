@@ -585,15 +585,19 @@ combined_ciphertext = c || tag
 
 # Security Considerations
 
-Both algorithms are key-committing and are designed to offer 128-bit security in a nonce-respecting setting.
+Both algorithms are key-committing and must be used in a nonce-respecting setting.
 
 The nonce `iv` doesn't have to be secret nor unpredictable. It can be a counter, the output of a permutation or a generator with a long period.
 
-With AEGIS-128L, random nonces are also safe to encrypt up to 2^32 messages using the same key with negligible collision probability.
+With AEGIS-128L, random nonces can safely encrypt up to 2^32 messages using the same key with negligible collision probability.
 
-With AEGIS-256, random nonces are safe to use with no practical limits.
+With AEGIS-256, random nonces can be used with no practical limits.
 
 However, for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+
+Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
+
+AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security.
 
 # IANA Considerations
 
