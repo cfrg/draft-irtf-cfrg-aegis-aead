@@ -585,7 +585,7 @@ combined_ciphertext = c || tag
 
 # Security Considerations
 
-Both algorithms must be used in a nonce-respecting setting. For a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+Both algorithms must be used in a nonce-respecting setting: for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 The nonce `iv` doesn't have to be secret nor unpredictable. It can be a counter, the output of a permutation or a generator with a long period.
 
