@@ -59,6 +59,8 @@ The AEGIS cipher family offers optimal performance on CPUs with hardware support
 
 # Notation and Conventions
 
+Primitives:
+
 - `|x|`: the length of `x` in bits
 - `a ^ b`: the bit-wise exclusive OR operation between `a` and `b`
 - `a & b`: the bit-wise AND operation between `a` and `b`
@@ -68,16 +70,25 @@ The AEGIS cipher family offers optimal performance on CPUs with hardware support
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks.
 - `AESRound(a, b)`: the AES encryption round function. `a` is the 128-bit state, `b` is the 128-bit round key
+- `Repeat(n, F)`: `n` sequential evaluations of the function `F`
+
+AEGIS internal functions:
+
 - `Update(Ma, Mb)`: the state update function
 - `Init(k, iv)`: the initialization function
 - `Enc(xi)`: the 256-bit block encryption function
 - `Dec(xi)`: the 256-bit block decryption function
 - `Finalize(adlen, mlen)`: the authentication tag generation function
-- `Repeat(n, F)`: `n` sequential evaluations of the function `F`
+
+AES blocks:
+
 - `Si`: the `i`-th 128-bit block of the current state
 - `S'i`: the `i`-th 128-bit block of the next state
 - `C0`: the 128-bit constant `0x101020305080d1522375990e97962` as an AES block
 - `C1`: the 128-bit constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block
+
+Input and output values:
+
 - `k`: the encryption key (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
 - `iv`: the public nonce (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
 - `ad`: the associated data
