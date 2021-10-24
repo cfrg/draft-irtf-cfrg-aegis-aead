@@ -69,7 +69,7 @@ Primitives:
 - `Pad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks.
-- `AESRound(a, b)`: the AES encryption round function. `a` is the 128-bit state, `b` is the 128-bit round key
+- `AESRound(a, b)`: the AES encryption round function. `a` is the 128-bit AES input block, `b` is the 128-bit round key
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`
 
 AEGIS internal functions:
