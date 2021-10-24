@@ -110,13 +110,16 @@ Update(Ma, Mb)
 ~~~
 
 Inputs:
+
 - `Ma`: the first 128-bit block to be absorbed
 - `Mb`: the second 128-bit block to be absorbed
 
 Modifies:
+
 - `{S0, ...S7}`: the state
 
 Steps:
+
 ~~~
 S'0 = AESRound(S7, S0 ^ Ma)
 S'1 = AESRound(S0, S1);
@@ -146,13 +149,16 @@ Init(k, iv)
 ~~~
 
 Inputs:
+
 - `k`: the 128-bit encryption key
 - `iv`: the 128-bit nonce
 
 Defines:
+
 - `{S0, ...S7}`: the initial state
 
 Steps:
+
 ~~~
 S0 = k ^ iv
 S1 = C1
@@ -175,12 +181,15 @@ Enc(xi)
 ~~~
 
 Inputs:
+
 - `xi`: the 256-bit encrypted input block
 
 Outputs:
+
 - `ci`: the 256-bit decrypted output block
 
 Steps:
+
 ~~~
 z0 = S6 ^ S1 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
@@ -198,12 +207,15 @@ ci = out0 || out1
 The `Dec` function decrypts a 256-bit input block `ci` using the state `{S0, ...S7}`.
 
 Inputs:
+
 - `ci`: the 256-bit encrypted input block
 
 Outputs:
+
 - `xi`: the 256-bit decrypted output block
 
 Steps:
+
 ~~~
 z0 = S6 ^ S1 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
@@ -225,13 +237,16 @@ Finalize(adlen, mlen)
 ~~~
 
 Inputs:
+
 - `adlen`: the length of the associated data in bits
 - `mlen`: the length of the message in bits
 
 Outputs:
+
 - `tag`: the 128-bit authentication tag
 
 Steps:
+
 ~~~
 t = S2 ^ (LE64(adlen) || LE64(mlen))
 
@@ -249,16 +264,19 @@ Encrypt(m, ad, k, iv)
 ~~~
 
 Inputs:
+
 - `m`: the message to be encrypted
 - `ad`: the associated data to authenticate
 - `k`: the encryption key
 - `iv`: the public nonce
 
 Outputs:
+
 - `c`: the ciphertext
 - `tag`: the 128-bit authentication tag
 
 Steps:
+
 ~~~
 Init(k, iv)
 
@@ -284,15 +302,18 @@ Decrypt(c, tag, ad, k, iv)
 ~~~
 
 Inputs:
+
 - `c`: the ciphertext to be decrypted
 - `ad`: the associated data to authenticate
 - `k`: the encryption key
 - `iv`: the public nonce
 
 Outputs:
+
 - either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
+
 ~~~
 Init(k, iv)
 
@@ -326,12 +347,15 @@ Update(M)
 ~~~
 
 Inputs:
+
 - `M`: the 128-bit block to be absorbed
 
 Modifies:
+
 - `{S0, ...S5}`: the state
 
 Steps:
+
 ~~~
 S'0 = AESRound(S5, S0 ^ M)
 S'1 = AESRound(S0, S1);
@@ -357,13 +381,16 @@ Init(k, iv)
 ~~~
 
 Inputs:
+
 - `k`: the 128-bit encryption key
 - `iv`: the 128-bit nonce
 
 Defines:
+
 - `{S0, ...S5}`: the initial state
 
 Steps:
+
 ~~~
 k0, k1 = Split(k, 128)
 iv0, iv1 = Split(iv, 128)
@@ -392,12 +419,15 @@ Enc(xi)
 ~~~
 
 Inputs:
+
 - `xi`: the 128-bit encrypted input block
 
 Outputs:
+
 - `ci`: the 128-bit decrypted output block
 
 Steps:
+
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
@@ -411,12 +441,15 @@ Update(xi)
 The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...S5}`.
 
 Inputs:
+
 - `ci`: the 128-bit encrypted input block
 
 Outputs:
+
 - `xi`: the 128-bit decrypted output block
 
 Steps:
+
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
@@ -436,13 +469,16 @@ Finalize(adlen, mlen)
 ~~~
 
 Inputs:
+
 - `adlen`: the length of the associated data in bits
 - `mlen`: the length of the message in bits
 
 Outputs:
+
 - `tag`: the 128-bit authentication tag
 
 Steps:
+
 ~~~
 t = S3 ^ (LE64(adlen) || LE64(mlen))
 
@@ -460,16 +496,19 @@ Encrypt(m, ad, k, iv)
 ~~~
 
 Inputs:
+
 - `m`: the message to be encrypted
 - `ad`: the associated data to authenticate
 - `k`: the encryption key
 - `iv`: the public nonce
 
 Outputs:
+
 - `c`: the ciphertext
 - `tag`: the 128-bit authentication tag
 
 Steps:
+
 ~~~
 Init(k, iv)
 
@@ -495,15 +534,18 @@ Decrypt(c, tag, ad, k, iv)
 ~~~
 
 Inputs:
+
 - `c`: the ciphertext to be decrypted
 - `ad`: the associated data to authenticate
 - `k`: the encryption key
 - `iv`: the public nonce
 
 Outputs:
+
 - either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
+
 ~~~
 Init(k, iv)
 
