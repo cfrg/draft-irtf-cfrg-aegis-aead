@@ -49,7 +49,7 @@ This document describes the AEGIS-128L and AEGIS-256 authenticated encryption al
 Both are constructed from the AES encryption round function {{FIPS-AES}}.
 
 - AEGIS-128L has a 128-bit key, a 128-bit nonce, a 1024 bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
-- AEGIS-256 has a 256-bit key, a 256-bit nonce, a 768-bit state and a 128-bit authentication tag, and processes 128-bit input blocks.
+- AEGIS-256 has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
 
 The AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption.
 
