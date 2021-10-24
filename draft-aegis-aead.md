@@ -225,7 +225,133 @@ The comparison of the authentication tag `tag` with the expected tag should be d
 
 # The AEGIS-256 Algorithm
 
-TODO.
+AEGIS-256 has a 768 bit state, made of six 128-bit blocks.
+
+## The Update() Function
+
+The state update function Update(M) of AEGIS-256 is defined as follows:
+
+~~~
+S'0 = AESRound(S5, S0 ^ M)
+S'1 = AESRound(S0, S1);
+S'2 = AESRound(S1, S2);
+S'3 = AESRound(S2, S3);
+S'4 = AESRound(S3, S4);
+S'5 = AESRound(S4, S5);
+
+S0  = S'0
+S1  = S'1
+S2  = S'2
+S3  = S'3
+S4  = S'4
+S5  = S'5
+~~~
+
+## The Init(k, iv) Function
+
+The AEGIS-256 state is initialized as follows:
+
+~~~
+k0, k1 = Split(k, 128)
+iv0, iv1 = Split(iv, 128)
+
+S0 = k0 ^ iv0
+S1 = k1 ^ iv1
+S2 = C1
+S3 = C0
+S4 = k0 ^ C0
+S5 = k1 ^ C1
+
+Repeat(4,
+  Update(k0)
+  Update(k1)
+  Update(k0 ^ iv0)
+  Update(k1 ^ iv1)
+)
+~~~
+
+## The Enc(xi) Function
+
+The 128-bit block encryption function is defined as follows:
+
+~~~
+z = S1 ^ S4 ^ S5 ^ (S2 & S3)
+out = xi ^ z
+Update(xi)
+~~~
+
+It returns the 128-bit block `out`.
+
+## The Dec(xi) Function
+
+The 128-bit block decryption function is defined as follows:
+
+~~~
+z = S1 ^ S4 ^ S5 ^ (S2 & S3)
+out = xi ^ z
+Update(out)
+~~~
+
+It returns the 128-bit block `out`.
+
+## The Finalize(adlen, mlen) Function
+
+The finalization function computes the authentication tag as follows:
+
+~~~
+t = S3 ^ (LE64(adlen) || LE64(mlen))
+Repeat(7, Update(t))
+tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
+~~~
+
+The function returns the 128-bit authentication tag.
+
+## Authenticated Encryption
+
+Encryption of a message `m` with associated data `ad` using a key `k` and a nonce `iv` is done as follows:
+
+~~~
+Init(k, iv)
+
+c = {}
+
+ad_blocks = Split(Pad(ad, 128), 128)
+for xi in ad_blocks:
+    Enc(xi)
+
+m_blocks = Split(Pad(m, 128), 128)
+for xi in m_blocks:
+    c = c || Enc(xi)
+
+tag = Finalize(|ad|, |m|)
+~~~
+
+The function returns the ciphertext `c` and the 128-bit authentication tag `tag`.
+
+## Authenticated Decryption
+
+Decryption of a ciphertext `c` with associated data `ad` using a key `k`, a nonce `iv` and an authentication tag `tag` is done as follows:
+
+~~~
+Init(k, iv)
+
+m = {}
+
+ad_blocks = Split(Pad(ad, 128), 128)
+for xi in ad_blocks:
+    Enc(xi)
+
+c_blocks = Split(Pad(c, 128), 128)
+for xi in c_blocks:
+    m = m || Dec(xi)
+
+m = Truncate(m, |c|)
+expected_tag = Finalize(|ad|, |m|)
+~~~
+
+If `expected_tag = tag`, the function returns the decrypted message `m`. Otherwise, an authentication error is returned.
+
+The comparison of the authentication tag `tag` with the expected tag should be done in constant time.
 
 # Encoding Of (c, tag) Tuples
 
