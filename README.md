@@ -5,7 +5,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 * [Editor's Copy](https://jedisct1.github.io/draft-aegis-aead/#go.draft-aegis-aead.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-aegis-aead)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-aegis-aead)
-* [Compare Editor's Copy to Individual Draft](https://dip-proto.github.io/ad/#go.draft-aegis-aead.diff)
+* [Compare Editor's Copy to Individual Draft](https://jedisct1.github.io/draft-aegis-aead/#go.draft-aegis-aead.diff)
 
 
 # Known Implementations
