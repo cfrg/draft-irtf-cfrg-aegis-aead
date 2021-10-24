@@ -77,7 +77,7 @@ AEGIS internal functions:
 - `Update(Ma, Mb)`: the state update function
 - `Init(k, iv)`: the initialization function
 - `Enc(xi)`: the 256-bit block encryption function
-- `Dec(xi)`: the 256-bit block decryption function
+- `Dec(ci)`: the 256-bit block decryption function
 - `Finalize(adlen, mlen)`: the authentication tag generation function
 
 AES blocks:
@@ -328,8 +328,8 @@ for xi in ad_blocks:
     Enc(xi)
 
 c_blocks = Split(Pad(c, 256), 256)
-for xi in c_blocks:
-    m = m || Dec(xi)
+for ci in c_blocks:
+    m = m || Dec(ci)
 
 m = Truncate(m, |c|)
 expected_tag = Finalize(|ad|, |m|)
@@ -564,8 +564,8 @@ for xi in ad_blocks:
     Enc(xi)
 
 c_blocks = Split(Pad(c, 128), 128)
-for xi in c_blocks:
-    m = m || Dec(xi)
+for ci in c_blocks:
+    m = m || Dec(ci)
 
 m = Truncate(m, |c|)
 expected_tag = Finalize(|ad|, |m|)
