@@ -68,7 +68,8 @@ Primitives:
 - `LE64(x)`: the little-endian encoding of 64-bit integer `x`
 - `Pad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
-- `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks.
+- `Split(x, n)`: splitting operation. `x` is split `n`-bit blocks, ignoring partial blocks.
+- `Tail(x, n)`: returns the last `n` bits of `x`.
 - `AESRound(a, b)`: the AES encryption round function. `a` is the 128-bit AES input block, `b` is the 128-bit round key
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`
 
@@ -78,6 +79,7 @@ AEGIS internal functions:
 - `Init(k, iv)`: the initialization function
 - `Enc(xi)`: the 256-bit block encryption function
 - `Dec(ci)`: the 256-bit block decryption function
+- `DecLast(cn)`: the 256-bit block decryption function for the last block
 - `Finalize(adlen, mlen)`: the authentication tag generation function
 
 AES blocks:
@@ -186,7 +188,7 @@ Inputs:
 
 Outputs:
 
-- `ci`: the 256-bit decrypted output block
+- `ci`: the 256-bit decrypted block
 
 Steps:
 
@@ -216,7 +218,7 @@ Inputs:
 
 Outputs:
 
-- `xi`: the 256-bit decrypted output block
+- `xi`: the 256-bit decrypted block
 
 Steps:
 
@@ -230,6 +232,39 @@ out1 = t1 ^ z1
 
 Update(out0, out1)
 xi = out0 || out1
+~~~
+
+## The DecLast Function
+
+~~~
+DecLast(cn)
+~~~
+
+The `DecLast` function decrypts the last ciphertext block `cn` using the state `{S0, ...S7}`. That block may be less than 256-bit long.
+
+Inputs:
+
+- `cn`: the encrypted input
+
+Outputs:
+
+- `xn`: the decryption of `cn`
+
+Steps:
+
+~~~
+z0 = S6 ^ S1 ^ (S2 & S3)
+z1 = S2 ^ S5 ^ (S6 & S7)
+
+len = |cn|
+t0, t1 = Split(Pad(cn, 256), 128)
+u0 = t0 ^ z0
+u1 = t1 ^ z1
+
+xn = Truncate(u0 || u1, len)
+
+v0, v1 = Split(Pad(xn, 256), 128)
+Update(v0, v1)
 ~~~
 
 ## The Finalize Function
@@ -327,11 +362,14 @@ ad_blocks = Split(Pad(ad, 256), 256)
 for xi in ad_blocks:
     Enc(xi)
 
-c_blocks = Split(Pad(c, 256), 256)
+c_blocks = Split(c, 256)
+cn = Tail(c)
+
 for ci in c_blocks:
     m = m || Dec(ci)
 
-m = Truncate(m, |c|)
+m = m || DecLast(cn)
+
 expected_tag = Finalize(|ad|, |m|)
 ~~~
 
@@ -428,7 +466,7 @@ Inputs:
 
 Outputs:
 
-- `ci`: the 128-bit decrypted output block
+- `ci`: the 128-bit decrypted block
 
 Steps:
 
@@ -454,7 +492,7 @@ Inputs:
 
 Outputs:
 
-- `xi`: the 128-bit decrypted output block
+- `xi`: the 128-bit decrypted block
 
 Steps:
 
@@ -467,6 +505,37 @@ Update(xi)
 ~~~
 
 It returns the 128-bit block `out`.
+
+## The DecLast Function
+
+~~~
+DecLast(cn)
+~~~
+
+The `DecLast` function decrypts the last ciphertext block `cn` using the state `{S0, ...S5}`. That block may be less than 128-bit long.
+
+Inputs:
+
+- `cn`: the encrypted input
+
+Outputs:
+
+- `xn`: the decryption of `cn`
+
+Steps:
+
+~~~
+z = S1 ^ S4 ^ S5 ^ (S2 & S3)
+
+len = |cn|
+t = Pad(ci, 128)
+u = t ^ z
+
+xn = Truncate(u, len)
+
+v = Pad(xn, 128)
+Update(v)
+~~~
 
 ## The Finalize Function
 
@@ -564,10 +633,13 @@ for xi in ad_blocks:
     Enc(xi)
 
 c_blocks = Split(Pad(c, 128), 128)
+cn = Tail(c)
+
 for ci in c_blocks:
     m = m || Dec(ci)
 
-m = Truncate(m, |c|)
+m = m || DecLast(cn)
+
 expected_tag = Finalize(|ad|, |m|)
 ~~~
 
