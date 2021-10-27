@@ -25,7 +25,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/jedisct1/draft-aegis-aead/blob/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/jedisct1/draft-aegis-aead/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
