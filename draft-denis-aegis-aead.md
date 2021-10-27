@@ -599,7 +599,7 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery. 
 
 # IANA Considerations
 
-This document has no IANA actions.
+IANA is requested to assign the values for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the registry of AEAD algorithms.
 
 # Test Vectors
 
