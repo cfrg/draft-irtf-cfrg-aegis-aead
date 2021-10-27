@@ -10,16 +10,16 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 
 # Known Implementations
 
-| Name                                                                                                         | Language |
-| ------------------------------------------------------------------------------------------------------------ | -------- |
-| [Reference AES-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l) | C        |
-| [Reference AES-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)   | C        |
-| [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                  | Zig      |
-| [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)         | C        |
-| [`libsodium`](https://libsodium.org)                                                                         | C        |
-| [`aegis-cipher`](https://github.com/google/aegis_cipher)                                                     | C++      |
-| [`aegis256`](https://github.com/angt/aegis256)                                                               | C        |
-| [`aegis`](https://crates.io/crates/aegis)                                                                    | Rust     |
+| Name                                                                                                           | Language |
+| -------------------------------------------------------------------------------------------------------------- | -------- |
+| [Reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l) | C        |
+| [Reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)   | C        |
+| [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                    | Zig      |
+| [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)           | C        |
+| [`libsodium`](https://libsodium.org)                                                                           | C        |
+| [`aegis-cipher`](https://github.com/google/aegis_cipher)                                                       | C++      |
+| [`aegis256`](https://github.com/angt/aegis256)                                                                 | C        |
+| [`aegis`](https://crates.io/crates/aegis)                                                                      | Rust     |
 
 
 ## Contributing
