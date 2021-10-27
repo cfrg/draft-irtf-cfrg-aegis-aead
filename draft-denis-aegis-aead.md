@@ -79,7 +79,7 @@ AEGIS internal functions:
 - `Init(k, iv)`: the initialization function
 - `Enc(xi)`: the 256-bit block encryption function
 - `Dec(ci)`: the 256-bit block decryption function
-- `DecLast(cn)`: the 256-bit block decryption function for the last block
+- `DecLast(cn)`: the 256-bit block decryption function for the last ciphertext bits, that may not fill an entire block
 - `Finalize(adlen, mlen)`: the authentication tag generation function
 
 AES blocks:
