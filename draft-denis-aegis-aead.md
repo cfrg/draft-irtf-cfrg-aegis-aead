@@ -79,7 +79,7 @@ AEGIS internal functions:
 - `Init(k, iv)`: the initialization function
 - `Enc(xi)`: the 256-bit block encryption function
 - `Dec(ci)`: the 256-bit block decryption function
-- `DecLast(cn)`: the 256-bit block decryption function for the last ciphertext bits, that may not fill an entire block
+- `DecPartial(cn)`: the 256-bit block decryption function for the last ciphertext bits, when they don't fill an entire block
 - `Finalize(adlen, mlen)`: the authentication tag generation function
 
 AES blocks:
@@ -234,13 +234,13 @@ Update(out0, out1)
 xi = out0 || out1
 ~~~
 
-## The DecLast Function
+## The DecPartial Function
 
 ~~~
-DecLast(cn)
+DecPartial(cn)
 ~~~
 
-The `DecLast` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}`. It may not fill an entire block.
+The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}`, when they don't fill an entire block.
 
 Inputs:
 
@@ -367,7 +367,8 @@ cn = Tail(c, |c| mod 256)
 for ci in c_blocks:
     m = m || Dec(ci)
 
-m = m || DecLast(cn)
+if cn is not empty:
+    m = m || DecPartial(cn)
 
 expected_tag = Finalize(|ad|, |m|)
 ~~~
@@ -505,13 +506,13 @@ Update(xi)
 
 It returns the 128-bit block `out`.
 
-## The DecLast Function
+## The DecPartial Function
 
 ~~~
-DecLast(cn)
+DecPartial(cn)
 ~~~
 
-The `DecLast` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}`. It may not fill an entire block.
+The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}`, when they don't fill an entire block.
 
 Inputs:
 
@@ -636,7 +637,8 @@ cn = Tail(c, |c| mod 128)
 for ci in c_blocks:
     m = m || Dec(ci)
 
-m = m || DecLast(cn)
+if cn is not empty:
+    m = m || DecPartial(cn)
 
 expected_tag = Finalize(|ad|, |m|)
 ~~~
