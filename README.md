@@ -17,7 +17,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                  | Zig      |
 | [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)         | C        |
 | [`libsodium`](https://libsodium.org)                                                                         | C        |
-| [`aegis-cipher`](https://github.com/google/aegis_cipher)                                                     | C        |
+| [`aegis-cipher`](https://github.com/google/aegis_cipher)                                                     | C++      |
 | [`aegis256`](https://github.com/angt/aegis256)                                                               | C        |
 | [`aegis`](https://crates.io/crates/aegis)                                                                    | Rust     |
 
