@@ -575,7 +575,7 @@ The comparison of the authentication tag `tag` with the expected tag should be d
 
 # Encoding (c, tag) Tuples
 
-Applications may keep the ciphertext and the 128-bit authentication tag in distinct structures, or encore both as a single string.
+Applications may keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
 
 In the later case, the tag is expected to immediately follow the ciphertext:
 
