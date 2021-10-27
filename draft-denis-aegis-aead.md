@@ -100,7 +100,7 @@ Input and output values:
 
 # The AEGIS-128L Algorithm
 
-AEGIS-128L has a 1024 bit state, made of eight 128-bit blocks.
+AEGIS-128L has a 1024 bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 
 ## The Update Function
 
@@ -377,7 +377,7 @@ The comparison of the authentication tag `tag` with the expected tag should be d
 
 # The AEGIS-256 Algorithm
 
-AEGIS-256 has a 768 bit state, made of six 128-bit blocks.
+AEGIS-256 has a 768 bit state, made of six 128-bit blocks `{S0, ...S5}`.
 
 ## The Update Function
 
