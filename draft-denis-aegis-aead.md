@@ -240,7 +240,7 @@ xi = out0 || out1
 DecLast(cn)
 ~~~
 
-The `DecLast` function decrypts the last ciphertext block `cn` using the state `{S0, ...S7}`. That block may be less than 256-bit long.
+The `DecLast` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}`. It may not fill an entire block.
 
 Inputs:
 
@@ -512,7 +512,7 @@ It returns the 128-bit block `out`.
 DecLast(cn)
 ~~~
 
-The `DecLast` function decrypts the last ciphertext block `cn` using the state `{S0, ...S5}`. That block may be less than 128-bit long.
+The `DecLast` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}`. It may not fill an entire block.
 
 Inputs:
 
