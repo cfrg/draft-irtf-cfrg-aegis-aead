@@ -363,7 +363,7 @@ for xi in ad_blocks:
     Enc(xi)
 
 c_blocks = Split(c, 256)
-cn = Tail(c)
+cn = Tail(c, |c| mod 256)
 
 for ci in c_blocks:
     m = m || Dec(ci)
@@ -633,7 +633,7 @@ for xi in ad_blocks:
     Enc(xi)
 
 c_blocks = Split(Pad(c, 128), 128)
-cn = Tail(c)
+cn = Tail(c, |c| mod 128)
 
 for ci in c_blocks:
     m = m || Dec(ci)
