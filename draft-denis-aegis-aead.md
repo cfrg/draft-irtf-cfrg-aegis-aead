@@ -102,6 +102,17 @@ Input and output values:
 
 AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 
+The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
+
+- `K_LEN` (key length) is 16 octets
+- `P_MAX` (maximum size of the plaintext) is 2^61 octets
+- `A_MAX` (maximum size of the associated data) is 2^61 octets
+- `N_MIN` = `N_MAX` = 16 octets
+- `C_MAX` = `P_MAX` + tag length = 2^61 + 16 octets
+
+Distinct associated data inputs (as described in {{!RFC5116, Section 3}}) shall be unambiguously encoded as a single input.
+It is up to the application to create a structure in the associated data input if it is needed.
+
 ## The Update Function
 
 ~~~
@@ -378,6 +389,17 @@ The comparison of the authentication tag `tag` with the expected tag should be d
 # The AEGIS-256 Algorithm
 
 AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
+
+The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
+
+- `K_LEN` (key length) is 32 octets
+- `P_MAX` (maximum size of the plaintext) is 2^61 octets
+- `A_MAX` (maximum size of the associated data) is 2^61 octets
+- `N_MIN` = `N_MAX` = 32 octets
+- `C_MAX` = `P_MAX` + tag length = 2^61 + 16 octets
+
+Distinct associated data inputs (as described in {{!RFC5116, Section 3}}) shall be unambiguously encoded as a single input.
+It is up to the application to create a structure in the associated data input if it is needed.
 
 ## The Update Function
 
