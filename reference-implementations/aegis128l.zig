@@ -163,7 +163,7 @@ pub const Aegis128L = struct {
 
         const expected_tag = aegis.finalize(ad.len, m.len);
         if (!crypto.utils.timingSafeEql([expected_tag.len]u8, expected_tag, tag)) {
-            return AuthenticationError;
+            return error.AuthenticationFailed;
         }
     }
 };
