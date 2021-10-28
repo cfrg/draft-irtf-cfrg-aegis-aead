@@ -48,7 +48,7 @@ This document describes the AEGIS-128L and AEGIS-256 authenticated encryption al
 
 Both are constructed from the AES encryption round function {{FIPS-AES}}.
 
-- AEGIS-128L has a 128-bit key, a 128-bit nonce, a 1024 bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
+- AEGIS-128L has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256 has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
 
 The AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption.
@@ -100,7 +100,7 @@ Input and output values:
 
 # The AEGIS-128L Algorithm
 
-AEGIS-128L has a 1024 bit state, made of eight 128-bit blocks `{S0, ...S7}`.
+AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 
 ## The Update Function
 
@@ -377,7 +377,7 @@ The comparison of the authentication tag `tag` with the expected tag should be d
 
 # The AEGIS-256 Algorithm
 
-AEGIS-256 has a 768 bit state, made of six 128-bit blocks `{S0, ...S5}`.
+AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
 
 ## The Update Function
 
