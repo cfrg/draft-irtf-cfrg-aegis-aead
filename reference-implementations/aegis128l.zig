@@ -139,7 +139,7 @@ pub const Aegis128L = struct {
         return aegis.finalize(ad.len, m.len);
     }
 
-    pub fn decrypt(m: []u8, c: []const u8, tag: [16]u8, ad: []const u8, k: [16]u8, iv: [16]u8) !void {
+    pub fn decrypt(m: []u8, c: []const u8, tag: [16]u8, ad: []const u8, k: [16]u8, iv: [16]u8) AuthenticationError!void {
         assert(c.len == m.len);
         var aegis = init(k, iv);
 
@@ -163,7 +163,7 @@ pub const Aegis128L = struct {
 
         const expected_tag = aegis.finalize(ad.len, m.len);
         if (!crypto.utils.timingSafeEql([expected_tag.len]u8, expected_tag, tag)) {
-            return error.AuthenticationError;
+            return AuthenticationError;
         }
     }
 };
