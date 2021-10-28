@@ -19,16 +19,19 @@ author:
 informative:
 
   AEGIS:
-    title: "AEGIS: A fast encryption algorithm"
+    title: "AEGIS: A fast encryption algorithm (v1.1)"
     venue: CAESAR competition
     target: https://competitions.cr.yp.to/round3/aegisv11.pdf
-    authors:
+    author:
       -
-        ins: Hongjun Wu
+        ins: H. Wu
+        name: Hongjun Wu
         org: Nanyang Technological University
       -
-        ins: Bart Preneel
+        ins: B. Preneel
+        name: Bart Preneel
         org: KU Leuven
+    date: 2016-09-15
 
 --- abstract
 
