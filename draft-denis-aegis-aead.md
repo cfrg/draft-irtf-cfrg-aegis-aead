@@ -106,7 +106,7 @@ The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 - `N_MIN` = `N_MAX` = 16 octets
 - `C_MAX` = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
-Distinct associated data inputs (as described in {{!RFC5116, Section 3}}) shall be unambiguously encoded as a single input.
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if it is needed.
 
 ## The Update Function
@@ -394,7 +394,7 @@ The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 - `N_MIN` = `N_MAX` = 32 octets
 - `C_MAX` = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
-Distinct associated data inputs (as described in {{!RFC5116, Section 3}}) shall be unambiguously encoded as a single input.
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if it is needed.
 
 ## The Update Function
