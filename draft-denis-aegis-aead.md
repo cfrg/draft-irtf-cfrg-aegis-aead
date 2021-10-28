@@ -105,10 +105,10 @@ AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 16 octets
-- `P_MAX` (maximum size of the plaintext) is 2^61 octets
-- `A_MAX` (maximum size of the associated data) is 2^61 octets
+- `P_MAX` (maximum size of the plaintext) is 2<sup>61</sup> octets
+- `A_MAX` (maximum size of the associated data) is 2<sup>61</sup> octets
 - `N_MIN` = `N_MAX` = 16 octets
-- `C_MAX` = `P_MAX` + tag length = 2^61 + 16 octets
+- `C_MAX` = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
 Distinct associated data inputs (as described in {{!RFC5116, Section 3}}) shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if it is needed.
@@ -393,10 +393,10 @@ AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
 The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 32 octets
-- `P_MAX` (maximum size of the plaintext) is 2^61 octets
-- `A_MAX` (maximum size of the associated data) is 2^61 octets
+- `P_MAX` (maximum size of the plaintext) is 2<sup>61</sup> octets
+- `A_MAX` (maximum size of the associated data) is 2<sup>61</sup> octets
 - `N_MIN` = `N_MAX` = 32 octets
-- `C_MAX` = `P_MAX` + tag length = 2^61 + 16 octets
+- `C_MAX` = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
 Distinct associated data inputs (as described in {{!RFC5116, Section 3}}) shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if it is needed.
@@ -683,7 +683,7 @@ Both algorithms must be used in a nonce-respecting setting: for a given key `k`,
 
 The nonce `iv` doesn't have to be secret nor unpredictable. It can be a counter, the output of a permutation or a generator with a long period.
 
-With AEGIS-128L, random nonces can safely encrypt up to 2^32 messages using the same key with negligible collision probability.
+With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
 With AEGIS-256, random nonces can be used with no practical limits.
 
