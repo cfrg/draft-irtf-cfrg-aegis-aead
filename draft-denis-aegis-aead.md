@@ -654,7 +654,7 @@ Both algorithms must be used in a nonce-respecting setting: for a given key `k`,
 
 The nonce `iv` doesn't have to be secret nor unpredictable. It can be a counter, the output of a permutation or a generator with a long period.
 
-With AEGIS-128L, random nonces can safely encrypt up to 2^32 messages using the same key with negligible collision probability.
+With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
 With AEGIS-256, random nonces can be used with no practical limits.
 
