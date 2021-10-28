@@ -662,6 +662,8 @@ Under the assumption that the secret key is unknown to the attacker and the tag 
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing.
 
+The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a constant-time fashion will lead to leaking secret key material or state information.
+
 # IANA Considerations
 
 IANA is requested to assign entries for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the AEAD Registry with this document as reference.
