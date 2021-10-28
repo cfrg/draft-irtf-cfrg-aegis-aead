@@ -70,7 +70,7 @@ Primitives:
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
-- `AESRound(a, b)`: the AES encryption round function. `a` is the 128-bit AES input block, `b` is the 128-bit round key
+- `AESRound(in, rk)`: the AES encryption round function. `in` is the 128-bit AES input block, `rk` is the 128-bit round key
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`
 
 AEGIS internal functions:
@@ -674,6 +674,16 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery. 
 IANA is requested to assign entries for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the AEAD Registry with this document as reference.
 
 # Test Vectors
+
+## AESRound Test Vector
+
+~~~
+in : 000102030405060708090a0b0c0d0e0f
+
+rk : 101112131415161718191a1b1c1d1e1f
+
+out: 7a7b4e5638782546a8c0477a3b813f43
+~~~
 
 ## AEGIS-128L Test Vectors
 
