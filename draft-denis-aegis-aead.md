@@ -18,11 +18,6 @@ author:
 
 informative:
 
-  FIPS-AES:
-    title: "Specification for the ADVANCED ENCRYPTION STANDARD (AES)"
-    venue: Federal Information Processing Standard (FIPS) Publication 197
-    target: https://csrc.nist.gov/publications/detail/fips/197/final
-
   AEGIS:
     title: "AEGIS: A fast encryption algorithm"
     venue: CAESAR competition
@@ -46,7 +41,7 @@ This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated en
 
 This document describes the AEGIS-128L and AEGIS-256 authenticated encryption algorithms {{AEGIS}}.
 
-Both are constructed from the AES encryption round function {{FIPS-AES}}.
+Both are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}.
 
 - AEGIS-128L has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256 has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
