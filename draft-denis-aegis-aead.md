@@ -52,8 +52,6 @@ The AEGIS cipher family offers optimal performance on CPUs with hardware support
 
 {::boilerplate bcp14-tagged}
 
-# Notation and Conventions
-
 Primitives:
 
 - `|x|`: the length of `x` in bits
