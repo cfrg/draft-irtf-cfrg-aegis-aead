@@ -257,10 +257,10 @@ z0 = S6 ^ S1 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
 
 t0, t1 = Split(Pad(cn, 256), 128)
-u0 = t0 ^ z0
-u1 = t1 ^ z1
+out0 = t0 ^ z0
+out1 = t1 ^ z1
 
-xn = Truncate(u0 || u1, |cn|)
+xn = Truncate(out0 || out1, |cn|)
 
 v0, v1 = Split(Pad(xn, 256), 128)
 Update(v0, v1)
@@ -528,9 +528,9 @@ Steps:
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
 t = Pad(ci, 128)
-u = t ^ z
+out = t ^ z
 
-xn = Truncate(u, |cn|)
+xn = Truncate(out, |cn|)
 
 v = Pad(xn, 128)
 Update(v)
