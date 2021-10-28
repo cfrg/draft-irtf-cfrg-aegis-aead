@@ -687,7 +687,7 @@ Under the assumption that the secret key is unknown to the attacker and the tag 
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing.
 
-The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a constant-time fashion will lead to leaking secret key material or state information.
+The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against side-channel attacks, such as differential power analysis or timing attacks, may likely lead to leaking secret key material or state information. The exact mitigations required for side-channel attacks also depend on the threat model in question.
 
 # IANA Considerations
 
