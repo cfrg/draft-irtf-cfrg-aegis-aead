@@ -689,6 +689,8 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery. 
 
 The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against side-channel attacks, such as differential power analysis or timing attacks, may likely lead to leaking secret key material or state information. The exact mitigations required for side-channel attacks also depend on the threat model in question.
 
+A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
+
 # IANA Considerations
 
 IANA is requested to assign entries for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the AEAD Registry with this document as reference.
