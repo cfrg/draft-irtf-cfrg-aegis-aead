@@ -81,19 +81,21 @@ AEGIS internal functions:
 
 AES blocks:
 
-- `Si`: the `i`-th 128-bit block of the current state
-- `S'i`: the `i`-th 128-bit block of the next state
-- `C0`: the 128-bit constant `0x000101020305080d1522375990e97962` as an AES block
-- `C1`: the 128-bit constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block
+- `Si`: the `i`-th block of the current state
+- `S'i`: the `i`-th block of the next state
+- `C0`: the constant `0x000101020305080d1522375990e97962` as an AES block
+- `C1`: the constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block
+
+AES blocks are always 128 bits in length.
 
 Input and output values:
 
-- `k`: the encryption key (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
-- `iv`: the public nonce (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
+- `k`: the encryption key (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
+- `iv`: the public nonce (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
 - `ad`: the associated data
 - `m`: the cleartext
 - `c`: the ciphertext
-- `tag`: the 128-bit authentication tag
+- `tag`: the authentication tag (128 bits)
 
 # The AEGIS-128L Algorithm
 
@@ -160,8 +162,8 @@ The `Init` function constructs the initial state `{S0, ...S7}` using the key `k`
 
 Inputs:
 
-- `k`: the 128-bit encryption key
-- `iv`: the 128-bit nonce
+- `k`: the encryption key
+- `iv`: the nonce
 
 Defines:
 
@@ -289,7 +291,7 @@ Inputs:
 
 Outputs:
 
-- `tag`: the 128-bit authentication tag
+- `tag`: the authentication tag
 
 Steps:
 
@@ -319,7 +321,7 @@ Inputs:
 Outputs:
 
 - `c`: the ciphertext
-- `tag`: the 128-bit authentication tag
+- `tag`: the authentication tag
 
 Steps:
 
@@ -409,7 +411,7 @@ It updates the state `{S0, ...S5}` using a 128-bit value.
 
 Inputs:
 
-- `M`: the 128-bit block to be absorbed
+- `M`: the block to be absorbed
 
 Modifies:
 
@@ -443,8 +445,8 @@ The `Init` function constructs the initial state `{S0, ...S5}` using the key `k`
 
 Inputs:
 
-- `k`: the 128-bit encryption key
-- `iv`: the 128-bit nonce
+- `k`: the encryption key
+- `iv`: the nonce
 
 Defines:
 
@@ -481,11 +483,11 @@ The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the 128-bit encrypted input block
+- `xi`: the encrypted input block
 
 Outputs:
 
-- `ci`: the 128-bit decrypted block
+- `ci`: the decrypted block
 
 Steps:
 
@@ -507,11 +509,11 @@ The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the 128-bit encrypted input block
+- `ci`: the encrypted input block
 
 Outputs:
 
-- `xi`: the 128-bit decrypted block
+- `xi`: the decrypted block
 
 Steps:
 
@@ -570,7 +572,7 @@ Inputs:
 
 Outputs:
 
-- `tag`: the 128-bit authentication tag
+- `tag`: the authentication tag
 
 Steps:
 
@@ -600,7 +602,7 @@ Inputs:
 Outputs:
 
 - `c`: the ciphertext
-- `tag`: the 128-bit authentication tag
+- `tag`: the authentication tag
 
 Steps:
 
