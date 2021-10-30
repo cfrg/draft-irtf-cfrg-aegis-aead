@@ -302,7 +302,7 @@ tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
 
 ## Authenticated Encryption
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, optionally, of associated data.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
 
 ~~~
 Encrypt(m, ad, k, iv)
