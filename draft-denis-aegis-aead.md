@@ -75,7 +75,7 @@ AEGIS internal functions:
 - `Init(k, iv)`: the initialization function
 - `Enc(xi)`: the 256-bit block encryption function
 - `Dec(ci)`: the 256-bit block decryption function
-- `DecPartial(cn)`: the 256-bit block decryption function for the last ciphertext bits, when they don't fill an entire block
+- `DecPartial(cn)`: the 256-bit block decryption function for the last ciphertext bits, when they do not fill an entire block
 - `Finalize(adlen, mlen)`: the authentication tag generation function
 
 AES blocks:
@@ -247,7 +247,7 @@ xi = out0 || out1
 DecPartial(cn)
 ~~~
 
-The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}`, when they don't fill an entire block.
+The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}`, when they do not fill an entire block.
 
 Inputs:
 
@@ -530,7 +530,7 @@ It returns the 128-bit block `out`.
 DecPartial(cn)
 ~~~
 
-The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}`, when they don't fill an entire block.
+The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}`, when they do not fill an entire block.
 
 Inputs:
 
@@ -677,7 +677,7 @@ combined_ciphertext = c || tag
 
 Both algorithms must be used in a nonce-respecting setting: for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-The nonce `iv` doesn't have to be secret nor unpredictable. It can be a counter, the output of a permutation or a generator with a long period.
+The nonce `iv` does not have to be secret nor unpredictable. It can be a counter, the output of a permutation or a generator with a long period.
 
 With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
