@@ -90,7 +90,7 @@ Input and output values:
 - `k`: the encryption key (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
 - `iv`: the public nonce (128-bit for AEGIS-128L, 256-bit for AEGIS-256)
 - `ad`: the associated data
-- `m`: the cleartext input
+- `m`: the cleartext
 - `c`: the ciphertext
 - `tag`: the 128-bit authentication tag
 
