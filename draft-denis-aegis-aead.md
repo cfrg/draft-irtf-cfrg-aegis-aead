@@ -131,13 +131,13 @@ Steps:
 
 ~~~
 S'0 = AESRound(S7, S0 ^ M0)
-S'1 = AESRound(S0, S1);
-S'2 = AESRound(S1, S2);
-S'3 = AESRound(S2, S3);
-S'4 = AESRound(S3, S4 ^ M1);
-S'5 = AESRound(S4, S5);
-S'6 = AESRound(S5, S6);
-S'7 = AESRound(S6, S7);
+S'1 = AESRound(S0, S1)
+S'2 = AESRound(S1, S2)
+S'3 = AESRound(S2, S3)
+S'4 = AESRound(S3, S4 ^ M1)
+S'5 = AESRound(S4, S5)
+S'6 = AESRound(S5, S6)
+S'7 = AESRound(S6, S7)
 
 S0  = S'0
 S1  = S'1
@@ -418,11 +418,11 @@ Steps:
 
 ~~~
 S'0 = AESRound(S5, S0 ^ M)
-S'1 = AESRound(S0, S1);
-S'2 = AESRound(S1, S2);
-S'3 = AESRound(S2, S3);
-S'4 = AESRound(S3, S4);
-S'5 = AESRound(S4, S5);
+S'1 = AESRound(S0, S1)
+S'2 = AESRound(S1, S2)
+S'3 = AESRound(S2, S3)
+S'4 = AESRound(S3, S4)
+S'5 = AESRound(S4, S5)
 
 S0  = S'0
 S1  = S'1
