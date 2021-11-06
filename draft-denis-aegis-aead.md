@@ -196,7 +196,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |m|)
 ~~~
 
-The comparison of the authentication tag `tag` with the expected tag should be done in constant time.
+The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
 
 ## The Init Function
 
@@ -484,7 +484,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |m|)
 ~~~
 
-The comparison of the authentication tag `tag` with the expected tag should be done in constant time.
+The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
 
 ## The Init Function
 
@@ -672,7 +672,7 @@ tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 
 # Encoding (c, tag) Tuples
 
-Applications may keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
+Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
 
 In the later case, the tag is expected to immediately follow the ciphertext:
 
@@ -682,7 +682,7 @@ combined_ciphertext = c || tag
 
 # Security Considerations
 
-Both algorithms must be used in a nonce-respecting setting: for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+Both algorithms MUST be used in a nonce-respecting setting: for a given key `k`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 The nonce `iv` does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
