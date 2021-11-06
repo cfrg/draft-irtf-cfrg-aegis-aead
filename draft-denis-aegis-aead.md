@@ -494,9 +494,9 @@ Steps:
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
-ci = xi ^ z
-
 Update(xi)
+
+ci = xi ^ z
 ~~~
 
 ## The Dec Function
