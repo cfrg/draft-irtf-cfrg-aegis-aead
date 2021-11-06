@@ -698,6 +698,8 @@ A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
 
 IANA is requested to assign entries for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the AEAD Registry with this document as reference.
 
+--- back
+
 # Test Vectors
 
 ## AESRound Test Vector
@@ -819,8 +821,6 @@ c    : f373079ed84b2709faee373584585d60
 
 tag  : 8d86f91ee606e9ff26a01b64ccbdd91d
 ~~~
-
---- back
 
 # Acknowledgments
 {:numbered="false"}
