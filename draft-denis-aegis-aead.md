@@ -152,6 +152,7 @@ for xi in m_blocks:
     c = c || Enc(xi)
 
 tag = Finalize(|ad|, |m|)
+m = Truncate(m, |c|)
 ~~~
 
 ## Authenticated Decryption
