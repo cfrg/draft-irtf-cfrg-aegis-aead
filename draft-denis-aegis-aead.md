@@ -78,15 +78,17 @@ AEGIS internal functions:
 
 - `Update(M0, M1)`: the state update function
 - `Init(k, iv)`: the initialization function
-- `Enc(xi)`: the 256-bit block encryption function
-- `Dec(ci)`: the 256-bit block decryption function
-- `DecPartial(cn)`: the 256-bit block decryption function for the last ciphertext bits, when they do not fill an entire block
+- `Enc(xi)`: the input block encryption function
+- `Dec(ci)`: the input block decryption function
+- `DecPartial(cn)`: the input block decryption function for the last ciphertext bits, when they do not fill an entire block
 - `Finalize(adlen, mlen)`: the authentication tag generation function
+
+Input blocks are 256 bits for AEGIS-128L and 128 bits for AEGIS-256.
 
 AES blocks:
 
-- `Si`: the `i`-th block of the current state
-- `S'i`: the `i`-th block of the next state
+- `Si`: the `i`-th AES block of the current state
+- `S'i`: the `i`-th AES block of the next state
 - `C0`: the constant `0x000101020305080d1522375990e97962` as an AES block
 - `C1`: the constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block
 
