@@ -77,11 +77,11 @@ Primitives:
 AEGIS internal functions:
 
 - `Update(M0, M1)`: the state update function
-- `Init(k, iv)`: the initialization function
+- `Init(key, nonce)`: the initialization function
 - `Enc(xi)`: the input block encryption function
 - `Dec(ci)`: the input block decryption function
 - `DecPartial(cn)`: the input block decryption function for the last ciphertext bits, when they do not fill an entire block
-- `Finalize(adlen, mlen)`: the authentication tag generation function
+- `Finalize(ad_len, msg_len)`: the authentication tag generation function
 
 Input blocks are 256 bits for AEGIS-128L and 128 bits for AEGIS-256.
 
@@ -96,11 +96,11 @@ AES blocks are always 128 bits in length.
 
 Input and output values:
 
-- `k`: the encryption key (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
-- `iv`: the public nonce (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
+- `key`: the encryption key (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
+- `nonce`: the public nonce (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
 - `ad`: the associated data
-- `m`: the cleartext
-- `c`: the ciphertext
+- `msg`: the cleartext
+- `ct`: the ciphertext
 - `tag`: the authentication tag (128 bits)
 
 # The AEGIS-128L Algorithm
@@ -123,38 +123,38 @@ It is up to the application to create a structure in the associated data input i
 The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
 
 ~~~
-Encrypt(m, ad, k, iv)
+Encrypt(msg, ad, key, nonce)
 ~~~
 
 Inputs:
 
-- `m`: the message to be encrypted
+- `msg`: the message to be encrypted
 - `ad`: the associated data to authenticate
-- `k`: the encryption key
-- `iv`: the public nonce
+- `key`: the encryption key
+- `nonce`: the public nonce
 
 Outputs:
 
-- `c`: the ciphertext
+- `ct`: the ciphertext
 - `tag`: the authentication tag
 
 Steps:
 
 ~~~
-Init(k, iv)
+Init(key, nonce)
 
-c = {}
+ct = {}
 
 ad_blocks = Split(Pad(ad, 256), 256)
 for xi in ad_blocks:
     Enc(xi)
 
-m_blocks = Split(Pad(m, 256), 256)
-for xi in m_blocks:
-    c = c || Enc(xi)
+msg_blocks = Split(Pad(msg, 256), 256)
+for xi in msg_blocks:
+    ct = ct || Enc(xi)
 
-tag = Finalize(|ad|, |m|)
-m = Truncate(m, |c|)
+tag = Finalize(|ad|, |msg|)
+msg = Truncate(msg, |ct|)
 ~~~
 
 ## Authenticated Decryption
@@ -162,41 +162,41 @@ m = Truncate(m, |c|)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
 
 ~~~
-Decrypt(c, tag, ad, k, iv)
+Decrypt(ct, tag, ad, key, nonce)
 ~~~
 
 Inputs:
 
-- `c`: the ciphertext to be decrypted
+- `ct`: the ciphertext to be decrypted
 - `ad`: the associated data to authenticate
-- `k`: the encryption key
-- `iv`: the public nonce
+- `key`: the encryption key
+- `nonce`: the public nonce
 
 Outputs:
 
-- either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+- either `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
 ~~~
-Init(k, iv)
+Init(key, nonce)
 
-m = {}
+msg = {}
 
 ad_blocks = Split(Pad(ad, 256), 256)
 for xi in ad_blocks:
     Enc(xi)
 
-c_blocks = Split(c, 256)
-cn = Tail(c, |c| mod 256)
+ct_blocks = Split(ct, 256)
+cn = Tail(ct, |ct| mod 256)
 
-for ci in c_blocks:
-    m = m || Dec(ci)
+for ci in ct_blocks:
+    msg = msg || Dec(ci)
 
 if cn is not empty:
-    m = m || DecPartial(cn)
+    msg = msg || DecPartial(cn)
 
-expected_tag = Finalize(|ad|, |m|)
+expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
 The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
@@ -204,15 +204,15 @@ The comparison of the authentication tag `tag` with the expected tag SHOULD be d
 ## The Init Function
 
 ~~~
-Init(k, iv)
+Init(key, nonce)
 ~~~
 
-The `Init` function constructs the initial state `{S0, ...S7}` using the key `k` and the nonce `iv`.
+The `Init` function constructs the initial state `{S0, ...S7}` using the key `key` and the nonce `nonce`.
 
 Inputs:
 
-- `k`: the encryption key
-- `iv`: the nonce
+- `key`: the encryption key
+- `nonce`: the nonce
 
 Defines:
 
@@ -221,16 +221,16 @@ Defines:
 Steps:
 
 ~~~
-S0 = k ^ iv
+S0 = key ^ nonce
 S1 = C1
 S2 = C0
 S3 = C1
-S4 = k ^ iv
-S5 = k ^ C0
-S6 = k ^ C1
-S7 = k ^ C0
+S4 = key ^ nonce
+S5 = key ^ C0
+S6 = key ^ C1
+S7 = key ^ C0
 
-Repeat(10, Update(iv, k))
+Repeat(10, Update(nonce, key))
 ~~~
 
 ## The Update Function
@@ -368,15 +368,15 @@ Update(v0, v1)
 ## The Finalize Function
 
 ~~~
-Finalize(adlen, mlen)
+Finalize(ad_len, msg_len)
 ~~~
 
 The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
 
 Inputs:
 
-- `adlen`: the length of the associated data in bits
-- `mlen`: the length of the message in bits
+- `ad_len`: the length of the associated data in bits
+- `msg_len`: the length of the message in bits
 
 Outputs:
 
@@ -385,7 +385,7 @@ Outputs:
 Steps:
 
 ~~~
-t = S2 ^ (LE64(adlen) || LE64(mlen))
+t = S2 ^ (LE64(ad_len) || LE64(msg_len))
 
 Repeat(7, Update(t, t))
 
@@ -410,39 +410,39 @@ It is up to the application to create a structure in the associated data input i
 ## Authenticated Encryption
 
 ~~~
-Encrypt(m, ad, k, iv)
+Encrypt(msg, ad, key, nonce)
 ~~~
 
 The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
 
 Inputs:
 
-- `m`: the message to be encrypted
+- `msg`: the message to be encrypted
 - `ad`: the associated data to authenticate
-- `k`: the encryption key
-- `iv`: the public nonce
+- `key`: the encryption key
+- `nonce`: the public nonce
 
 Outputs:
 
-- `c`: the ciphertext
+- `ct`: the ciphertext
 - `tag`: the authentication tag
 
 Steps:
 
 ~~~
-Init(k, iv)
+Init(key, nonce)
 
-c = {}
+ct = {}
 
 ad_blocks = Split(Pad(ad, 128), 128)
 for xi in ad_blocks:
     Enc(xi)
 
-m_blocks = Split(Pad(m, 128), 128)
-for xi in m_blocks:
-    c = c || Enc(xi)
+msg_blocks = Split(Pad(msg, 128), 128)
+for xi in msg_blocks:
+    ct = ct || Enc(xi)
 
-tag = Finalize(|ad|, |m|)
+tag = Finalize(|ad|, |msg|)
 ~~~
 
 ## Authenticated Decryption
@@ -450,41 +450,41 @@ tag = Finalize(|ad|, |m|)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
 
 ~~~
-Decrypt(c, tag, ad, k, iv)
+Decrypt(ct, tag, ad, key, nonce)
 ~~~
 
 Inputs:
 
-- `c`: the ciphertext to be decrypted
+- `ct`: the ciphertext to be decrypted
 - `ad`: the associated data to authenticate
-- `k`: the encryption key
-- `iv`: the public nonce
+- `key`: the encryption key
+- `nonce`: the public nonce
 
 Outputs:
 
-- either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+- either `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
 ~~~
-Init(k, iv)
+Init(key, nonce)
 
-m = {}
+msg = {}
 
 ad_blocks = Split(Pad(ad, 128), 128)
 for xi in ad_blocks:
     Enc(xi)
 
-c_blocks = Split(Pad(c, 128), 128)
-cn = Tail(c, |c| mod 128)
+ct_blocks = Split(Pad(ct, 128), 128)
+cn = Tail(ct, |ct| mod 128)
 
-for ci in c_blocks:
-    m = m || Dec(ci)
+for ci in ct_blocks:
+    msg = msg || Dec(ci)
 
 if cn is not empty:
-    m = m || DecPartial(cn)
+    msg = msg || DecPartial(cn)
 
-expected_tag = Finalize(|ad|, |m|)
+expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
 The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
@@ -492,15 +492,15 @@ The comparison of the authentication tag `tag` with the expected tag SHOULD be d
 ## The Init Function
 
 ~~~
-Init(k, iv)
+Init(key, nonce)
 ~~~
 
-The `Init` function constructs the initial state `{S0, ...S5}` using the key `k` and the nonce `iv`.
+The `Init` function constructs the initial state `{S0, ...S5}` using the key `key` and the nonce `nonce`.
 
 Inputs:
 
-- `k`: the encryption key
-- `iv`: the nonce
+- `key`: the encryption key
+- `nonce`: the nonce
 
 Defines:
 
@@ -509,11 +509,11 @@ Defines:
 Steps:
 
 ~~~
-k0, k1 = Split(k, 128)
-iv0, iv1 = Split(iv, 128)
+k0, k1 = Split(key, 128)
+n0, n1 = Split(nonce, 128)
 
-S0 = k0 ^ iv0
-S1 = k1 ^ iv1
+S0 = k0 ^ n0
+S1 = k1 ^ n1
 S2 = C1
 S3 = C0
 S4 = k0 ^ C0
@@ -522,8 +522,8 @@ S5 = k1 ^ C1
 Repeat(4,
   Update(k0)
   Update(k1)
-  Update(k0 ^ iv0)
-  Update(k1 ^ iv1)
+  Update(k0 ^ n0)
+  Update(k1 ^ n1)
 )
 ~~~
 
@@ -538,7 +538,7 @@ It updates the state `{S0, ...S5}` using a 128-bit value.
 
 Inputs:
 
-- `M`: the block to be absorbed
+- `msg`: the block to be absorbed
 
 Modifies:
 
@@ -649,15 +649,15 @@ Update(v)
 ## The Finalize Function
 
 ~~~
-Finalize(adlen, mlen)
+Finalize(ad_len, msg_len)
 ~~~
 
 The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
 
 Inputs:
 
-- `adlen`: the length of the associated data in bits
-- `mlen`: the length of the message in bits
+- `ad_len`: the length of the associated data in bits
+- `msg_len`: the length of the message in bits
 
 Outputs:
 
@@ -666,7 +666,7 @@ Outputs:
 Steps:
 
 ~~~
-t = S3 ^ (LE64(adlen) || LE64(mlen))
+t = S3 ^ (LE64(ad_len) || LE64(msg_len))
 
 Repeat(7, Update(t))
 
@@ -680,14 +680,14 @@ Applications MAY keep the ciphertext and the 128-bit authentication tag in disti
 In the later case, the tag is expected to immediately follow the ciphertext:
 
 ~~~
-combined_ciphertext = c || tag
+combined_ct = ct || tag
 ~~~
 
 # Security Considerations
 
-Both algorithms MUST be used in a nonce-respecting setting: for a given key `k`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+Both algorithms MUST be used in a nonce-respecting setting: for a given key `key`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-The nonce `iv` does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
+The nonce `nonce` does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
 With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
@@ -752,13 +752,13 @@ S7   : 61279ba73167f0ab76f0a11bf203bdff
 ~~~
 key  : 00000000000000000000000000000000
 
-iv   : 00000000000000000000000000000000
+nonce: 00000000000000000000000000000000
 
 ad   :
 
-m    : 00000000000000000000000000000000
+msg  : 00000000000000000000000000000000
 
-c    : 41de9000a7b5e40e2d68bb64d99ebb19
+ct   : 41de9000a7b5e40e2d68bb64d99ebb19
 
 tag  : f4d997cc9b94227ada4fe4165422b1c8
 ~~~
@@ -768,13 +768,13 @@ tag  : f4d997cc9b94227ada4fe4165422b1c8
 ~~~
 key  : 00000000000000000000000000000000
 
-iv   : 00000000000000000000000000000000
+nonce: 00000000000000000000000000000000
 
 ad   :
 
-m    :
+msg  :
 
-c    :
+ct   :
 
 tag  : 83cc600dc4e3e7e62d4055826174f149
 ~~~
@@ -784,14 +784,14 @@ tag  : 83cc600dc4e3e7e62d4055826174f149
 ~~~
 key  : 10010000000000000000000000000000
 
-iv   : 10000200000000000000000000000000
+nonce: 10000200000000000000000000000000
 
 ad   : 0001020304050607
 
-m    : 000102030405060708090a0b0c0d0e0f
+msg  : 000102030405060708090a0b0c0d0e0f
        101112131415161718191a1b1c1d1e1f
 
-c    : 79d94593d8c2119d7e8fd9b8fc77845c
+ct   : 79d94593d8c2119d7e8fd9b8fc77845c
        5c077a05b2528b6ac54b563aed8efe84
 
 tag  : cc6f3372f6aa1bb82388d695c3962d9a
@@ -826,14 +826,14 @@ S5   : a3240fceb68e32d5d114df1b5363ab67
 key  : 00000000000000000000000000000000
        00000000000000000000000000000000
 
-iv   : 00000000000000000000000000000000
+nonce: 00000000000000000000000000000000
        00000000000000000000000000000000
 
 ad   :
 
-m    : 00000000000000000000000000000000
+msg  : 00000000000000000000000000000000
 
-c    : b98f03a947807713d75a4fff9fc277a6
+ct   : b98f03a947807713d75a4fff9fc277a6
 
 tag  : 478f3b50dc478ef7d5cf2d0f7cc13180
 ~~~
@@ -844,14 +844,14 @@ tag  : 478f3b50dc478ef7d5cf2d0f7cc13180
 key  : 00000000000000000000000000000000
        00000000000000000000000000000000
 
-iv   : 00000000000000000000000000000000
+nonce: 00000000000000000000000000000000
        00000000000000000000000000000000
 
 ad   :
 
-m    :
+msg  :
 
-c    :
+ct   :
 
 tag  : f7a0878f68bd083e8065354071fc27c3
 ~~~
@@ -862,15 +862,15 @@ tag  : f7a0878f68bd083e8065354071fc27c3
 key  : 10010000000000000000000000000000
        00000000000000000000000000000000
 
-iv   : 10000200000000000000000000000000
+nonce: 10000200000000000000000000000000
        00000000000000000000000000000000
 
 ad   : 0001020304050607
 
-m    : 000102030405060708090a0b0c0d0e0f
+msg  : 000102030405060708090a0b0c0d0e0f
        101112131415161718191a1b1c1d1e1f
 
-c    : f373079ed84b2709faee373584585d60
+ct   : f373079ed84b2709faee373584585d60
        accd191db310ef5d8b11833df9dec711
 
 tag  : 8d86f91ee606e9ff26a01b64ccbdd91d
