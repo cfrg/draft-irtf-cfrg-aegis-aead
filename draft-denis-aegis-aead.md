@@ -15,6 +15,10 @@ author:
     name: Frank Denis
     organization: Fastly Inc.
     email: fd@00f.net
+ -
+    name: Fabio Enrico Renzo Scotoni
+    organization: Individual Contributor
+    email: fabio@esse.ch
 
 informative:
 
@@ -104,13 +108,127 @@ AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 16 octets
-- `P_MAX` (maximum size of the plaintext) is 2<sup>61</sup> octets
-- `A_MAX` (maximum size of the associated data) is 2<sup>61</sup> octets
-- `N_MIN` = `N_MAX` = 16 octets
-- `C_MAX` = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
+- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets
+- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets
+- `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 octets
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if it is needed.
+
+## Authenticated Encryption
+
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
+
+~~~
+Encrypt(m, ad, k, iv)
+~~~
+
+Inputs:
+
+- `m`: the message to be encrypted
+- `ad`: the associated data to authenticate
+- `k`: the encryption key
+- `iv`: the public nonce
+
+Outputs:
+
+- `c`: the ciphertext
+- `tag`: the authentication tag
+
+Steps:
+
+~~~
+Init(k, iv)
+
+c = {}
+
+ad_blocks = Split(Pad(ad, 256), 256)
+for xi in ad_blocks:
+    Enc(xi)
+
+m_blocks = Split(Pad(m, 256), 256)
+for xi in m_blocks:
+    c = c || Enc(xi)
+
+tag = Finalize(|ad|, |m|)
+~~~
+
+## Authenticated Decryption
+
+The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
+
+~~~
+Decrypt(c, tag, ad, k, iv)
+~~~
+
+Inputs:
+
+- `c`: the ciphertext to be decrypted
+- `ad`: the associated data to authenticate
+- `k`: the encryption key
+- `iv`: the public nonce
+
+Outputs:
+
+- either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+
+Steps:
+
+~~~
+Init(k, iv)
+
+m = {}
+
+ad_blocks = Split(Pad(ad, 256), 256)
+for xi in ad_blocks:
+    Enc(xi)
+
+c_blocks = Split(c, 256)
+cn = Tail(c, |c| mod 256)
+
+for ci in c_blocks:
+    m = m || Dec(ci)
+
+if cn is not empty:
+    m = m || DecPartial(cn)
+
+expected_tag = Finalize(|ad|, |m|)
+~~~
+
+The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
+
+## The Init Function
+
+~~~
+Init(k, iv)
+~~~
+
+The `Init` function constructs the initial state `{S0, ...S7}` using the key `k` and the nonce `iv`.
+
+Inputs:
+
+- `k`: the encryption key
+- `iv`: the nonce
+
+Defines:
+
+- `{S0, ...S7}`: the initial state
+
+Steps:
+
+~~~
+S0 = k ^ iv
+S1 = C1
+S2 = C0
+S3 = C1
+S4 = k ^ iv
+S5 = k ^ C0
+S6 = k ^ C1
+S7 = k ^ C0
+
+Repeat(10, Update(iv, k))
+~~~
 
 ## The Update Function
 
@@ -150,38 +268,6 @@ S4  = S'4
 S5  = S'5
 S6  = S'6
 S7  = S'7
-~~~
-
-## The Init Function
-
-~~~
-Init(k, iv)
-~~~
-
-The `Init` function constructs the initial state `{S0, ...S7}` using the key `k` and the nonce `iv`.
-
-Inputs:
-
-- `k`: the encryption key
-- `iv`: the nonce
-
-Defines:
-
-- `{S0, ...S7}`: the initial state
-
-Steps:
-
-~~~
-S0 = k ^ iv
-S1 = C1
-S2 = C0
-S3 = C1
-S4 = k ^ iv
-S5 = k ^ C0
-S6 = k ^ C1
-S7 = k ^ C0
-
-Repeat(10, Update(iv, k))
 ~~~
 
 ## The Enc Function
@@ -303,13 +389,28 @@ Repeat(7, Update(t, t))
 tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
 ~~~
 
-## Authenticated Encryption
+# The AEGIS-256 Algorithm
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
+AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
+
+The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
+
+- `K_LEN` (key length) is 32 octets
+- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets
+- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets
+- `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 octets
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
+
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
+It is up to the application to create a structure in the associated data input if it is needed.
+
+## Authenticated Encryption
 
 ~~~
 Encrypt(m, ad, k, iv)
 ~~~
+
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
 
 Inputs:
 
@@ -330,11 +431,11 @@ Init(k, iv)
 
 c = {}
 
-ad_blocks = Split(Pad(ad, 256), 256)
+ad_blocks = Split(Pad(ad, 128), 128)
 for xi in ad_blocks:
     Enc(xi)
 
-m_blocks = Split(Pad(m, 256), 256)
+m_blocks = Split(Pad(m, 128), 128)
 for xi in m_blocks:
     c = c || Enc(xi)
 
@@ -367,12 +468,12 @@ Init(k, iv)
 
 m = {}
 
-ad_blocks = Split(Pad(ad, 256), 256)
+ad_blocks = Split(Pad(ad, 128), 128)
 for xi in ad_blocks:
     Enc(xi)
 
-c_blocks = Split(c, 256)
-cn = Tail(c, |c| mod 256)
+c_blocks = Split(Pad(c, 128), 128)
+cn = Tail(c, |c| mod 128)
 
 for ci in c_blocks:
     m = m || Dec(ci)
@@ -383,57 +484,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |m|)
 ~~~
 
-The comparison of the authentication tag `tag` with the expected tag should be done in constant time.
-
-# The AEGIS-256 Algorithm
-
-AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
-
-The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
-
-- `K_LEN` (key length) is 32 octets
-- `P_MAX` (maximum size of the plaintext) is 2<sup>61</sup> octets
-- `A_MAX` (maximum size of the associated data) is 2<sup>61</sup> octets
-- `N_MIN` = `N_MAX` = 32 octets
-- `C_MAX` = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
-
-Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
-It is up to the application to create a structure in the associated data input if it is needed.
-
-## The Update Function
-
-~~~
-Update(M)
-~~~
-
-The `Update` function is the core of the AEGIS-256 algorithm.
-It updates the state `{S0, ...S5}` using a 128-bit value.
-
-Inputs:
-
-- `M`: the block to be absorbed
-
-Modifies:
-
-- `{S0, ...S5}`: the state
-
-Steps:
-
-~~~
-S'0 = AESRound(S5, S0 ^ M)
-S'1 = AESRound(S0, S1)
-S'2 = AESRound(S1, S2)
-S'3 = AESRound(S2, S3)
-S'4 = AESRound(S3, S4)
-S'5 = AESRound(S4, S5)
-
-S0  = S'0
-S1  = S'1
-S2  = S'2
-S3  = S'3
-S4  = S'4
-S5  = S'5
-~~~
+The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
 
 ## The Init Function
 
@@ -473,6 +524,41 @@ Repeat(4,
 )
 ~~~
 
+## The Update Function
+
+~~~
+Update(M)
+~~~
+
+The `Update` function is the core of the AEGIS-256 algorithm.
+It updates the state `{S0, ...S5}` using a 128-bit value.
+
+Inputs:
+
+- `M`: the block to be absorbed
+
+Modifies:
+
+- `{S0, ...S5}`: the state
+
+Steps:
+
+~~~
+S'0 = AESRound(S5, S0 ^ M)
+S'1 = AESRound(S0, S1)
+S'2 = AESRound(S1, S2)
+S'3 = AESRound(S2, S3)
+S'4 = AESRound(S3, S4)
+S'5 = AESRound(S4, S5)
+
+S0  = S'0
+S1  = S'1
+S2  = S'2
+S3  = S'3
+S4  = S'4
+S5  = S'5
+~~~
+
 ## The Enc Function
 
 ~~~
@@ -494,9 +580,9 @@ Steps:
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
-ci = xi ^ z
-
 Update(xi)
+
+ci = xi ^ z
 ~~~
 
 ## The Dec Function
@@ -584,91 +670,9 @@ Repeat(7, Update(t))
 tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 ~~~
 
-## Authenticated Encryption
-
-~~~
-Encrypt(m, ad, k, iv)
-~~~
-
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
-
-Inputs:
-
-- `m`: the message to be encrypted
-- `ad`: the associated data to authenticate
-- `k`: the encryption key
-- `iv`: the public nonce
-
-Outputs:
-
-- `c`: the ciphertext
-- `tag`: the authentication tag
-
-Steps:
-
-~~~
-Init(k, iv)
-
-c = {}
-
-ad_blocks = Split(Pad(ad, 128), 128)
-for xi in ad_blocks:
-    Enc(xi)
-
-m_blocks = Split(Pad(m, 128), 128)
-for xi in m_blocks:
-    c = c || Enc(xi)
-
-tag = Finalize(|ad|, |m|)
-~~~
-
-## Authenticated Decryption
-
-The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
-
-~~~
-Decrypt(c, tag, ad, k, iv)
-~~~
-
-Inputs:
-
-- `c`: the ciphertext to be decrypted
-- `ad`: the associated data to authenticate
-- `k`: the encryption key
-- `iv`: the public nonce
-
-Outputs:
-
-- either `m`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
-
-Steps:
-
-~~~
-Init(k, iv)
-
-m = {}
-
-ad_blocks = Split(Pad(ad, 128), 128)
-for xi in ad_blocks:
-    Enc(xi)
-
-c_blocks = Split(Pad(c, 128), 128)
-cn = Tail(c, |c| mod 128)
-
-for ci in c_blocks:
-    m = m || Dec(ci)
-
-if cn is not empty:
-    m = m || DecPartial(cn)
-
-expected_tag = Finalize(|ad|, |m|)
-~~~
-
-The comparison of the authentication tag `tag` with the expected tag should be done in constant time.
-
 # Encoding (c, tag) Tuples
 
-Applications may keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
+Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
 
 In the later case, the tag is expected to immediately follow the ciphertext:
 
@@ -678,7 +682,7 @@ combined_ciphertext = c || tag
 
 # Security Considerations
 
-Both algorithms must be used in a nonce-respecting setting: for a given key `k`, a nonce must only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+Both algorithms MUST be used in a nonce-respecting setting: for a given key `k`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 The nonce `iv` does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
@@ -698,6 +702,8 @@ A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
 
 IANA is requested to assign entries for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the AEAD Registry with this document as reference.
 
+--- back
+
 # Test Vectors
 
 ## AESRound Test Vector
@@ -712,12 +718,38 @@ out  : 7a7b4e5638782546a8c0477a3b813f43
 
 ## AEGIS-128L Test Vectors
 
+### Update Test Vector
+
+~~~
+S0   : 9b7e60b24cc873ea894ecc07911049a3
+S1   : 330be08f35300faa2ebf9a7b0d274658
+S2   : 7bbd5bd2b049f7b9b515cf26fbe7756c
+S3   : c35a00f55ea86c3886ec5e928f87db18
+S4   : 9ebccafce87cab446396c4334592c91f
+S5   : 58d83e31f256371e60fc6bb257114601
+S6   : 1639b56ea322c88568a176585bc915de
+S7   : 640818ffb57dc0fbc2e72ae93457e39a
+
+M0   : 033e6975b94816879e42917650955aa0
+M1   : 033e6975b94816879e42917650955aa0
+
+After Update:
+S0   : 596ab773e4433ca0127c73f60536769d
+S1   : 790394041a3d26ab697bde865014652d
+S2   : 38cf49e4b65248acd533041b64dd0611
+S3   : 16d8e58748f437bfff1797f780337cee
+S4   : 69761320f7dd738b281cc9f335ac2f5a
+S5   : a21746bb193a569e331e1aa985d0d729
+S6   : 09d714e6fcf9177a8ed1cde7e3d259a6
+S7   : 61279ba73167f0ab76f0a11bf203bdff
+~~~
+
 ### Test Vector 1
 
 ~~~
 key  : 00000000000000000000000000000000
 
-nonce: 00000000000000000000000000000000
+iv   : 00000000000000000000000000000000
 
 ad   :
 
@@ -733,7 +765,7 @@ tag  : f4d997cc9b94227ada4fe4165422b1c8
 ~~~
 key  : 00000000000000000000000000000000
 
-nonce: 00000000000000000000000000000000
+iv   : 00000000000000000000000000000000
 
 ad   :
 
@@ -749,7 +781,7 @@ tag  : 83cc600dc4e3e7e62d4055826174f149
 ~~~
 key  : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+iv   : 10000200000000000000000000000000
 
 ad   : 0001020304050607
 
@@ -764,13 +796,34 @@ tag  : cc6f3372f6aa1bb82388d695c3962d9a
 
 ## AEGIS-256 Test Vectors
 
+### Update Test Vector
+
+~~~
+S0   : 1fa1207ed76c86f2c4bb40e8b395b43e
+S1   : b44c375e6c1e1978db64bcd12e9e332f
+S2   : 0dab84bfa9f0226432ff630f233d4e5b
+S3   : d7ef65c9b93e8ee60c75161407b066e7
+S4   : a760bb3da073fbd92bdc24734b1f56fb
+S5   : a828a18d6a964497ac6e7e53c5f55c73
+
+M    : b165617ed04ab738afb2612c6d18a1ec
+
+After Update:
+S0   : e6bc643bae82dfa3d991b1b323839dcd
+S1   : 648578232ba0f2f0a3677f617dc052c3
+S2   : ea788e0e572044a46059212dd007a789
+S3   : 2f1498ae19b80da13fba698f088a8590
+S4   : a54c2ee95e8c2a2c3dae2ec743ae6b86
+S5   : a3240fceb68e32d5d114df1b5363ab67
+~~~
+
 ### Test Vector 1
 
 ~~~
 key  : 00000000000000000000000000000000
        00000000000000000000000000000000
 
-nonce: 00000000000000000000000000000000
+iv   : 00000000000000000000000000000000
        00000000000000000000000000000000
 
 ad   :
@@ -788,7 +841,7 @@ tag  : 478f3b50dc478ef7d5cf2d0f7cc13180
 key  : 00000000000000000000000000000000
        00000000000000000000000000000000
 
-nonce: 00000000000000000000000000000000
+iv   : 00000000000000000000000000000000
        00000000000000000000000000000000
 
 ad   :
@@ -806,7 +859,7 @@ tag  : f7a0878f68bd083e8065354071fc27c3
 key  : 10010000000000000000000000000000
        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+iv   : 10000200000000000000000000000000
        00000000000000000000000000000000
 
 ad   : 0001020304050607
@@ -819,8 +872,6 @@ c    : f373079ed84b2709faee373584585d60
 
 tag  : 8d86f91ee606e9ff26a01b64ccbdd91d
 ~~~
-
---- back
 
 # Acknowledgments
 {:numbered="false"}
