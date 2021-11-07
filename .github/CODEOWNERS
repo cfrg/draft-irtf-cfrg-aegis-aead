@@ -1,3 +1,2 @@
-# Automatically generated CODEOWNERS
-# Regenerate with `make update-codeowners`
 draft-denis-aegis-aead.md fd@00f.net fabio@esse.ch
+/reference-implementations/ @jedisct1
