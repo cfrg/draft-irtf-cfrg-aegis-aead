@@ -26,16 +26,16 @@ pub const Aegis256 = struct {
         };
     }
 
-    fn init(k: [32]u8, iv: [32]u8) Aegis256 {
+    fn init(key: [32]u8, nonce: [32]u8) Aegis256 {
         const c0 = AesBlock.fromBytes(&[16]u8{ 0x0, 0x1, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59, 0x90, 0xe9, 0x79, 0x62 });
         const c1 = AesBlock.fromBytes(&[16]u8{ 0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42, 0x73, 0xb5, 0x28, 0xdd });
-        const k0 = AesBlock.fromBytes(k[0..16]);
-        const k1 = AesBlock.fromBytes(k[16..32]);
-        const iv0 = AesBlock.fromBytes(iv[0..16]);
-        const iv1 = AesBlock.fromBytes(iv[16..32]);
+        const k0 = AesBlock.fromBytes(key[0..16]);
+        const k1 = AesBlock.fromBytes(key[16..32]);
+        const n0 = AesBlock.fromBytes(nonce[0..16]);
+        const n1 = AesBlock.fromBytes(nonce[16..32]);
         var self = Aegis256{ .s = State{
-            k0.xorBlocks(iv0),
-            k1.xorBlocks(iv1),
+            k0.xorBlocks(n0),
+            k1.xorBlocks(n1),
             c1,
             c0,
             k0.xorBlocks(c0),
@@ -45,8 +45,8 @@ pub const Aegis256 = struct {
         while (i < 4) : (i += 1) {
             self.update(k0);
             self.update(k1);
-            self.update(k0.xorBlocks(iv0));
-            self.update(k1.xorBlocks(iv1));
+            self.update(k0.xorBlocks(n0));
+            self.update(k1.xorBlocks(n1));
         }
         return self;
     }
@@ -83,11 +83,11 @@ pub const Aegis256 = struct {
         self.update(v);
     }
 
-    fn finalize(self: *Aegis256, adlen: usize, mlen: usize) [16]u8 {
+    fn finalize(self: *Aegis256, ad_len: usize, msg_len: usize) [16]u8 {
         var s = &self.s;
         var b: [16]u8 = undefined;
-        mem.writeIntLittle(u64, b[0..8], @intCast(u64, adlen) * 8);
-        mem.writeIntLittle(u64, b[8..16], @intCast(u64, mlen) * 8);
+        mem.writeIntLittle(u64, b[0..8], @intCast(u64, ad_len) * 8);
+        mem.writeIntLittle(u64, b[8..16], @intCast(u64, msg_len) * 8);
         const t = s[3].xorBlocks(AesBlock.fromBytes(&b));
         var i: usize = 0;
         while (i < 7) : (i += 1) {
@@ -96,9 +96,9 @@ pub const Aegis256 = struct {
         return s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
     }
 
-    pub fn encrypt(c: []u8, m: []const u8, ad: []const u8, k: [32]u8, iv: [32]u8) [16]u8 {
-        assert(c.len == m.len);
-        var aegis = init(k, iv);
+    pub fn encrypt(ct: []u8, msg: []const u8, ad: []const u8, key: [32]u8, nonce: [32]u8) [16]u8 {
+        assert(ct.len == msg.len);
+        var aegis = init(key, nonce);
 
         var i: usize = 0;
         while (i + 16 <= ad.len) : (i += 16) {
@@ -111,21 +111,21 @@ pub const Aegis256 = struct {
         }
 
         i = 0;
-        while (i + 16 <= m.len) : (i += 16) {
-            mem.copy(u8, c[i..][0..16], &aegis.enc(m[i..][0..16]));
+        while (i + 16 <= msg.len) : (i += 16) {
+            mem.copy(u8, ct[i..][0..16], &aegis.enc(msg[i..][0..16]));
         }
-        if (m.len % 16 != 0) {
+        if (msg.len % 16 != 0) {
             var pad = [_]u8{0} ** 16;
-            mem.copy(u8, pad[0 .. m.len % 16], m[i..]);
-            mem.copy(u8, c[i..], aegis.enc(&pad)[0 .. m.len % 16]);
+            mem.copy(u8, pad[0 .. msg.len % 16], msg[i..]);
+            mem.copy(u8, ct[i..], aegis.enc(&pad)[0 .. msg.len % 16]);
         }
 
-        return aegis.finalize(ad.len, m.len);
+        return aegis.finalize(ad.len, msg.len);
     }
 
-    pub fn decrypt(m: []u8, c: []const u8, tag: [16]u8, ad: []const u8, k: [32]u8, iv: [32]u8) AuthenticationError!void {
-        assert(c.len == m.len);
-        var aegis = init(k, iv);
+    pub fn decrypt(msg: []u8, ct: []const u8, tag: [16]u8, ad: []const u8, key: [32]u8, nonce: [32]u8) AuthenticationError!void {
+        assert(ct.len == msg.len);
+        var aegis = init(key, nonce);
 
         var i: usize = 0;
         while (i + 16 <= ad.len) : (i += 16) {
@@ -138,14 +138,14 @@ pub const Aegis256 = struct {
         }
 
         i = 0;
-        while (i + 16 <= c.len) : (i += 16) {
-            mem.copy(u8, m[i..][0..16], &aegis.dec(c[i..][0..16]));
+        while (i + 16 <= ct.len) : (i += 16) {
+            mem.copy(u8, msg[i..][0..16], &aegis.dec(ct[i..][0..16]));
         }
-        if (c.len % 16 != 0) {
-            aegis.decLast(m[i..], c[i..]);
+        if (ct.len % 16 != 0) {
+            aegis.decLast(msg[i..], ct[i..]);
         }
 
-        const expected_tag = aegis.finalize(ad.len, m.len);
+        const expected_tag = aegis.finalize(ad.len, msg.len);
         if (!crypto.utils.timingSafeEql([expected_tag.len]u8, expected_tag, tag)) {
             return error.AuthenticationFailed;
         }
