@@ -673,7 +673,7 @@ Repeat(7, Update(t))
 tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 ~~~
 
-# Encoding (c, tag) Tuples
+# Encoding (ct, tag) Tuples
 
 Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
 
