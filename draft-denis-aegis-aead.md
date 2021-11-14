@@ -687,7 +687,11 @@ combined_ct = ct || tag
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given key `key`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-The nonce `nonce` does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
+If verification fails, the decrypted message and wrong message authentication tag should not be given as output.
+
+Every key must be randomly generated.
+
+The nonce does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
 With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
