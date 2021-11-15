@@ -687,7 +687,7 @@ combined_ct = ct || tag
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given key `key`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If verification fails, the decrypted message and wrong message authentication tag should not be given as output.
+If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
 
 Every key must be randomly generated.
 
