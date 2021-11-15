@@ -16,11 +16,11 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [CAESAR reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l)         | C        |
 | [CAESAR reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)           | C        |
 | [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)                          | C        |
-| [`libsodium`](https://libsodium.org)                                                                                          | C        |
-| [`angt/aegis256`](https://github.com/angt/aegis256)                                                                           | C        |
-| [`TwoEightNine/aegis`](https://github.com/TwoEightNine/aegis)                                                                 | C        |
-| [`google/aegis-cipher`](https://github.com/google/aegis_cipher)                                                               | C++      |
-| [`aegis`](https://crates.io/crates/aegis)                                                                                     | Rust     |
+| [libsodium](https://libsodium.org)                                                                                            | C        |
+| [angt/aegis256](https://github.com/angt/aegis256)                                                                             | C        |
+| [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                   | C        |
+| [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                 | C++      |
+| [aegis](https://crates.io/crates/aegis)                                                                                       | Rust     |
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig      |
 
 ## Contributing
