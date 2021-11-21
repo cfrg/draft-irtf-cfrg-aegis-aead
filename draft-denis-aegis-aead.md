@@ -70,11 +70,11 @@ This document describes the AEGIS-128L and AEGIS-256 authenticated encryption wi
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks, and
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
 
-Currently standardized AEAD schemes, namely AES-GCM and ChaCha20-Poly1305, suffer from a subtle vulnerability in the form of padding oracle attacks that makes them unsafe to use in various scenarios, such as password authenticates key exchanges (PAKE), where they lead to significant speed-ups for password recovery{{LGR21}}. While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally resistant against padding oracle attacks.
+Some popular AEAD schemes suffer from a subtle vulnerability in the form of padding oracle attacks that makes them unsafe to use in various scenarios, such as password authenticates key exchanges (PAKE), where they lead to significant speed-ups for password recovery{{LGR21}}. While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally resistant against padding oracle attacks.
 
 Oftentimes, nonce space is another issue; randomly chosen nonces may be safe for only a very limited number of messages. Nonces may be safely chosen at random with no practical limit when using AEGIS-256; this applies irrespective of the length of individual or total messages.
 
-At the same time, the AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption. Its performance exceeds that of AES-GCM{{AEGIS}} by a factor of two while offering key-commitment and increased safety when using random nonces.
+At the same time, the AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption. Its performance exceeds that of AES-GCM{{AEGIS}} significantly while offering key-commitment and increased safety when using random nonces.
 
 # Conventions and Definitions
 
