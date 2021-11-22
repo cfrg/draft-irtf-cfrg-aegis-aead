@@ -72,7 +72,7 @@ This document describes the AEGIS-128L and AEGIS-256 authenticated encryption wi
 
 With some existing AEAD schemes, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (partitioning oracle attack){{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. One example for a small key space is password-based encryption: an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle; this speeds up a password search by reducing it to a binary search.
 
-While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally resistant against padding oracle attacks.
+While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally resistant against partitioning oracle attacks.
 
 Oftentimes, nonce space is another issue; randomly chosen nonces may be safe for only a very limited number of messages. Nonces may be safely chosen at random with no practical limit when using AEGIS-256; this applies irrespective of the length of individual or total messages.
 
