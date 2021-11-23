@@ -220,7 +220,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
-The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
 
 ## The Init Function
 
@@ -228,7 +228,7 @@ The comparison of the authentication tag `tag` with the expected tag SHOULD be d
 Init(key, nonce)
 ~~~
 
-The `Init` function constructs the initial state `{S0, ...S7}` using the key `key` and the nonce `nonce`.
+The `Init` function constructs the initial state `{S0, ...S7}` using the given `key` and `nonce`.
 
 Inputs:
 
@@ -508,7 +508,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
-The comparison of the authentication tag `tag` with the expected tag SHOULD be done in constant time.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
 
 ## The Init Function
 
@@ -516,7 +516,7 @@ The comparison of the authentication tag `tag` with the expected tag SHOULD be d
 Init(key, nonce)
 ~~~
 
-The `Init` function constructs the initial state `{S0, ...S5}` using the key `key` and the nonce `nonce`.
+The `Init` function constructs the initial state `{S0, ...S5}` using the given `key` and `nonce`.
 
 Inputs:
 
@@ -706,7 +706,7 @@ combined_ct = ct || tag
 
 # Security Considerations
 
-Both algorithms MUST be used in a nonce-respecting setting: for a given key `key`, a nonce MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
 
