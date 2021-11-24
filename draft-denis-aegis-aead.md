@@ -139,7 +139,7 @@ The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
-It is up to the application to create a structure in the associated data input if it is needed.
+It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
 
@@ -394,7 +394,7 @@ Update(v0, v1)
 Finalize(ad_len, msg_len)
 ~~~
 
-The `Finalize` function computes a 128-bit tag that authenticates the message as well as the associated data.
+The `Finalize` function computes a 128-bit tag that authenticates the message and associated data.
 
 Inputs:
 
