@@ -191,6 +191,7 @@ Decrypt(ct, tag, ad, key, nonce)
 Inputs:
 
 - `ct`: the ciphertext to be decrypted.
+- `tag`: the authentication tag.
 - `ad`: the associated data to authenticate.
 - `key`: the encryption key.
 - `nonce`: the public nonce.
@@ -479,6 +480,7 @@ Decrypt(ct, tag, ad, key, nonce)
 Inputs:
 
 - `ct`: the ciphertext to be decrypted.
+- `tag`: the authentication tag.
 - `ad`: the associated data to authenticate.
 - `key`: the encryption key.
 - `nonce`: the public nonce.
