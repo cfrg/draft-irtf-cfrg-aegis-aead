@@ -67,10 +67,10 @@ This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated en
 
 This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, a variant of which has been chosen as a winner in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
 
-- AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks, and
+- AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
 
-With some existing AEAD schemes, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (partitioning oracle attack){{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. One example for a small key space is password-based encryption: an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle; this speeds up a password search by reducing it to a binary search.
+With some existing AEAD schemes, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack){{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. One example for a small key space is password-based encryption: an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
 While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally resistant against partitioning oracle attacks.
 
@@ -84,47 +84,47 @@ At the same time, the AEGIS cipher family offers optimal performance on CPUs wit
 
 Primitives:
 
-- `|x|`: the length of `x` in bits
-- `a ^ b`: the bit-wise exclusive OR operation between `a` and `b`
-- `a & b`: the bit-wise AND operation between `a` and `b`
-- `a || b`: the concatenation of `a` and `b`
-- `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor
-- `LE64(x)`: the little-endian encoding of 64-bit integer `x`
+- `|x|`: the length of `x` in bits.
+- `a ^ b`: the bitwise exclusive OR operation between `a` and `b`.
+- `a & b`: the bitwise AND operation between `a` and `b`.
+- `a || b`: the concatenation of `a` and `b`.
+- `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
+- `LE64(x)`: the little-endian encoding of 64-bit integer `x`.
 - `Pad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
-- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums` and `AddRoundKey` transformations as defined in section 5 of {{FIPS-AES}}. `in` is the 128-bit AES input state and `rk` is the 128-bit round key.
-- `Repeat(n, F)`: `n` sequential evaluations of the function `F`
+- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums` and `AddRoundKey` transformations, as defined in section 5 of {{FIPS-AES}}. `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
+- `Repeat(n, F)`: `n` sequential evaluations of the function `F`.
 
 AEGIS internal functions:
 
-- `Update(M0, M1)`: the state update function
-- `Init(key, nonce)`: the initialization function
-- `Enc(xi)`: the input block encryption function
-- `Dec(ci)`: the input block decryption function
-- `DecPartial(cn)`: the input block decryption function for the last ciphertext bits, when they do not fill an entire block
-- `Finalize(ad_len, msg_len)`: the authentication tag generation function
+- `Update(M0, M1)`: the state update function.
+- `Init(key, nonce)`: the initialization function.
+- `Enc(xi)`: the input block encryption function.
+- `Dec(ci)`: the input block decryption function.
+- `DecPartial(cn)`: the input block decryption function for the last ciphertext bits when they do not fill an entire block.
+- `Finalize(ad_len, msg_len)`: the authentication tag generation function.
 
 Input blocks are 256 bits for AEGIS-128L and 128 bits for AEGIS-256.
 
 AES blocks:
 
-- `Si`: the `i`-th AES block of the current state
-- `S'i`: the `i`-th AES block of the next state
-- `C0`: the constant `0x000101020305080d1522375990e97962` as an AES block
-- `C1`: the constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block
+- `Si`: the `i`-th AES block of the current state.
+- `S'i`: the `i`-th AES block of the next state.
+- `C0`: the constant `0x000101020305080d1522375990e97962` as an AES block.
+- `C1`: the constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block.
 
 AES blocks are always 128 bits in length.
 
 Input and output values:
 
-- `key`: the encryption key (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
-- `nonce`: the public nonce (128 bits for AEGIS-128L, 256 bits for AEGIS-256)
-- `ad`: the associated data
-- `msg`: the cleartext
-- `ct`: the ciphertext
-- `tag`: the authentication tag (128 bits)
+- `key`: the encryption key (128 bits for AEGIS-128L, 256 bits for AEGIS-256).
+- `nonce`: the public nonce (128 bits for AEGIS-128L, 256 bits for AEGIS-256).
+- `ad`: the associated data.
+- `msg`: the plaintext.
+- `ct`: the ciphertext.
+- `tag`: the authentication tag (128 bits).
 
 # The AEGIS-128L Algorithm
 
@@ -139,11 +139,11 @@ The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
-It is up to the application to create a structure in the associated data input if it is needed.
+It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
 
 ~~~
 Encrypt(msg, ad, key, nonce)
@@ -151,15 +151,15 @@ Encrypt(msg, ad, key, nonce)
 
 Inputs:
 
-- `msg`: the message to be encrypted
-- `ad`: the associated data to authenticate
-- `key`: the encryption key
-- `nonce`: the public nonce
+- `msg`: the message to be encrypted.
+- `ad`: the associated data to authenticate.
+- `key`: the encryption key.
+- `nonce`: the public nonce.
 
 Outputs:
 
-- `ct`: the ciphertext
-- `tag`: the authentication tag
+- `ct`: the ciphertext.
+- `tag`: the authentication tag.
 
 Steps:
 
@@ -182,7 +182,7 @@ msg = Truncate(msg, |ct|)
 
 ## Authenticated Decryption
 
-The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
+The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 ~~~
 Decrypt(ct, tag, ad, key, nonce)
@@ -190,14 +190,14 @@ Decrypt(ct, tag, ad, key, nonce)
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted
-- `ad`: the associated data to authenticate
-- `key`: the encryption key
-- `nonce`: the public nonce
+- `ct`: the ciphertext to be decrypted.
+- `ad`: the associated data to authenticate.
+- `key`: the encryption key.
+- `nonce`: the public nonce.
 
 Outputs:
 
-- either `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+- `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
@@ -234,12 +234,12 @@ The `Init` function constructs the initial state `{S0, ...S7}` using the given `
 
 Inputs:
 
-- `key`: the encryption key
-- `nonce`: the nonce
+- `key`: the encryption key.
+- `nonce`: the nonce.
 
 Defines:
 
-- `{S0, ...S7}`: the initial state
+- `{S0, ...S7}`: the initial state.
 
 Steps:
 
@@ -267,12 +267,12 @@ It updates the state `{S0, ...S7}` using two 128-bit values.
 
 Inputs:
 
-- `M0`: the first 128-bit block to be absorbed
-- `M1`: the second 128-bit block to be absorbed
+- `M0`: the first 128-bit block to be absorbed.
+- `M1`: the second 128-bit block to be absorbed.
 
 Modifies:
 
-- `{S0, ...S7}`: the state
+- `{S0, ...S7}`: the state.
 
 Steps:
 
@@ -306,11 +306,11 @@ The `Enc` function encrypts a 256-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the 256-bit encrypted input block
+- `xi`: the 256-bit encrypted input block.
 
 Outputs:
 
-- `ci`: the 256-bit decrypted block
+- `ci`: the 256-bit decrypted block.
 
 Steps:
 
@@ -336,11 +336,11 @@ The `Dec` function decrypts a 256-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the 256-bit encrypted input block
+- `ci`: the 256-bit encrypted input block.
 
 Outputs:
 
-- `xi`: the 256-bit decrypted block
+- `xi`: the 256-bit decrypted block.
 
 Steps:
 
@@ -362,15 +362,15 @@ xi = out0 || out1
 DecPartial(cn)
 ~~~
 
-The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}`, when they do not fill an entire block.
+The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S7}` when they do not fill an entire block.
 
 Inputs:
 
-- `cn`: the encrypted input
+- `cn`: the encrypted input.
 
 Outputs:
 
-- `xn`: the decryption of `cn`
+- `xn`: the decryption of `cn`.
 
 Steps:
 
@@ -394,16 +394,16 @@ Update(v0, v1)
 Finalize(ad_len, msg_len)
 ~~~
 
-The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
+The `Finalize` function computes a 128-bit tag that authenticates the message and associated data.
 
 Inputs:
 
-- `ad_len`: the length of the associated data in bits
-- `msg_len`: the length of the message in bits
+- `ad_len`: the length of the associated data in bits.
+- `msg_len`: the length of the message in bits.
 
 Outputs:
 
-- `tag`: the authentication tag
+- `tag`: the authentication tag.
 
 Steps:
 
@@ -428,7 +428,7 @@ The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
-It is up to the application to create a structure in the associated data input if it is needed.
+It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
 
@@ -436,19 +436,19 @@ It is up to the application to create a structure in the associated data input i
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and, if provided, of associated data.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
 
 Inputs:
 
-- `msg`: the message to be encrypted
-- `ad`: the associated data to authenticate
-- `key`: the encryption key
-- `nonce`: the public nonce
+- `msg`: the message to be encrypted.
+- `ad`: the associated data to authenticate.
+- `key`: the encryption key.
+- `nonce`: the public nonce.
 
 Outputs:
 
-- `ct`: the ciphertext
-- `tag`: the authentication tag
+- `ct`: the ciphertext.
+- `tag`: the authentication tag.
 
 Steps:
 
@@ -470,7 +470,7 @@ tag = Finalize(|ad|, |msg|)
 
 ## Authenticated Decryption
 
-The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success, or an error if tag verification failed.
+The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 ~~~
 Decrypt(ct, tag, ad, key, nonce)
@@ -478,14 +478,14 @@ Decrypt(ct, tag, ad, key, nonce)
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted
-- `ad`: the associated data to authenticate
-- `key`: the encryption key
-- `nonce`: the public nonce
+- `ct`: the ciphertext to be decrypted.
+- `ad`: the associated data to authenticate.
+- `key`: the encryption key.
+- `nonce`: the public nonce.
 
 Outputs:
 
-- either `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+- `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
@@ -522,12 +522,12 @@ The `Init` function constructs the initial state `{S0, ...S5}` using the given `
 
 Inputs:
 
-- `key`: the encryption key
-- `nonce`: the nonce
+- `key`: the encryption key.
+- `nonce`: the nonce.
 
 Defines:
 
-- `{S0, ...S5}`: the initial state
+- `{S0, ...S5}`: the initial state.
 
 Steps:
 
@@ -561,11 +561,11 @@ It updates the state `{S0, ...S5}` using a 128-bit value.
 
 Inputs:
 
-- `msg`: the block to be absorbed
+- `msg`: the block to be absorbed.
 
 Modifies:
 
-- `{S0, ...S5}`: the state
+- `{S0, ...S5}`: the state.
 
 Steps:
 
@@ -595,11 +595,11 @@ The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the encrypted input block
+- `xi`: the encrypted input block.
 
 Outputs:
 
-- `ci`: the decrypted block
+- `ci`: the decrypted block.
 
 Steps:
 
@@ -621,11 +621,11 @@ The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the encrypted input block
+- `ci`: the encrypted input block.
 
 Outputs:
 
-- `xi`: the decrypted block
+- `xi`: the decrypted block.
 
 Steps:
 
@@ -645,15 +645,15 @@ It returns the 128-bit block `out`.
 DecPartial(cn)
 ~~~
 
-The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}`, when they do not fill an entire block.
+The `DecPartial` function decrypts the last ciphertext bits `cn` using the state `{S0, ...S5}` when they do not fill an entire block.
 
 Inputs:
 
-- `cn`: the encrypted input
+- `cn`: the encrypted input.
 
 Outputs:
 
-- `xn`: the decryption of `cn`
+- `xn`: the decryption of `cn`.
 
 Steps:
 
@@ -675,16 +675,16 @@ Update(v)
 Finalize(ad_len, msg_len)
 ~~~
 
-The `Finalize` function computes a 128-bit tag that authenticate the message as well as the associated data.
+The `Finalize` function computes a 128-bit tag that authenticates the message and associated data.
 
 Inputs:
 
-- `ad_len`: the length of the associated data in bits
-- `msg_len`: the length of the message in bits
+- `ad_len`: the length of the associated data in bits.
+- `msg_len`: the length of the message in bits.
 
 Outputs:
 
-- `tag`: the authentication tag
+- `tag`: the authentication tag.
 
 Steps:
 
@@ -698,9 +698,9 @@ tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 
 # Encoding (ct, tag) Tuples
 
-Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures, or encode both as a single string.
+Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures or encode both as a single string.
 
-In the later case, the tag is expected to immediately follow the ciphertext:
+In the latter case, the tag is expected to immediately follow the ciphertext:
 
 ~~~
 combined_ct = ct || tag
@@ -712,7 +712,7 @@ Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a
 
 If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
 
-Every key must be randomly generated.
+Every key must be randomly chosen from a uniform distribution.
 
 The nonce does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
@@ -724,7 +724,7 @@ Under the assumption that the secret key is unknown to the attacker and the tag 
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing.
 
-The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against side-channel attacks, such as differential power analysis or timing attacks, may likely lead to leaking secret key material or state information. The exact mitigations required for side-channel attacks also depend on the threat model in question.
+The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against side-channel attacks, such as differential power analysis or timing attacks, may lead to leakage of secret key material or state information. The exact mitigations required for side-channel attacks also depend on the threat model in question.
 
 A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
 
