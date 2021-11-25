@@ -708,13 +708,13 @@ combined_ct = ct || tag
 
 # Security Considerations
 
-Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would reveal the XOR of two messages.
+Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
 
-Every key must be randomly generated or derived using a secure key derivation function.
+Every key must be randomly chosen from a uniform distribution.
 
-The nonce does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a random number generator with a long period.
+The nonce does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
 With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
