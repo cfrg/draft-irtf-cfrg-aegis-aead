@@ -702,7 +702,7 @@ tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 
 Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures or encode both as a single string.
 
-In the latter case, the tag is expected to immediately follow the ciphertext:
+In the latter case, the tag MUST immediately follow the ciphertext:
 
 ~~~
 combined_ct = ct || tag
