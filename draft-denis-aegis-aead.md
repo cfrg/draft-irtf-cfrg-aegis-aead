@@ -223,7 +223,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
 
 ## The Init Function
 
@@ -512,7 +512,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
 
 ## The Init Function
 
