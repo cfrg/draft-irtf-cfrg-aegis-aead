@@ -22,6 +22,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                 | C++      |
 | [aegis](https://crates.io/crates/aegis)                                                                                       | Rust     |
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig      |
+| [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python   |
 
 ## Contributing
 
