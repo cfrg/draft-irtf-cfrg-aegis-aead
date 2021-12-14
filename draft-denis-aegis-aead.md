@@ -74,7 +74,7 @@ With some existing AEAD schemes, an attacker can generate a ciphertext that succ
 
 While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key committing AEAD scheme, the AEGIS cipher family is naturally resistant against partitioning oracle attacks.
 
-Moreover, AEGIS is context committing, meaning different associated data for a (key, nonce) pair results in a different keystream for encryption, not just a different authentication tag. This provides some resistance against key reuse in different contexts.
+Moreover, AEGIS is context committing, meaning different associated data for a (key, nonce) pair results in a different keystream for encryption, not just a different authentication tag. This provides some resistance against key reuse when encrypting data in different contexts.
 
 Oftentimes, nonce space is another issue; randomly chosen nonces may be safe for only a very limited number of messages. Nonces may be safely chosen at random with no practical limit when using AEGIS-256; this applies irrespective of the length of individual or total messages.
 
