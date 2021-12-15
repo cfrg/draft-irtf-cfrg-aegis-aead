@@ -716,21 +716,21 @@ combined_ct = ct || tag
 
 # Security Considerations
 
+AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing and context-committing, the implications of which are outlined in the introduction.
+
+Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
+
 Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
+If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output. The security properties of AEGIS with regards to integrity and authentication no longer apply if they are.
 
-Every key must be randomly chosen from a uniform distribution.
+Every key MUST be randomly chosen from a uniform distribution.
 
-The nonce does not have to be secret nor unpredictable. It can be a counter, the output of a permutation, or a generator with a long period.
+The nonce MAY be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
 With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
 
 With AEGIS-256, random nonces can be used with no practical limits.
-
-Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
-
-AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing.
 
 The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against side-channel attacks, such as differential power analysis or timing attacks, may lead to leakage of secret key material or state information. The exact mitigations required for side-channel attacks also depend on the threat model in question.
 
