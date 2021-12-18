@@ -136,7 +136,7 @@ Input and output values:
 
 AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 
-The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
+The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 16 octets.
 - `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets.
@@ -426,7 +426,7 @@ tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
 
 AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
 
-The parameters for this algorithm, as defined in {{!RFC5116, Section 4}} are:
+The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 32 octets.
 - `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets.
