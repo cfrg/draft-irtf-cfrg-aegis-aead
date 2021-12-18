@@ -118,6 +118,7 @@ AES blocks:
 
 - `Si`: the `i`-th AES block of the current state.
 - `S'i`: the `i`-th AES block of the next state.
+- `{Si, ...Sj}`: the vector of the `i`-th AES block of the current state to the `j`-th block of the current state.
 - `C0`: the constant `0x000101020305080d1522375990e97962` as an AES block.
 - `C1`: the constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block.
 
