@@ -14,7 +14,7 @@ author:
  -
     name: Frank Denis
     organization: Fastly Inc.
-    email: fd@00f.net
+    email: fde@00f.net
  -
     name: Fabio Enrico Renzo Scotoni
     organization: Individual Contributor
