@@ -949,4 +949,6 @@ tag  : fac608ca370638a3cad5194544ec2d7f
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge
+The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart Preneel.
+
+The round function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC that partly motivated the design of the AEGIS MAC.
