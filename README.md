@@ -23,6 +23,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [aegis](https://crates.io/crates/aegis)                                                                                       | Rust     |
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig      |
 | [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python   |
+| [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                 | Go       |
 
 ## Contributing
 
