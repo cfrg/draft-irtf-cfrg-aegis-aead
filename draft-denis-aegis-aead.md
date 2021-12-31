@@ -76,7 +76,7 @@ This document describes the AEGIS-128L and AEGIS-256 authenticated encryption wi
 
 With some existing AEAD schemes, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack){{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. One example for a small key space is password-based encryption: an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
-While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally resistant against partitioning oracle attacks.
+While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple different keys that decrypt successfully.
 
 Moreover, AEGIS is context committing, meaning different associated data for a (key, nonce) pair results in a different keystream for encryption, not just a different authentication tag. This provides some resistance against key reuse when encrypting data in different contexts.
 
@@ -717,7 +717,7 @@ combined_ct = ct || tag
 
 # Security Considerations
 
-AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing and context-committing, the implications of which are outlined in the introduction.
+AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing and context-committing, the implications of which are outlined in the introduction. However, neither is compactly-committing because a 128-bit tag is too short to be collision resistant. This means it is still possible for a ciphertext to be successfully decrypted under multiple different keys, just significantly more difficult than for AEAD schemes lacking key commitment.
 
 Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
 
