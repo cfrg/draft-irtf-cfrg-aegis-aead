@@ -84,6 +84,8 @@ Oftentimes, nonce space is another issue; randomly chosen nonces may be safe for
 
 At the same time, the AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption. Its performance exceeds that of AES-GCM{{AEGIS}} significantly while offering key commitment, context commitment, and increased safety when using random nonces.
 
+Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in `Finalize()`, respectively. We follow the specification of {{AEGIS}} that is current at the time of writing; it may be found in the References section of this document.
+
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
