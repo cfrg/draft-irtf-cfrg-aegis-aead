@@ -320,7 +320,7 @@ Inputs:
 
 Outputs:
 
-- `ci`: the 256-bit encrypted input block.
+- `ci`: the 256-bit encrypted block.
 
 Steps:
 
@@ -346,7 +346,7 @@ The `Dec` function decrypts a 256-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the 256-bit encrypted input block.
+- `ci`: the 256-bit encrypted block.
 
 Outputs:
 
