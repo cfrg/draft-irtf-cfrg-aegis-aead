@@ -316,11 +316,11 @@ The `Enc` function encrypts a 256-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the 256-bit encrypted input block.
+- `xi`: the 256-bit input block.
 
 Outputs:
 
-- `ci`: the 256-bit decrypted block.
+- `ci`: the 256-bit encrypted block.
 
 Steps:
 
@@ -346,7 +346,7 @@ The `Dec` function decrypts a 256-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the 256-bit encrypted input block.
+- `ci`: the 256-bit encrypted block.
 
 Outputs:
 
@@ -606,11 +606,11 @@ The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the encrypted input block.
+- `xi`: the input block.
 
 Outputs:
 
-- `ci`: the decrypted block.
+- `ci`: the encrypted input block.
 
 Steps:
 
