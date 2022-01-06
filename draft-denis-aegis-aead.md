@@ -62,7 +62,7 @@ informative:
 
   CRA17:
     title: "Under Pressure: Security of Caesar Candidates beyond their Guarantees"
-    target: https://infoscience.epfl.ch/record/264823/files/2017-1147.pdf
+    target: https://eprint.iacr.org/2017/1147
     author:
       -
         ins: S. Vaudenay
