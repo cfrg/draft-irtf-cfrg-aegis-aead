@@ -60,6 +60,20 @@ informative:
         org: Cornell Tech
     date: 2021
 
+  CRA17:
+    title: "Under Pressure: Security of Caesar Candidates beyond their Guarantees"
+    target: https://eprint.iacr.org/2017/1147
+    author:
+      -
+        ins: S. Vaudenay
+        name: Serge Vaudenay
+        org: EPFL, Switzerland
+      -
+        ins: D. Vizár
+        name: Damian Vizár
+        org: EPFL, Switzerland
+    date: 2017
+
 --- abstract
 
 This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated encryption algorithms designed for high-performance applications.
@@ -232,7 +246,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
 
 ## The Init Function
 
@@ -521,7 +535,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
 
 ## The Init Function
 
@@ -725,7 +739,7 @@ Under the assumption that the secret key is unknown to the attacker and the tag 
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If verification fails, the decrypted message and wrong message authentication tag SHOULD NOT be given as output. The security properties of AEGIS with regards to integrity and authentication no longer apply if they are.
+If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in the analysis of the (robustness of CAESAR candidates beyond their guarantees){{CRA17}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
