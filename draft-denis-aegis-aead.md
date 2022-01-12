@@ -60,9 +60,11 @@ informative:
         org: Cornell Tech
     date: 2021
 
-  CRA17:
-    title: "Under Pressure: Security of Caesar Candidates beyond their Guarantees"
-    target: https://eprint.iacr.org/2017/1147
+  CRA18:
+    title: "Can Caesar Beat Galois? Robustness of CAESAR Candidates against Nonce Reusing and High Data Complexity Attacks"
+    rc: "Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892"
+    seriesinfo:
+      DOI: 10.1007/978-3-319-93387-0_25
     author:
       -
         ins: S. Vaudenay
@@ -72,7 +74,7 @@ informative:
         ins: D. Vizár
         name: Damian Vizár
         org: EPFL, Switzerland
-    date: 2017
+    date: 2018
 
 --- abstract
 
@@ -739,7 +741,7 @@ Under the assumption that the secret key is unknown to the attacker and the tag 
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in the analysis of the (robustness of CAESAR candidates beyond their guarantees){{CRA17}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in the analysis of the (robustness of CAESAR candidates beyond their guarantees){{CRA18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
