@@ -747,7 +747,7 @@ Every key MUST be randomly chosen from a uniform distribution.
 
 The nonce MAY be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
-With AEGIS-128L, random nonces can safely encrypt up to 2<sup>32</sup> messages using the same key with negligible collision probability.
+With AEGIS-128L, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible collision probability.
 
 With AEGIS-256, random nonces can be used with no practical limits.
 
