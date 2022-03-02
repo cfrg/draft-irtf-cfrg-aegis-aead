@@ -202,7 +202,7 @@ for xi in msg_blocks:
     ct = ct || Enc(xi)
 
 tag = Finalize(|ad|, |msg|)
-msg = Truncate(msg, |ct|)
+ct = Truncate(ct, |msg|)
 ~~~
 
 ## Authenticated Decryption
@@ -492,6 +492,7 @@ for xi in msg_blocks:
     ct = ct || Enc(xi)
 
 tag = Finalize(|ad|, |msg|)
+ct = Truncate(ct, |msg|)
 ~~~
 
 ## Authenticated Decryption
