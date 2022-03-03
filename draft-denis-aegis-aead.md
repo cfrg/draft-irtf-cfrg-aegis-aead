@@ -120,6 +120,7 @@ Primitives:
 - `Tail(x, n)`: returns the last `n` bits of `x`.
 - `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums` and `AddRoundKey` transformations, as defined in section 5 of {{FIPS-AES}}. `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`.
+- `CtEq(a, b)`: compares `a` and `b` in constant-time, returning `True` for an exact match, `False` otherwise.
 
 AEGIS internal functions:
 
@@ -204,7 +205,7 @@ for xi in msg_blocks:
 tag = Finalize(|ad|, |msg|)
 ct = Truncate(ct, |msg|)
 
-return ct, tag
+return ct and tag
 ~~~
 
 ## Authenticated Decryption
@@ -249,8 +250,8 @@ if cn is not empty:
 
 expected_tag = Finalize(|ad|, |msg|)
 
-if tag != expected_tag:
-    throw "verification error"
+if CtEq(tag, expected_tag) is False :
+    return "verification failed" error
 else:
     return msg
 ~~~
@@ -509,7 +510,7 @@ for xi in msg_blocks:
 tag = Finalize(|ad|, |msg|)
 ct = Truncate(ct, |msg|)
 
-return ct, tag
+return ct and tag
 ~~~
 
 ## Authenticated Decryption
@@ -554,8 +555,8 @@ if cn is not empty:
 
 expected_tag = Finalize(|ad|, |msg|)
 
-if tag != expected_tag:
-    throw "verification error"
+if CtEq(tag, expected_tag) is False:
+    return "verification failed" error
 else:
     return msg
 ~~~
