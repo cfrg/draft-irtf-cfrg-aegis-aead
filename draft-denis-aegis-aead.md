@@ -203,6 +203,8 @@ for xi in msg_blocks:
 
 tag = Finalize(|ad|, |msg|)
 ct = Truncate(ct, |msg|)
+
+return ct, tag
 ~~~
 
 ## Authenticated Decryption
@@ -223,7 +225,7 @@ Inputs:
 
 Outputs:
 
-- `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+- either the decrypted message `msg`, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
@@ -246,6 +248,11 @@ if cn is not empty:
     msg = msg || DecPartial(cn)
 
 expected_tag = Finalize(|ad|, |msg|)
+
+if tag != expected_tag:
+    throw "verification error"
+else:
+    return msg
 ~~~
 
 The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
@@ -350,6 +357,8 @@ out1 = t1 ^ z1
 
 Update(t0, t1)
 ci = out0 || out1
+
+return ci
 ~~~
 
 ## The Dec Function
@@ -380,6 +389,8 @@ out1 = t1 ^ z1
 
 Update(out0, out1)
 xi = out0 || out1
+
+return xi
 ~~~
 
 ## The DecPartial Function
@@ -412,6 +423,8 @@ xn = Truncate(out0 || out1, |cn|)
 
 v0, v1 = Split(Pad(xn, 256), 128)
 Update(v0, v1)
+
+return xn
 ~~~
 
 ## The Finalize Function
@@ -439,6 +452,8 @@ t = S2 ^ (LE64(ad_len) || LE64(msg_len))
 Repeat(7, Update(t, t))
 
 tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
+
+return tag
 ~~~
 
 # The AEGIS-256 Algorithm
@@ -493,6 +508,8 @@ for xi in msg_blocks:
 
 tag = Finalize(|ad|, |msg|)
 ct = Truncate(ct, |msg|)
+
+return ct, tag
 ~~~
 
 ## Authenticated Decryption
@@ -513,7 +530,7 @@ Inputs:
 
 Outputs:
 
-- `msg`: the message, or an error indicating that the authentication tag is invalid for the given inputs.
+- either the decrypted message `msg`, or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
@@ -536,6 +553,11 @@ if cn is not empty:
     msg = msg || DecPartial(cn)
 
 expected_tag = Finalize(|ad|, |msg|)
+
+if tag != expected_tag:
+    throw "verification error"
+else:
+    return msg
 ~~~
 
 The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
@@ -637,6 +659,8 @@ z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 Update(xi)
 
 ci = xi ^ z
+
+return ci
 ~~~
 
 ## The Dec Function
@@ -663,6 +687,8 @@ z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 xi = ci ^ z
 
 Update(xi)
+
+return xi
 ~~~
 
 It returns the 128-bit block `out`.
@@ -695,6 +721,8 @@ xn = Truncate(out, |cn|)
 
 v = Pad(xn, 128)
 Update(v)
+
+return xn
 ~~~
 
 ## The Finalize Function
@@ -722,6 +750,8 @@ t = S3 ^ (LE64(ad_len) || LE64(msg_len))
 Repeat(7, Update(t))
 
 tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
+
+return tag
 ~~~
 
 # Encoding (ct, tag) Tuples
