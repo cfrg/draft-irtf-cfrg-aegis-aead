@@ -250,7 +250,7 @@ if cn is not empty:
 
 expected_tag = Finalize(|ad|, |msg|)
 
-if CtEq(tag, expected_tag) is False :
+if CtEq(tag, expected_tag) is False:
     return "verification failed" error
 else:
     return msg
