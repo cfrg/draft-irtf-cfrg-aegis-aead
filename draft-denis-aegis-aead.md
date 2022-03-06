@@ -899,6 +899,78 @@ ct   : 79d94593d8c2119d7e8fd9b8fc77
 tag  : 5c04b3dba849b2701effbe32c7f0fab7
 ~~~
 
+### Test Vector 5
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10000200000000000000000000000000
+
+nonce: 10010000000000000000000000000000
+
+ad   : 0001020304050607
+
+msg  : 
+
+ct   : 79d94593d8c2119d7e8fd9b8fc77
+
+tag  : 5c04b3dba849b2701effbe32c7f0fab7
+~~~
+
+### Test Vector 6
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10010000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+
+ad   : 0001020304050607
+
+msg  : 
+
+ct   : 79d94593d8c2119d7e8fd9b8fc78
+
+tag  : 5c04b3dba849b2701effbe32c7f0fab7
+~~~
+
+### Test Vector 7
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10010000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+
+ad   : 0001020304050608
+
+msg  : 
+
+ct   : 79d94593d8c2119d7e8fd9b8fc77
+
+tag  : 5c04b3dba849b2701effbe32c7f0fab7
+~~~
+
+### Test Vector 8
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10010000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+
+ad   : 0001020304050607
+
+msg  : 
+
+ct   : 79d94593d8c2119d7e8fd9b8fc77
+
+tag  : 6c04b3dba849b2701effbe32c7f0fab8
+~~~
+
 ## AEGIS-256 Test Vectors
 
 ### Update Test Vector
@@ -994,6 +1066,86 @@ msg  : 000102030405060708090a0b0c0d
 ct   : f373079ed84b2709faee37358458
 
 tag  : c60b9c2d33ceb058f96e6dd03c215652
+~~~
+
+### Test Vector 5
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10000200000000000000000000000000
+       00000000000000000000000000000000
+
+nonce: 10010000000000000000000000000000
+       00000000000000000000000000000000
+
+ad   : 0001020304050607
+
+msg  : 
+
+ct   : f373079ed84b2709faee37358458
+
+tag  : c60b9c2d33ceb058f96e6dd03c215652
+~~~
+
+### Test Vector 6
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10010000000000000000000000000000
+       00000000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+       00000000000000000000000000000000
+
+ad   : 0001020304050607
+
+msg  : 
+
+ct   : f373079ed84b2709faee37358459
+
+tag  : c60b9c2d33ceb058f96e6dd03c215652
+~~~
+
+### Test Vector 7
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10010000000000000000000000000000
+       00000000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+       00000000000000000000000000000000
+
+ad   : 0001020304050608
+
+msg  : 
+
+ct   : f373079ed84b2709faee37358458
+
+tag  : c60b9c2d33ceb058f96e6dd03c215652
+~~~
+
+### Test Vector 8
+
+This test MUST return a "verification failed" error.
+
+~~~
+key  : 10010000000000000000000000000000
+       00000000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+       00000000000000000000000000000000
+
+ad   : 0001020304050607
+
+msg  : 
+
+ct   : f373079ed84b2709faee37358458
+
+tag  : d60b9c2d33ceb058f96e6dd03c215653
 ~~~
 
 # Acknowledgments
