@@ -901,6 +901,8 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 
 ### Test Vector 5
 
+This test is only for decryption. Tag verification must fail, leading to an error.
+
 ~~~
 key  : 10000200000000000000000000000000
 
@@ -916,6 +918,8 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 ~~~
 
 ### Test Vector 6
+
+This test is only for decryption. Tag verification must fail, leading to an error.
 
 ~~~
 key  : 10010000000000000000000000000000
@@ -933,6 +937,8 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 
 ### Test Vector 7
 
+This test is only for decryption. Tag verification must fail, leading to an error.
+
 ~~~
 key  : 10010000000000000000000000000000
 
@@ -948,6 +954,8 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 ~~~
 
 ### Test Vector 8
+
+This test is only for decryption. Tag verification must fail, leading to an error.
 
 ~~~
 key  : 10010000000000000000000000000000
@@ -1062,6 +1070,8 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 
 ### Test Vector 5
 
+This test is only for decryption. Tag verification must fail, leading to an error.
+
 ~~~
 key  : 10000200000000000000000000000000
        00000000000000000000000000000000
@@ -1079,6 +1089,8 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 ~~~
 
 ### Test Vector 6
+
+This test is only for decryption. Tag verification must fail, leading to an error.
 
 ~~~
 key  : 10010000000000000000000000000000
@@ -1098,6 +1110,8 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 
 ### Test Vector 7
 
+This test is only for decryption. Tag verification must fail, leading to an error.
+
 ~~~
 key  : 10010000000000000000000000000000
        00000000000000000000000000000000
@@ -1115,6 +1129,8 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 ~~~
 
 ### Test Vector 8
+
+This test is only for decryption. Tag verification must fail, leading to an error.
 
 ~~~
 key  : 10010000000000000000000000000000
