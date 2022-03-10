@@ -249,13 +249,12 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
-    msg = {}
     return "verification failed" error
 else:
     return msg
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. If the decryption process is implemented such that a buffer is supplied by the caller and said buffer is modified to contain partial decrypted data, the buffer MUST fully overwrite the supplied buffer with non-secret data, such as setting it to an all-zero value.
 
 ## The Init Function
 
@@ -555,13 +554,12 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
-    msg = {}
     return "verification failed" error
 else:
     return msg
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. If the decryption process is implemented such that a buffer is supplied by the caller and said buffer is modified to contain partial decrypted data, the buffer MUST fully overwrite the supplied buffer with non-secret data, such as setting it to an all-zero value.
 
 ## The Init Function
 
