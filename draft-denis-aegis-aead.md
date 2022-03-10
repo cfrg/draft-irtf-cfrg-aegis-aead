@@ -94,11 +94,9 @@ With some existing AEAD schemes, an attacker can generate a ciphertext that succ
 
 While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple different keys that decrypt successfully.
 
-Moreover, AEGIS is context committing, meaning different associated data for a (key, nonce) pair results in a different keystream for encryption, not just a different authentication tag. This provides some resistance against key reuse when encrypting data in different contexts.
-
 Oftentimes, nonce space is another issue; randomly chosen nonces may be safe for only a very limited number of messages. Nonces may be safely chosen at random with no practical limit when using AEGIS-256; this applies irrespective of the length of individual or total messages.
 
-At the same time, the AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption. Its performance exceeds that of AES-GCM{{AEGIS}} significantly while offering key commitment, context commitment, and increased safety when using random nonces.
+At the same time, the AEGIS cipher family offers optimal performance on CPUs with hardware support for parallelizable AES block encryption. Its performance exceeds that of AES-GCM{{AEGIS}} significantly while offering key commitment and increased safety when using random nonces.
 
 Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in `Finalize()`, respectively. We follow the specification of {{AEGIS}} that is current at the time of writing; it may be found in the References section of this document.
 
@@ -169,7 +167,7 @@ It is up to the application to create a structure in the associated data input i
 
 ## Authenticated Encryption
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided. The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 
 ~~~
 Encrypt(msg, ad, key, nonce)
@@ -256,7 +254,7 @@ else:
     return msg
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. If the decryption process is implemented such that a buffer is supplied by the caller and said buffer is modified to contain partial decrypted data, the buffer MUST fully overwrite the supplied buffer with non-secret data, such as setting it to an all-zero value.
 
 ## The Init Function
 
@@ -478,7 +476,7 @@ It is up to the application to create a structure in the associated data input i
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided. The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 
 Inputs:
 
@@ -561,7 +559,7 @@ else:
     return msg
 ~~~
 
-The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
+The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time. If verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. If the decryption process is implemented such that a buffer is supplied by the caller and said buffer is modified to contain partial decrypted data, the buffer MUST fully overwrite the supplied buffer with non-secret data, such as setting it to an all-zero value.
 
 ## The Init Function
 
