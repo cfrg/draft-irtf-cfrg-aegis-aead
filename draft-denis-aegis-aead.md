@@ -249,6 +249,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
+    msg = {}
     return "verification failed" error
 else:
     return msg
@@ -554,6 +555,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
+    msg = {}
     return "verification failed" error
 else:
     return msg
