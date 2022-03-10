@@ -167,11 +167,11 @@ It is up to the application to create a structure in the associated data input i
 
 ## Authenticated Encryption
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided. The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
-
 ~~~
 Encrypt(msg, ad, key, nonce)
 ~~~
+
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided. The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 
 Inputs:
 
@@ -208,11 +208,11 @@ return ct and tag
 
 ## Authenticated Decryption
 
-The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
-
 ~~~
 Decrypt(ct, tag, ad, key, nonce)
 ~~~
+
+The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Inputs:
 
@@ -513,11 +513,11 @@ return ct and tag
 
 ## Authenticated Decryption
 
-The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
-
 ~~~
 Decrypt(ct, tag, ad, key, nonce)
 ~~~
+
+The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Inputs:
 
