@@ -167,7 +167,7 @@ It is up to the application to create a structure in the associated data input i
 
 ## Authenticated Encryption
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided. The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 
 ~~~
 Encrypt(msg, ad, key, nonce)
@@ -476,7 +476,7 @@ It is up to the application to create a structure in the associated data input i
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
+The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided. The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 
 Inputs:
 
