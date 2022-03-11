@@ -219,8 +219,7 @@ Decrypt(ct, tag, ad, key, nonce)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Security:
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
-- If the decryption process is implemented such that a buffer is supplied by the caller and said buffer is modified to contain partial decrypted data, the buffer MUST fully overwrite the supplied buffer with non-secret data, such as setting it to an all-zero value.
+- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
 - The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
 
 Inputs:
@@ -258,6 +257,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
+    erase msg
     return "verification failed" error
 else:
     return msg
@@ -531,8 +531,7 @@ Decrypt(ct, tag, ad, key, nonce)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Security:
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output.
-- If the decryption process is implemented such that a buffer is supplied by the caller and said buffer is modified to contain partial decrypted data, the buffer MUST fully overwrite the supplied buffer with non-secret data, such as setting it to an all-zero value.
+- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
 - The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
 
 Inputs:
@@ -570,6 +569,7 @@ if cn is not empty:
 expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
+    erase msg
     return "verification failed" error
 else:
     return msg
