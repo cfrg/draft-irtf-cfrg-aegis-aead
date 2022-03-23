@@ -116,9 +116,9 @@ Primitives:
 - `LE64(x)`: the little-endian encoding of 64-bit integer `x`.
 - `Pad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
-- `Split(x, n)`: splitting operation. `x` is split `n`-bit blocks, ignoring partial blocks.
+- `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
-- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums` and `AddRoundKey` transformations, as defined in section 5 of {{FIPS-AES}}. `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
+- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums` and `AddRoundKey` transformations, as defined in section 5 of {{FIPS-AES}}. Here, `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`.
 - `CtEq(a, b)`: compares `a` and `b` in constant-time, returning `True` for an exact match, `False` otherwise.
 
@@ -797,7 +797,7 @@ With AEGIS-128L, random nonces can safely encrypt up to 2<sup>48</sup> messages 
 
 With AEGIS-256, random nonces can be used with no practical limits.
 
-The security of AEGIS against timing attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against side-channel attacks, such as differential power analysis or timing attacks, may lead to leakage of secret key material or state information. The exact mitigations required for side-channel attacks also depend on the threat model in question.
+The security of AEGIS against physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for physical attacks also depend on the threat model in question.
 
 A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
 
