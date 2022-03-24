@@ -781,7 +781,7 @@ combined_ct = ct || tag
 
 # Security Considerations
 
-AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing and context-committing, the implications of which are outlined in the introduction. However, neither is compactly-committing because a 128-bit tag is too short to be collision resistant. This means it is still possible for a ciphertext to be successfully decrypted under multiple different keys, just significantly more difficult than for AEAD schemes lacking key commitment.
+AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing, the implications of which are outlined in the introduction. However, neither is compactly-committing because a 128-bit tag is too short to be collision resistant. This means it is still possible for a ciphertext to be successfully decrypted under multiple different keys, just significantly more difficult than for AEAD schemes lacking key commitment.
 
 Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
 
