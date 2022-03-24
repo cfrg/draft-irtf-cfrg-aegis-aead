@@ -797,7 +797,7 @@ With AEGIS-128L, random nonces can safely encrypt up to 2<sup>48</sup> messages 
 
 With AEGIS-256, random nonces can be used with no practical limits.
 
-The security of AEGIS against physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for physical attacks also depend on the threat model in question.
+The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
 A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
 
