@@ -94,9 +94,9 @@ The AEGIS cipher family offers performance that significantly exceeds that of AE
 
 Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256. AEGIS-128L also allows for more messages to be safely encrypted when using random nonces.
 
-With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack){{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. One example for a small key space is password-based encryption: an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
+With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. One example for a small key space is password-based encryption: an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
-While this may be mitigated by means of inserting a padding block in the aforementioned algorithms, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple different keys that decrypt successfully.
+While this may be mitigated by means of inserting a padding block in the aforementioned algorithms {{LGR21}}, this workaround comes with additional processing cost and must itself be carefully constructed to resist leaking information via timing. As a key-committing AEAD scheme, the AEGIS cipher family is naturally more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple different keys that decrypt successfully.
 
 Finally, unlike most other AES-based AEAD constructions, such as Rocca and Tiaoxin, leaking the state does not leak the key.
 
@@ -176,7 +176,8 @@ Encrypt(msg, ad, key, nonce)
 The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
 
 Security:
-- The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
+
+- For a given key, the nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 - The key MUST be randomly chosen from a uniform distribution.
 
 Inputs:
@@ -221,8 +222,9 @@ Decrypt(ct, tag, ad, key, nonce)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Security:
+
 - If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
-- The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
+- The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
 
@@ -488,7 +490,8 @@ Encrypt(msg, ad, key, nonce)
 The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
 
 Security:
-- The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
+
+- For a given key, the nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 - The key MUST be randomly chosen from a uniform distribution.
 
 Inputs:
@@ -533,8 +536,9 @@ Decrypt(ct, tag, ad, key, nonce)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Security:
+
 - If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
-- The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
+- The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
 
