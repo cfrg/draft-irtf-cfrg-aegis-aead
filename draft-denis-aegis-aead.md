@@ -176,6 +176,7 @@ Encrypt(msg, ad, key, nonce)
 The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
 
 Security:
+
 - The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 - The key MUST be randomly chosen from a uniform distribution.
 
@@ -221,6 +222,7 @@ Decrypt(ct, tag, ad, key, nonce)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Security:
+
 - If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
 - The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
 
@@ -488,6 +490,7 @@ Encrypt(msg, ad, key, nonce)
 The `Encrypt` function encrypts a message and returns the ciphertext along with an authentication tag that verifies the authenticity of the message and associated data, if provided.
 
 Security:
+
 - The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 - The key MUST be randomly chosen from a uniform distribution.
 
@@ -533,6 +536,7 @@ Decrypt(ct, tag, ad, key, nonce)
 The `Decrypt` function decrypts a ciphertext, verifies that the authentication tag is correct, and returns the message on success or an error if tag verification failed.
 
 Security:
+
 - If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
 - The comparison of the input `tag` with the `expected_tag` SHOULD be done in constant time.
 
