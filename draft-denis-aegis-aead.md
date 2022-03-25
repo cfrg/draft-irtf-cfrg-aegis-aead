@@ -177,7 +177,7 @@ The `Encrypt` function encrypts a message and returns the ciphertext along with 
 
 Security:
 
-- The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
+- For a given key, the nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 - The key MUST be randomly chosen from a uniform distribution.
 
 Inputs:
@@ -491,7 +491,7 @@ The `Encrypt` function encrypts a message and returns the ciphertext along with 
 
 Security:
 
-- The nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
+- For a given key, the nonce MUST NOT be reused under any circumstances; doing so allows an attacker to recover the internal state.
 - The key MUST be randomly chosen from a uniform distribution.
 
 Inputs:
