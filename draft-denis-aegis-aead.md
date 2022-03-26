@@ -85,7 +85,7 @@ This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated en
 
 # Introduction
 
-This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was chosen as a winner for this use case, AEGIS-128L offers improved performance and AEGIS-256 uses a 256-bit key. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
+This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L offers improved performance and AEGIS-256 uses a 256-bit key. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
 
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
