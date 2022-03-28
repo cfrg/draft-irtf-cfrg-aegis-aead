@@ -41,6 +41,30 @@ informative:
         org: KU Leuven
     date: 2016-09-15
 
+  LIMS21:
+    title: "Weak Keys in Reduced AEGIS and Tiaoxin"
+    rc: "IACR Transactions on Symmetric Cryptology, 2021(2), 104–139."
+    seriesinfo:
+      DOI: 10.46586/tosc.v2021.i2.104-139
+    author:
+      -
+        ins: F. Liu
+        name: Fukang Liu
+        org: East China Normal University; University of Hyogo
+      -
+        ins: T. Isobe
+        name: Takanori Isobe
+        org: University of Hyogo; National Institute of Information and Communications Technology; PRESTO, Japan Science and Technology Agency
+      -
+        ins: W. Meier
+        name: Willi Meier
+        org: University of Applied Sciences and Arts Northwestern Switzerland
+      -
+        ins: K. Sakamoto
+        name: Kosei Sakamoto
+        org: University of Hyogo
+    date: 2021
+
   LGR21:
     title: "Partitioning Oracle Attacks"
     rc: "30th USENIX Security Symposium (USENIX Security 21)"
@@ -85,7 +109,7 @@ This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated en
 
 # Introduction
 
-This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, a variant of which has been chosen as a winner in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
+This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has a better security margin alongside improved performance and AEGIS-256 uses a 256-bit key {{LIMS21}}. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
 
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
