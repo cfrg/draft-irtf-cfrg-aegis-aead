@@ -118,7 +118,9 @@ The AEGIS cipher family offers performance that significantly exceeds that of AE
 
 Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256. AEGIS-128L also allows for more messages to be safely encrypted when using random nonces.
 
-Furthermore, AEGIS is key-committing and therefore more resistant against partitioning oracle attacks that affect some existing AEAD schemes, such as AES-GCM {{LGR21}}.
+With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
+
+As a key-committing AEAD scheme, the AEGIS cipher family is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple different keys that decrypt successfully.
 
 Finally, unlike most other AES-based AEAD constructions, such as Rocca and Tiaoxin, leaking the state does not leak the key.
 
