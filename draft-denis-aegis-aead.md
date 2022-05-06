@@ -943,6 +943,28 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 
 ### Test Vector 5
 
+~~~
+key  : 10010000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+
+ad   : 000102030405060708090a0b0c0d0e0f
+       101112131415161718191a1b1c1d1e1f
+       20212223242526272829
+
+msg  : 101112131415161718191a1b1c1d1e1f
+       202122232425262728292a2b2c2d2e2f
+       3031323334353637
+
+ct   : b31052ad1cca4e291abcf2df3502e6bd
+       b1bfd6db36798be3607b1f94d34478aa
+       7ede7f7a990fec10
+
+tag  : 7542a745733014f9474417b337399507
+~~~
+
+### Test Vector 6
+
 This test MUST return a "verification failed" error.
 
 ~~~
@@ -959,7 +981,7 @@ ct   : 79d94593d8c2119d7e8fd9b8fc77
 tag  : 5c04b3dba849b2701effbe32c7f0fab7
 ~~~
 
-### Test Vector 6
+### Test Vector 7
 
 This test MUST return a "verification failed" error.
 
@@ -977,7 +999,7 @@ ct   : 79d94593d8c2119d7e8fd9b8fc78
 tag  : 5c04b3dba849b2701effbe32c7f0fab7
 ~~~
 
-### Test Vector 7
+### Test Vector 8
 
 This test MUST return a "verification failed" error.
 
@@ -995,7 +1017,7 @@ ct   : 79d94593d8c2119d7e8fd9b8fc77
 tag  : 5c04b3dba849b2701effbe32c7f0fab7
 ~~~
 
-### Test Vector 8
+### Test Vector 9
 
 This test MUST return a "verification failed" error.
 
@@ -1112,6 +1134,30 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 
 ### Test Vector 5
 
+~~~
+key  : 10010000000000000000000000000000
+       00000000000000000000000000000000
+
+nonce: 10000200000000000000000000000000
+       00000000000000000000000000000000
+
+ad   : 000102030405060708090a0b0c0d0e0f
+       101112131415161718191a1b1c1d1e1f
+       20212223242526272829
+
+msg  : 101112131415161718191a1b1c1d1e1f
+       202122232425262728292a2b2c2d2e2f
+       3031323334353637
+
+ct   : 57754a7d09963e7c787583a2e7b859bb
+       24fa1e04d49fd550b2511a358e3bca25
+       2a9b1b8b30cc4a67
+
+tag  : ab8a7d53fd0e98d727accca94925e128
+~~~
+
+### Test Vector 6
+
 This test MUST return a "verification failed" error.
 
 ~~~
@@ -1130,7 +1176,7 @@ ct   : f373079ed84b2709faee37358458
 tag  : c60b9c2d33ceb058f96e6dd03c215652
 ~~~
 
-### Test Vector 6
+### Test Vector 7
 
 This test MUST return a "verification failed" error.
 
@@ -1150,7 +1196,7 @@ ct   : f373079ed84b2709faee37358459
 tag  : c60b9c2d33ceb058f96e6dd03c215652
 ~~~
 
-### Test Vector 7
+### Test Vector 8
 
 This test MUST return a "verification failed" error.
 
@@ -1170,7 +1216,7 @@ ct   : f373079ed84b2709faee37358458
 tag  : c60b9c2d33ceb058f96e6dd03c215652
 ~~~
 
-### Test Vector 8
+### Test Vector 9
 
 This test MUST return a "verification failed" error.
 
