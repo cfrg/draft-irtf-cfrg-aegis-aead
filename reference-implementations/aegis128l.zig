@@ -6,6 +6,13 @@ const AesBlock = std.crypto.core.aes.Block;
 const AuthenticationError = std.crypto.errors.AuthenticationError;
 
 pub const Aegis128L = struct {
+    pub const key_length: usize = 16;
+    pub const nonce_length: usize = 16;
+    pub const tag_length: usize = 16;
+    pub const ad_max_length: usize = 1 << 61;
+    pub const msg_max_length: usize = 1 << 61;
+    pub const ct_max_length: usize = msg_max_length + tag_length;
+
     const State = [8]AesBlock;
 
     s: State,
@@ -28,7 +35,7 @@ pub const Aegis128L = struct {
         };
     }
 
-    fn init(key: [16]u8, nonce: [16]u8) Aegis128L {
+    fn init(key: [key_length]u8, nonce: [nonce_length]u8) Aegis128L {
         const c0 = AesBlock.fromBytes(&[16]u8{ 0x0, 0x1, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59, 0x90, 0xe9, 0x79, 0x62 });
         const c1 = AesBlock.fromBytes(&[16]u8{ 0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42, 0x73, 0xb5, 0x28, 0xdd });
         const key_block = AesBlock.fromBytes(&key);
@@ -99,7 +106,7 @@ pub const Aegis128L = struct {
         self.update(v0, v1);
     }
 
-    fn finalize(self: *Aegis128L, ad_len: usize, msg_len: usize) [16]u8 {
+    fn finalize(self: *Aegis128L, ad_len: usize, msg_len: usize) [tag_length]u8 {
         var s = &self.s;
         var b: [16]u8 = undefined;
         mem.writeIntLittle(u64, b[0..8], @intCast(u64, ad_len) * 8);
@@ -112,7 +119,15 @@ pub const Aegis128L = struct {
         return s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[6]).toBytes();
     }
 
-    pub fn encrypt(ct: []u8, msg: []const u8, ad: []const u8, key: [16]u8, nonce: [16]u8) [16]u8 {
+    pub fn encrypt(
+        ct: []u8,
+        msg: []const u8,
+        ad: []const u8,
+        key: [key_length]u8,
+        nonce: [nonce_length]u8,
+    ) [tag_length]u8 {
+        assert(msg.len <= msg_max_length);
+        assert(ad.len <= ad_max_length);
         assert(ct.len == msg.len);
         var aegis = init(key, nonce);
 
@@ -139,7 +154,16 @@ pub const Aegis128L = struct {
         return aegis.finalize(ad.len, msg.len);
     }
 
-    pub fn decrypt(msg: []u8, ct: []const u8, tag: [16]u8, ad: []const u8, key: [16]u8, nonce: [16]u8) AuthenticationError!void {
+    pub fn decrypt(
+        msg: []u8,
+        ct: []const u8,
+        tag: [tag_length]u8,
+        ad: []const u8,
+        key: [key_length]u8,
+        nonce: [nonce_length]u8,
+    ) AuthenticationError!void {
+        assert(ct.len <= ct_max_length);
+        assert(ad.len <= ad_max_length);
         assert(ct.len == msg.len);
         var aegis = init(key, nonce);
 

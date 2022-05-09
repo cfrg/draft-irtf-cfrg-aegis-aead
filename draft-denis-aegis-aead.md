@@ -182,11 +182,11 @@ AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 
 The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
 
-- `K_LEN` (key length) is 16 octets.
-- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets.
-- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets.
-- `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 octets.
-- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets.
+- `K_LEN` (key length) is 16 octets (128 bits).
+- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
+- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
+- `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 octets (128 bits).
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets (2<sup>64</sup> + 128 bits).
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
@@ -206,8 +206,8 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted.
-- `ad`: the associated data to authenticate.
+- `msg`: the message to be encrypted (length MUST be less than `P_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -252,9 +252,9 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted.
+- `ct`: the ciphertext to be decrypted (length MUST be less than `C_MAX`).
 - `tag`: the authentication tag.
-- `ad`: the associated data to authenticate.
+- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -496,11 +496,11 @@ AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
 
 The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
 
-- `K_LEN` (key length) is 32 octets.
-- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets.
-- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets.
-- `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 octets.
-- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets.
+- `K_LEN` (key length) is 32 octets (256 bits).
+- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
+- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
+- `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 octets (256 bits).
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets (2<sup>64</sup> + 128 bits).
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
@@ -520,8 +520,8 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted.
-- `ad`: the associated data to authenticate.
+- `msg`: the message to be encrypted (length MUST be less than `M_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -566,9 +566,9 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted.
+- `ct`: the ciphertext to be decrypted (length MUST be less than `C_MAX`).
 - `tag`: the authentication tag.
-- `ad`: the associated data to authenticate.
+- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 

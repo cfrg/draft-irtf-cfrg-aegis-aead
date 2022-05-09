@@ -6,6 +6,13 @@ const AesBlock = std.crypto.core.aes.Block;
 const AuthenticationError = std.crypto.errors.AuthenticationError;
 
 pub const Aegis256 = struct {
+    pub const key_length: usize = 32;
+    pub const nonce_length: usize = 32;
+    pub const tag_length: usize = 16;
+    pub const ad_max_length: usize = 1 << 61;
+    pub const msg_max_length: usize = 1 << 61;
+    pub const ct_max_length: usize = msg_max_length + tag_length;
+
     const State = [6]AesBlock;
 
     s: State,
@@ -26,7 +33,7 @@ pub const Aegis256 = struct {
         };
     }
 
-    fn init(key: [32]u8, nonce: [32]u8) Aegis256 {
+    fn init(key: [key_length]u8, nonce: [nonce_length]u8) Aegis256 {
         const c0 = AesBlock.fromBytes(&[16]u8{ 0x0, 0x1, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59, 0x90, 0xe9, 0x79, 0x62 });
         const c1 = AesBlock.fromBytes(&[16]u8{ 0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42, 0x73, 0xb5, 0x28, 0xdd });
         const k0 = AesBlock.fromBytes(key[0..16]);
@@ -96,7 +103,15 @@ pub const Aegis256 = struct {
         return s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
     }
 
-    pub fn encrypt(ct: []u8, msg: []const u8, ad: []const u8, key: [32]u8, nonce: [32]u8) [16]u8 {
+    pub fn encrypt(
+        ct: []u8,
+        msg: []const u8,
+        ad: []const u8,
+        key: [key_length]u8,
+        nonce: [nonce_length]u8,
+    ) [tag_length]u8 {
+        assert(msg.len <= msg_max_length);
+        assert(ad.len <= ad_max_length);
         assert(ct.len == msg.len);
         var aegis = init(key, nonce);
 
@@ -123,7 +138,16 @@ pub const Aegis256 = struct {
         return aegis.finalize(ad.len, msg.len);
     }
 
-    pub fn decrypt(msg: []u8, ct: []const u8, tag: [16]u8, ad: []const u8, key: [32]u8, nonce: [32]u8) AuthenticationError!void {
+    pub fn decrypt(
+        msg: []u8,
+        ct: []const u8,
+        tag: [tag_length]u8,
+        ad: []const u8,
+        key: [key_length]u8,
+        nonce: [nonce_length]u8,
+    ) AuthenticationError!void {
+        assert(ct.len <= ct_max_length);
+        assert(ad.len <= ad_max_length);
         assert(ct.len == msg.len);
         var aegis = init(key, nonce);
 
