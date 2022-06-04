@@ -174,7 +174,7 @@ Unlike with AES-GCM, nonces can be safely chosen at random with no practical lim
 
 With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
-As a key-committing AEAD scheme, the AEGIS cipher family is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple keys that are valid for a given authentication tag.
+A key-committing AEAD scheme is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple keys that are valid for a given authentication tag. As of the time of writing, no research has been published claiming that AEGIS is not a key-committing AEAD scheme.
 
 Finally, unlike most other AES-based AEAD constructions, such as Rocca and Tiaoxin, leaking the state does not leak the key.
 
@@ -863,7 +863,7 @@ combined_ct = ct || tag
 
 # Security Considerations
 
-AEGIS-256 offers 256-bit message security against plaintext and state recovery. AEGIS-128L offers 128-bit security. They are both key-committing, the implications of which are outlined in the introduction. However, neither is compactly-committing because a 128-bit tag is too short to be collision resistant. This means it is still possible for a ciphertext to be successfully decrypted under multiple different keys, just significantly more difficult than for AEAD schemes lacking key commitment.
+AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security. Both have a 128-bit authentication tag, which implies that a given tag may verify under multiple keys. However, assuming AEGIS is key-committing, finding equivalent keys is expected to be significantly more difficult than for authentication schemes based on polynomial evaluation, such as GCM and Poly1305.
 
 Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
 
