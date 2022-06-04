@@ -41,9 +41,30 @@ informative:
         org: KU Leuven
     date: 2016-09-15
 
+  JLD21:
+    title: "Guess-and-Determine Attacks on AEGIS"
+    rc: "The Computer Journal"
+    seriesinfo:
+      DOI: 10.1093/comjnl/bxab059
+    author:
+      -
+        ins: L. Jiao
+        name: Lin Jiao
+        org: State Key Laboratory of Cryptology, Beijing
+      -
+        ins: Y. Li
+        name: Yongqiang Li
+        org: State Key Laboratory of Information Security, Institute of Information Engineering, Chinese Academy of Sciences; School of Cyber Security, University of Chinese Academy of Sciences
+      -
+        ins: S. Du
+        name: Shaoyu Du
+        org: State Key Laboratory of Cryptology, Beijing
+    date: 2021-05-22
+
   LIMS21:
     title: "Weak Keys in Reduced AEGIS and Tiaoxin"
-    rc: "IACR Transactions on Symmetric Cryptology, 2021(2), 104–139."
+    rc: "IACR Transactions on Symmetric Cryptology, 2021(2), pp. 104–139"
+    target: https://eprint.iacr.org/2021/187
     seriesinfo:
       DOI: 10.46586/tosc.v2021.i2.104-139
     author:
@@ -67,7 +88,7 @@ informative:
 
   LGR21:
     title: "Partitioning Oracle Attacks"
-    rc: "30th USENIX Security Symposium (USENIX Security 21)"
+    rc: "30th USENIX Security Symposium (USENIX Security 21), pp. 195–212"
     target: https://www.usenix.org/conference/usenixsecurity21/presentation/len
     author:
       -
@@ -84,21 +105,54 @@ informative:
         org: Cornell Tech
     date: 2021
 
+  ENP19:
+    title: "Analyzing the Linear Keystream Biases in AEGIS"
+    rc: "IACR Transactions on Symmetric Cryptology, 2019(4), pp. 348–368"
+    seriesinfo:
+      DOI: 10.13154/tosc.v2019.i4.348-368
+    author:
+      -
+        ins: M. Eichlseder
+        name: Maria Eichlseder
+        org: Graz University of Technology
+      -
+        ins: M. Nageler
+        name: Marcel Nageler
+        org: Graz University of Technology
+      -
+        ins: R. Primas
+        name: Robert Primas
+        org: Graz University of Technology
+    date: 2020-01-31
+
   CRA18:
     title: "Can Caesar Beat Galois? Robustness of CAESAR Candidates against Nonce Reusing and High Data Complexity Attacks"
-    rc: "Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892"
+    rc: "Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892, pp. 476–494"
     seriesinfo:
       DOI: 10.1007/978-3-319-93387-0_25
     author:
       -
         ins: S. Vaudenay
         name: Serge Vaudenay
-        org: EPFL, Switzerland
+        org: École Polytechnique Fédérale de Lausanne EPFL
       -
         ins: D. Vizár
         name: Damian Vizár
-        org: EPFL, Switzerland
+        org: École Polytechnique Fédérale de Lausanne EPFL
     date: 2018
+
+  Min14:
+    title: "Linear Biases in AEGIS Keystream"
+    rc: "Selected Areas in Cryptography. SAC 2014. Lecture Notes in Computer Science, vol 8781, pp. 290–305"
+    seriesinfo:
+      DOI: 10.1007/978-3-319-13051-4_18
+    target: https://eprint.iacr.org/2018/292
+    author:
+      -
+        ins: B. Minaud
+        name: Brice Minaud
+        org: Agence nationale de la sécurité des systèmes d'information ANSSI
+    date: 2014
 
 --- abstract
 
@@ -827,7 +881,7 @@ With AEGIS-256, random nonces can be used with no practical limits.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
-A security analysis of AEGIS can be found in Chapter 4 of {{AEGIS}}.
+Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{Min14}}, in {{ENP19}}, in {{LIMS21}}, and in {{JLD21}}.
 
 # IANA Considerations
 
