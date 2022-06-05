@@ -8,7 +8,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 * [Compare Editor's Copy to Individual Draft](https://jedisct1.github.io/draft-aegis-aead/#go.draft-denis-aegis-aead.diff)
 
 
-# Known Implementations
+## Known Implementations
 
 | Name                                                                                                                          | Language |
 | ----------------------------------------------------------------------------------------------------------------------------- | -------- |
@@ -24,6 +24,11 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig      |
 | [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python   |
 | [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                 | Go       |
+
+## Additional test vectors
+
+* [Project Wycheproof test vectors for AEGIS-128L](https://github.com/google/wycheproof/blob/master/testvectors/aegis128L_test.json)
+* [Project Wycheproof test vectors for AEGIS-256](https://github.com/google/wycheproof/blob/master/testvectors/aegis256_test.json)
 
 ## Contributing
 
