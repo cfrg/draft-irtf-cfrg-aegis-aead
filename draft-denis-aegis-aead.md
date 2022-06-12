@@ -574,7 +574,7 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted (length MUST be less than `M_MAX`).
+- `msg`: the message to be encrypted (length MUST be less than `P_MAX`).
 - `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
@@ -811,7 +811,7 @@ Steps:
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
-t = Pad(ci, 128)
+t = Pad(cn, 128)
 out = t ^ z
 
 xn = Truncate(out, |cn|)
