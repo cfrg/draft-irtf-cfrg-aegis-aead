@@ -192,7 +192,7 @@ Primitives:
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
 - `LE64(x)`: the little-endian encoding of 64-bit integer `x`.
-- `Pad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
+- `ZeroPad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
@@ -277,11 +277,11 @@ Init(key, nonce)
 
 ct = {}
 
-ad_blocks = Split(Pad(ad, 256), 256)
+ad_blocks = Split(ZeroPad(ad, 256), 256)
 for xi in ad_blocks:
     Enc(xi)
 
-msg_blocks = Split(Pad(msg, 256), 256)
+msg_blocks = Split(ZeroPad(msg, 256), 256)
 for xi in msg_blocks:
     ct = ct || Enc(xi)
 
@@ -323,7 +323,7 @@ Init(key, nonce)
 
 msg = {}
 
-ad_blocks = Split(Pad(ad, 256), 256)
+ad_blocks = Split(ZeroPad(ad, 256), 256)
 for xi in ad_blocks:
     Enc(xi)
 
@@ -503,13 +503,13 @@ Steps:
 z0 = S6 ^ S1 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
 
-t0, t1 = Split(Pad(cn, 256), 128)
+t0, t1 = Split(ZeroPad(cn, 256), 128)
 out0 = t0 ^ z0
 out1 = t1 ^ z1
 
 xn = Truncate(out0 || out1, |cn|)
 
-v0, v1 = Split(Pad(xn, 256), 128)
+v0, v1 = Split(ZeroPad(xn, 256), 128)
 Update(v0, v1)
 
 return xn
@@ -591,11 +591,11 @@ Init(key, nonce)
 
 ct = {}
 
-ad_blocks = Split(Pad(ad, 128), 128)
+ad_blocks = Split(ZeroPad(ad, 128), 128)
 for xi in ad_blocks:
     Enc(xi)
 
-msg_blocks = Split(Pad(msg, 128), 128)
+msg_blocks = Split(ZeroPad(msg, 128), 128)
 for xi in msg_blocks:
     ct = ct || Enc(xi)
 
@@ -637,11 +637,11 @@ Init(key, nonce)
 
 msg = {}
 
-ad_blocks = Split(Pad(ad, 128), 128)
+ad_blocks = Split(ZeroPad(ad, 128), 128)
 for xi in ad_blocks:
     Enc(xi)
 
-ct_blocks = Split(Pad(ct, 128), 128)
+ct_blocks = Split(ZeroPad(ct, 128), 128)
 cn = Tail(ct, |ct| mod 128)
 
 for ci in ct_blocks:
@@ -811,12 +811,12 @@ Steps:
 ~~~
 z = S1 ^ S4 ^ S5 ^ (S2 & S3)
 
-t = Pad(cn, 128)
+t = ZeroPad(cn, 128)
 out = t ^ z
 
 xn = Truncate(out, |cn|)
 
-v = Pad(xn, 128)
+v = ZeroPad(xn, 128)
 Update(v)
 
 return xn
@@ -1028,8 +1028,6 @@ nonce: 10010000000000000000000000000000
 
 ad   : 0001020304050607
 
-msg  :
-
 ct   : 79d94593d8c2119d7e8fd9b8fc77
 
 tag  : 5c04b3dba849b2701effbe32c7f0fab7
@@ -1045,8 +1043,6 @@ key  : 10010000000000000000000000000000
 nonce: 10000200000000000000000000000000
 
 ad   : 0001020304050607
-
-msg  :
 
 ct   : 79d94593d8c2119d7e8fd9b8fc78
 
@@ -1064,8 +1060,6 @@ nonce: 10000200000000000000000000000000
 
 ad   : 0001020304050608
 
-msg  :
-
 ct   : 79d94593d8c2119d7e8fd9b8fc77
 
 tag  : 5c04b3dba849b2701effbe32c7f0fab7
@@ -1081,8 +1075,6 @@ key  : 10010000000000000000000000000000
 nonce: 10000200000000000000000000000000
 
 ad   : 0001020304050607
-
-msg  :
 
 ct   : 79d94593d8c2119d7e8fd9b8fc77
 
