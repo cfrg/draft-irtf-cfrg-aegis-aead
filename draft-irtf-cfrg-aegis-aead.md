@@ -1,6 +1,6 @@
 ---
 title: "The AEGIS family of authenticated encryption algorithms"
-docname: draft-denis-aegis-aead-latest
+docname: draft-irtf-cfrg-aegis-aead-latest
 category: info
 
 ipr: trust200902
