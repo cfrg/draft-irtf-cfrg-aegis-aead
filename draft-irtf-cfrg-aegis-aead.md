@@ -5,6 +5,8 @@ category: info
 
 ipr: trust200902
 keyword: Internet-Draft
+workgroup: Crypto Forum
+submissionType: IRTF
 
 stand_alone: yes
 smart_quotes: yes
@@ -886,6 +888,16 @@ Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{Min14}},
 # IANA Considerations
 
 IANA is requested to assign entries for `AEAD_AEGIS128L` and `AEAD_AEGIS256` in the AEAD Registry with this document as reference.
+
+IANA has already assigned the following TLS cipher suites in the TLS Cipher Suite Registry:
+
+Cipher Suite Name | Value
+- | -
+`TLS_AEGIS_256_SHA384` | `{0x13,0x06}`
+`TLS_AEGIS_128L_SHA256` | `{0x13,0x07}`
+{: title="Existing TLS Cipher Suite Registry assignments"}
+
+IANA is requested to update the references of these entries in the TLS Cipher Suite identifiers to refer to the final version of this document.
 
 --- back
 
