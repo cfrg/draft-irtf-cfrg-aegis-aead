@@ -903,6 +903,8 @@ IANA has also assigned the following TLS cipher suites in the TLS Cipher Suite R
 | `TLS_AEGIS_128L_SHA256` | `{0x13,0x07}` |
 {: title="AEGIS entries in the TLS Cipher Suite Registry"}
 
+IANA is requested to update the references of these entries to refer to the final version of this document.
+
 --- back
 
 # Test Vectors
