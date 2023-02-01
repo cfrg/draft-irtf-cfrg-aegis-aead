@@ -159,7 +159,7 @@ informative:
 --- abstract
 
 This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated encryption algorithms designed for high-performance applications.
-This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.
+This document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard.
 
 
 --- middle
