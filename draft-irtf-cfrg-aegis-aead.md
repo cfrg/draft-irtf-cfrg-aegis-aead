@@ -156,6 +156,31 @@ informative:
         org: Agence nationale de la sécurité des systèmes d'information ANSSI
     date: 2014
 
+  STSI23:
+    title: "MILP-based security evaluation for AEGIS/Tiaoxin-346/Rocca"
+    rc: "IET Information Security, 2023, pp. 1-10"
+    seriesinfo:
+      DOI: 10.1049/ise2.12109
+    target: https://doi.org/10.1049/ise2.12109
+    author:
+      -
+        ins: T. Shiraya
+        name: Takuro Shiraya
+        org: University of Hyogo
+      -
+        ins: N. Takeuchi
+        name: Nobuyuki Takeuchi
+        org: University of Hyogo
+      -
+        ins: K. Sakamoto
+        name: Kosei Sakamoto
+        org: University of Hyogo
+      -
+        ins: T. Isobe
+        name: Takanori Isobe
+        org: University of Hyogo; National Institute of Information and Communications Technology
+    date: 2023-01-27
+
 --- abstract
 
 This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated encryption algorithms designed for high-performance applications.
@@ -884,7 +909,7 @@ With AEGIS-256, random nonces can be used with no practical limits.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
-Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{Min14}}, in {{ENP19}}, in {{LIMS21}}, and in {{JLD21}}.
+Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{Min14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, and in {{STSI23}}.
 
 # IANA Considerations
 
