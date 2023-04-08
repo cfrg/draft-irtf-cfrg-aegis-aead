@@ -193,8 +193,8 @@ This document is a product of the Crypto Forum Research Group (CFRG). It is not 
 
 This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has a better security margin alongside improved performance and AEGIS-256 uses a 256-bit key {{LIMS21}}. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
 
-- AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128-bit authentication tag, and processes 256-bit input blocks.
-- AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128-bit authentication tag, and processes 128-bit input blocks.
+- AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.
+- AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.
 
 The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support for parallelizable AES block encryption {{AEGIS}}. Similarly, software implementations can also be faster, although to a lesser extent.
 
@@ -256,7 +256,7 @@ Input and output values:
 - `ad`: the associated data.
 - `msg`: the plaintext.
 - `ct`: the ciphertext.
-- `tag`: the authentication tag (128 bits).
+- `tag`: the authentication tag (128 or 256 bits).
 
 # The AEGIS-128L Algorithm
 
@@ -268,7 +268,7 @@ The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Secti
 - `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
 - `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 octets (128 bits).
-- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets (2<sup>64</sup> + 128 bits).
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 or 32 octets (2<sup>64</sup> + 128 or 256 bits).
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
@@ -549,7 +549,7 @@ return xn
 Finalize(ad_len, msg_len)
 ~~~
 
-The `Finalize` function computes a 128-bit tag that authenticates the message and associated data.
+The `Finalize` function computes a 128- or 256-bit tag that authenticates the message and associated data.
 
 Inputs:
 
@@ -567,7 +567,10 @@ t = S2 ^ (LE64(ad_len) || LE64(msg_len))
 
 Repeat(7, Update(t, t))
 
-tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
+if tag_length == 16: # 128 bits
+  tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
+else:                # 256 bits
+  tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
 
 return tag
 ~~~
@@ -582,7 +585,7 @@ The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Secti
 - `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
 - `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> octets (2<sup>64</sup> bits).
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 octets (256 bits).
-- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 octets (2<sup>64</sup> + 128 bits).
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 or 32 octets (2<sup>64</sup> + 128 or 256 bits).
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
@@ -856,7 +859,7 @@ return xn
 Finalize(ad_len, msg_len)
 ~~~
 
-The `Finalize` function computes a 128-bit tag that authenticates the message and associated data.
+The `Finalize` function computes a 128- or 256-bit tag that authenticates the message and associated data.
 
 Inputs:
 
@@ -874,14 +877,17 @@ t = S3 ^ (LE64(ad_len) || LE64(msg_len))
 
 Repeat(7, Update(t))
 
-tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
+if tag_length == 16: # 128 bits
+  tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
+else:                # 256 bits
+  tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
 
 return tag
 ~~~
 
 # Encoding (ct, tag) Tuples
 
-Applications MAY keep the ciphertext and the 128-bit authentication tag in distinct structures or encode both as a single string.
+Applications MAY keep the ciphertext and the authentication tag in distinct structures or encode both as a single string.
 
 In the latter case, the tag MUST immediately follow the ciphertext:
 
@@ -891,7 +897,9 @@ combined_ct = ct || tag
 
 # Security Considerations
 
-AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security. Both have a 128-bit authentication tag, which implies that a given tag may verify under multiple keys. However, assuming AEGIS is key-committing, finding equivalent keys is expected to be significantly more difficult than for authentication schemes based on polynomial evaluation, such as GCM and Poly1305.
+AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
+
+An authentication tag may verify under multiple keys. Assuming AEGIS is key-committing, finding equivalent keys is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
 
 Under the assumption that the secret key is unknown to the attacker and the tag is not truncated, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks.
 
@@ -976,89 +984,104 @@ S7   : 61279ba73167f0ab76f0a11bf203bdff
 ### Test Vector 1
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   :
+ad    :
 
-msg  : 00000000000000000000000000000000
+msg   : 00000000000000000000000000000000
 
-ct   : c1c0e58bd913006feba00f4b3cc3594e
+ct    : c1c0e58bd913006feba00f4b3cc3594e
 
-tag  : abe0ece80c24868a226a35d16bdae37a
+tag128: abe0ece80c24868a226a35d16bdae37a
+
+tag256: 25835bfbb21632176cf03840687cb968
+        cace4617af1bd0f7d064c639a5c79ee4
 ~~~
 
 ### Test Vector 2
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   :
+ad    :
 
-msg  :
+msg   :
 
-ct   :
+ct    :
 
-tag  : c2b879a67def9d74e6c14f708bbcc9b4
+tag128: c2b879a67def9d74e6c14f708bbcc9b4
+
+tag256: 1360dc9db8ae42455f6e5b6a9d488ea4
+        f2184c4e12120249335c4ee84bafe25d
 ~~~
 
 ### Test Vector 3
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-msg  : 000102030405060708090a0b0c0d0e0f
-       101112131415161718191a1b1c1d1e1f
+msg   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
 
-ct   : 79d94593d8c2119d7e8fd9b8fc77845c
-       5c077a05b2528b6ac54b563aed8efe84
+ct    : 79d94593d8c2119d7e8fd9b8fc77845c
+        5c077a05b2528b6ac54b563aed8efe84
 
-tag  : cc6f3372f6aa1bb82388d695c3962d9a
+tag128: cc6f3372f6aa1bb82388d695c3962d9a
+
+tag256: 022cb796fe7e0ae1197525ff67e30948
+        4cfbab6528ddef89f17d74ef8ecd82b3
 ~~~
 
 ### Test Vector 4
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-msg  : 000102030405060708090a0b0c0d
+msg   : 000102030405060708090a0b0c0d
 
-ct   : 79d94593d8c2119d7e8fd9b8fc77
+ct    : 79d94593d8c2119d7e8fd9b8fc77
 
-tag  : 5c04b3dba849b2701effbe32c7f0fab7
+tag128: 5c04b3dba849b2701effbe32c7f0fab7
+
+tag256: 86f1b80bfb463aba711d15405d094baf
+        4a55a15dbfec81a76f35ed0b9c8b04ac
 ~~~
 
 ### Test Vector 5
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   : 000102030405060708090a0b0c0d0e0f
-       101112131415161718191a1b1c1d1e1f
-       20212223242526272829
+ad    : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+        20212223242526272829
 
-msg  : 101112131415161718191a1b1c1d1e1f
-       202122232425262728292a2b2c2d2e2f
-       3031323334353637
+msg   : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+        3031323334353637
 
-ct   : b31052ad1cca4e291abcf2df3502e6bd
-       b1bfd6db36798be3607b1f94d34478aa
-       7ede7f7a990fec10
+ct    : b31052ad1cca4e291abcf2df3502e6bd
+        b1bfd6db36798be3607b1f94d34478aa
+        7ede7f7a990fec10
 
-tag  : 7542a745733014f9474417b337399507
+tag128: 7542a745733014f9474417b337399507
+
+tag256: b91e2947a33da8bee89b6794e647baf0
+        fc835ff574aca3fc27c33be0db2aff98
 ~~~
 
 ### Test Vector 6
@@ -1066,15 +1089,18 @@ tag  : 7542a745733014f9474417b337399507
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10000200000000000000000000000000
+key   : 10000200000000000000000000000000
 
-nonce: 10010000000000000000000000000000
+nonce : 10010000000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-ct   : 79d94593d8c2119d7e8fd9b8fc77
+ct    : 79d94593d8c2119d7e8fd9b8fc77
 
-tag  : 5c04b3dba849b2701effbe32c7f0fab7
+tag128: 5c04b3dba849b2701effbe32c7f0fab7
+
+tag256: 86f1b80bfb463aba711d15405d094baf
+        4a55a15dbfec81a76f35ed0b9c8b04ac
 ~~~
 
 ### Test Vector 7
@@ -1082,15 +1108,18 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-ct   : 79d94593d8c2119d7e8fd9b8fc78
+ct    : 79d94593d8c2119d7e8fd9b8fc78
 
-tag  : 5c04b3dba849b2701effbe32c7f0fab7
+tag128: 5c04b3dba849b2701effbe32c7f0fab7
+
+tag256: 86f1b80bfb463aba711d15405d094baf
+        4a55a15dbfec81a76f35ed0b9c8b04ac
 ~~~
 
 ### Test Vector 8
@@ -1098,15 +1127,18 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   : 0001020304050608
+ad    : 0001020304050608
 
-ct   : 79d94593d8c2119d7e8fd9b8fc77
+ct    : 79d94593d8c2119d7e8fd9b8fc77
 
-tag  : 5c04b3dba849b2701effbe32c7f0fab7
+tag128: 5c04b3dba849b2701effbe32c7f0fab7
+
+tag256: 86f1b80bfb463aba711d15405d094baf
+        4a55a15dbfec81a76f35ed0b9c8b04ac
 ~~~
 
 ### Test Vector 9
@@ -1114,15 +1146,18 @@ tag  : 5c04b3dba849b2701effbe32c7f0fab7
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10010000000000000000000000000000
+key   : 10010000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
+nonce : 10000200000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-ct   : 79d94593d8c2119d7e8fd9b8fc77
+ct    : 79d94593d8c2119d7e8fd9b8fc77
 
-tag  : 6c04b3dba849b2701effbe32c7f0fab8
+tag128: 6c04b3dba849b2701effbe32c7f0fab8
+
+tag256: 86f1b80bfb463aba711d15405d094baf
+        4a55a15dbfec81a76f35ed0b9c8b04ad
 ~~~
 
 ## AEGIS-256 Test Vectors
@@ -1151,99 +1186,114 @@ S5   : a3240fceb68e32d5d114df1b5363ab67
 ### Test Vector 1
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   :
+ad    :
 
-msg  : 00000000000000000000000000000000
+msg   : 00000000000000000000000000000000
 
-ct   : 754fc3d8c973246dcc6d741412a4b236
+ct    : 754fc3d8c973246dcc6d741412a4b236
 
-tag  : 3fe91994768b332ed7f570a19ec5896e
+tag128: 3fe91994768b332ed7f570a19ec5896e
+
+tag256: 1181a1d18091082bf0266f66297d167d
+        2e68b845f61a3b0527d31fc7b7b89f13
 ~~~
 
 ### Test Vector 2
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   :
+ad    :
 
-msg  :
+msg   :
 
-ct   :
+ct    :
 
-tag  : e3def978a0f054afd1e761d7553afba3
+tag128: e3def978a0f054afd1e761d7553afba3
+
+tag256: 6a348c930adbd654896e1666aad67de9
+        89ea75ebaa2b82fb588977b1ffec864a
 ~~~
 
 ### Test Vector 3
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-msg  : 000102030405060708090a0b0c0d0e0f
-       101112131415161718191a1b1c1d1e1f
+msg   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
 
-ct   : f373079ed84b2709faee373584585d60
-       accd191db310ef5d8b11833df9dec711
+ct    : f373079ed84b2709faee373584585d60
+        accd191db310ef5d8b11833df9dec711
 
-tag  : 8d86f91ee606e9ff26a01b64ccbdd91d
+tag128: 8d86f91ee606e9ff26a01b64ccbdd91d
+
+tag256: b7d28d0c3c0ebd409fd22b4416050307
+        3a547412da0854bfb9723020dab8da1a
 ~~~
 
 ### Test Vector 4
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-msg  : 000102030405060708090a0b0c0d
+msg   : 000102030405060708090a0b0c0d
 
-ct   : f373079ed84b2709faee37358458
+ct    : f373079ed84b2709faee37358458
 
-tag  : c60b9c2d33ceb058f96e6dd03c215652
+tag128: c60b9c2d33ceb058f96e6dd03c215652
+
+tag256: 8c1cc703c81281bee3f6d9966e14948b
+        4a175b2efbdc31e61a98b4465235c2d9
 ~~~
 
 ### Test Vector 5
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 000102030405060708090a0b0c0d0e0f
-       101112131415161718191a1b1c1d1e1f
-       20212223242526272829
+ad    : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+        20212223242526272829
 
-msg  : 101112131415161718191a1b1c1d1e1f
-       202122232425262728292a2b2c2d2e2f
-       3031323334353637
+msg   : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+        3031323334353637
 
-ct   : 57754a7d09963e7c787583a2e7b859bb
-       24fa1e04d49fd550b2511a358e3bca25
-       2a9b1b8b30cc4a67
+ct    : 57754a7d09963e7c787583a2e7b859bb
+        24fa1e04d49fd550b2511a358e3bca25
+        2a9b1b8b30cc4a67
 
-tag  : ab8a7d53fd0e98d727accca94925e128
+tag128: ab8a7d53fd0e98d727accca94925e128
+
+tag256: a3aca270c006094d71c20e6910b5161c
+        0826df233d08919a566ec2c05990f734
 ~~~
 
 ### Test Vector 6
@@ -1251,17 +1301,20 @@ tag  : ab8a7d53fd0e98d727accca94925e128
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10000200000000000000000000000000
-       00000000000000000000000000000000
+key   : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10010000000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-ct   : f373079ed84b2709faee37358458
+ct    : f373079ed84b2709faee37358458
 
-tag  : c60b9c2d33ceb058f96e6dd03c215652
+tag128: c60b9c2d33ceb058f96e6dd03c215652
+
+tag256: 8c1cc703c81281bee3f6d9966e14948b
+        4a175b2efbdc31e61a98b4465235c2d9
 ~~~
 
 ### Test Vector 7
@@ -1269,17 +1322,20 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-ct   : f373079ed84b2709faee37358459
+ct    : f373079ed84b2709faee37358459
 
-tag  : c60b9c2d33ceb058f96e6dd03c215652
+tag128: c60b9c2d33ceb058f96e6dd03c215652
+
+tag256: 8c1cc703c81281bee3f6d9966e14948b
+        4a175b2efbdc31e61a98b4465235c2d9
 ~~~
 
 ### Test Vector 8
@@ -1287,17 +1343,20 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 0001020304050608
+ad    : 0001020304050608
 
-ct   : f373079ed84b2709faee37358458
+ct    : f373079ed84b2709faee37358458
 
-tag  : c60b9c2d33ceb058f96e6dd03c215652
+tag128: c60b9c2d33ceb058f96e6dd03c215652
+
+tag256: 8c1cc703c81281bee3f6d9966e14948b
+        4a175b2efbdc31e61a98b4465235c2d9
 ~~~
 
 ### Test Vector 9
@@ -1305,17 +1364,20 @@ tag  : c60b9c2d33ceb058f96e6dd03c215652
 This test MUST return a "verification failed" error.
 
 ~~~
-key  : 10010000000000000000000000000000
-       00000000000000000000000000000000
+key   : 10010000000000000000000000000000
+        00000000000000000000000000000000
 
-nonce: 10000200000000000000000000000000
-       00000000000000000000000000000000
+nonce : 10000200000000000000000000000000
+        00000000000000000000000000000000
 
-ad   : 0001020304050607
+ad    : 0001020304050607
 
-ct   : f373079ed84b2709faee37358458
+ct    : f373079ed84b2709faee37358458
 
-tag  : d60b9c2d33ceb058f96e6dd03c215653
+tag128: c60b9c2d33ceb058f96e6dd03c215653
+
+tag256: 8c1cc703c81281bee3f6d9966e14948b
+        4a175b2efbdc31e61a98b4465235c2da
 ~~~
 
 # Acknowledgments
