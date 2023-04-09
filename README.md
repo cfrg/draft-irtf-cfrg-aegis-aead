@@ -25,6 +25,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig      |
 | [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python   |
 | [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                 | Go       |
+| [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                         | C#       |
 
 ## Additional test vectors
 
