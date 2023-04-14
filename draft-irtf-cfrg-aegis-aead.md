@@ -204,7 +204,7 @@ With some existing AEAD schemes, such as AES-GCM, an attacker can generate a cip
 
 A key-committing AEAD scheme is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple keys that are valid for a given authentication tag. A 128-bit tag provides 64-bit key-committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical. As of the time of writing, no research has been published claiming that AEGIS is not a key-committing AEAD scheme.
 
-Finally, unlike most other AES-based AEAD constructions, such as Rocca and Tiaoxin, leaking the state does not leak the key.
+Finally, unlike most other AES-based AEAD constructions, leaking a state does not leak the previous states.
 
 Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in `Finalize()` respectively. We follow the specification of {{AEGIS}} that is current at the time of writing, which can be found in the References section of this document.
 
