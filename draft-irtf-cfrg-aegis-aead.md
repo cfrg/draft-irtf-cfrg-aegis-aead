@@ -202,7 +202,7 @@ Unlike with AES-GCM, nonces can be safely chosen at random with no practical lim
 
 With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
-A key-committing AEAD scheme is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple keys that are valid for a given authentication tag. As of the time of writing, no research has been published claiming that AEGIS is not a key-committing AEAD scheme.
+A key-committing AEAD scheme is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple keys that are valid for a given authentication tag. A 128-bit tag provides 64-bit key-committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical. As of the time of writing, no research has been published claiming that AEGIS is not a key-committing AEAD scheme.
 
 Finally, unlike most other AES-based AEAD constructions, such as Rocca and Tiaoxin, leaking the state does not leak the key.
 
@@ -219,7 +219,7 @@ Primitives:
 - `a & b`: the bitwise AND operation between `a` and `b`.
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
-- `LE64(x)`: the little-endian encoding of 64-bit integer `x`.
+- `LE64(x)`: the little-endian encoding of unsigned 64-bit integer `x`.
 - `ZeroPad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
 - `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks, ignoring partial blocks.
@@ -235,7 +235,7 @@ AEGIS internal functions:
 - `Enc(xi)`: the input block encryption function.
 - `Dec(ci)`: the input block decryption function.
 - `DecPartial(cn)`: the input block decryption function for the last ciphertext bits when they do not fill an entire block.
-- `Finalize(ad_len, msg_len)`: the authentication tag generation function.
+- `Finalize(ad_len_bits, msg_len_bits)`: the authentication tag generation function.
 
 Input blocks are 256 bits for AEGIS-128L and 128 bits for AEGIS-256.
 
@@ -244,8 +244,8 @@ AES blocks:
 - `Si`: the `i`-th AES block of the current state.
 - `S'i`: the `i`-th AES block of the next state.
 - `{Si, ...Sj}`: the vector of the `i`-th AES block of the current state to the `j`-th block of the current state.
-- `C0`: the constant `0x000101020305080d1522375990e97962` as an AES block.
-- `C1`: the constant `0xdb3d18556dc22ff12011314273b528dd` as an AES block.
+- `C0`: an AES block built from the following bytes in hexadecimal format: `{ 0x00, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59, 0x90, 0xe9, 0x79, 0x62 }`.
+- `C1`: an AES block built from the following bytes in hexadecimal format: `{ 0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42, 0x73, 0xb5, 0x28, 0xdd }`.
 
 AES blocks are always 128 bits in length.
 
@@ -342,7 +342,7 @@ Inputs:
 
 Outputs:
 
-- Either the decrypted message `msg`, or an error indicating that the authentication tag is invalid for the given inputs.
+- Either the decrypted message `msg` or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
@@ -384,7 +384,7 @@ The `Init` function constructs the initial state `{S0, ...S7}` using the given `
 Inputs:
 
 - `key`: the encryption key.
-- `nonce`: the nonce.
+- `nonce`: the public nonce.
 
 Defines:
 
@@ -546,15 +546,15 @@ return xn
 ## The Finalize Function
 
 ~~~
-Finalize(ad_len, msg_len)
+Finalize(ad_len_bits, msg_len_bits)
 ~~~
 
 The `Finalize` function computes a 128- or 256-bit tag that authenticates the message and associated data.
 
 Inputs:
 
-- `ad_len`: the length of the associated data in bits.
-- `msg_len`: the length of the message in bits.
+- `ad_len_bits`: the length of the associated data in bits.
+- `msg_len_bits`: the length of the message in bits.
 
 Outputs:
 
@@ -563,7 +563,7 @@ Outputs:
 Steps:
 
 ~~~
-t = S2 ^ (LE64(ad_len) || LE64(msg_len))
+t = S2 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t, t))
 
@@ -659,7 +659,7 @@ Inputs:
 
 Outputs:
 
-- Either the decrypted message `msg`, or an error indicating that the authentication tag is invalid for the given inputs.
+- Either the decrypted message `msg` or an error indicating that the authentication tag is invalid for the given inputs.
 
 Steps:
 
@@ -701,7 +701,7 @@ The `Init` function constructs the initial state `{S0, ...S5}` using the given `
 Inputs:
 
 - `key`: the encryption key.
-- `nonce`: the nonce.
+- `nonce`: the public nonce.
 
 Defines:
 
@@ -819,8 +819,6 @@ Update(xi)
 return xi
 ~~~
 
-It returns the 128-bit block `out`.
-
 ## The DecPartial Function
 
 ~~~
@@ -856,15 +854,15 @@ return xn
 ## The Finalize Function
 
 ~~~
-Finalize(ad_len, msg_len)
+Finalize(ad_len_bits, msg_len_bits)
 ~~~
 
 The `Finalize` function computes a 128- or 256-bit tag that authenticates the message and associated data.
 
 Inputs:
 
-- `ad_len`: the length of the associated data in bits.
-- `msg_len`: the length of the message in bits.
+- `ad_len_bits`: the length of the associated data in bits.
+- `msg_len_bits`: the length of the message in bits.
 
 Outputs:
 
@@ -873,7 +871,7 @@ Outputs:
 Steps:
 
 ~~~
-t = S3 ^ (LE64(ad_len) || LE64(msg_len))
+t = S3 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t))
 
