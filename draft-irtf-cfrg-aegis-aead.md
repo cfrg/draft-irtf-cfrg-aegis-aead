@@ -1,5 +1,5 @@
 ---
-title: "The AEGIS family of authenticated encryption algorithms"
+title: "The AEGIS Family of Authenticated Encryption Algorithms"
 docname: draft-irtf-cfrg-aegis-aead-latest
 category: info
 
