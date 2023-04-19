@@ -937,6 +937,42 @@ IANA has also assigned the following TLS cipher suites in the TLS Cipher Suite R
 
 IANA is requested to update the references of these entries to refer to the final version of this document.
 
+# QUIC and DTLS 1.3 Header Protection
+
+## DTLS 1.3 Record Number Encryption
+
+In DTLS 1.3, record sequence numbers are encrypted as specified in [RFC9147].
+
+For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Encrypt` function with:
+
+- a 128-bit tag length
+- `sn_key`, as defined in Section 4.2.3 of [RFC9147]
+- `ciphertext[0..16]`: the first 16 bytes of the DTLS ciphertext
+- `nonce_len`: the AEGIS nonce length
+
+The mask is computed as follows:
+
+~~~
+mask = Encrypt("", "", sn_key, ZeroPad(ciphertext[0..16], nonce_len))
+~~~
+
+## QUIC Header Protection
+
+In QUIC, parts of the QUIC packet headers are encrypted as specified in [RFC9001].
+
+For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Encrypt` function with:
+
+- a 128-bit tag length
+- `hp_key`, as defined in Section 5.4 of [RFC9001]
+- `sample`: the 16 bytes QUIC ciphertext sample
+- `nonce_len`: the AEGIS nonce length
+
+The mask is computed as follows:
+
+~~~
+mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
+~~~
+
 --- back
 
 # Test Vectors
@@ -1386,3 +1422,5 @@ The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart
 The round function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC that partly motivated the design of the AEGIS MAC.
 
 We would like to thank Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector and Daniel Bleichenbacher for many helpful suggestions.
+
+We would also like to thank John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
