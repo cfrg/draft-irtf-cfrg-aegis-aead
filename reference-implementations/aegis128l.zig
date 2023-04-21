@@ -65,6 +65,12 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             return self;
         }
 
+        fn absorb(self: *Self, ai: *const [32]u8) void {
+            const t0 = AesBlock.fromBytes(ai[0..16]);
+            const t1 = AesBlock.fromBytes(ai[16..32]);
+            self.update(t0, t1);
+        }
+
         fn enc(self: *Self, xi: *const [32]u8) [32]u8 {
             const s = self.s;
             const z0 = s[6].xorBlocks(s[1]).xorBlocks(s[2].andBlocks(s[3]));
@@ -152,12 +158,12 @@ fn Aegis128L_(comptime tag_bits: u9) type {
 
             var i: usize = 0;
             while (i + 32 <= ad.len) : (i += 32) {
-                _ = aegis.enc(ad[i..][0..32]);
+                aegis.absorb(ad[i..][0..32]);
             }
             if (ad.len % 32 != 0) {
                 var pad = [_]u8{0} ** 32;
                 mem.copy(u8, pad[0 .. ad.len % 32], ad[i..]);
-                _ = aegis.enc(&pad);
+                aegis.absorb(&pad);
             }
 
             i = 0;
@@ -188,12 +194,12 @@ fn Aegis128L_(comptime tag_bits: u9) type {
 
             var i: usize = 0;
             while (i + 32 <= ad.len) : (i += 32) {
-                _ = aegis.enc(ad[i..][0..32]);
+                aegis.absorb(ad[i..][0..32]);
             }
             if (ad.len % 32 != 0) {
                 var pad = [_]u8{0} ** 32;
                 mem.copy(u8, pad[0 .. ad.len % 32], ad[i..]);
-                _ = aegis.enc(&pad);
+                aegis.absorb(&pad);
             }
 
             i = 0;

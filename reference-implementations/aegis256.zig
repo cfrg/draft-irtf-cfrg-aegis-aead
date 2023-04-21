@@ -66,6 +66,11 @@ fn Aegis256_(comptime tag_bits: u9) type {
             return self;
         }
 
+        fn absorb(self: *Self, ai: *const [16]u8) void {
+            const t = AesBlock.fromBytes(ai);
+            self.update(t);
+        }
+
         fn enc(self: *Self, xi: *const [16]u8) [16]u8 {
             const s = self.s;
             const z = s[1].xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[2].andBlocks(s[3]));
@@ -136,12 +141,12 @@ fn Aegis256_(comptime tag_bits: u9) type {
 
             var i: usize = 0;
             while (i + 16 <= ad.len) : (i += 16) {
-                _ = aegis.enc(ad[i..][0..16]);
+                aegis.absorb(ad[i..][0..16]);
             }
             if (ad.len % 16 != 0) {
                 var pad = [_]u8{0} ** 16;
                 mem.copy(u8, pad[0 .. ad.len % 16], ad[i..]);
-                _ = aegis.enc(&pad);
+                aegis.absorb(&pad);
             }
 
             i = 0;
@@ -172,12 +177,12 @@ fn Aegis256_(comptime tag_bits: u9) type {
 
             var i: usize = 0;
             while (i + 16 <= ad.len) : (i += 16) {
-                _ = aegis.enc(ad[i..][0..16]);
+                aegis.absorb(ad[i..][0..16]);
             }
             if (ad.len % 16 != 0) {
                 var pad = [_]u8{0} ** 16;
                 mem.copy(u8, pad[0 .. ad.len % 16], ad[i..]);
-                _ = aegis.enc(&pad);
+                aegis.absorb(&pad);
             }
 
             i = 0;

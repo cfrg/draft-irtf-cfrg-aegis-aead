@@ -232,6 +232,7 @@ AEGIS internal functions:
 
 - `Update(M0, M1)`: the state update function.
 - `Init(key, nonce)`: the initialization function.
+- `Absorb(ai)`: the input block absorption function.
 - `Enc(xi)`: the input block encryption function.
 - `Dec(ci)`: the input block decryption function.
 - `DecPartial(cn)`: the input block decryption function for the last ciphertext bits when they do not fill an entire block.
@@ -306,8 +307,8 @@ Init(key, nonce)
 ct = {}
 
 ad_blocks = Split(ZeroPad(ad, 256), 256)
-for xi in ad_blocks:
-    Enc(xi)
+for ai in ad_blocks:
+    Absorb(ai)
 
 msg_blocks = Split(ZeroPad(msg, 256), 256)
 for xi in msg_blocks:
@@ -352,8 +353,8 @@ Init(key, nonce)
 msg = {}
 
 ad_blocks = Split(ZeroPad(ad, 256), 256)
-for xi in ad_blocks:
-    Enc(xi)
+for ai in ad_blocks:
+    Absorb(ai)
 
 ct_blocks = Split(ct, 256)
 cn = Tail(ct, |ct| mod 256)
@@ -443,6 +444,25 @@ S4  = S'4
 S5  = S'5
 S6  = S'6
 S7  = S'7
+~~~
+
+## The Absorb Function
+
+~~~
+Absorb(ai)
+~~~
+
+The `Absorb` function absorbs a 256-bit input block `ai` into the state `{S0, ...S7}`.
+
+Inputs:
+
+- `ai`: the 256-bit input block.
+
+Steps:
+
+~~~
+t0, t1 = Split(ai, 128)
+Update(t0, t1)
 ~~~
 
 ## The Enc Function
@@ -623,8 +643,8 @@ Init(key, nonce)
 ct = {}
 
 ad_blocks = Split(ZeroPad(ad, 128), 128)
-for xi in ad_blocks:
-    Enc(xi)
+for ai in ad_blocks:
+    Absorb(ai)
 
 msg_blocks = Split(ZeroPad(msg, 128), 128)
 for xi in msg_blocks:
@@ -669,8 +689,8 @@ Init(key, nonce)
 msg = {}
 
 ad_blocks = Split(ZeroPad(ad, 128), 128)
-for xi in ad_blocks:
-    Enc(xi)
+for ai in ad_blocks:
+    Absorb(ai)
 
 ct_blocks = Split(ZeroPad(ct, 128), 128)
 cn = Tail(ct, |ct| mod 128)
@@ -761,6 +781,24 @@ S2  = S'2
 S3  = S'3
 S4  = S'4
 S5  = S'5
+~~~
+
+## The Absorb Function
+
+~~~
+Absorb(ai)
+~~~
+
+The `Absorb` function absorbs a 128-bit input block `ai` into the state `{S0, ...S5}`.
+
+Inputs:
+
+- `ai`: the input block.
+
+Steps:
+
+~~~
+Update(ai)
 ~~~
 
 ## The Enc Function
