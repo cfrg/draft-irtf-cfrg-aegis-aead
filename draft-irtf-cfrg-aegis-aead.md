@@ -202,7 +202,7 @@ Unlike with AES-GCM, nonces can be safely chosen at random with no practical lim
 
 With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
-A key-committing AEAD scheme is more resistant against partitioning oracle attacks than non-committing AEAD schemes, making it significantly harder to find multiple keys that are valid for a given authentication tag. A 128-bit tag provides 64-bit key-committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical. As of the time of writing, no research has been published claiming that AEGIS is not a key-committing AEAD scheme.
+In a fully committing AEAD scheme, finding different inputs (key, nonce, associated data, message) producing the same authentication tag has a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical. As of the time of writing, no research has been published claiming that AEGIS is not a fully committing AEAD scheme.
 
 Finally, unlike most other AES-based AEAD constructions, leaking a state does not leak the previous states.
 
@@ -935,7 +935,7 @@ combined_ct = ct || tag
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
 
-An authentication tag may verify under multiple keys. Assuming AEGIS is key-committing, finding equivalent keys is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
+An authentication tag may verify under multiple keys, nonces, or associated data. Assuming AEGIS is fully committing, finding different inputs producing the same tag is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
 
 Under the assumption that the secret key is unknown to the attacker and a 128-bit tag is used, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks. With a 256-bit tag, AEGIS-256 targets 256-bit security against forgery attacks, whereas AEGIS-128L continues to target 128-bit security.
 
