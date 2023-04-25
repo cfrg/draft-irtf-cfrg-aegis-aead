@@ -14,12 +14,12 @@ fn Aegis256_(comptime tag_bits: u9) type {
     return struct {
         const Self = @This();
 
-        pub const key_length: usize = 32;
-        pub const nonce_length: usize = 32;
-        pub const tag_length: usize = tag_bits / 8;
-        pub const ad_max_length: usize = 1 << 61;
-        pub const msg_max_length: usize = 1 << 61;
-        pub const ct_max_length: usize = msg_max_length + tag_length;
+        pub const key_length = 32;
+        pub const nonce_length = 32;
+        pub const tag_length: comptime_int = tag_bits / 8;
+        pub const ad_max_length = 1 << 61;
+        pub const msg_max_length = 1 << 61;
+        pub const ct_max_length = msg_max_length + tag_length;
 
         const State = [6]AesBlock;
 
