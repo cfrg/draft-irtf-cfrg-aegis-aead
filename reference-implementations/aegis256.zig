@@ -93,12 +93,12 @@ fn Aegis256_(comptime tag_bits: u9) type {
             const s = self.s;
             const z = s[1].xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[2].andBlocks(s[3]));
             var pad = [_]u8{0} ** 16;
-            mem.copy(u8, pad[0..cn.len], cn);
+            @memcpy(pad[0..cn.len], cn);
             const t = AesBlock.fromBytes(&pad);
             const out = t.xorBlocks(z);
-            mem.copy(u8, &pad, &out.toBytes());
-            mem.copy(u8, xn, pad[0..cn.len]);
-            mem.set(u8, pad[cn.len..], 0);
+            @memcpy(&pad, &out.toBytes());
+            @memcpy(xn, pad[0..cn.len]);
+            @memset(pad[cn.len..], 0);
             const v = AesBlock.fromBytes(&pad);
             self.update(v);
         }
@@ -121,8 +121,8 @@ fn Aegis256_(comptime tag_bits: u9) type {
                     &s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes(),
                 );
             } else {
-                mem.copy(u8, tag[0..16], &s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes());
-                mem.copy(u8, tag[16..], &s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes());
+                @memcpy(tag[0..16], &s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes());
+                @memcpy(tag[16..], &s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes());
             }
             return tag;
         }
@@ -145,18 +145,18 @@ fn Aegis256_(comptime tag_bits: u9) type {
             }
             if (ad.len % 16 != 0) {
                 var pad = [_]u8{0} ** 16;
-                mem.copy(u8, pad[0 .. ad.len % 16], ad[i..]);
+                @memcpy(pad[0 .. ad.len % 16], ad[i..]);
                 aegis.absorb(&pad);
             }
 
             i = 0;
             while (i + 16 <= msg.len) : (i += 16) {
-                mem.copy(u8, ct[i..][0..16], &aegis.enc(msg[i..][0..16]));
+                @memcpy(ct[i..][0..16], &aegis.enc(msg[i..][0..16]));
             }
             if (msg.len % 16 != 0) {
                 var pad = [_]u8{0} ** 16;
-                mem.copy(u8, pad[0 .. msg.len % 16], msg[i..]);
-                mem.copy(u8, ct[i..], aegis.enc(&pad)[0 .. msg.len % 16]);
+                @memcpy(pad[0 .. msg.len % 16], msg[i..]);
+                @memcpy(ct[i..], aegis.enc(&pad)[0 .. msg.len % 16]);
             }
 
             return aegis.finalize(ad.len, msg.len);
@@ -181,13 +181,13 @@ fn Aegis256_(comptime tag_bits: u9) type {
             }
             if (ad.len % 16 != 0) {
                 var pad = [_]u8{0} ** 16;
-                mem.copy(u8, pad[0 .. ad.len % 16], ad[i..]);
+                @memcpy(pad[0 .. ad.len % 16], ad[i..]);
                 aegis.absorb(&pad);
             }
 
             i = 0;
             while (i + 16 <= ct.len) : (i += 16) {
-                mem.copy(u8, msg[i..][0..16], &aegis.dec(ct[i..][0..16]));
+                @memcpy(msg[i..][0..16], &aegis.dec(ct[i..][0..16]));
             }
             if (ct.len % 16 != 0) {
                 aegis.decLast(msg[i..], ct[i..]);

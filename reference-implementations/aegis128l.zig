@@ -81,8 +81,8 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             const out1 = t1.xorBlocks(z1);
             self.update(t0, t1);
             var ci: [32]u8 = undefined;
-            mem.copy(u8, ci[0..16], &out0.toBytes());
-            mem.copy(u8, ci[16..32], &out1.toBytes());
+            @memcpy(ci[0..16], &out0.toBytes());
+            @memcpy(ci[16..32], &out1.toBytes());
             return ci;
         }
 
@@ -96,8 +96,8 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             const out1 = t1.xorBlocks(z1);
             self.update(out0, out1);
             var xi: [32]u8 = undefined;
-            mem.copy(u8, xi[0..16], &out0.toBytes());
-            mem.copy(u8, xi[16..32], &out1.toBytes());
+            @memcpy(xi[0..16], &out0.toBytes());
+            @memcpy(xi[16..32], &out1.toBytes());
             return xi;
         }
 
@@ -106,15 +106,15 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             const z0 = s[6].xorBlocks(s[1]).xorBlocks(s[2].andBlocks(s[3]));
             const z1 = s[2].xorBlocks(s[5]).xorBlocks(s[6].andBlocks(s[7]));
             var pad = [_]u8{0} ** 32;
-            mem.copy(u8, pad[0..cn.len], cn);
+            @memcpy(pad[0..cn.len], cn);
             const t0 = AesBlock.fromBytes(pad[0..16]);
             const t1 = AesBlock.fromBytes(pad[16..32]);
             const out0 = t0.xorBlocks(z0);
             const out1 = t1.xorBlocks(z1);
-            mem.copy(u8, pad[0..16], &out0.toBytes());
-            mem.copy(u8, pad[16..32], &out1.toBytes());
-            mem.copy(u8, xn, pad[0..cn.len]);
-            mem.set(u8, pad[cn.len..], 0);
+            @memcpy(pad[0..16], &out0.toBytes());
+            @memcpy(pad[16..32], &out1.toBytes());
+            @memcpy(xn, pad[0..cn.len]);
+            @memset(pad[cn.len..], 0);
             const v0 = AesBlock.fromBytes(pad[0..16]);
             const v1 = AesBlock.fromBytes(pad[16..32]);
             self.update(v0, v1);
@@ -138,8 +138,8 @@ fn Aegis128L_(comptime tag_bits: u9) type {
                     &s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[6]).toBytes(),
                 );
             } else {
-                mem.copy(u8, tag[0..16], &s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).toBytes());
-                mem.copy(u8, tag[16..], &s[4].xorBlocks(s[5]).xorBlocks(s[6]).xorBlocks(s[7]).toBytes());
+                @memcpy(tag[0..16], &s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).toBytes());
+                @memcpy(tag[16..], &s[4].xorBlocks(s[5]).xorBlocks(s[6]).xorBlocks(s[7]).toBytes());
             }
             return tag;
         }
@@ -162,18 +162,18 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             }
             if (ad.len % 32 != 0) {
                 var pad = [_]u8{0} ** 32;
-                mem.copy(u8, pad[0 .. ad.len % 32], ad[i..]);
+                @memcpy(pad[0 .. ad.len % 32], ad[i..]);
                 aegis.absorb(&pad);
             }
 
             i = 0;
             while (i + 32 <= msg.len) : (i += 32) {
-                mem.copy(u8, ct[i..][0..32], &aegis.enc(msg[i..][0..32]));
+                @memcpy(ct[i..][0..32], &aegis.enc(msg[i..][0..32]));
             }
             if (msg.len % 32 != 0) {
                 var pad = [_]u8{0} ** 32;
-                mem.copy(u8, pad[0 .. msg.len % 32], msg[i..]);
-                mem.copy(u8, ct[i..], aegis.enc(&pad)[0 .. msg.len % 32]);
+                @memcpy(pad[0 .. msg.len % 32], msg[i..]);
+                @memcpy(ct[i..], aegis.enc(&pad)[0 .. msg.len % 32]);
             }
 
             return aegis.finalize(ad.len, msg.len);
@@ -198,13 +198,13 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             }
             if (ad.len % 32 != 0) {
                 var pad = [_]u8{0} ** 32;
-                mem.copy(u8, pad[0 .. ad.len % 32], ad[i..]);
+                @memcpy(pad[0 .. ad.len % 32], ad[i..]);
                 aegis.absorb(&pad);
             }
 
             i = 0;
             while (i + 32 <= ct.len) : (i += 32) {
-                mem.copy(u8, msg[i..][0..32], &aegis.dec(ct[i..][0..32]));
+                @memcpy(msg[i..][0..32], &aegis.dec(ct[i..][0..32]));
             }
             if (ct.len % 32 != 0) {
                 aegis.decLast(msg[i..], ct[i..]);
