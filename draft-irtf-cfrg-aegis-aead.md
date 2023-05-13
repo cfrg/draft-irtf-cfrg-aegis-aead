@@ -29,8 +29,8 @@ author:
 informative:
 
   AEGIS:
-    title: "AEGIS: A fast encryption algorithm (v1.1)"
-    venue: CAESAR competition
+    title: "AEGIS: A Fast Authenticated Encryption Algorithm (v1.1)"
+    venue: CAESAR Competition
     target: https://competitions.cr.yp.to/round3/aegisv11.pdf
     author:
       -
@@ -42,70 +42,6 @@ informative:
         name: Bart Preneel
         org: KU Leuven
     date: 2016-09-15
-
-  JLD21:
-    title: "Guess-and-Determine Attacks on AEGIS"
-    rc: "The Computer Journal"
-    seriesinfo:
-      DOI: 10.1093/comjnl/bxab059
-    author:
-      -
-        ins: L. Jiao
-        name: Lin Jiao
-        org: State Key Laboratory of Cryptology, Beijing
-      -
-        ins: Y. Li
-        name: Yongqiang Li
-        org: State Key Laboratory of Information Security, Institute of Information Engineering, Chinese Academy of Sciences; School of Cyber Security, University of Chinese Academy of Sciences
-      -
-        ins: S. Du
-        name: Shaoyu Du
-        org: State Key Laboratory of Cryptology, Beijing
-    date: 2021-05-22
-
-  LIMS21:
-    title: "Weak Keys in Reduced AEGIS and Tiaoxin"
-    rc: "IACR Transactions on Symmetric Cryptology, 2021(2), pp. 104–139"
-    target: https://eprint.iacr.org/2021/187
-    seriesinfo:
-      DOI: 10.46586/tosc.v2021.i2.104-139
-    author:
-      -
-        ins: F. Liu
-        name: Fukang Liu
-        org: East China Normal University; University of Hyogo
-      -
-        ins: T. Isobe
-        name: Takanori Isobe
-        org: University of Hyogo; National Institute of Information and Communications Technology; PRESTO, Japan Science and Technology Agency
-      -
-        ins: W. Meier
-        name: Willi Meier
-        org: University of Applied Sciences and Arts Northwestern Switzerland
-      -
-        ins: K. Sakamoto
-        name: Kosei Sakamoto
-        org: University of Hyogo
-    date: 2021
-
-  LGR21:
-    title: "Partitioning Oracle Attacks"
-    rc: "30th USENIX Security Symposium (USENIX Security 21), pp. 195–212"
-    target: https://www.usenix.org/conference/usenixsecurity21/presentation/len
-    author:
-      -
-        ins: J. Len
-        name: Julia Len
-        org: Cornell Tech
-      -
-        ins: P. Grubbs
-        name: Paul Grubbs
-        org: Cornell Tech
-      -
-        ins: T. Ristenpart
-        name: Thomas Ristenpart
-        org: Cornell Tech
-    date: 2021
 
   ENP19:
     title: "Analyzing the Linear Keystream Biases in AEGIS"
@@ -127,41 +63,86 @@ informative:
         org: Graz University of Technology
     date: 2020-01-31
 
-  CRA18:
-    title: "Can Caesar Beat Galois? Robustness of CAESAR Candidates against Nonce Reusing and High Data Complexity Attacks"
-    rc: "Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892, pp. 476–494"
+  JLD21:
+    title: "Guess-and-Determine Attacks on AEGIS"
+    rc: "The Computer Journal, vol 65, 2022(8), pp. 2221–2230"
     seriesinfo:
-      DOI: 10.1007/978-3-319-93387-0_25
+      DOI: 10.1093/comjnl/bxab059
     author:
       -
-        ins: S. Vaudenay
-        name: Serge Vaudenay
-        org: École Polytechnique Fédérale de Lausanne EPFL
+        ins: L. Jiao
+        name: Lin Jiao
+        org: State Key Laboratory of Cryptology
       -
-        ins: D. Vizár
-        name: Damian Vizár
-        org: École Polytechnique Fédérale de Lausanne EPFL
-    date: 2018
+        ins: Y. Li
+        name: Yongqiang Li
+        org: State Key Laboratory of Information Security, Institute of Information Engineering, Chinese Academy of Sciences; School of Cyber Security, University of Chinese Academy of Sciences
+      -
+        ins: S. Du
+        name: Shaoyu Du
+        org: State Key Laboratory of Cryptology
+    date: 2021-05-22
 
-  Min14:
+  LGR21:
+    title: "Partitioning Oracle Attacks"
+    rc: "30th USENIX Security Symposium (USENIX Security 21), pp. 195–212"
+    target: https://www.usenix.org/conference/usenixsecurity21/presentation/len
+    author:
+      -
+        ins: J. Len
+        name: Julia Len
+        org: Cornell Tech
+      -
+        ins: P. Grubbs
+        name: Paul Grubbs
+        org: Cornell Tech
+      -
+        ins: T. Ristenpart
+        name: Thomas Ristenpart
+        org: Cornell Tech
+    date: 2021
+
+  LIMS21:
+    title: "Weak Keys in Reduced AEGIS and Tiaoxin"
+    rc: "IACR Transactions on Symmetric Cryptology, 2021(2), pp. 104–139"
+    seriesinfo:
+      DOI: 10.46586/tosc.v2021.i2.104-139
+    author:
+      -
+        ins: F. Liu
+        name: Fukang Liu
+        org: East China Normal University; University of Hyogo
+      -
+        ins: T. Isobe
+        name: Takanori Isobe
+        org: University of Hyogo; National Institute of Information and Communications Technology; PRESTO, Japan Science and Technology Agency
+      -
+        ins: W. Meier
+        name: Willi Meier
+        org: University of Applied Sciences and Arts Northwestern Switzerland
+      -
+        ins: K. Sakamoto
+        name: Kosei Sakamoto
+        org: University of Hyogo
+    date: 2021-06-11
+
+  M14:
     title: "Linear Biases in AEGIS Keystream"
     rc: "Selected Areas in Cryptography. SAC 2014. Lecture Notes in Computer Science, vol 8781, pp. 290–305"
     seriesinfo:
       DOI: 10.1007/978-3-319-13051-4_18
-    target: https://eprint.iacr.org/2018/292
     author:
       -
         ins: B. Minaud
         name: Brice Minaud
-        org: Agence nationale de la sécurité des systèmes d'information ANSSI
+        org: ANSSI
     date: 2014
 
   STSI23:
     title: "MILP-based security evaluation for AEGIS/Tiaoxin-346/Rocca"
-    rc: "IET Information Security, 2023, pp. 1-10"
+    rc: "IET Information Security, vol 17, 2023(3), pp. 458-467"
     seriesinfo:
       DOI: 10.1049/ise2.12109
-    target: https://doi.org/10.1049/ise2.12109
     author:
       -
         ins: T. Shiraya
@@ -180,6 +161,22 @@ informative:
         name: Takanori Isobe
         org: University of Hyogo; National Institute of Information and Communications Technology
     date: 2023-01-27
+
+  VV18:
+    title: "Can Caesar Beat Galois?"
+    rc: "Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892, pp. 476–494"
+    seriesinfo:
+      DOI: 10.1007/978-3-319-93387-0_25
+    author:
+      -
+        ins: S. Vaudenay
+        name: Serge Vaudenay
+        org: EPFL
+      -
+        ins: D. Vizár
+        name: Damian Vizár
+        org: EPFL
+    date: 2018
 
 --- abstract
 
@@ -941,7 +938,7 @@ Under the assumption that the secret key is unknown to the attacker and a 128-bi
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in the analysis of the (robustness of CAESAR candidates beyond their guarantees){{CRA18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in the analysis of the (robustness of CAESAR candidates beyond their guarantees){{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
@@ -953,7 +950,7 @@ With AEGIS-256, random nonces can be used with no practical limits.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
-Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{Min14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, and in {{STSI23}}.
+Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{M14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, and in {{STSI23}}.
 
 # IANA Considerations
 
