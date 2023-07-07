@@ -19,6 +19,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [libsodium](https://libsodium.org)                                                                                            | C        |
 | [angt/aegis256](https://github.com/angt/aegis256)                                                                             | C        |
 | [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                   | C        |
+| [libaegis](https://github.com/jedisct1/libaegis)                                                                              | C        |
 | [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)                                        | C, C++   |
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                 | C++      |
 | [aegis](https://crates.io/crates/aegis)                                                                                       | Rust     |
