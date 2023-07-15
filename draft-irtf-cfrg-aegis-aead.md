@@ -18,10 +18,6 @@ author:
     organization: Fastly Inc.
     email: fde@00f.net
  -
-    name: Fabio Enrico Renzo Scotoni
-    organization: Individual Contributor
-    email: fabio@esse.ch
- -
     name: Samuel Lucas
     organization: Individual Contributor
     email: samuel-lucas6@pm.me
