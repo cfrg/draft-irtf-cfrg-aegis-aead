@@ -1454,6 +1454,8 @@ The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart
 
 The round function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC that partly motivated the design of the AEGIS MAC.
 
-We would like to thank Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector and Daniel Bleichenbacher for many helpful suggestions.
+We would like to thank the following individuals for their contributions:
 
-We would also like to thank John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
+- Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector and Daniel Bleichenbacher for many helpful suggestions.
+- John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
+- Bart Mennink and Charlotte Lefevre for their input regarding the commitment security of the schemes specified in this document.
