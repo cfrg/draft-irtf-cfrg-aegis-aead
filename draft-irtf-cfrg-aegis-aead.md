@@ -930,7 +930,7 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery, 
 
 An authentication tag may verify under multiple keys, nonces, or associated data. Assuming AEGIS is fully committing, finding different inputs producing the same tag is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
 
-Under the assumption that the secret key is unknown to the attacker and a 128-bit tag is used, both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks. With a 256-bit tag, AEGIS-256 targets 256-bit security against forgery attacks, whereas AEGIS-128L continues to target 128-bit security.
+Under the assumption that the secret key is unknown to the attacker both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks regardless of the tag size.
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
