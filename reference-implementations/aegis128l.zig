@@ -58,8 +58,7 @@ fn Aegis128L_(comptime tag_bits: u9) type {
                 key_block.xorBlocks(c1),
                 key_block.xorBlocks(c0),
             } };
-            var i: usize = 0;
-            while (i < 10) : (i += 1) {
+            for (0..10) |_| {
                 self.update(nonce_block, key_block);
             }
             return self;
@@ -126,8 +125,7 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             mem.writeIntLittle(u64, b[0..8], @as(u64, @intCast(ad_len)) * 8);
             mem.writeIntLittle(u64, b[8..16], @as(u64, @intCast(msg_len)) * 8);
             const t = s[2].xorBlocks(AesBlock.fromBytes(&b));
-            var i: usize = 0;
-            while (i < 7) : (i += 1) {
+            for (0..7) |_| {
                 self.update(t, t);
             }
             var tag: [tag_length]u8 = undefined;
