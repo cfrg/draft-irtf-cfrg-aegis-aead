@@ -27,8 +27,8 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python     |
 | [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                 | Go         |
 | [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                         | C#         |
-| [argis-js](https://github.com/psve/argis-js)                                                                                  | JavaScript |
-| [argis-kotlin](https://github.com/psve/argis-kotlin)                                                                          | Kotlin     |
+| [aegis-js](https://github.com/psve/aegis-js)                                                                                  | JavaScript |
+| [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                          | Kotlin     |
 
 ## Additional test vectors
 
