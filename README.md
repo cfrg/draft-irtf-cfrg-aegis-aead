@@ -10,23 +10,24 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 
 ## Known Implementations
 
-| Name                                                                                                                          | Language |
-| ----------------------------------------------------------------------------------------------------------------------------- | -------- |
-| [This document's reference implementations](https://github.com/jedisct1/draft-aegis-aead/tree/main/reference-implementations) | Zig      |
-| [CAESAR reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l)         | C        |
-| [CAESAR reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)           | C        |
-| [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)                          | C        |
-| [libsodium](https://libsodium.org)                                                                                            | C        |
-| [angt/aegis256](https://github.com/angt/aegis256)                                                                             | C        |
-| [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                   | C        |
-| [libaegis](https://github.com/jedisct1/libaegis)                                                                              | C        |
-| [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)                                        | C, C++   |
-| [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                 | C++      |
-| [aegis](https://crates.io/crates/aegis)                                                                                       | Rust     |
-| [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig      |
-| [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python   |
-| [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                 | Go       |
-| [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                         | C#       |
+| Name                                                                                                                          | Language   |
+| ----------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| [This document's reference implementations](https://github.com/jedisct1/draft-aegis-aead/tree/main/reference-implementations) | Zig        |
+| [CAESAR reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l)         | C          |
+| [CAESAR reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)           | C          |
+| [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)                          | C          |
+| [libsodium](https://libsodium.org)                                                                                            | C          |
+| [angt/aegis256](https://github.com/angt/aegis256)                                                                             | C          |
+| [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                   | C          |
+| [libaegis](https://github.com/jedisct1/libaegis)                                                                              | C          |
+| [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)                                        | C, C++     |
+| [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                 | C++        |
+| [aegis](https://crates.io/crates/aegis)                                                                                       | Rust       |
+| [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig        |
+| [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                             | Python     |
+| [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                 | Go         |
+| [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                         | C#         |
+| [aegis.js](https://github.com/psve/argis-js/blob/master/aegis.js)                                                             | JavaScript |
 
 ## Additional test vectors
 
