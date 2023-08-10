@@ -20,7 +20,6 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [angt/aegis256](https://github.com/angt/aegis256)                                                                             | C          |
 | [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                   | C          |
 | [libaegis](https://github.com/jedisct1/libaegis)                                                                              | C          |
-| [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)                                        | C, C++     |
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                 | C++        |
 | [aegis](https://crates.io/crates/aegis)                                                                                       | Rust       |
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                   | Zig        |
@@ -29,6 +28,13 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                         | C#         |
 | [aegis-js](https://github.com/psve/aegis-js)                                                                                  | JavaScript |
 | [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                          | Kotlin     |
+
+## AEGIS support in TLS stacks
+
+- [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)
+- [Facebook's Fizz](https://github.com/facebookincubator/fizz)
+- [PicoTLS](https://github.com/h2o/picotls)
+- [Zig TLS client](https://ziglang.org/documentation/master/std/#A;std:crypto.tls.CipherSuite)
 
 ## Additional test vectors
 
