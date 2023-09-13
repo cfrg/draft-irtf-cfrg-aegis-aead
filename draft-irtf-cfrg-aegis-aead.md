@@ -197,7 +197,9 @@ With some existing AEAD schemes, such as AES-GCM, an attacker can generate a cip
 
 In a fully committing AEAD scheme, finding different inputs (key, nonce, associated data, message) producing the same authentication tag has a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical. As of the time of writing, no research has been published claiming that AEGIS is not a fully committing AEAD scheme.
 
-Finally, unlike most other AES-based AEAD constructions, leaking a state does not leak the previous states.
+Unlike most other AES-based AEAD constructions, leaking a state does not leak the key nor previous states.
+
+Finally, an AEGIS key is not required after the setup phase, and there is no key schedule. Thus, ephemeral keys can be erased from memory before any data has been encrypted or decrypted, mitigating cold boot attacks.
 
 Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in `Finalize()` respectively. We follow the specification of {{AEGIS}} that is current at the time of writing, which can be found in the References section of this document.
 
@@ -943,6 +945,8 @@ The nonce MAY be public or predictable. It can be a counter, the output of a per
 With AEGIS-128L, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.
 
 With AEGIS-256, random nonces can be used with no practical limits.
+
+Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
