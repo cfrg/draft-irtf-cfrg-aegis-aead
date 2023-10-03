@@ -1010,6 +1010,8 @@ The mask is computed as follows:
 mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
 ~~~
 
+The authentication tag is ignored.
+
 --- back
 
 # Test Vectors
