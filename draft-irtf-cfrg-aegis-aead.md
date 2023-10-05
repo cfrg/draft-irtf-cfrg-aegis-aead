@@ -209,6 +209,7 @@ Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing 
 
 Primitives:
 
+- `{}`: an empty bit array.
 - `|x|`: the length of `x` in bits.
 - `a ^ b`: the bitwise exclusive OR operation between `a` and `b`.
 - `a & b`: the bitwise AND operation between `a` and `b`.
@@ -926,6 +927,40 @@ In the latter case, the tag MUST immediately follow the ciphertext:
 combined_ct = ct || tag
 ~~~
 
+# AEGIS as a Stream Cipher
+
+All AEGIS variants can also be used as stream ciphers.
+
+~~~
+Stream(len, key, nonce)
+~~~
+
+The `Stream` function expands a key and an optional nonce into a variable-length, secure keystream.
+
+Inputs:
+
+- `len`: the length of the keystream to generate.
+- `key`: the AEGIS key.
+- `nonce`: the nonce. If unspecified, it is set to `N_MAX` zero bytes.
+
+Outputs:
+
+- `stream`: the keystream.
+
+Steps:
+
+~~~
+stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
+
+return stream
+~~~
+
+This is equivalent to encrypting a `len` all-zero bytes message without associated data, and discarding the authentication tag.
+
+Instead of relying on the generic `Encrypt` function, implementations can skip the finalization step.
+
+After initialization, the `Update` function is called with constant parameters, allowing further optimizations.
+
 # Security Considerations
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
@@ -982,17 +1017,17 @@ IANA is requested to update the references of these entries to refer to the fina
 
 In DTLS 1.3, record sequence numbers are encrypted as specified in [RFC9147].
 
-For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Encrypt` function with:
+For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Stream` function with:
 
 - a 128-bit tag length
 - `sn_key`, as defined in Section 4.2.3 of [RFC9147]
 - `ciphertext[0..16]`: the first 16 bytes of the DTLS ciphertext
 - `nonce_len`: the AEGIS nonce length
 
-The mask is computed as follows:
+The 5-byte mask is computed as follows:
 
 ~~~
-mask = Encrypt("", "", sn_key, ZeroPad(ciphertext[0..16], nonce_len))
+mask = Stream(5, sn_key, ZeroPad(ciphertext[0..16], nonce_len))
 ~~~
 
 ## QUIC Header Protection
@@ -1011,8 +1046,6 @@ The mask is computed as follows:
 ~~~
 mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
 ~~~
-
-The authentication tag is ignored.
 
 --- back
 
