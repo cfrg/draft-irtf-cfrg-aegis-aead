@@ -59,6 +59,21 @@ informative:
         org: Graz University of Technology
     date: 2020-01-31
 
+  IR23:
+    title: "Key Committing Security Analysis of AEGIS"
+    rc: "Cryptology ePrint Archive, Paper 2023/1495"
+    target: https://eprint.iacr.org/2023/1495
+    author:
+      -
+        ins: T. Isobe
+        name: Takanori Isobe
+        org: University of Hyogo
+      -
+        ins: M. Rahman
+        name: Mostafizar Rahman
+        org: University of Hyogo
+    date: 2023
+
   JLD21:
     title: "Guess-and-Determine Attacks on AEGIS"
     rc: "The Computer Journal, vol 65, 2022(8), pp. 2221–2230"
@@ -967,7 +982,7 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery, 
 
 An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same `(ad, ct, tag)` tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
 
-However, it is NOT fully committing because the key doesn't commit to the associated data: with the ability to also alter `ad`, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
+However, it is NOT fully committing because the key doesn't commit to the associated data. As shown in {{IR23}}, with the ability to also alter `ad`, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
 
 Under the assumption that the secret key is unknown to the attacker both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks regardless of the tag size.
 
@@ -987,7 +1002,7 @@ Regardless of the variant, the `key` and `nonce` are only required by the `Init`
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
-Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{M14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, and in {{STSI23}}.
+Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{M14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, in {{STSI23}}, and in {{IR23}}.
 
 # IANA Considerations
 
