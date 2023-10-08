@@ -214,5 +214,24 @@ fn Aegis128L_(comptime tag_bits: u9) type {
                 return error.AuthenticationFailed;
             }
         }
+
+        pub fn stream(
+            out: []u8,
+            key: [key_length]u8,
+            nonce: ?[nonce_length]u8,
+        ) void {
+            assert(out.len <= msg_max_length);
+            var aegis = init(key, nonce orelse [_]u8{0} ** nonce_length);
+
+            const zero = [_]u8{0} ** 32;
+
+            var i: usize = 0;
+            while (i + 32 <= out.len) : (i += 32) {
+                @memcpy(out[i..][0..32], &aegis.enc(&zero));
+            }
+            if (out.len % 32 != 0) {
+                @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % 32]);
+            }
+        }
     };
 }

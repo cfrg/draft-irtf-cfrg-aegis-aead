@@ -245,5 +245,24 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
                 return error.AuthenticationFailed;
             }
         }
+
+        pub fn stream(
+            out: []u8,
+            key: [key_length]u8,
+            nonce: ?[nonce_length]u8,
+        ) void {
+            assert(out.len <= msg_max_length);
+            var aegis = init(key, nonce orelse [_]u8{0} ** nonce_length);
+
+            const zero = [_]u8{0} ** rate;
+
+            var i: usize = 0;
+            while (i + rate <= out.len) : (i += rate) {
+                @memcpy(out[i..][0..rate], &aegis.enc(&zero));
+            }
+            if (out.len % rate != 0) {
+                @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % rate]);
+            }
+        }
     };
 }
