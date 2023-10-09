@@ -960,7 +960,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 ## Additional conventions and definitions
 
 - `D`: the parallelism degree
-- `R`: the absorption and output rate. With AEGIS-128X, the rate is `2 * 128 * D` bits. WIth AEGIS-256X, the rate is `128 * D` bits.
+- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. WIth AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
 - `ctx`: the context separator.
