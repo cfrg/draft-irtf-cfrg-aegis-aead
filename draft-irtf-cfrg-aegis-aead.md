@@ -963,10 +963,8 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 - `R`: the absorption and output rate. With AEGIS-128X, the rate is `2 * 128 * D` bits. WIth AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
-- `Byte(x)`: the value `x`, encoded as 8 bits.
 - `ctx`: the context separator.
-
-`AEGIS-128Xd` refers to the `AEGIS-128X` mode with a parallelism degree `d`, and `AEGIS-256Xd` refers to the `AEGIS-256X` mode with a parallelism degree `d`.
+- `Byte(x)`: the value `x`, encoded as 8 bits.
 
 ## Authenticated Encryption
 
@@ -1211,7 +1209,7 @@ return xn
 Finalize(ad_len_bits, msg_len_bits)
 ~~~
 
-The `Finalize` function finalizes every instance, and combines the resulting authentication tags using the bitwise exclusive OR operation.
+The `Finalize` function finalizes every AEGIS-128L instance, and combines the resulting authentication tags using the bitwise exclusive OR operation.
 
 Steps:
 
@@ -1409,7 +1407,7 @@ return xn
 Finalize(ad_len_bits, msg_len_bits)
 ~~~
 
-The `Finalize` function finalizes every instance, and combines the resulting authentication tags using the bitwise exclusive OR operation.
+The `Finalize` function finalizes every AEGIS-256 instance, and combines the resulting authentication tags using the bitwise exclusive OR operation.
 
 Steps:
 
@@ -1417,7 +1415,7 @@ Steps:
 t = {}
 u = LE64(ad_len_bits) || LE64(msg_len_bits)
 for i in 0..D:
-    t = t || (V[2,i] ^ u)
+    t = t || (V[3,i] ^ u)
 
 Repeat(7, Update(t, t))
 
@@ -1445,7 +1443,7 @@ This property can be used to reduce the code size of a generic implementation.
 
 In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X2), or eight 512-bit registers (for AEGIS-128X4). And in AEGIS-256X, `V` can be represented as six 256-bit registers (for AEGIS-256X2), or six 512-bit registers (for AEGIS-256X4).
 
-With this representation, loops in the above pseudo-code can be replaced by vector instructions.
+With this representation, loops over `0..D` in the above pseudo-code can be replaced by vector instructions.
 
 ## Operational considerations
 
