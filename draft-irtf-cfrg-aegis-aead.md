@@ -1077,7 +1077,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The `Update` function is similar to the AEGIS-128L `Update` function, but `M0` and `M1` are `128 * D` bits instead of 128 bits. `M0` and `M1` are split into 128-bit blocks, each of them updating a different AEGIS-128L instance.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`= 2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits. `M0` and `M1` are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1294,7 +1294,7 @@ Repeat(4,
 Update(M)
 ~~~
 
-The `Update` function is similar to the AEGIS-256 `Update` function, but `M` is `128 * D` bits instead of 128 bits. `M` is split into 128-bit blocks, each of them updating a different AEGIS-256 instance.
+The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`= 128 * D`) bits at once. `M` is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
 
 Steps:
 
