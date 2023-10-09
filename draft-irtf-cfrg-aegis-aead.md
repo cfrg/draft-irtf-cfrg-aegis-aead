@@ -254,7 +254,7 @@ Primitives:
 
 AEGIS internal functions:
 
-- `Update(M0, M1)` (for AEGIS-128L) and `Update(M)` (for AEGIS-256): the state update function.
+- `Update(M0, M1)` or `Update(M)`: the state update function.
 - `Init(key, nonce)`: the initialization function.
 - `Absorb(ai)`: the input block absorption function.
 - `Enc(xi)`: the input block encryption function.
