@@ -48,7 +48,7 @@ informative:
         ins: F. Denis
         name: Frank Denis
         org: Fastly Inc.
-    date: 2023    
+    date: 2023
 
   ENP19:
     title: "Analyzing the Linear Keystream Biases in AEGIS"
