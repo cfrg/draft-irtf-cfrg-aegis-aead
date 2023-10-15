@@ -951,15 +951,15 @@ Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, inc
 
 The AEGIS-128X and AEGIS-256X modes are designed to take advantage of these instructions. They share the same properties as the ciphers they are based on, but can be significantly faster on these platforms, even for short messages.
 
-AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L or AEGIS-256 instances with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.
+AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.
 
 The modes are parameterized by the parallelism degree. With 256-bit registers, 2 parallel operations can be applied to 128-bit AES blocks. With 512-bit registers, the number of instances can be raised to 4.
 
 The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-256 states.
 
-## Additional conventions and definitions
+## Additional Conventions and Definitions
 
-- `D`: the parallelism degree
+- `D`: the degree of parallelism.
 - `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. WIth AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
