@@ -37,7 +37,18 @@ informative:
         ins: B. Preneel
         name: Bart Preneel
         org: KU Leuven
-    date: 2016-09-15
+    date: 2016
+
+  D23:
+    title: "Adding more parallelism to the AEGIS authenticated encryption algorithms"
+    rc: "Cryptology ePrint Archive, Paper 2023/523"
+    target: https://eprint.iacr.org/2023/523
+    author:
+      -
+        ins: F. Denis
+        name: Frank Denis
+        org: Fastly Inc.
+    date: 2023    
 
   ENP19:
     title: "Analyzing the Linear Keystream Biases in AEGIS"
@@ -57,7 +68,7 @@ informative:
         ins: R. Primas
         name: Robert Primas
         org: Graz University of Technology
-    date: 2020-01-31
+    date: 2020
 
   IR23:
     title: "Key Committing Security Analysis of AEGIS"
@@ -92,7 +103,7 @@ informative:
         ins: S. Du
         name: Shaoyu Du
         org: State Key Laboratory of Cryptology
-    date: 2021-05-22
+    date: 2021
 
   LGR21:
     title: "Partitioning Oracle Attacks"
@@ -135,7 +146,7 @@ informative:
         ins: K. Sakamoto
         name: Kosei Sakamoto
         org: University of Hyogo
-    date: 2021-06-11
+    date: 2021
 
   M14:
     title: "Linear Biases in AEGIS Keystream"
@@ -171,7 +182,7 @@ informative:
         ins: T. Isobe
         name: Takanori Isobe
         org: University of Hyogo; National Institute of Information and Communications Technology
-    date: 2023-01-27
+    date: 2023
 
   VV18:
     title: "Can Caesar Beat Galois?"
@@ -189,20 +200,9 @@ informative:
         org: EPFL
     date: 2018
 
-  D23:
-    title: "Adding more parallelism to the AEGIS authenticated encryption algorithms"
-    rc: "Cryptology ePrint Archive, Paper 2023/523"
-    target: https://eprint.iacr.org/2023/523
-    author:
-      -
-        ins: F. Denis
-        name: Frank Denis
-        org: Fastly Inc.
-    date: 2023
-
 --- abstract
 
-This document describes the AEGIS-128L, AEGIS-128X, AEGIS-256, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications.
+This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications.
 This document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard.
 
 
@@ -215,7 +215,7 @@ This document describes the AEGIS family of authenticated encryption with associ
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.
 - AEGIS-128X, which is a mode based on AEGIS-128L, specialized for CPUs with large vector registers and vector AES instructions.
-- AEGIS-256X, which is a mode based on AEGIS-256X, specialized for CPUs with large vector registers and vector AES instructions.
+- AEGIS-256X, which is a mode based on AEGIS-256, specialized for CPUs with large vector registers and vector AES instructions.
 
 The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support for parallelizable AES block encryption {{AEGIS}}. Similarly, software implementations can also be faster, although to a lesser extent.
 
@@ -947,7 +947,7 @@ return tag
 
 # Parallel modes
 
-Some CPUs such as Intel and Intel-compatible CPUs with the VAES extensions include instructions to efficiently apply the AES round function to a vector of AES blocks.
+Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, include instructions to efficiently apply the AES round function to a vector of AES blocks.
 
 The AEGIS-128X and AEGIS-256X modes are designed to take advantage of these instructions. They share the same properties as the ciphers they are based on, but can be significantly faster on these platforms, even for short messages.
 
