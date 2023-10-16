@@ -1436,17 +1436,15 @@ return tag
 
 ## Implementation Considerations
 
-AEGIS-128X and AEGIS-256X with a degree of `1` are indentical to AEGIS-128L and AEGIS-256X.
+AEGIS-128X and AEGIS-256X with a degree of `1` are indentical to AEGIS-128L and AEGIS-256X. This property can be used to reduce the code size of a generic implementation.
 
-This property can be used to reduce the code size of a generic implementation.
-
-In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X2), or eight 512-bit registers (for AEGIS-128X4). And in AEGIS-256X, `V` can be represented as six 256-bit registers (for AEGIS-256X2), or six 512-bit registers (for AEGIS-256X4).
+In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X2) or eight 512-bit registers (for AEGIS-128X4). In AEGIS-256X, `V` can be represented as six 256-bit registers (for AEGIS-256X2) or six 512-bit registers (for AEGIS-256X4).
 
 With this representation, loops over `0..D` in the above pseudo-code can be replaced by vector instructions.
 
 ## Operational Considerations
 
-The AEGIS parallel modes are specialized, and can only improve performance on specific CPUs.
+The AEGIS parallel modes are specialized and can only improve performance on specific CPUs.
 
 The parallelism degrees implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
 
