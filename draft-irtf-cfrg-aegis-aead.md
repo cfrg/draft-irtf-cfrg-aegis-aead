@@ -960,11 +960,11 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 ## Additional Conventions and Definitions
 
 - `D`: the degree of parallelism.
-- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. WIth AEGIS-256X, the rate is `128 * D` bits.
+- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
 - `ctx`: the context separator.
-- `Byte(x)`: the value `x`, encoded as 8 bits.
+- `Byte(x)`: the value `x` encoded as 8 bits.
 
 ## Authenticated Encryption
 
@@ -972,7 +972,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function of the parallel modes is similar to the AEGIS-128L and AEGIS-256 `Encrypt` function, but processes `R` bit input blocks per update.
+The `Encrypt` function of the AEGIS-128X and AEGIS-256X is similar to, respectively, the AEGIS-128L and AEGIS-256 `Encrypt` function, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1001,7 +1001,7 @@ return ct and tag
 Decrypt(ct, tag, ad, key, nonce)
 ~~~
 
-The `Decrypt` function of the parallel modes is similar to the AEGIS-128L and AEGIS-256 `Decrypt` function, but processes `R` bits per update.
+The `Decrypt` function of AEGIS-128X and AEGIS-256X is similar to, respectively, the AEGIS-128L and AEGIS-256 `Decrypt` function, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1040,7 +1040,7 @@ else:
 Init(key, nonce)
 ~~~
 
-The `Init` function initizalizes a vector of `D` AEGIS-128L states with the same `key` and `nonce`, but a different context `ctx`. The context is added to the state before every update.
+The `Init` function initializes a vector of `D` AEGIS-128L states with the same `key` and `nonce` but a different context `ctx`. The context is added to the state before every update.
 
 Steps:
 
@@ -1064,8 +1064,8 @@ for i in 0..D:
 Repeat(10,
     for i in 0..D:
         ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx)
-        V[7,i] = V[7,i] ^ ZeroPad(ctx)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[7,i] = V[7,i] ^ ZeroPad(ctx, 128)
 
     Update(nonce_v, key_v)
 )
@@ -1077,7 +1077,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`= 2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits. `M0` and `M1` are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`= 2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits. They are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1209,7 +1209,7 @@ return xn
 Finalize(ad_len_bits, msg_len_bits)
 ~~~
 
-The `Finalize` function finalizes every AEGIS-128L instance, and combines the resulting authentication tags using the bitwise exclusive OR operation.
+The `Finalize` function finalizes every AEGIS-128L instance and combines the resulting authentication tags using the bitwise exclusive OR operation.
 
 Steps:
 
@@ -1245,7 +1245,7 @@ return tag
 Init(key, nonce)
 ~~~
 
-The `Init` function initizalizes a vector of `D` AEGIS-256 states with the same `key` and `nonce`, but a different context `ctx`. The context is added to the state before every update.
+The `Init` function initializes a vector of `D` AEGIS-256 states with the same `key` and `nonce` but a different context `ctx`. The context is added to the state before every update.
 
 Steps:
 
@@ -1272,18 +1272,18 @@ for i in 0..D:
 Repeat(4,
     for i in 0..D:
         ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
         Update(k0_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
         Update(k1_v)
         ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
         Update(k0n0_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
         Update(k1n1_v)
 )
 ~~~
@@ -1407,7 +1407,7 @@ return xn
 Finalize(ad_len_bits, msg_len_bits)
 ~~~
 
-The `Finalize` function finalizes every AEGIS-256 instance, and combines the resulting authentication tags using the bitwise exclusive OR operation.
+The `Finalize` function finalizes every AEGIS-256 instance and combines the resulting authentication tags using the bitwise exclusive OR operation.
 
 Steps:
 
