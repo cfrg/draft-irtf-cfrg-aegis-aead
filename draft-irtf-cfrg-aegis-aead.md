@@ -1278,7 +1278,6 @@ Repeat(4,
         V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
         V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
         Update(k1_v)
-        ctx = Byte(i)
         V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
         V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
         Update(k0n0_v)
