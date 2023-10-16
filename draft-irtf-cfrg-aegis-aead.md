@@ -1434,7 +1434,7 @@ else:                # 256 bits
 return tag
 ~~~
 
-## Implementation considerations
+## Implementation Considerations
 
 AEGIS-128X and AEGIS-256X with a degree of `1` are indentical to AEGIS-128L and AEGIS-256X.
 
@@ -1444,7 +1444,7 @@ In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X
 
 With this representation, loops over `0..D` in the above pseudo-code can be replaced by vector instructions.
 
-## Operational considerations
+## Operational Considerations
 
 The AEGIS parallel modes are specialized, and can only improve performance on specific CPUs.
 
