@@ -1449,11 +1449,11 @@ With this representation, loops over `0..D` in the above pseudo-code can be repl
 
 The AEGIS parallel modes are specialized, and can only improve performance on specific CPUs.
 
-With vector registers up to 512 bit wide, the parallelism degrees implementations are encouraged to support are `2` and `4`. The resulting algorithms SHOULD be named `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2` and `AEGIS-256X4`.
+The parallelism degrees implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
 
-The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the mininum vector register sizes a CPU should support in order to implement it optimally.
+The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the mininum vector register sizes a CPU should support for optimal performance.
 
-| Algorithm   | Rate (bits) | Optimal register size | State size (bits) |
+| Algorithm   | Rate (bits) | Optimal Register Size | State Size (bits) |
 | ----------- | ----------: | :-------------------: | ----------------: |
 | AEGIS-128L  |         256 |       128 bits        |              1024 |
 | AEGIS-128X2 |         512 |       256 bits        |              2048 |
@@ -1466,7 +1466,7 @@ Note that architectures with smaller vector registers but with many registers an
 
 Protocols SHOULD opt for a parallel mode only when all the involved parties agree on a specific variant. AEGIS-128L and AEGIS-256 SHOULD remain the default choices.
 
-Implementations MAY not include the parallel AEGIS modes.
+Implementations MAY choose not to include the parallel AEGIS modes.
 
 # Encoding (ct, tag) Tuples
 
@@ -1536,7 +1536,7 @@ With AEGIS-256, random nonces can be used with no practical limits.
 
 Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
-As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as, respectively, AEGIS-128L and AEGIS-256. In particular, the security level and usage limits remain the same.
+As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
