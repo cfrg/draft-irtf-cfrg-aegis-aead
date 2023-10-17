@@ -972,7 +972,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function of the AEGIS-128X and AEGIS-256X is similar to, respectively, the AEGIS-128L and AEGIS-256 `Encrypt` function, but processes `R` bit input blocks per update.
+The `Encrypt` function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 `Encrypt` function respectively, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1001,7 +1001,7 @@ return ct and tag
 Decrypt(ct, tag, ad, key, nonce)
 ~~~
 
-The `Decrypt` function of AEGIS-128X and AEGIS-256X is similar to, respectively, the AEGIS-128L and AEGIS-256 `Decrypt` function, but processes `R` bit input blocks per update.
+The `Decrypt` function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 `Decrypt` function respectively, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1077,7 +1077,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`= 2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits. They are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits. They are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1263,11 +1263,12 @@ for i in 0..D:
 
 n0_v, n1_v = {}, {}
 k0_v, k1_v = {}, {}
+k0n0_v, k1n1_v = {}, {}
 for i in 0..D:
     n0_v = n0_v || n0
     n1_v = n1_v || n1
     k0n0_v = k0n0_v || (k0 ^ n0)
-    k1n0_v = k1n0_v || (k1 ^ n1)
+    k1n1_v = k1n1_v || (k1 ^ n1)
 
 Repeat(4,
     for i in 0..D:
@@ -1293,7 +1294,7 @@ Repeat(4,
 Update(M)
 ~~~
 
-The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`= 128 * D`) bits at once. `M` is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
+The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`128 * D`) bits at once. `M` is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
 
 Steps:
 
