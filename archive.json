@@ -1,0 +1,1108 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-10-17T00:31:33.438891+00:00",
+  "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOKeDGj85cR2bu",
+      "title": "Document the AEGIS-128X and AEGIS-256X modes",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/1",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reopening the PR here, since the repo was moved to the CFRG org.\r\n\r\nDocument the parallel modes.\r\n\r\nIn order to reduce redundancy and the document size, inputs and outputs of individual functions haven't been duplicated.\r\n\r\nNot sure if we should (for clarity/consistency, maybe) or not.\r\n\r\nFixes https://github.com/jedisct1/draft-aegis-aead/issues/94",
+      "createdAt": "2023-10-09T16:27:26Z",
+      "updatedAt": "2023-10-16T17:45:12Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "016dad2310d341fa4353f0f00e669194a6775e84",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "aegis-x",
+      "headRefOid": "de747bb59ecfa50d7378c1aa86d1d466d6aa27e9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think I'm going to have to leave reviewing this until the weekend if there's no rush. I've got quite a busy week, there's a lot to check over, and I'd like to compare it to your paper. I had a skim read of the text earlier, and it looked good aside from one or two things worth tweaking.\r\n\r\n> In order to reduce redundancy and the document size, inputs and outputs of individual functions haven't been duplicated.\r\n> Not sure if we should (for clarity/consistency, maybe) or not.\r\n\r\nThis is a difficult one. I think we could get away with it from a consistency perspective but perhaps not if it affects the clarity/requires lots of jumping around the document.",
+          "createdAt": "2023-10-09T20:10:36Z",
+          "updatedAt": "2023-10-09T20:10:36Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "From an implementation perspective, the parallel modes are likely to be implemented after the regular variants have been implemented.\r\n\r\nSo, the reader is expected to already be familiar with these functions and their parameters, that intentionally remain exactly the same.\r\n\r\n\r\n",
+          "createdAt": "2023-10-09T20:23:47Z",
+          "updatedAt": "2023-10-09T20:23:47Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In the paper, `r` refers to the rate of the underlying AEGIS primitive, while in this document, `R` refers to the rate of the mode (= `r \u00b7 \u03bd` in the paper).\r\n\r\nThat can be confusing, but in implementations, only the mode rate is relevant, so that simplifies the specification quite a bit.",
+          "createdAt": "2023-10-09T20:44:44Z",
+          "updatedAt": "2023-10-09T21:02:00Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85kD7sq",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Sorry there's quite a lot to go through. Various things are up for debate. Hopefully haven't missed anything.",
+          "createdAt": "2023-10-15T08:36:33Z",
+          "updatedAt": "2023-10-15T11:20:19Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "This could be moved in the file so all the references are in alphabetical order if you still want to do that.",
+              "createdAt": "2023-10-15T08:36:33Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 13,
+              "body": "Currently [some](https://cfrg.github.io/draft-irtf-cfrg-aegis-aead/draft-irtf-cfrg-aegis-aead.html#name-normative-references) references have full dates (day/month/year) and others only have the year. We should probably be consistent with one approach. I don't think day/month are necessary.",
+              "createdAt": "2023-10-15T08:38:36Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 18,
+              "body": "Is it worth rearranging these to put the ones from CAESAR first like in the bullet points below?",
+              "createdAt": "2023-10-15T08:42:07Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 32,
+              "body": "> based on AEGIS-256X\r\n\r\nTypo.",
+              "createdAt": "2023-10-15T08:42:51Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 77,
+              "body": "Could add commas to break the sentence up:\r\n\r\n> Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, include...",
+              "createdAt": "2023-10-15T08:47:50Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "> AEGIS-128L or AEGIS-256\r\n\r\nCould change to something like:\r\n\r\n> multiple AEGIS-128L and AEGIS-256 instances respectively, with distinct initial states.",
+              "createdAt": "2023-10-15T08:52:07Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 83,
+              "body": "> 2 parallel operations\r\n\r\nand\r\n\r\n> can be raised to 4.\r\n\r\nDo you prefer these as numbers?",
+              "createdAt": "2023-10-15T08:55:56Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 89,
+              "body": "Missing a full stop.",
+              "createdAt": "2023-10-15T08:58:07Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 90,
+              "body": "> WIth\r\n\r\nTypo.",
+              "createdAt": "2023-10-15T08:58:38Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 91,
+              "body": "> V[j,i]\r\n\r\nShould we have a space after the comma for these?",
+              "createdAt": "2023-10-15T09:02:06Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 91,
+              "body": "> `[0..D)`\r\n\r\nWhat's the rationale for a non-square bracket at the end?",
+              "createdAt": "2023-10-15T09:04:45Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 94,
+              "body": "Can drop the comma.",
+              "createdAt": "2023-10-15T09:08:04Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 87,
+              "body": "Capitalise like the `Conventions and Definitions` section?",
+              "createdAt": "2023-10-15T09:08:53Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 102,
+              "body": "> AEGIS-128L and AEGIS-256 `Encrypt` function\r\n\r\nI feel like we should say `respectively` or something to clarify that AEGIS-128X maps to AEGIS-128L and AEGIS-256X maps to AEGIS-256.\r\n\r\n> `Encrypt` function, but processes\r\n\r\nCan drop the comma. This applies to all of the descriptions in each subsection (I won't keep adding a comment).\r\n\r\n> `R` bit\r\n\r\nAdd a hyphen or rephrase to what's said in `Decrypt()`.",
+              "createdAt": "2023-10-15T09:13:14Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 89,
+              "body": "Worth rephrasing to `the degree of parallelism`?",
+              "createdAt": "2023-10-15T09:14:27Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 131,
+              "body": "See my comment on `Encrypt()`. If changing that, this will also need to be updated.",
+              "createdAt": "2023-10-15T09:17:32Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 194,
+              "body": "> ZeroPad(ctx)\r\n\r\nThis doesn't match the `Conventions and Definitions` section:\r\n\r\n> ZeroPad(x, n): padding operation. Trailing zeros are concatenated to x until the total length is a multiple of n bits.",
+              "createdAt": "2023-10-15T09:25:02Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 187,
+              "body": "I'm finding this bit confusing. It feels like `Update(nonce_v, key_v)` at the bottom takes too large of an input, and aren't the key and nonce the same? Why can't it be `Update(nonce, key)`?",
+              "createdAt": "2023-10-15T09:26:45Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 194,
+              "body": "Same with the line below.",
+              "createdAt": "2023-10-15T09:27:28Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 207,
+              "body": "> `R` (`= 2 * 128 * D`) bits\r\n\r\nNot sure about this. How about moving the brackets after:\r\n\r\n> `R` bits (`2 * 128 * D`)\r\n\r\nBetter or worse?",
+              "createdAt": "2023-10-15T09:37:57Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 207,
+              "body": "> `M0` and `M1` are `128 * D` bits instead of 128 bits. `M0` and `M1` are split into 128-bit blocks, each of them updating a different AEGIS-128L state.\r\n\r\nPerhaps worth writing this without repeating `M0` and `M1`.",
+              "createdAt": "2023-10-15T09:40:54Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 187,
+              "body": "Ok I think I get it; it's to do with the modified `Update()` function.",
+              "createdAt": "2023-10-15T10:12:41Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 339,
+              "body": "Can drop the comma.",
+              "createdAt": "2023-10-15T10:22:57Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 355,
+              "body": "There's no empty line before `else:` in the AEGIS-128L section.",
+              "createdAt": "2023-10-15T10:25:41Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 170,
+              "body": "> initizalizes\r\n\r\nTypo.",
+              "createdAt": "2023-10-15T10:29:52Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 375,
+              "body": "> initizalizes\r\n\r\nTypo.",
+              "createdAt": "2023-10-15T10:30:02Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 375,
+              "body": "Comma can be dropped.",
+              "createdAt": "2023-10-15T10:30:31Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 170,
+              "body": "Comma can be dropped.",
+              "createdAt": "2023-10-15T10:30:40Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 396,
+              "body": "> k0n0_v\r\n\r\nand\r\n\r\n> k1n0_v\r\n\r\nTypos?",
+              "createdAt": "2023-10-15T10:32:27Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 402,
+              "body": "> ZeroPad(ctx)\r\n\r\nDoesn't match the `Conventions and Definitions` section as mentioned for AEGIS-128X:\r\n\r\n> ZeroPad(x, n): padding operation. Trailing zeros are concatenated to x until the total length is a multiple of n bits.",
+              "createdAt": "2023-10-15T10:34:11Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 408,
+              "body": "> ctx = Byte(i)\r\n\r\nWhy is this here?",
+              "createdAt": "2023-10-15T10:35:04Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 411,
+              "body": "> k0n0_v\r\n\r\nand\r\n\r\n> k1n1_v\r\n\r\nTypos? Or not defined as said above. I get that this should be `k0 ^ n0`/`k1 ^ n1`.",
+              "createdAt": "2023-10-15T10:36:33Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 396,
+              "body": "Or this isn't defined like `k0_v, k1_v = {}, {}`.",
+              "createdAt": "2023-10-15T10:38:31Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 396,
+              "body": "`k0_v` and `k1_v` aren't in the loop.",
+              "createdAt": "2023-10-15T10:40:15Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 411,
+              "body": "I think the paper has a mistake where it says to do just the halves of the nonce.",
+              "createdAt": "2023-10-15T10:42:31Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 424,
+              "body": "See comments on AEGIS-128X with the `R` bits at once and whether to put the brackets before/after.",
+              "createdAt": "2023-10-15T10:44:27Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 424,
+              "body": "Not stating that `M is 128 * D bits instead of 128 bits` like in the AEGIS-128X section. Best to merge with the existing sentence if mentioning this.",
+              "createdAt": "2023-10-15T10:46:03Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 537,
+              "body": "Can drop the comma.",
+              "createdAt": "2023-10-15T10:54:12Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 547,
+              "body": "> Update(t, t)\r\n\r\nShould be `Update(t)`.",
+              "createdAt": "2023-10-15T10:55:38Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 553,
+              "body": "There's no empty line here in the AEGIS-256 section.",
+              "createdAt": "2023-10-15T10:56:27Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 565,
+              "body": "> considerations\r\n\r\nCapitalise.",
+              "createdAt": "2023-10-15T10:57:27Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 567,
+              "body": "> AEGIS-128L and AEGIS-256X\r\n\r\nTypo for AEGIS-256.",
+              "createdAt": "2023-10-15T10:58:01Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 569,
+              "body": "Perhaps put this on the same line as the previous sentence.",
+              "createdAt": "2023-10-15T10:58:36Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 571,
+              "body": "> , or\r\n\r\nCan drop the comma in both cases.",
+              "createdAt": "2023-10-15T10:59:15Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 571,
+              "body": "Could just start with `In AEGIS-256X,`, but the `And` does work here.",
+              "createdAt": "2023-10-15T11:02:45Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 573,
+              "body": "Could be put on the same line as the previous sentence assuming that's readable.\r\n\r\n`pseudo-code` can be written as one word without the hyphen.",
+              "createdAt": "2023-10-15T11:04:30Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 575,
+              "body": "> considerations\r\n\r\nCapitalise.",
+              "createdAt": "2023-10-15T11:05:05Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 577,
+              "body": "Can drop the comma.",
+              "createdAt": "2023-10-15T11:05:34Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 579,
+              "body": "> 512 bit wide\r\n\r\nBits? Or add a hyphen.",
+              "createdAt": "2023-10-15T11:06:17Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 579,
+              "body": "> the parallelism degrees implementations are encouraged to support are `2` and `4`\r\n\r\nThis part doesn't make sense.",
+              "createdAt": "2023-10-15T11:07:37Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 579,
+              "body": "> The resulting algorithms SHOULD be named `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2` and `AEGIS-256X4`.\r\n\r\nDo we not want this as MUST? Or `The resulting algorithms are called...`.\r\n\r\nThere can also be a comma before the last `and` for consistency with other sections.",
+              "createdAt": "2023-10-15T11:08:18Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            },
+            {
+              "originalPosition": 581,
+              "body": "> implement it optimally\r\n\r\nI'd replace `it`.",
+              "createdAt": "2023-10-15T11:10:07Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 583,
+              "body": "Should we capitalise the headings? They are in `IANA Considerations`.",
+              "createdAt": "2023-10-15T11:10:38Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 596,
+              "body": "> Implementations MAY not include the parallel AEGIS modes.\r\n\r\nHow does this sound:\r\n\r\n> Implementations MAY choose not to include the parallel AEGIS modes.",
+              "createdAt": "2023-10-15T11:13:40Z",
+              "updatedAt": "2023-10-15T11:20:19Z"
+            },
+            {
+              "originalPosition": 605,
+              "body": "> , respectively, AEGIS-128L and AEGIS-256\r\n\r\nI'd rephrase to:\r\n\r\n> and requirements as AEGIS-128L and AEGIS-256 respectively.",
+              "createdAt": "2023-10-15T11:14:36Z",
+              "updatedAt": "2023-10-15T11:20:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kED4o",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-15T12:27:49Z",
+          "updatedAt": "2023-10-15T12:27:49Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Nod. The year is enough.",
+              "createdAt": "2023-10-15T12:27:49Z",
+              "updatedAt": "2023-10-15T12:27:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kED82",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-15T12:28:52Z",
+          "updatedAt": "2023-10-15T12:28:52Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "Sure. They were sorted by security level, but consistency is good.",
+              "createdAt": "2023-10-15T12:28:52Z",
+              "updatedAt": "2023-10-15T12:28:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kED97",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-15T12:29:22Z",
+          "updatedAt": "2023-10-15T12:29:23Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "Good catch",
+              "createdAt": "2023-10-15T12:29:23Z",
+              "updatedAt": "2023-10-15T12:29:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kEN6u",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-15T16:41:39Z",
+          "updatedAt": "2023-10-15T16:41:39Z",
+          "comments": [
+            {
+              "originalPosition": 83,
+              "body": "Having these as numbers helps to make the connection with `2X` and `4X`, but if it looks odd, I've nothing against `two` and `four`  ",
+              "createdAt": "2023-10-15T16:41:39Z",
+              "updatedAt": "2023-10-15T16:41:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kEN8s",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-15T16:42:14Z",
+          "updatedAt": "2023-10-15T16:42:14Z",
+          "comments": [
+            {
+              "originalPosition": 89,
+              "body": "Sure!",
+              "createdAt": "2023-10-15T16:42:14Z",
+              "updatedAt": "2023-10-15T16:42:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kEOBI",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-15T16:44:17Z",
+          "updatedAt": "2023-10-15T16:44:17Z",
+          "comments": [
+            {
+              "originalPosition": 91,
+              "body": "Square brackets mean inclusive, non-square brackets mean exclusive.",
+              "createdAt": "2023-10-15T16:44:17Z",
+              "updatedAt": "2023-10-15T16:44:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG3O5",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:23:08Z",
+          "updatedAt": "2023-10-16T09:23:09Z",
+          "comments": [
+            {
+              "originalPosition": 91,
+              "body": "> Should we have a space after the comma for these?\r\n\r\nI originally wrote them with a comma. However, in function definitions and calls, not having the comma improves readability: `f(v[I,j], k)` is more readable than `f(v[I, j], k)`.",
+              "createdAt": "2023-10-16T09:23:08Z",
+              "updatedAt": "2023-10-16T09:23:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG4Rz",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:25:22Z",
+          "updatedAt": "2023-10-16T09:25:22Z",
+          "comments": [
+            {
+              "originalPosition": 102,
+              "body": "Changed to: \"The `Encrypt` function of AEGIS-128X and AEGIS-256X is similar to, respectively, the AEGIS-128L and AEGIS-256 `Encrypt` function`\"\r\n\r\nDoes it sound ok for you?",
+              "createdAt": "2023-10-16T09:25:22Z",
+              "updatedAt": "2023-10-16T09:26:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG4zD",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:26:27Z",
+          "updatedAt": "2023-10-16T09:26:27Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "Changed the same way as the `Encrypt()` function.",
+              "createdAt": "2023-10-16T09:26:27Z",
+              "updatedAt": "2023-10-16T09:26:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG5sP",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:28:19Z",
+          "updatedAt": "2023-10-16T09:28:20Z",
+          "comments": [
+            {
+              "originalPosition": 194,
+              "body": "Fixed.",
+              "createdAt": "2023-10-16T09:28:20Z",
+              "updatedAt": "2023-10-16T09:28:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG6cC",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:29:56Z",
+          "updatedAt": "2023-10-16T09:29:56Z",
+          "comments": [
+            {
+              "originalPosition": 187,
+              "body": "Correct. The `Update()` function requires wider blocks than the non-parallel variants.",
+              "createdAt": "2023-10-16T09:29:56Z",
+              "updatedAt": "2023-10-16T09:29:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG7Yd",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:32:00Z",
+          "updatedAt": "2023-10-16T09:32:00Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "> > `R` (`= 2 * 128 * D`) bits\r\n> \r\n> Not sure about this. How about moving the brackets after:\r\n> \r\n> > `R` bits (`2 * 128 * D`)\r\n> \r\n> Better or worse?\r\n\r\nMoving the brackets after causes a unit mismatch. `2 * 128 * D` is a scalar, while `R bits` is a number of bits.",
+              "createdAt": "2023-10-16T09:32:00Z",
+              "updatedAt": "2023-10-16T09:32:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG8Jf",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:33:42Z",
+          "updatedAt": "2023-10-16T09:33:43Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "> > `M0` and `M1` are `128 * D` bits instead of 128 bits. `M0` and `M1` are split into 128-bit blocks, each of them updating a different AEGIS-128L state.\r\n> \r\n> Perhaps worth writing this without repeating `M0` and `M1`.\r\n\r\nIndeed.",
+              "createdAt": "2023-10-16T09:33:42Z",
+              "updatedAt": "2023-10-16T09:33:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG8Tq",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:34:03Z",
+          "updatedAt": "2023-10-16T09:34:03Z",
+          "comments": [
+            {
+              "originalPosition": 339,
+              "body": "dropped!",
+              "createdAt": "2023-10-16T09:34:03Z",
+              "updatedAt": "2023-10-16T09:34:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG-G3",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:37:50Z",
+          "updatedAt": "2023-10-16T09:37:50Z",
+          "comments": [
+            {
+              "originalPosition": 355,
+              "body": "With the `for` loop right before, I think having the empty lines seems to improve readability.\r\n\r\nHowever, this is inconsistent with other places where we use `else:` \r\n\r\nI added the empty line in the AEGIS-128L section as well. Let me know if you prefer to remove that empty line everywhere.",
+              "createdAt": "2023-10-16T09:37:50Z",
+              "updatedAt": "2023-10-16T09:37:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kG-r_",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T09:38:59Z",
+          "updatedAt": "2023-10-16T09:38:59Z",
+          "comments": [
+            {
+              "originalPosition": 170,
+              "body": "Sure!",
+              "createdAt": "2023-10-16T09:38:59Z",
+              "updatedAt": "2023-10-16T09:39:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kKxqw",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T16:58:35Z",
+          "updatedAt": "2023-10-16T16:58:36Z",
+          "comments": [
+            {
+              "originalPosition": 579,
+              "body": "Changed. Thank you!",
+              "createdAt": "2023-10-16T16:58:35Z",
+              "updatedAt": "2023-10-16T16:58:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kKyhA",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:00:45Z",
+          "updatedAt": "2023-10-16T17:00:45Z",
+          "comments": [
+            {
+              "originalPosition": 581,
+              "body": "Replaced it with `for optimal performance`. Does that sound better?",
+              "createdAt": "2023-10-16T17:00:45Z",
+              "updatedAt": "2023-10-16T17:00:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kKyp8",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:01:06Z",
+          "updatedAt": "2023-10-16T17:01:06Z",
+          "comments": [
+            {
+              "originalPosition": 583,
+              "body": "Capitalized!",
+              "createdAt": "2023-10-16T17:01:06Z",
+              "updatedAt": "2023-10-16T17:01:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kKy7t",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:01:53Z",
+          "updatedAt": "2023-10-16T17:01:53Z",
+          "comments": [
+            {
+              "originalPosition": 605,
+              "body": "Better indeed!",
+              "createdAt": "2023-10-16T17:01:53Z",
+              "updatedAt": "2023-10-16T17:01:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kKzF1",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:02:18Z",
+          "updatedAt": "2023-10-16T17:02:19Z",
+          "comments": [
+            {
+              "originalPosition": 596,
+              "body": "Better!",
+              "createdAt": "2023-10-16T17:02:19Z",
+              "updatedAt": "2023-10-16T17:02:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK0Ge",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:04:55Z",
+          "updatedAt": "2023-10-16T17:04:55Z",
+          "comments": [
+            {
+              "originalPosition": 402,
+              "body": "Fixed, thanks!",
+              "createdAt": "2023-10-16T17:04:55Z",
+              "updatedAt": "2023-10-16T17:04:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK0Pw",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:05:19Z",
+          "updatedAt": "2023-10-16T17:05:19Z",
+          "comments": [
+            {
+              "originalPosition": 537,
+              "body": "Dropped.",
+              "createdAt": "2023-10-16T17:05:19Z",
+              "updatedAt": "2023-10-16T17:05:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK0mS",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:06:15Z",
+          "updatedAt": "2023-10-16T17:06:16Z",
+          "comments": [
+            {
+              "originalPosition": 569,
+              "body": "Done.",
+              "createdAt": "2023-10-16T17:06:15Z",
+              "updatedAt": "2023-10-16T17:06:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK07N",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:07:11Z",
+          "updatedAt": "2023-10-16T17:07:11Z",
+          "comments": [
+            {
+              "originalPosition": 571,
+              "body": "\"or\" dropped, and \"And\" removed.",
+              "createdAt": "2023-10-16T17:07:11Z",
+              "updatedAt": "2023-10-16T17:07:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK09-",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:07:18Z",
+          "updatedAt": "2023-10-16T17:07:18Z",
+          "comments": [
+            {
+              "originalPosition": 575,
+              "body": "Done.",
+              "createdAt": "2023-10-16T17:07:18Z",
+              "updatedAt": "2023-10-16T17:07:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK1Fy",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:07:39Z",
+          "updatedAt": "2023-10-16T17:07:39Z",
+          "comments": [
+            {
+              "originalPosition": 577,
+              "body": "Comma removed.",
+              "createdAt": "2023-10-16T17:07:39Z",
+              "updatedAt": "2023-10-16T17:07:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kK-6V",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:33:33Z",
+          "updatedAt": "2023-10-16T17:33:33Z",
+          "comments": [
+            {
+              "originalPosition": 83,
+              "body": "That's what I thought and makes sense. Perhaps we should leave it. The 2 looks odd to me compared to the 4 because it's mid-sentence, but they should obviously both be either numbers or words.",
+              "createdAt": "2023-10-16T17:33:33Z",
+              "updatedAt": "2023-10-16T17:34:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kLAMJ",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:35:50Z",
+          "updatedAt": "2023-10-16T17:35:50Z",
+          "comments": [
+            {
+              "originalPosition": 91,
+              "body": "> Square brackets mean inclusive, non-square brackets mean exclusive.\r\n\r\nOk if that's common knowledge, that's fine. I was thinking about it like slicing arrays.\r\n\r\n> not having the comma improves readability\r\n\r\nYes, that makes sense.",
+              "createdAt": "2023-10-16T17:35:50Z",
+              "updatedAt": "2023-10-16T17:35:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kLCFT",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:40:39Z",
+          "updatedAt": "2023-10-16T17:40:39Z",
+          "comments": [
+            {
+              "originalPosition": 102,
+              "body": "I think the respectively would be better after, but it's quite an awkward sentence. What do you think of these:\r\n\r\n> The Encrypt function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 Encrypt function respectively.\r\n\r\nor\r\n\r\n> The Encrypt functions of AEGIS-128X and AEGIS-256X are similar to the AEGIS-128L and AEGIS-256 Encrypt functions respectively.",
+              "createdAt": "2023-10-16T17:40:39Z",
+              "updatedAt": "2023-10-16T17:40:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kLCsW",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:42:22Z",
+          "updatedAt": "2023-10-16T17:42:22Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "> Moving the brackets after causes a unit mismatch\r\n\r\nOk let's leave it. Do you prefer it with or without the `=` would be my other question?",
+              "createdAt": "2023-10-16T17:42:22Z",
+              "updatedAt": "2023-10-16T17:42:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kLDD2",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:43:21Z",
+          "updatedAt": "2023-10-16T17:43:21Z",
+          "comments": [
+            {
+              "originalPosition": 355,
+              "body": "I will have a look, but that sounds like a good idea.",
+              "createdAt": "2023-10-16T17:43:21Z",
+              "updatedAt": "2023-10-16T17:43:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kLDub",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-16T17:45:12Z",
+          "updatedAt": "2023-10-16T17:45:12Z",
+          "comments": [
+            {
+              "originalPosition": 581,
+              "body": "That does.",
+              "createdAt": "2023-10-16T17:45:12Z",
+              "updatedAt": "2023-10-16T17:45:13Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
