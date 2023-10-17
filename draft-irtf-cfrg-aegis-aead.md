@@ -1294,7 +1294,7 @@ Repeat(4,
 Update(M)
 ~~~
 
-The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`128 * D`) bits at once. `M` is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
+The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`128 * D`) bits at once. `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
 
 Steps:
 
@@ -1417,7 +1417,7 @@ u = LE64(ad_len_bits) || LE64(msg_len_bits)
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
-Repeat(7, Update(t, t))
+Repeat(7, Update(t))
 
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
@@ -1437,11 +1437,9 @@ return tag
 
 ## Implementation Considerations
 
-AEGIS-128X and AEGIS-256X with a degree of `1` are indentical to AEGIS-128L and AEGIS-256X. This property can be used to reduce the code size of a generic implementation.
+AEGIS-128X and AEGIS-256X with a degree of `1` are indentical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.
 
-In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X2) or eight 512-bit registers (for AEGIS-128X4). In AEGIS-256X, `V` can be represented as six 256-bit registers (for AEGIS-256X2) or six 512-bit registers (for AEGIS-256X4).
-
-With this representation, loops over `0..D` in the above pseudo-code can be replaced by vector instructions.
+In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X2) or eight 512-bit registers (for AEGIS-128X4). In AEGIS-256X, `V` can be represented as six 256-bit registers (for AEGIS-256X2) or six 512-bit registers (for AEGIS-256X4). With this representation, loops over `0..D` in the above pseudocode can be replaced by vector instructions.
 
 ## Operational Considerations
 
