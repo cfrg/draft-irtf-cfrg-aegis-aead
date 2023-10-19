@@ -949,7 +949,7 @@ return tag
 
 Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, include instructions to efficiently apply the AES round function to a vector of AES blocks.
 
-The AEGIS-128X and AEGIS-256X modes are designed to take advantage of these instructions. They share the same properties as the ciphers they are based on, but can be significantly faster on these platforms, even for short messages.
+The AEGIS-128X and AEGIS-256X modes are designed to take advantage of these instructions. They share the same properties as the ciphers they are based on but can be significantly faster on these platforms, even for short messages.
 
 AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.
 
@@ -972,7 +972,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 `Encrypt` function respectively, but processes `R` bit input blocks per update.
+The `Encrypt` function of `AEGIS-128X` and `AEGIS-256X` is similar to the `Encrypt` function of `AEGIS-128L` and `AEGIS-256` respectively, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1001,7 +1001,7 @@ return ct and tag
 Decrypt(ct, tag, ad, key, nonce)
 ~~~
 
-The `Decrypt` function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 `Decrypt` function respectively, but processes `R` bit input blocks per update.
+The `Decrypt` function of `AEGIS-128X` and `AEGIS-256X` is similar to the `Decrypt` function of `AEGIS-128L` and `AEGIS-256` respectively, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1077,7 +1077,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits. They are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1261,12 +1261,11 @@ for i in 0..D:
     V[4,i] = k0 ^ C0
     V[5,i] = k1 ^ C1
 
-n0_v, n1_v = {}, {}
 k0_v, k1_v = {}, {}
 k0n0_v, k1n1_v = {}, {}
 for i in 0..D:
-    n0_v = n0_v || n0
-    n1_v = n1_v || n1
+    k0_v = k0_v || k0
+    k1_v = k1_v || k1
     k0n0_v = k0n0_v || (k0 ^ n0)
     k1n1_v = k1n1_v || (k1 ^ n1)
 
@@ -1445,7 +1444,7 @@ In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X
 
 The AEGIS parallel modes are specialized and can only improve performance on specific CPUs.
 
-The parallelism degrees implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
+The degrees of parallelism implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
 
 The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the mininum vector register sizes a CPU should support for optimal performance.
 
