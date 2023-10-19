@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-17T00:31:33.438891+00:00",
+  "timestamp": "2023-10-19T00:31:06.486994+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -63,13 +63,13 @@
       "labels": [],
       "body": "Reopening the PR here, since the repo was moved to the CFRG org.\r\n\r\nDocument the parallel modes.\r\n\r\nIn order to reduce redundancy and the document size, inputs and outputs of individual functions haven't been duplicated.\r\n\r\nNot sure if we should (for clarity/consistency, maybe) or not.\r\n\r\nFixes https://github.com/jedisct1/draft-aegis-aead/issues/94",
       "createdAt": "2023-10-09T16:27:26Z",
-      "updatedAt": "2023-10-16T17:45:12Z",
+      "updatedAt": "2023-10-17T17:55:53Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "016dad2310d341fa4353f0f00e669194a6775e84",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "aegis-x",
-      "headRefOid": "de747bb59ecfa50d7378c1aa86d1d466d6aa27e9",
+      "headRefOid": "bb9223c83ff0546ec7babaa1387686cb3e495630",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -95,6 +95,20 @@
           "body": "In the paper, `r` refers to the rate of the underlying AEGIS primitive, while in this document, `R` refers to the rate of the mode (= `r \u00b7 \u03bd` in the paper).\r\n\r\nThat can be confusing, but in implementations, only the mode rate is relevant, so that simplifies the specification quite a bit.",
           "createdAt": "2023-10-09T20:44:44Z",
           "updatedAt": "2023-10-09T21:02:00Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks a lot, Samuel! That was a lot to review.\r\n\r\nAll your comments should have been addressed.",
+          "createdAt": "2023-10-17T07:48:59Z",
+          "updatedAt": "2023-10-17T07:48:59Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Well done Frank! Teamwork makes the dream work, but you did the hard part. I'll take a look later this week.",
+          "createdAt": "2023-10-17T17:55:52Z",
+          "updatedAt": "2023-10-17T17:55:52Z"
         }
       ],
       "reviews": [
@@ -1099,6 +1113,166 @@
               "body": "That does.",
               "createdAt": "2023-10-16T17:45:12Z",
               "updatedAt": "2023-10-16T17:45:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOr4B",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:37:41Z",
+          "updatedAt": "2023-10-17T07:37:42Z",
+          "comments": [
+            {
+              "originalPosition": 102,
+              "body": "Changed to:\r\n\r\n> The Encrypt function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 Encrypt function respectively\r\n\r\n\"respectively\" at the end looks odd to me, but I trust you :)",
+              "createdAt": "2023-10-17T07:37:41Z",
+              "updatedAt": "2023-10-17T07:37:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOsOZ",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:38:27Z",
+          "updatedAt": "2023-10-17T07:38:27Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "The `=` doesn't seem necessary. Let's remove it.",
+              "createdAt": "2023-10-17T07:38:27Z",
+              "updatedAt": "2023-10-17T07:38:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOsU1",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:38:39Z",
+          "updatedAt": "2023-10-17T07:38:39Z",
+          "comments": [
+            {
+              "originalPosition": 408,
+              "body": "Removed.",
+              "createdAt": "2023-10-17T07:38:39Z",
+              "updatedAt": "2023-10-17T07:38:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOtOt",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:40:33Z",
+          "updatedAt": "2023-10-17T07:40:33Z",
+          "comments": [
+            {
+              "originalPosition": 411,
+              "body": "`k0n0_v, k1n1_v = {}, {}` added.",
+              "createdAt": "2023-10-17T07:40:33Z",
+              "updatedAt": "2023-10-17T07:40:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOtk1",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:41:18Z",
+          "updatedAt": "2023-10-17T07:41:18Z",
+          "comments": [
+            {
+              "originalPosition": 396,
+              "body": "Fixed.",
+              "createdAt": "2023-10-17T07:41:18Z",
+              "updatedAt": "2023-10-17T07:41:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOxhy",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:45:07Z",
+          "updatedAt": "2023-10-17T07:45:07Z",
+          "comments": [
+            {
+              "originalPosition": 424,
+              "body": "Added the fact that M is 128*D bits.",
+              "createdAt": "2023-10-17T07:45:07Z",
+              "updatedAt": "2023-10-17T07:45:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOzcb",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:46:25Z",
+          "updatedAt": "2023-10-17T07:46:26Z",
+          "comments": [
+            {
+              "originalPosition": 567,
+              "body": "Good catch.",
+              "createdAt": "2023-10-17T07:46:25Z",
+              "updatedAt": "2023-10-17T07:46:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kOzs6",
+          "commit": {
+            "abbreviatedOid": "e5bf8c2"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T07:46:53Z",
+          "updatedAt": "2023-10-17T07:46:54Z",
+          "comments": [
+            {
+              "originalPosition": 573,
+              "body": "Done.",
+              "createdAt": "2023-10-17T07:46:53Z",
+              "updatedAt": "2023-10-17T07:46:54Z"
             }
           ]
         }
