@@ -1552,7 +1552,7 @@ The security of AEGIS against timing and physical attacks is limited by the impl
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
-Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{M14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, in {{STSI23}}, in {{IR23}}, and in {{BS23}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, in {{M14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, in {{STSI23}}, in {{IR23}}, and in {{BS23}}.
 
 # IANA Considerations
 
