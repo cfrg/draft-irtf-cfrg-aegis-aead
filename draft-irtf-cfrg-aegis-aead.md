@@ -972,7 +972,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 Encrypt(msg, ad, key, nonce)
 ~~~
 
-The `Encrypt` function of `AEGIS-128X` and `AEGIS-256X` is similar to the `Encrypt` function of `AEGIS-128L` and `AEGIS-256` respectively, but processes `R` bit input blocks per update.
+The `Encrypt` function of `AEGIS-128X` resembles that of `AEGIS-128L`, and similarly, the `Encrypt` function of `AEGIS-256X` mirrors that of `AEGIS-256`, but processes `R` bit input blocks per update.
 
 Steps:
 
@@ -1001,7 +1001,7 @@ return ct and tag
 Decrypt(ct, tag, ad, key, nonce)
 ~~~
 
-The `Decrypt` function of `AEGIS-128X` and `AEGIS-256X` is similar to the `Decrypt` function of `AEGIS-128L` and `AEGIS-256` respectively, but processes `R` bit input blocks per update.
+The `Decrypt` function of `AEGIS-128X` resembles that of `AEGIS-128L`, and similarly, the `Decrypt` function of `AEGIS-256X` mirrors that of `AEGIS-256`, but processes `R` bit input blocks per update.
 
 Steps:
 
