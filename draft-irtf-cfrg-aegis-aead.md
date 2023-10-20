@@ -39,6 +39,21 @@ informative:
         org: KU Leuven
     date: 2016
 
+  BS23:
+    title: "Single-query Quantum Hidden Shift Attacks"
+    rc: "Cryptology ePrint Archive, Paper 2023/1306"
+    target: https://eprint.iacr.org/2023/1306
+    author:
+      -
+        ins: X. Bonnetain
+        name: Xavier Bonnetain
+        org: Université de Lorraine, CNRS, Inria, LORIA
+      -
+        ins: A. Schrottenloher
+        name: André Schrottenloher
+        org: Université de Rennes, CNRS, Inria, IRISA
+    date: 2023
+
   D23:
     title: "Adding more parallelism to the AEGIS authenticated encryption algorithms"
     rc: "Cryptology ePrint Archive, Paper 2023/523"
@@ -1535,7 +1550,9 @@ As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security propertie
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
-Security analyses of AEGIS can be found in Chapter 4 of {{AEGIS}}, in {{M14}}, in {{ENP19}}, in {{LIMS21}}, in {{JLD21}}, in {{STSI23}}, and in {{IR23}}.
+AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
+
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, and {{BS23}}.
 
 # IANA Considerations
 
