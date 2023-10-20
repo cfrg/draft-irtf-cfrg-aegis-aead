@@ -3225,7 +3225,8 @@ return stream
 <p id="section-8-11">Regardless of the variant, the <code>key</code> and <code>nonce</code> are only required by the <code>Init</code> function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last <code>Update</code> call of the initialization function.<a href="#section-8-11" class="pilcrow">¶</a></p>
 <p id="section-8-12">As shown in <span>[<a href="#D23" class="cite xref">D23</a>]</span>, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.<a href="#section-8-12" class="pilcrow">¶</a></p>
 <p id="section-8-13">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound()</code> function. Failure to implement <code>AESRound()</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.<a href="#section-8-13" class="pilcrow">¶</a></p>
-<p id="section-8-14">Security analyses of AEGIS can be found in Chapter 4 of <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, in <span>[<a href="#M14" class="cite xref">M14</a>]</span>, in <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span>, in <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span>, in <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span>, in <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>, and in <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>.<a href="#section-8-14" class="pilcrow">¶</a></p>
+<p id="section-8-14">AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.<a href="#section-8-14" class="pilcrow">¶</a></p>
+<p id="section-8-15">Security analyses of AEGIS can be found in <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, <span>[<a href="#M14" class="cite xref">M14</a>]</span>, <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span>, <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span>, <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span>, <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>, <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, and <span>[<a href="#BS23" class="cite xref">BS23</a>]</span>.<a href="#section-8-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -3402,6 +3403,10 @@ mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
 <dt id="AEGIS">[AEGIS]</dt>
         <dd>
 <span class="refAuthor">Wu, H.</span> and <span class="refAuthor">B. Preneel</span>, <span class="refTitle">"AEGIS: A Fast Authenticated Encryption Algorithm (v1.1)"</span>, <time datetime="2016" class="refDate">2016</time>, <span>&lt;<a href="https://competitions.cr.yp.to/round3/aegisv11.pdf">https://competitions.cr.yp.to/round3/aegisv11.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="BS23">[BS23]</dt>
+        <dd>
+<span class="refAuthor">Bonnetain, X.</span> and <span class="refAuthor">A. Schrottenloher</span>, <span class="refTitle">"Single-query Quantum Hidden Shift Attacks"</span>, <span class="refContent">Cryptology ePrint Archive, Paper 2023/1306</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/1306">https://eprint.iacr.org/2023/1306</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="D23">[D23]</dt>
         <dd>

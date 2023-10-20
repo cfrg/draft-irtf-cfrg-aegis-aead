@@ -1628,9 +1628,14 @@ return tag
    or state information.  The exact mitigations required for timing and
    physical attacks also depend on the threat model in question.
 
-   Security analyses of AEGIS can be found in Chapter 4 of [AEGIS], in
-   [M14], in [ENP19], in [LIMS21], in [JLD21], in [STSI23], and in
-   [IR23].
+   AEGIS is considered secure against guess-and-determine attacks aimed
+   at recovering the state from observed ciphertexts.  This resilience
+   extends to quantum adversaries in the Q1 model, wherein quantum
+   attacks do not confer any practical advantage for decrypting
+   previously recorded ciphertexts or achieving key recovery.
+
+   Security analyses of AEGIS can be found in [AEGIS], [M14], [ENP19],
+   [LIMS21], [JLD21], [STSI23], [IR23], and [BS23].
 
 9.  IANA Considerations
 
@@ -1738,6 +1743,10 @@ return tag
    [AEGIS]    Wu, H. and B. Preneel, "AEGIS: A Fast Authenticated
               Encryption Algorithm (v1.1)", 2016,
               <https://competitions.cr.yp.to/round3/aegisv11.pdf>.
+
+   [BS23]     Bonnetain, X. and A. Schrottenloher, "Single-query Quantum
+              Hidden Shift Attacks", Cryptology ePrint Archive, Paper
+              2023/1306, 2023, <https://eprint.iacr.org/2023/1306>.
 
    [D23]      Denis, F., "Adding more parallelism to the AEGIS
               authenticated encryption algorithms", Cryptology ePrint
