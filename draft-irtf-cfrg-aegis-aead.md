@@ -1534,7 +1534,7 @@ Under the assumption that the secret key is unknown to the attacker both AEGIS-1
 
 Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in the analysis of the (robustness of CAESAR candidates beyond their guarantees){{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
