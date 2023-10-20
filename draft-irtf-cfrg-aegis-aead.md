@@ -37,7 +37,18 @@ informative:
         ins: B. Preneel
         name: Bart Preneel
         org: KU Leuven
-    date: 2016-09-15
+    date: 2016
+
+  D23:
+    title: "Adding more parallelism to the AEGIS authenticated encryption algorithms"
+    rc: "Cryptology ePrint Archive, Paper 2023/523"
+    target: https://eprint.iacr.org/2023/523
+    author:
+      -
+        ins: F. Denis
+        name: Frank Denis
+        org: Fastly Inc.
+    date: 2023
 
   ENP19:
     title: "Analyzing the Linear Keystream Biases in AEGIS"
@@ -57,7 +68,7 @@ informative:
         ins: R. Primas
         name: Robert Primas
         org: Graz University of Technology
-    date: 2020-01-31
+    date: 2020
 
   IR23:
     title: "Key Committing Security Analysis of AEGIS"
@@ -92,7 +103,7 @@ informative:
         ins: S. Du
         name: Shaoyu Du
         org: State Key Laboratory of Cryptology
-    date: 2021-05-22
+    date: 2021
 
   LGR21:
     title: "Partitioning Oracle Attacks"
@@ -135,7 +146,7 @@ informative:
         ins: K. Sakamoto
         name: Kosei Sakamoto
         org: University of Hyogo
-    date: 2021-06-11
+    date: 2021
 
   M14:
     title: "Linear Biases in AEGIS Keystream"
@@ -171,7 +182,7 @@ informative:
         ins: T. Isobe
         name: Takanori Isobe
         org: University of Hyogo; National Institute of Information and Communications Technology
-    date: 2023-01-27
+    date: 2023
 
   VV18:
     title: "Can Caesar Beat Galois?"
@@ -191,7 +202,7 @@ informative:
 
 --- abstract
 
-This document describes AEGIS-128L and AEGIS-256, two AES-based authenticated encryption algorithms designed for high-performance applications.
+This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications.
 This document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard.
 
 
@@ -199,14 +210,16 @@ This document is a product of the Crypto Forum Research Group (CFRG). It is not 
 
 # Introduction
 
-This document describes the AEGIS-128L and AEGIS-256 authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has a better security margin alongside improved performance and AEGIS-256 uses a 256-bit key {{LIMS21}}. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
+This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has a better security margin alongside improved performance and AEGIS-256 uses a 256-bit key {{LIMS21}}. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
 
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.
+- AEGIS-128X, which is a mode based on AEGIS-128L, specialized for CPUs with large vector registers and vector AES instructions.
+- AEGIS-256X, which is a mode based on AEGIS-256, specialized for CPUs with large vector registers and vector AES instructions.
 
 The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support for parallelizable AES block encryption {{AEGIS}}. Similarly, software implementations can also be faster, although to a lesser extent.
 
-Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256. AEGIS-128L also allows for more messages to be safely encrypted when using random nonces.
+Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256 and AEGIS-256X. AEGIS-128L and AEGIS-128X also allow for more messages to be safely encrypted when using random nonces.
 
 With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle in order to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
@@ -241,7 +254,7 @@ Primitives:
 
 AEGIS internal functions:
 
-- `Update(M0, M1)`: the state update function.
+- `Update(M0, M1)` or `Update(M)`: the state update function.
 - `Init(key, nonce)`: the initialization function.
 - `Absorb(ai)`: the input block absorption function.
 - `Enc(xi)`: the input block encryption function.
@@ -599,9 +612,9 @@ t = S2 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 Repeat(7, Update(t, t))
 
 if tag_length == 16: # 128 bits
-  tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
+    tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
 else:                # 256 bits
-  tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
+    tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
 
 return tag
 ~~~
@@ -925,12 +938,530 @@ t = S3 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 Repeat(7, Update(t))
 
 if tag_length == 16: # 128 bits
-  tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
+    tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 else:                # 256 bits
-  tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
+    tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
 
 return tag
 ~~~
+
+# Parallel modes
+
+Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, include instructions to efficiently apply the AES round function to a vector of AES blocks.
+
+The AEGIS-128X and AEGIS-256X modes are designed to take advantage of these instructions. They share the same properties as the ciphers they are based on but can be significantly faster on these platforms, even for short messages.
+
+AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.
+
+The modes are parameterized by the parallelism degree. With 256-bit registers, 2 parallel operations can be applied to 128-bit AES blocks. With 512-bit registers, the number of instances can be raised to 4.
+
+The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-256 states.
+
+## Additional Conventions and Definitions
+
+- `D`: the degree of parallelism.
+- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
+- `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
+- `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
+- `ctx`: the context separator.
+- `Byte(x)`: the value `x` encoded as 8 bits.
+
+## Authenticated Encryption
+
+~~~
+Encrypt(msg, ad, key, nonce)
+~~~
+
+The `Encrypt` function of `AEGIS-128X` resembles that of `AEGIS-128L`, and similarly, the `Encrypt` function of `AEGIS-256X` mirrors that of `AEGIS-256`, but processes `R` bit input blocks per update.
+
+Steps:
+
+~~~
+Init(key, nonce)
+
+ct = {}
+
+ad_blocks = Split(ZeroPad(ad, R), R)
+for ai in ad_blocks:
+    Absorb(ai)
+
+msg_blocks = Split(ZeroPad(msg, R), R)
+for xi in msg_blocks:
+    ct = ct || Enc(xi)
+
+tag = Finalize(|ad|, |msg|)
+ct = Truncate(ct, |msg|)
+
+return ct and tag
+~~~
+
+## Authenticated Decryption
+
+~~~
+Decrypt(ct, tag, ad, key, nonce)
+~~~
+
+The `Decrypt` function of `AEGIS-128X` resembles that of `AEGIS-128L`, and similarly, the `Decrypt` function of `AEGIS-256X` mirrors that of `AEGIS-256`, but processes `R` bit input blocks per update.
+
+Steps:
+
+~~~
+Init(key, nonce)
+
+msg = {}
+
+ad_blocks = Split(ZeroPad(ad, R), R)
+for ai in ad_blocks:
+    Absorb(ai)
+
+ct_blocks = Split(ct, R)
+cn = Tail(ct, |ct| mod R)
+
+for ci in ct_blocks:
+    msg = msg || Dec(ci)
+
+if cn is not empty:
+    msg = msg || DecPartial(cn)
+
+expected_tag = Finalize(|ad|, |msg|)
+
+if CtEq(tag, expected_tag) is False:
+    erase msg
+    return "verification failed" error
+else:
+    return msg
+~~~
+
+## AEGIS-128X
+
+### The Init Function
+
+~~~
+Init(key, nonce)
+~~~
+
+The `Init` function initializes a vector of `D` AEGIS-128L states with the same `key` and `nonce` but a different context `ctx`. The context is added to the state before every update.
+
+Steps:
+
+~~~
+for i in 0..D:
+    V[0,i] = key ^ nonce
+    V[1,i] = C1
+    V[2,i] = C0
+    V[3,i] = C1
+    V[4,i] = key ^ nonce
+    V[5,i] = key ^ C0
+    V[6,i] = key ^ C1
+    V[7,i] = key ^ C0
+
+nonce_v = {}
+key_v = {}
+for i in 0..D:
+    nonce_v = nonce_v || nonce
+    key_v = key_v || key
+
+Repeat(10,
+    for i in 0..D:
+        ctx = Byte(i)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[7,i] = V[7,i] ^ ZeroPad(ctx, 128)
+
+    Update(nonce_v, key_v)
+)
+~~~
+
+### The Update Function
+
+~~~
+Update(M0, M1)
+~~~
+
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+
+Steps:
+
+~~~
+m0 = Split(M0, 128)
+m1 = Split(M1, 128)
+
+for i in 0..D:
+    V'[0,i] = AESRound(V[7,i], V[0,i] ^ m0[i])
+    V'[1,i] = AESRound(V[0,i], V[1,i])
+    V'[2,i] = AESRound(V[1,i], V[2,i])
+    V'[3,i] = AESRound(V[2,i], V[3,i])
+    V'[4,i] = AESRound(V[3,i], V[4,i] ^ m1[i])
+    V'[5,i] = AESRound(V[4,i], V[5,i])
+    V'[6,i] = AESRound(V[5,i], V[6,i])
+    V'[7,i] = AESRound(V[6,i], V[7,i])
+
+    V[0,i]  = V'[0,i]
+    V[1,i]  = V'[1,i]
+    V[2,i]  = V'[2,i]
+    V[3,i]  = V'[3,i]
+    V[4,i]  = V'[4,i]
+    V[5,i]  = V'[5,i]
+    V[6,i]  = V'[6,i]
+    V[7,i]  = V'[7,i]
+~~~
+
+### The Absorb Function
+
+~~~
+Absorb(ai)
+~~~
+
+The `Absorb` function is similar to the AEGIS-128L `Absorb` function, but absorbs `R` bits instead of 256 bits.
+
+Steps:
+
+~~~
+t0, t1 = Split(ai, R)
+Update(t0, t1)
+~~~
+
+### The Enc Function
+
+~~~
+Enc(xi)
+~~~
+
+The `Enc` function is similar to the AEGIS-128L `Enc` function, but encrypts `R` bits instead of 256 bits.
+
+Steps:
+
+~~~
+z0 = {}
+z1 = {}
+for i in 0..D:
+    z0 = z0 || (V[6,i] ^ V[1,i] ^ (V[2,i] & V[3,i]))
+    z1 = z1 || (V[2,i] ^ V[5,i] ^ (V[6,i] & V[7,i]))
+
+t0, t1 = Split(xi, R)
+out0 = t0 ^ z0
+out1 = t1 ^ z1
+
+Update(t0, t1)
+ci = out0 || out1
+
+return ci
+~~~
+
+### The Dec Function
+
+~~~
+Dec(ci)
+~~~
+
+The `Dec` function is similar to the AEGIS-128L `Dec` function, but decrypts `R` bits instead of 256 bits.
+
+Steps:
+
+~~~
+z0 = {}
+z1 = {}
+for i in 0..D:
+    z0 = z0 || (V[6,i] ^ V[1,i] ^ (V[2,i] & V[3,i]))
+    z1 = z1 || (V[2,i] ^ V[5,i] ^ (V[6,i] & V[7,i]))
+
+t0, t1 = Split(ci, R)
+out0 = t0 ^ z0
+out1 = t1 ^ z1
+
+Update(out0, out1)
+xi = out0 || out1
+
+return xi
+~~~
+
+### The DecPartial Function
+
+~~~
+DecPartial(cn)
+~~~
+
+The `DecPartial` function is similar to the AEGIS-128L `DecPartial` function, but decrypts up to `R` bits instead of 256 bits.
+
+Steps:
+
+~~~
+z0 = {}
+z1 = {}
+for i in 0..D:
+    z0 = z0 || (V[6,i] ^ V[1,i] ^ (V[2,i] & V[3,i]))
+    z1 = z1 || (V[2,i] ^ V[5,i] ^ (V[6,i] & V[7,i]))
+
+t0, t1 = Split(ZeroPad(cn, R), 128 * D)
+out0 = t0 ^ z0
+out1 = t1 ^ z1
+
+xn = Truncate(out0 || out1, |cn|)
+
+v0, v1 = Split(ZeroPad(xn, R), 128 * D)
+Update(v0, v1)
+
+return xn
+~~~
+
+### The Finalize Function
+
+~~~
+Finalize(ad_len_bits, msg_len_bits)
+~~~
+
+The `Finalize` function finalizes every AEGIS-128L instance and combines the resulting authentication tags using the bitwise exclusive OR operation.
+
+Steps:
+
+~~~
+t = {}
+u = LE64(ad_len_bits) || LE64(msg_len_bits)
+for i in 0..D:
+    t = t || (V[2,i] ^ u)
+
+Repeat(7, Update(t, t))
+
+if tag_length == 16: # 128 bits
+    tag = ZeroPad({}, 128)
+    for i in 0..D:
+        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+
+else:                # 256 bits
+    tag0 = ZeroPad({}, 128)
+    tag1 = ZeroPad({}, 128)
+    for i in 0..D:
+        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        tag1 = tag1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+    tag = tag0 || tag1
+
+return tag
+~~~
+
+## AEGIS-256X
+
+### The Init Function
+
+~~~
+Init(key, nonce)
+~~~
+
+The `Init` function initializes a vector of `D` AEGIS-256 states with the same `key` and `nonce` but a different context `ctx`. The context is added to the state before every update.
+
+Steps:
+
+~~~
+k0, k1 = Split(key, 128)
+n0, n1 = Split(nonce, 128)
+
+for i in 0..D:
+    V[0,i] = k0 ^ n0
+    V[1,i] = k1 ^ n1
+    V[2,i] = C1
+    V[3,i] = C0
+    V[4,i] = k0 ^ C0
+    V[5,i] = k1 ^ C1
+
+k0_v, k1_v = {}, {}
+k0n0_v, k1n1_v = {}, {}
+for i in 0..D:
+    k0_v = k0_v || k0
+    k1_v = k1_v || k1
+    k0n0_v = k0n0_v || (k0 ^ n0)
+    k1n1_v = k1n1_v || (k1 ^ n1)
+
+Repeat(4,
+    for i in 0..D:
+        ctx = Byte(i)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        Update(k0_v)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        Update(k1_v)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        Update(k0n0_v)
+        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
+        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        Update(k1n1_v)
+)
+~~~
+
+### The Update Function
+
+~~~
+Update(M)
+~~~
+
+The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`128 * D`) bits at once. `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
+
+Steps:
+
+~~~
+m = Split(M, 128)
+
+for i in 0..D:
+    V'[0,i] = AESRound(V[5,i], V[0,i] ^ m[i])
+    V'[1,i] = AESRound(V[0,i], V[1,i])
+    V'[2,i] = AESRound(V[1,i], V[2,i])
+    V'[3,i] = AESRound(V[2,i], V[3,i])
+    V'[4,i] = AESRound(V[3,i], V[4,i])
+    V'[5,i] = AESRound(V[4,i], V[5,i])
+
+    V[0,i]  = V'[0,i]
+    V[1,i]  = V'[1,i]
+    V[2,i]  = V'[2,i]
+    V[3,i]  = V'[3,i]
+    V[4,i]  = V'[4,i]
+    V[5,i]  = V'[5,i]
+~~~
+
+### The Absorb Function
+
+~~~
+Absorb(ai)
+~~~
+
+The `Absorb` function is similar to the AEGIS-256 `Absorb` function, but absorbs `R` bits instead of 128 bits.
+
+Steps:
+
+~~~
+Update(ai)
+~~~
+
+### The Enc Function
+
+~~~
+Enc(xi)
+~~~
+
+The `Enc` function is similar to the AEGIS-256 `Enc` function, but encrypts `R` bits instead of 128 bits.
+
+Steps:
+
+~~~
+z = {}
+for i in 0..D:
+    z = z || (V[1,i] ^ V[4,i] ^ V[5,i] ^ (V[2,i] & V[3,i]))
+
+Update(xi)
+
+ci = xi ^ z
+
+return ci
+~~~
+
+### The Dec Function
+
+~~~
+Dec(ci)
+~~~
+
+The `Dec` function is similar to the AEGIS-256 `Dec` function, but decrypts `R` bits instead of 128 bits.
+
+Steps:
+
+~~~
+z = {}
+for i in 0..D:
+    z = z || (V[1,i] ^ V[4,i] ^ V[5,i] ^ (V[2,i] & V[3,i]))
+
+xi = ci ^ z
+
+Update(xi)
+
+return xi
+~~~
+
+### The DecPartial Function
+
+~~~
+DecPartial(cn)
+~~~
+
+The `DecPartial` function is similar to the AEGIS-256 `DecPartial` function, but decrypts up to `R` bits instead of 128 bits.
+
+Steps:
+
+~~~
+z = {}
+for i in 0..D:
+    z = z || (V[1,i] ^ V[4,i] ^ V[5,i] ^ (V[2,i] & V[3,i]))
+
+t = ZeroPad(cn, R)
+out = t ^ z
+
+xn = Truncate(out, |cn|)
+
+v = ZeroPad(xn, 128 * D)
+Update(v)
+
+return xn
+~~~
+
+### The Finalize Function
+
+~~~
+Finalize(ad_len_bits, msg_len_bits)
+~~~
+
+The `Finalize` function finalizes every AEGIS-256 instance and combines the resulting authentication tags using the bitwise exclusive OR operation.
+
+Steps:
+
+~~~
+t = {}
+u = LE64(ad_len_bits) || LE64(msg_len_bits)
+for i in 0..D:
+    t = t || (V[3,i] ^ u)
+
+Repeat(7, Update(t))
+
+if tag_length == 16: # 128 bits
+    tag = ZeroPad({}, 128)
+    for i in 0..D:
+        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+
+else:                # 256 bits
+    tag0 = ZeroPad({}, 128)
+    tag1 = ZeroPad({}, 128)
+    for i in 0..D:
+        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
+        tag1 = tag1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
+    tag = tag0 || tag1
+
+return tag
+~~~
+
+## Implementation Considerations
+
+AEGIS-128X and AEGIS-256X with a degree of `1` are indentical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.
+
+In AEGIS-128X, `V` can be represented as eight 256-bit registers (for AEGIS-128X2) or eight 512-bit registers (for AEGIS-128X4). In AEGIS-256X, `V` can be represented as six 256-bit registers (for AEGIS-256X2) or six 512-bit registers (for AEGIS-256X4). With this representation, loops over `0..D` in the above pseudocode can be replaced by vector instructions.
+
+## Operational Considerations
+
+The AEGIS parallel modes are specialized and can only improve performance on specific CPUs.
+
+The degrees of parallelism implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
+
+The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the mininum vector register sizes a CPU should support for optimal performance.
+
+| Algorithm   | Rate (bits) | Optimal Register Size | State Size (bits) |
+| ----------- | ----------: | :-------------------: | ----------------: |
+| AEGIS-128L  |         256 |       128 bits        |              1024 |
+| AEGIS-128X2 |         512 |       256 bits        |              2048 |
+| AEGIS-128X4 |        1024 |       512 bits        |              4096 |
+| AEGIS-256   |         128 |       128 bits        |               768 |
+| AEGIS-256X2 |         256 |       256 bits        |              1536 |
+| AEGIS-256X4 |         512 |       512 bits        |              3072 |
+
+Note that architectures with smaller vector registers but with many registers and large pipelines may still benefit from the parallel modes.
+
+Protocols SHOULD opt for a parallel mode only when all the involved parties agree on a specific variant. AEGIS-128L and AEGIS-256 SHOULD remain the default choices.
+
+Implementations MAY choose not to include the parallel AEGIS modes.
 
 # Encoding (ct, tag) Tuples
 
@@ -999,6 +1530,8 @@ With AEGIS-128L, random nonces can safely encrypt up to 2<sup>48</sup> messages 
 With AEGIS-256, random nonces can be used with no practical limits.
 
 Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
+
+As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
@@ -1501,6 +2034,146 @@ tag128: c60b9c2d33ceb058f96e6dd03c215653
 
 tag256: 8c1cc703c81281bee3f6d9966e14948b
         4a175b2efbdc31e61a98b4465235c2da
+~~~
+
+## AEGIS-128X Test Vectors
+
+### AEGIS-128X2 Test Vector
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+
+ad    : 0102030401020304
+
+msg   : 04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        0405060704050607
+
+ct    : 9958ad79ff1feea50a27d5dd88728d15
+        7a4ce0cd996b9fffb4fde113ef646de4
+        aa67278fb1ebcb6571526b309d708447
+        c818ffc3d84c9c73b0cca3040bb85b81
+        d366311956f4cb1a66b02b25b58a7f75
+        9797169b0e398c4db16c9a577d4de180
+        5d646b823fa095ec34feefb58768efc0
+        6d9516c55b653f91
+
+tag128: 179247ab85ea2c4f9f712cac8bb7c9d3
+
+tag256: 04ad653f69c3e3bf3d29013367473ade
+        573551bdcf71f32a0debb089e58fb9e1
+~~~
+
+### AEGIS-128X4 Test Vector
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+
+ad    : 0102030401020304
+
+msg   : 04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        0405060704050607
+
+ct    : 9958ad79ff1feea50a27d5dd88728d15
+        7a4ce0cd996b9fffb4fde113ef646de4
+        6e4c5230174a6268f89f01d557879360
+        a9068d7cb825bb0e8a97ea2e82059f69
+        aa67278fb1ebcb6571526b309d708447
+        c818ffc3d84c9c73b0cca3040bb85b81
+        93fc9a4499e384ae87bfeaa46f514b63
+        30c147c3ddbb6e94
+
+tag128: 58038e00f6b7e861e2badb160beb71d4
+
+tag256: 01d860572aa4ce5b83183cc94bc9fb44
+        5e2d70c0687f6fbc6991c2918d3ab0e8
+~~~
+
+## AEGIS-256X Test Vectors
+
+### AEGIS-256X2 Test Vector
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+
+ad    : 0102030401020304
+
+msg   : 04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        0405060704050607
+
+ct    : a1b0f4b9b83eb676c8d2b8d1692be03d
+        95280efa4e2c09962880dc614f94642b
+        a7581f933d98c7355623ff63be82bb8a
+        476ddd0dfe0185b4e8da6c25bd9f38b9
+        d09e0ec9baf01cd47369dbca9d331bfc
+        d49fb4e6806e61f344d61b11ac552e4c
+        50c6d26570210e1202eb9b347b908a55
+        361ea8d15f8494e3
+
+tag128: 3c24d8bed42e92d3f85535946545fe38
+
+tag256: 3e3543e177aec683d341ca2ae92a8a1b
+        02119b5fa38054502b14ffbe8c6f7423
+~~~
+
+### AEGIS-256X4 Test Vector
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+
+ad    : 0102030401020304
+
+msg   : 04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        04050607040506070405060704050607
+        0405060704050607
+
+ct    : a1b0f4b9b83eb676c8d2b8d1692be03d
+        95280efa4e2c09962880dc614f94642b
+        d4f1068ba92cf7bfd89c2acd70ef492b
+        0544105f5c3b948cee0248486b4a3411
+        a7581f933d98c7355623ff63be82bb8a
+        476ddd0dfe0185b4e8da6c25bd9f38b9
+        d1da0307b0f33484ed9abad2c9184cb4
+        b58d7a8a486c0605
+
+tag128: 2ddf105d8bb7a2d7adb60cd5a5285183
+
+tag256: da85a761bdd56e8c11d3179e11ed353a
+        f75ab73c3662cc5bbc651b4bb4c564b9
 ~~~
 
 # Acknowledgments
