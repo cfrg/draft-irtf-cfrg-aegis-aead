@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 22 April 2024                            Individual Contributor
-                                                         20 October 2023
+Expires: 23 April 2024                            Individual Contributor
+                                                         21 October 2023
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 April 2024.
+   This Internet-Draft will expire on 23 April 2024.
 
 Copyright Notice
 
@@ -999,10 +999,10 @@ Table of Contents
    extensions, include instructions to efficiently apply the AES round
    function to a vector of AES blocks.
 
-   The AEGIS-128X and AEGIS-256X are optional, specialized modes
-   designed to take advantage of these instructions.  They share the
-   same properties as the ciphers they are based on but can be
-   significantly faster on these platforms, even for short messages.
+   AEGIS-128X and AEGIS-256X are optional, specialized modes designed to
+   take advantage of these instructions.  They share the same properties
+   as the ciphers they are based on but can be significantly faster on
+   these platforms, even for short messages.
 
    AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-
    128L and AEGIS-256 instances respectively, with distinct initial
