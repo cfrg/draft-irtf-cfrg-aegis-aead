@@ -1596,10 +1596,9 @@ return tag
    immediately reveal the bitwise difference between two messages.
 
    If tag verification fails, the decrypted message and wrong message
-   authentication tag MUST NOT be given as output.  As shown in the
-   analysis of the (robustness of CAESAR candidates beyond their
-   guarantees)[VV18], even a partial leak of the plaintext without
-   verification would facilitate chosen ciphertext attacks.
+   authentication tag MUST NOT be given as output.  As shown in [VV18],
+   even a partial leak of the plaintext without verification would
+   facilitate chosen ciphertext attacks.
 
    Every key MUST be randomly chosen from a uniform distribution.
 
