@@ -1523,6 +1523,14 @@ Instead of relying on the generic `Encrypt` function, implementations can skip t
 
 After initialization, the `Update` function is called with constant parameters, allowing further optimizations.
 
+# Implementation Status
+
+*This note is to be removed before publishing as an RFC.*
+
+Multiple implementations of the schemes described in this document have been developed and verified for interoperability.
+
+A comprehensive list of known implementations and integrations can be found at https://github.com/cfrg/draft-irtf-cfrg-aegis-aead, which includes reference implementations closely aligned with the pseudocode provided in this document.
+
 # Security Considerations
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
