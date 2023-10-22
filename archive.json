@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-19T00:31:06.486994+00:00",
+  "timestamp": "2023-10-22T00:33:46.770009+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -49,31 +49,112 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 3,
+      "id": "I_kwDOKeDGj850g8YP",
+      "title": "Document a way to commit to everything",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/3",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Due to the way the AD is absorbed, the differences of key and nonce can be canceled out, leading to a state collision. This is why AEGIS isn't fully committing.\r\n\r\nSomething to explore is slower absorption, giving control only on half an AES word before the permutation:\r\n\r\nAEGIS-256:\r\n\r\n```\r\nAbsorb(ai):\r\n    t0, t1 = Split(ai, 64)\r\n    Update(ZeroPad(t0, 128))\r\n    Update(ZeroPad(t1, 128))\r\n```\r\n\r\nAEGIS-128L:\r\n\r\n```\r\nAbsorb(ai):\r\n    t0, t1, t2, t3 = Split(ai, 64)\r\n    Update(ZeroPad(t0, 128), ZeroPad(t1, 128))\r\n    Update(ZeroPad(t2, 128), ZeroPad(t3, 128))\r\n```\r\n\r\nEliminating the differences in just a single word would then require up to 2^64 input blocks, and differences would be reintroduced on the following state updates. \r\n\r\nAssociated data is usually pretty short, so performance impact should be acceptable.\r\n\r\nA more conservative way that doesn't require a different absorption procedure is to hash the AD, i.e. recommend using:\r\n\r\n```\r\nEncrypt(msg, H(ad), key, nonce)\r\n```\r\n\r\ninstead of\r\n\r\n```\r\nEncrypt(msg, ad, key, nonce)\r\n```\r\n\r\nAs long as `H` is preimage-resistant, finding associated data that cancel the key and nonce differences becomes impractical.\r\n\r\nSure, hashing has a cost, and the security level can degrade to the one of the hash function. But only the AD has to be hashed, it doesn't require changes to the specification nor implementations, and that can be documented as a simple recommendation for protocols that require a fully committing scheme.",
+      "createdAt": "2023-10-20T18:01:56Z",
+      "updatedAt": "2023-10-20T18:42:09Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Something to explore is slower absorption, giving control only on half an AES word before the permutation\r\n\r\nWhilst I like this idea, isn't it too late to make such a change?\r\n\r\n> A more conservative way that doesn't require a different absorption procedure is to hash the AD\r\n\r\nThis seems worth mentioning. Security Considerations section?",
+          "createdAt": "2023-10-20T18:21:06Z",
+          "updatedAt": "2023-10-20T18:21:06Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Whilst I like this idea, isn't it too late to make such a change?\r\n\r\nIt is.\r\n\r\nWe can document this as optionally calling `Encrypt(msg, Expand(ad), key, nonce)` for protocols requiring full commitment, and define `Expand(ad)` as something like:\r\n\r\n```\r\na = Split(ZeroPad(ad, 128), 64)\r\nb = {}\r\nfor x in a:\r\n   b = b || ZeroPad(x, 128)\r\nreturn b \r\n```\r\n\r\ni.e. insert a 64 bit empty block every 64 bit ad block.\r\n\r\nBut this is not ideal, and looks like a last-minute patch. Also requires a publication to refer to.\r\n\r\nHashing the AD is not as efficient, but boring in a good way.\r\n\r\n> Security Considerations section?\r\n\r\nLooks like right place for it.",
+          "createdAt": "2023-10-20T18:42:08Z",
+          "updatedAt": "2023-10-20T18:42:08Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOKeDGj850h325",
+      "title": "Add implementation status",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/7",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://www.rfc-editor.org/rfc/rfc7942 (also recommended in https://www.ietf.org/archive/id/draft-eckel-edm-find-code-02.html) suggests adding an \"Implementation status\" section, that will eventually be removed before the RFC is published.\r\n\r\nEven though Datatracker links this repository for discussions, finding available implementations, including the reference ones, may not be obvious.\r\n\r\nMaybe we should add an \"Implementation status\" section, that either includes a copy of the table with have in the `README.md` file here, or links to it.",
+      "createdAt": "2023-10-20T21:32:15Z",
+      "updatedAt": "2023-10-21T18:07:29Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "`draft-eckel-edm-find-code` mentions:\r\n\r\n> A GitHub repository is associated with the I-D using the `github_repo` tag.\r\n\r\nWe should use that to add a link to this repository. I looked really hard, but didn't find how to add that tag on Datatracker. How to do this?\r\n\r\n/cc @eckelcu ",
+          "createdAt": "2023-10-20T21:36:12Z",
+          "updatedAt": "2023-10-20T21:36:12Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Maybe we should add an \"Implementation status\" section, they either includes a copy of the table with have in the README.md file here, or links to it.\r\n\r\nI think it would be better to link to the table since that will be kept up to date rather than new drafts. The amount of information this RFC is talking about would also make for a long section.\r\n\r\nWe should probably add `This note is to be removed before publishing as an RFC.` like in the `Discussion Venues` so we hopefully don't forget to remove it.",
+          "createdAt": "2023-10-21T18:00:53Z",
+          "updatedAt": "2023-10-21T18:00:53Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOKeDGj850kEPh",
+      "title": "Downloadable test vectors",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/9",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The document includes test vectors that are easy to parse.\r\n\r\nBut maybe it would be useful to also offer them as files that can be downloaded from this repository, in various formats (KAT, JSON, etc.)\r\n\r\nSimilar to the implementation table, the link would have to be removed before the RFC publication.",
+      "createdAt": "2023-10-21T18:18:15Z",
+      "updatedAt": "2023-10-21T18:18:15Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
       "id": "PR_kwDOKeDGj85cR2bu",
       "title": "Document the AEGIS-128X and AEGIS-256X modes",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/1",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Reopening the PR here, since the repo was moved to the CFRG org.\r\n\r\nDocument the parallel modes.\r\n\r\nIn order to reduce redundancy and the document size, inputs and outputs of individual functions haven't been duplicated.\r\n\r\nNot sure if we should (for clarity/consistency, maybe) or not.\r\n\r\nFixes https://github.com/jedisct1/draft-aegis-aead/issues/94",
       "createdAt": "2023-10-09T16:27:26Z",
-      "updatedAt": "2023-10-17T17:55:53Z",
+      "updatedAt": "2023-10-20T18:28:46Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "016dad2310d341fa4353f0f00e669194a6775e84",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "aegis-x",
-      "headRefOid": "bb9223c83ff0546ec7babaa1387686cb3e495630",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "6e503d072b111b234f651db1a3e659860b231c42",
+      "closedAt": "2023-10-20T18:28:41Z",
+      "mergedAt": "2023-10-20T18:28:41Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "78756701e4507ab947e21d666b6367fb438d5849"
+      },
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -1275,8 +1356,576 @@
               "updatedAt": "2023-10-17T07:46:54Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kpOZR",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Finishing touches (I promise).",
+          "createdAt": "2023-10-19T19:47:16Z",
+          "updatedAt": "2023-10-19T20:34:36Z",
+          "comments": [
+            {
+              "originalPosition": 121,
+              "body": "> they are based on, but can\r\n\r\nComma can be removed. Didn't mention this before.",
+              "createdAt": "2023-10-19T19:47:16Z",
+              "updatedAt": "2023-10-19T20:35:00Z"
+            },
+            {
+              "originalPosition": 144,
+              "body": "> The `Encrypt` function of AEGIS-128X and AEGIS-256X is similar to the AEGIS-128L and AEGIS-256 `Encrypt` function respectively\r\n\r\nThe second `function` almost sounds like it needs to be `functions`. I'm wondering if we should reword this to something like:\r\n\r\n> The `Encrypt` function of AEGIS-128X and AEGIS-256X is similar to the `Encrypt` function of AEGIS-128L and AEGIS-256 respectively\r\n\r\nDoes that sound any better to you?",
+              "createdAt": "2023-10-19T19:57:47Z",
+              "updatedAt": "2023-10-19T20:34:36Z"
+            },
+            {
+              "originalPosition": 173,
+              "body": "Please see my new comment on `Encrypt()`. If changing that, this will also need to be updated again.",
+              "createdAt": "2023-10-19T19:59:51Z",
+              "updatedAt": "2023-10-19T20:34:36Z"
+            },
+            {
+              "originalPosition": 355,
+              "body": "I'm happy to leave the empty line. Is there an empty line in the AEGIS-256 section?\r\n\r\n\r\n[FD] -> Not sure why I can't respond to that comment, but yes, there's also an empty line in the AEGIS-256 section.",
+              "createdAt": "2023-10-19T20:08:48Z",
+              "updatedAt": "2023-10-19T21:46:24Z"
+            },
+            {
+              "originalPosition": 433,
+              "body": "> n0_v, n1_v = {}, {}\r\n\r\nThink this can be removed.",
+              "createdAt": "2023-10-19T20:14:38Z",
+              "updatedAt": "2023-10-19T20:34:36Z"
+            },
+            {
+              "originalPosition": 618,
+              "body": "> The parallelism degrees implementations are encouraged to support\r\n\r\nPerhaps rephrase to:\r\n\r\n> The degrees of parallelism implementations are encouraged to support\r\n\r\nI misread it the first time because of `degrees` and `implementations` being next to each other.",
+              "createdAt": "2023-10-19T20:23:47Z",
+              "updatedAt": "2023-10-19T20:34:36Z"
+            },
+            {
+              "originalPosition": 249,
+              "body": "> `M0` and `M1` are `128 * D` bits instead of 128 bits. They are split\r\n\r\nThis is definitely an improvement, but I noticed the wording for AEGIS-256X:\r\n\r\n> `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.\r\n\r\nDo you want to combine the two sentences for AEGIS-128X or do you think it'll be more readable with them separate? For example:\r\n\r\n> `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks,",
+              "createdAt": "2023-10-19T20:31:47Z",
+              "updatedAt": "2023-10-19T20:34:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp5pr",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:36:14Z",
+          "updatedAt": "2023-10-19T21:36:14Z",
+          "comments": [
+            {
+              "originalPosition": 121,
+              "body": "Removed!",
+              "createdAt": "2023-10-19T21:36:14Z",
+              "updatedAt": "2023-10-19T21:36:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp8A2",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:39:29Z",
+          "updatedAt": "2023-10-19T21:39:29Z",
+          "comments": [
+            {
+              "originalPosition": 144,
+              "body": "That sounds indeed better.\r\n\r\nMaybe a comma before \"respectively\" would be even better?",
+              "createdAt": "2023-10-19T21:39:29Z",
+              "updatedAt": "2023-10-19T21:39:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp8I2",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:40:00Z",
+          "updatedAt": "2023-10-19T21:40:00Z",
+          "comments": [
+            {
+              "originalPosition": 433,
+              "body": "Indeed.",
+              "createdAt": "2023-10-19T21:40:00Z",
+              "updatedAt": "2023-10-19T21:40:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp8M6",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:40:16Z",
+          "updatedAt": "2023-10-19T21:40:16Z",
+          "comments": [
+            {
+              "originalPosition": 249,
+              "body": "Combining the sentences is fine.",
+              "createdAt": "2023-10-19T21:40:16Z",
+              "updatedAt": "2023-10-19T21:40:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp8py",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:42:10Z",
+          "updatedAt": "2023-10-19T21:42:10Z",
+          "comments": [
+            {
+              "originalPosition": 144,
+              "body": "How about something like:\r\n\r\n> The Encrypt function of AEGIS-128X resembles that of AEGIS-128L, and similarly, the Encrypt function of AEGIS-256X mirrors that of AEGIS-256\r\n\r\n?",
+              "createdAt": "2023-10-19T21:42:10Z",
+              "updatedAt": "2023-10-19T21:42:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp9QR",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:43:41Z",
+          "updatedAt": "2023-10-19T21:43:42Z",
+          "comments": [
+            {
+              "originalPosition": 144,
+              "body": "or:\r\n\r\n> The Encrypt function of AEGIS-128X resembles that of AEGIS-128L, and likewise, the Encrypt function of AEGIS-256X is similar to that of AEGIS-256\r\n\r\n?\r\n\r\n",
+              "createdAt": "2023-10-19T21:43:42Z",
+              "updatedAt": "2023-10-19T21:43:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kp9qB",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-19T21:44:07Z",
+          "updatedAt": "2023-10-19T21:44:07Z",
+          "comments": [
+            {
+              "originalPosition": 618,
+              "body": "Rephrased!",
+              "createdAt": "2023-10-19T21:44:07Z",
+              "updatedAt": "2023-10-19T21:44:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kxfeu",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-20T18:15:30Z",
+          "updatedAt": "2023-10-20T18:15:30Z",
+          "comments": [
+            {
+              "originalPosition": 144,
+              "body": "I like both of your suggestions. My preference would probably be the first.",
+              "createdAt": "2023-10-20T18:15:30Z",
+              "updatedAt": "2023-10-20T18:15:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kxfvi",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-20T18:16:13Z",
+          "updatedAt": "2023-10-20T18:16:14Z",
+          "comments": [
+            {
+              "originalPosition": 173,
+              "body": "Just a reminder that this will also need to be updated given your rephrasing.",
+              "createdAt": "2023-10-20T18:16:13Z",
+              "updatedAt": "2023-10-20T18:16:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kxhAn",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-20T18:20:22Z",
+          "updatedAt": "2023-10-20T18:20:22Z",
+          "comments": [
+            {
+              "originalPosition": 144,
+              "body": "Changed to the first suggestion. Also updated the `Decrypt` counterpart.",
+              "createdAt": "2023-10-20T18:20:22Z",
+              "updatedAt": "2023-10-20T18:20:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kxhDT",
+          "commit": {
+            "abbreviatedOid": "bb9223c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-20T18:20:32Z",
+          "updatedAt": "2023-10-20T18:20:33Z",
+          "comments": [
+            {
+              "originalPosition": 173,
+              "body": "Yep!",
+              "createdAt": "2023-10-20T18:20:32Z",
+              "updatedAt": "2023-10-20T18:20:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85kxjwF",
+          "commit": {
+            "abbreviatedOid": "6e503d0"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM.",
+          "createdAt": "2023-10-20T18:27:14Z",
+          "updatedAt": "2023-10-20T18:27:14Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOKeDGj85dZ-fL",
+      "title": "Add a note on security against quantum attacks",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/2",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://eprint.iacr.org/2023/1306.pdf analyses the security of AEGIS-128L and other ciphers in the Q2 model (which is highly impractical), but also mentions that all the schemes are secure in the Q1 model.",
+      "createdAt": "2023-10-20T17:14:45Z",
+      "updatedAt": "2023-10-20T18:55:21Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "78756701e4507ab947e21d666b6367fb438d5849",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "quantum-attacks",
+      "headRefOid": "1f3b029233ec90c7609176be19038b76f2a0c3fa",
+      "closedAt": "2023-10-20T18:38:05Z",
+      "mergedAt": "2023-10-20T18:38:05Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "545a4e4e2aa83f6b4966d814111a958e84eda698"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "How about moving \"and in Chapter 4 of {{AEGIS}}\" to the end?",
+          "createdAt": "2023-10-20T18:17:41Z",
+          "updatedAt": "2023-10-20T18:17:41Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> How about moving \"and in Chapter 4 of {{AEGIS}}\" to the end?\r\n\r\nThat works too, although it's no longer in order of publication. I'll leave it up to you.",
+          "createdAt": "2023-10-20T18:23:05Z",
+          "updatedAt": "2023-10-20T18:23:05Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Having these in order of publication is good. Let's just remove \"in chapter 4\", then.",
+          "createdAt": "2023-10-20T18:27:38Z",
+          "updatedAt": "2023-10-20T18:27:38Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Having these in order of publication is good. Let's just remove \"in chapter 4\", then.\r\n\r\nDo you want to keep the other `in`s? Because if not, you forgot to remove them :p Otherwise, feel free to merge.",
+          "createdAt": "2023-10-20T18:32:34Z",
+          "updatedAt": "2023-10-20T18:32:34Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Better without the redundant \"in\"s !",
+          "createdAt": "2023-10-20T18:33:39Z",
+          "updatedAt": "2023-10-20T18:33:39Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85kxcBR",
+          "commit": {
+            "abbreviatedOid": "2777334"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Not related to this PR, but should we remove `in Chapter 4 of` so there only needs to be one `in` within this sentence:\r\n\r\n> Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, and {{BS23}}.",
+          "createdAt": "2023-10-20T18:08:11Z",
+          "updatedAt": "2023-10-20T18:08:11Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOKeDGj85da3L7",
+      "title": "Don't use \"AEGIS-128X<D>\" and \"AEGIS-256X<D>\" before defining them",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/4",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We reference AEGIS-128X2, AEGIS-128X4, AEGIS-256X2 and AEGIS-256X4 in the Implementations Considerations section, but only define these names in the next section.",
+      "createdAt": "2023-10-20T20:46:50Z",
+      "updatedAt": "2023-10-21T17:44:48Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "f4bc64a5d47aea26402b9c41e8a1f5da00f313e5",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "ic",
+      "headRefOid": "d8d712fe8d81ee290a48f5df34acac1c808cd95e",
+      "closedAt": "2023-10-21T17:44:48Z",
+      "mergedAt": "2023-10-21T17:44:48Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "f3c3c3a95e21143eba67c23d8feb30c19105dab7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85kz09j",
+          "commit": {
+            "abbreviatedOid": "d8d712f"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-21T17:44:34Z",
+          "updatedAt": "2023-10-21T17:44:34Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOKeDGj85da4QB",
+      "title": "Mention that parallel modes are optional in their presentation",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/5",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We present the parallel modes, specify them, and only then mention that they are optional. This is a bit late and can be easily overlooked.\r\n\r\nSo, mention this right in the first paragraph about these modes.",
+      "createdAt": "2023-10-20T20:51:23Z",
+      "updatedAt": "2023-10-21T18:19:33Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "f4bc64a5d47aea26402b9c41e8a1f5da00f313e5",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "optional",
+      "headRefOid": "6fb9d5e197212d7c328d5956cd0077363225c7f3",
+      "closedAt": "2023-10-21T18:19:30Z",
+      "mergedAt": "2023-10-21T18:19:30Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "cfd9e590655959f0fd88f7b949f5a73cea5099fd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85kz069",
+          "commit": {
+            "abbreviatedOid": "295dfae"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-10-21T17:43:03Z",
+          "updatedAt": "2023-10-21T17:43:07Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "`The` should be removed from the start.",
+              "createdAt": "2023-10-21T17:43:03Z",
+              "updatedAt": "2023-10-21T17:43:07Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOKeDGj85da6IK",
+      "title": "Remove broken link",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/6",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The (...){...} syntax doesn't render as a proper link.",
+      "createdAt": "2023-10-20T20:59:42Z",
+      "updatedAt": "2023-10-21T17:39:23Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "f4bc64a5d47aea26402b9c41e8a1f5da00f313e5",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "link",
+      "headRefOid": "17711fac7aaa391c260e382d91618393632c4074",
+      "closedAt": "2023-10-21T17:39:22Z",
+      "mergedAt": "2023-10-21T17:39:22Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "14f5c96c37e3081189fe9b9ef5eda385f5cfd18a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85kz0ol",
+          "commit": {
+            "abbreviatedOid": "17711fa"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-21T17:39:00Z",
+          "updatedAt": "2023-10-21T17:39:00Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOKeDGj85dbDlz",
+      "title": "Avoid repetition of \"this document\"",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/8",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "+ a blank line for readability.",
+      "createdAt": "2023-10-20T21:46:54Z",
+      "updatedAt": "2023-10-21T17:38:01Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "f4bc64a5d47aea26402b9c41e8a1f5da00f313e5",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "this",
+      "headRefOid": "ea5072e5e59b4b89c94b0da1d0cc7a5cb1b654d0",
+      "closedAt": "2023-10-21T17:38:01Z",
+      "mergedAt": "2023-10-21T17:38:00Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "0a909cfa5d073ae6a82a345b3658b6b73438eacf"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85kz0iG",
+          "commit": {
+            "abbreviatedOid": "ea5072e"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-21T17:37:40Z",
+          "updatedAt": "2023-10-21T17:37:40Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOKeDGj85dc81F",
+      "title": "Add an Implementation Status section",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/10",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #7",
+      "createdAt": "2023-10-21T19:38:46Z",
+      "updatedAt": "2023-10-21T19:38:46Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "cfd9e590655959f0fd88f7b949f5a73cea5099fd",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "impl-status",
+      "headRefOid": "620433934f5d586232f23181a37eec83e850b43e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
