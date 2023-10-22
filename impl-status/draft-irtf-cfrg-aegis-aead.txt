@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 23 April 2024                            Individual Contributor
-                                                         21 October 2023
+Expires: 24 April 2024                            Individual Contributor
+                                                         22 October 2023
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2024.
+   This Internet-Draft will expire on 24 April 2024.
 
 Copyright Notice
 
@@ -1577,7 +1577,7 @@ return tag
    have been developed and verified for interoperability.
 
    A comprehensive list of known implementations and integrations can be
-   found at https://github.com/cfrg/draft-irtf-cfrg-aegis-aead and
+   found at https://github.com/cfrg/draft-irtf-cfrg-aegis-aead, which
    includes reference implementations closely aligned with the
    pseudocode provided in this document.
 
