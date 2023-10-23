@@ -3085,7 +3085,7 @@ return tag
         <h3 id="name-implementation-consideratio">
 <a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
         </h3>
-<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are indentical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.6-2">In AEGIS-128X, <code>V</code> can be represented as eight 256-bit registers (when <code>D = 2</code>) or eight 512-bit registers (when <code>D = 4</code>). In AEGIS-256X, <code>V</code> can be represented as six 256-bit registers (when <code>D = 2</code>) or six 512-bit registers (when <code>D = 4</code>). With this representation, loops over <code>0..D</code> in the above pseudocode can be replaced by vector instructions.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3096,7 +3096,7 @@ return tag
         </h3>
 <p id="section-5.7-1">The AEGIS parallel modes are specialized and can only improve performance on specific CPUs.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
 <p id="section-5.7-2">The degrees of parallelism implementations are encouraged to support are <code>2</code> (for CPUs with 256-bit registers) and <code>4</code> (for CPUs with 512-bit registers). The resulting algorithms are called <code>AEGIS-128X2</code>, <code>AEGIS-128X4</code>, <code>AEGIS-256X2</code>, and <code>AEGIS-256X4</code>.<a href="#section-5.7-2" class="pilcrow">¶</a></p>
-<p id="section-5.7-3">The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the mininum vector register sizes a CPU should support for optimal performance.<a href="#section-5.7-3" class="pilcrow">¶</a></p>
+<p id="section-5.7-3">The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the minimum vector register sizes a CPU should support for optimal performance.<a href="#section-5.7-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
           <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>

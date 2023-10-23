@@ -1470,7 +1470,7 @@ return tag
 
 5.6.  Implementation Considerations
 
-   AEGIS-128X and AEGIS-256X with a degree of 1 are indentical to AEGIS-
+   AEGIS-128X and AEGIS-256X with a degree of 1 are identical to AEGIS-
    128L and AEGIS-256.  This property can be used to reduce the code
    size of a generic implementation.
 
@@ -1492,7 +1492,7 @@ return tag
 
    The following table summarizes how many bits are processed in
    parallel (rate), the memory requirements (state size), and the
-   mininum vector register sizes a CPU should support for optimal
+   minimum vector register sizes a CPU should support for optimal
    performance.
 
     +=============+=============+=======================+============+
