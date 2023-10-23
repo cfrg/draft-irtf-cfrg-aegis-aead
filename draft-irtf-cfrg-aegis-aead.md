@@ -1529,7 +1529,7 @@ After initialization, the `Update` function is called with constant parameters, 
 
 Multiple implementations of the schemes described in this document have been developed and verified for interoperability.
 
-A comprehensive list of known implementations and integrations can be found at https://github.com/cfrg/draft-irtf-cfrg-aegis-aead, which includes reference implementations closely aligned with the pseudocode provided in this document.
+A comprehensive list of known implementations and integrations can be found at [](https://github.com/cfrg/draft-irtf-cfrg-aegis-aead), which includes reference implementations closely aligned with the pseudocode provided in this document.
 
 # Security Considerations
 
