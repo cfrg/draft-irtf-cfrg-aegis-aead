@@ -1585,6 +1585,20 @@ A 128-bit tag length must be used with these cipher suites.
 
 IANA is requested to update the references of these entries to refer to the final version of this document.
 
+IANA is also requested to register the following identifiers in the AEAD Algorithms Registry:
+
+- `AEAD_AEGIS128X2`
+- `AEAD_AEGIS128X4`
+- `AEAD_AEGIS256X2`
+- `AEAD_AEGIS256X4`
+
+as well as the following identifiers in the TLS Cipher Suite Registry:
+
+- `TLS_AEGIS_128X2_SHA256`
+- `TLS_AEGIS_128X4_SHA256`
+- `TLS_AEGIS_256X2_SHA384`
+- `TLS_AEGIS_256X4_SHA384`
+
 # QUIC and DTLS 1.3 Header Protection
 
 ## DTLS 1.3 Record Number Encryption
