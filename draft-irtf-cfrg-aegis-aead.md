@@ -1539,7 +1539,7 @@ An authentication tag may verify under multiple keys, nonces, or associated data
 
 However, it is NOT fully committing because the authentication tag doesn't commit to the associated data. As shown in {{IR23}}, with the ability to also alter `ad`, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
 
-Protocols mandating a fully committing scheme can provide the associated data as input to a cryptographic hash function, and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 [RFC6234].
+Protocols mandating a fully committing scheme can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 [RFC6234].
 
 Under the assumption that the secret key is unknown to the attacker both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks regardless of the tag size.
 
