@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-22T00:33:46.770009+00:00",
+  "timestamp": "2023-10-24T00:31:20.462440+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -86,15 +86,15 @@
       "id": "I_kwDOKeDGj850h325",
       "title": "Add implementation status",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "https://www.rfc-editor.org/rfc/rfc7942 (also recommended in https://www.ietf.org/archive/id/draft-eckel-edm-find-code-02.html) suggests adding an \"Implementation status\" section, that will eventually be removed before the RFC is published.\r\n\r\nEven though Datatracker links this repository for discussions, finding available implementations, including the reference ones, may not be obvious.\r\n\r\nMaybe we should add an \"Implementation status\" section, that either includes a copy of the table with have in the `README.md` file here, or links to it.",
       "createdAt": "2023-10-20T21:32:15Z",
-      "updatedAt": "2023-10-21T18:07:29Z",
-      "closedAt": null,
+      "updatedAt": "2023-10-23T20:36:31Z",
+      "closedAt": "2023-10-22T08:38:34Z",
       "comments": [
         {
           "author": "jedisct1",
@@ -109,6 +109,20 @@
           "body": "> Maybe we should add an \"Implementation status\" section, they either includes a copy of the table with have in the README.md file here, or links to it.\r\n\r\nI think it would be better to link to the table since that will be kept up to date rather than new drafts. The amount of information this RFC is talking about would also make for a long section.\r\n\r\nWe should probably add `This note is to be removed before publishing as an RFC.` like in the `Discussion Venues` so we hopefully don't forget to remove it.",
           "createdAt": "2023-10-21T18:00:53Z",
           "updatedAt": "2023-10-21T18:00:53Z"
+        },
+        {
+          "author": "eckelcu",
+          "authorAssociation": "NONE",
+          "body": "> `draft-eckel-edm-find-code` mentions:\r\n> \r\n> > A GitHub repository is associated with the I-D using the `github_repo` tag.\r\n> \r\n> We should use that to add a link to this repository. I looked really hard, but didn't find how to add that tag on Datatracker. How to do this?\r\n> \r\n> /cc @eckelcu\r\n\r\ndraft authors are able to add these tags for individual drafts. Once they become working group drafts, only the WG chairs can add them.",
+          "createdAt": "2023-10-23T20:28:09Z",
+          "updatedAt": "2023-10-23T20:28:09Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you @eckelcu !\r\n\r\nThat explains it.",
+          "createdAt": "2023-10-23T20:36:30Z",
+          "updatedAt": "2023-10-23T20:36:30Z"
         }
       ]
     },
@@ -124,9 +138,24 @@
       "labels": [],
       "body": "The document includes test vectors that are easy to parse.\r\n\r\nBut maybe it would be useful to also offer them as files that can be downloaded from this repository, in various formats (KAT, JSON, etc.)\r\n\r\nSimilar to the implementation table, the link would have to be removed before the RFC publication.",
       "createdAt": "2023-10-21T18:18:15Z",
-      "updatedAt": "2023-10-21T18:18:15Z",
+      "updatedAt": "2023-10-22T10:16:36Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "That's a good idea. How would the 'verification failed' ones be separated? Would the different AEGIS-128/256X2 vs 4 test vectors go in the same file?",
+          "createdAt": "2023-10-22T08:43:32Z",
+          "updatedAt": "2023-10-22T08:43:32Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The Project Wycheproof test vectors include a \"result\" property (`valid`/`invalid`). At least for JSON, we can adopt their conventions.\r\n\r\nAnd once file per variant is probably more convenient.\r\n\r\n",
+          "createdAt": "2023-10-22T10:16:36Z",
+          "updatedAt": "2023-10-22T10:16:36Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1906,20 +1935,114 @@
       "id": "PR_kwDOKeDGj85dc81F",
       "title": "Add an Implementation Status section",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/10",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #7",
       "createdAt": "2023-10-21T19:38:46Z",
-      "updatedAt": "2023-10-21T19:38:46Z",
+      "updatedAt": "2023-10-22T08:38:34Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "cfd9e590655959f0fd88f7b949f5a73cea5099fd",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "impl-status",
-      "headRefOid": "620433934f5d586232f23181a37eec83e850b43e",
+      "headRefOid": "77350d3cf7c9e3ee3fc7902b1aa978dcf7f17044",
+      "closedAt": "2023-10-22T08:38:33Z",
+      "mergedAt": "2023-10-22T08:38:33Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "e577c45967dd0e721613929ea964faae51d647f5"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85k0KEb",
+          "commit": {
+            "abbreviatedOid": "77350d3"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-22T08:38:10Z",
+          "updatedAt": "2023-10-22T08:38:10Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOKeDGj85dk_gk",
+      "title": "Suggest hashing the associated data",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/11",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #3",
+      "createdAt": "2023-10-23T21:33:05Z",
+      "updatedAt": "2023-10-23T21:33:05Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "c21975d6c7288d8bbd5697bfa062a0a9a518a818",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "ad-hash",
+      "headRefOid": "8a1798a81dfcfaf825fe5fe74bd4a29b78ceac7e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOKeDGj85dlB9w",
+      "title": "Remove backticks around function names",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/12",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We don't do it anywhere else.",
+      "createdAt": "2023-10-23T21:42:26Z",
+      "updatedAt": "2023-10-23T21:42:27Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "c21975d6c7288d8bbd5697bfa062a0a9a518a818",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "remove-backticks",
+      "headRefOid": "843340206b1ad887c47ec1863c49c92b5d09a7df",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOKeDGj85dlDya",
+      "title": "Ask IANA to register identifiers for the parallel modes",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/13",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-23T21:49:48Z",
+      "updatedAt": "2023-10-23T21:49:49Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "3e42cb55002449a77b772273b6284e7828f8af7f",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "iana",
+      "headRefOid": "e05d7017a333b2ccbb3680d9dc664789d8348a6b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
