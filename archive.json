@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-24T00:31:20.462440+00:00",
+  "timestamp": "2023-10-26T00:30:19.674197+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOKeDGj850g8YP",
       "title": "Document a way to commit to everything",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Due to the way the AD is absorbed, the differences of key and nonce can be canceled out, leading to a state collision. This is why AEGIS isn't fully committing.\r\n\r\nSomething to explore is slower absorption, giving control only on half an AES word before the permutation:\r\n\r\nAEGIS-256:\r\n\r\n```\r\nAbsorb(ai):\r\n    t0, t1 = Split(ai, 64)\r\n    Update(ZeroPad(t0, 128))\r\n    Update(ZeroPad(t1, 128))\r\n```\r\n\r\nAEGIS-128L:\r\n\r\n```\r\nAbsorb(ai):\r\n    t0, t1, t2, t3 = Split(ai, 64)\r\n    Update(ZeroPad(t0, 128), ZeroPad(t1, 128))\r\n    Update(ZeroPad(t2, 128), ZeroPad(t3, 128))\r\n```\r\n\r\nEliminating the differences in just a single word would then require up to 2^64 input blocks, and differences would be reintroduced on the following state updates. \r\n\r\nAssociated data is usually pretty short, so performance impact should be acceptable.\r\n\r\nA more conservative way that doesn't require a different absorption procedure is to hash the AD, i.e. recommend using:\r\n\r\n```\r\nEncrypt(msg, H(ad), key, nonce)\r\n```\r\n\r\ninstead of\r\n\r\n```\r\nEncrypt(msg, ad, key, nonce)\r\n```\r\n\r\nAs long as `H` is preimage-resistant, finding associated data that cancel the key and nonce differences becomes impractical.\r\n\r\nSure, hashing has a cost, and the security level can degrade to the one of the hash function. But only the AD has to be hashed, it doesn't require changes to the specification nor implementations, and that can be documented as a simple recommendation for protocols that require a fully committing scheme.",
       "createdAt": "2023-10-20T18:01:56Z",
-      "updatedAt": "2023-10-20T18:42:09Z",
-      "closedAt": null,
+      "updatedAt": "2023-10-24T17:50:21Z",
+      "closedAt": "2023-10-24T17:50:20Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -1977,78 +1977,134 @@
       "id": "PR_kwDOKeDGj85dk_gk",
       "title": "Suggest hashing the associated data",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/11",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #3",
       "createdAt": "2023-10-23T21:33:05Z",
-      "updatedAt": "2023-10-23T21:33:05Z",
+      "updatedAt": "2023-10-24T17:50:30Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "c21975d6c7288d8bbd5697bfa062a0a9a518a818",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "ad-hash",
-      "headRefOid": "8a1798a81dfcfaf825fe5fe74bd4a29b78ceac7e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "headRefOid": "80fea82ef84d3d4d0e600dd1272b435708e7c128",
+      "closedAt": "2023-10-24T17:50:19Z",
+      "mergedAt": "2023-10-24T17:50:19Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "ac5e718c52d2e7219adc2b171751d0279f2570e1"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Samuel!",
+          "createdAt": "2023-10-24T17:50:29Z",
+          "updatedAt": "2023-10-24T17:50:29Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85lD8U9",
+          "commit": {
+            "abbreviatedOid": "80fea82"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-24T17:49:43Z",
+          "updatedAt": "2023-10-24T17:49:43Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 12,
       "id": "PR_kwDOKeDGj85dlB9w",
       "title": "Remove backticks around function names",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/12",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "We don't do it anywhere else.",
       "createdAt": "2023-10-23T21:42:26Z",
-      "updatedAt": "2023-10-23T21:42:27Z",
+      "updatedAt": "2023-10-24T17:41:27Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "c21975d6c7288d8bbd5697bfa062a0a9a518a818",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "remove-backticks",
       "headRefOid": "843340206b1ad887c47ec1863c49c92b5d09a7df",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-10-24T17:39:59Z",
+      "mergedAt": "2023-10-24T17:39:59Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "4ac4a8e5b34cffb8ea6e514209c9dfbb35ac040e"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85lD4Ss",
+          "commit": {
+            "abbreviatedOid": "8433402"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Sorry for missing some of these things. Good catch.",
+          "createdAt": "2023-10-24T17:39:39Z",
+          "updatedAt": "2023-10-24T17:39:39Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 13,
       "id": "PR_kwDOKeDGj85dlDya",
       "title": "Ask IANA to register identifiers for the parallel modes",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/13",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-10-23T21:49:48Z",
-      "updatedAt": "2023-10-23T21:49:49Z",
+      "updatedAt": "2023-10-24T17:44:49Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "3e42cb55002449a77b772273b6284e7828f8af7f",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "iana",
       "headRefOid": "e05d7017a333b2ccbb3680d9dc664789d8348a6b",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-10-24T17:42:57Z",
+      "mergedAt": "2023-10-24T17:42:57Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "61711026344295d79c9986a359c743723f4d3c8b"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85lD5kn",
+          "commit": {
+            "abbreviatedOid": "e05d701"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-24T17:42:43Z",
+          "updatedAt": "2023-10-24T17:42:43Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
