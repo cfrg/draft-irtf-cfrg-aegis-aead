@@ -979,7 +979,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 - `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
-- `ctx`: the context separator.
+- `ctx`: the context separator: a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
 - `Byte(x)`: the value `x` encoded as 8 bits.
 
 ## Authenticated Encryption
@@ -1079,9 +1079,9 @@ for i in 0..D:
 
 Repeat(10,
     for i in 0..D:
-        ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[7,i] = V[7,i] ^ ZeroPad(ctx, 128)
+        ctx = ZeroPad(Byte(i) || Byte(D - 1), 128)
+        V[3,i] = V[3,i] ^ ctx
+        V[7,i] = V[7,i] ^ ctx
 
     Update(nonce_v, key_v)
 )
@@ -1287,18 +1287,18 @@ for i in 0..D:
 
 Repeat(4,
     for i in 0..D:
-        ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        ctx = ZeroPad(Byte(i) || Byte(D - 1), 128)
+        V[3,i] = V[3,i] ^ ctx
+        V[5,i] = V[5,i] ^ ctx
         Update(k0_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        V[3,i] = V[3,i] ^ ctx
+        V[5,i] = V[5,i] ^ ctx
         Update(k1_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        V[3,i] = V[3,i] ^ ctx
+        V[5,i] = V[5,i] ^ ctx
         Update(k0n0_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        V[3,i] = V[3,i] ^ ctx
+        V[5,i] = V[5,i] ^ ctx
         Update(k1n1_v)
 )
 ~~~
@@ -2098,19 +2098,19 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : 9958ad79ff1feea50a27d5dd88728d15
-        7a4ce0cd996b9fffb4fde113ef646de4
-        aa67278fb1ebcb6571526b309d708447
-        c818ffc3d84c9c73b0cca3040bb85b81
-        d366311956f4cb1a66b02b25b58a7f75
-        9797169b0e398c4db16c9a577d4de180
-        5d646b823fa095ec34feefb58768efc0
-        6d9516c55b653f91
+ct    : 5795544301997f93621b278809d6331b
+        3bfa6f18e90db12c4aa35965b5e98c5f
+        c6fb4e54bcb6111842c20637252eff74
+        7cb3a8f85b37de80919a589fe0f24872
+        bc926360696739e05520647e390989e1
+        eb5fd42f99678a0276a498f8c454761c
+        9d6aacb647ad56be62b29c22cd4b5761
+        b38f43d5a5ee062
 
-tag128: 179247ab85ea2c4f9f712cac8bb7c9d3
+tag128: 1aebc200804f405cab637f2adebb6d77
 
-tag256: 04ad653f69c3e3bf3d29013367473ade
-        573551bdcf71f32a0debb089e58fb9e1
+tag256: c471876f9b4978c44f2ae1ce770cdb11
+        a094ee3feca64e7afcd48bfe52c60eca
 ~~~
 
 ### AEGIS-128X4 Test Vector
@@ -2131,19 +2131,19 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : 9958ad79ff1feea50a27d5dd88728d15
-        7a4ce0cd996b9fffb4fde113ef646de4
-        6e4c5230174a6268f89f01d557879360
-        a9068d7cb825bb0e8a97ea2e82059f69
-        aa67278fb1ebcb6571526b309d708447
-        c818ffc3d84c9c73b0cca3040bb85b81
-        93fc9a4499e384ae87bfeaa46f514b63
-        30c147c3ddbb6e94
+ct    : e836118562f4479c9d35c17356a83311
+        4c21f9aa39e4dda5e5c87f4152a00fce
+        9a7c38f832eafe8b1c12f8a7cf12a81a
+        1ad8a9c24ba9dedfbdaa586ffea67ddc
+        801ea97d9ab4a872f42d0e352e2713da
+        cd609f9442c17517c5a29daf3e2a3fac
+        4ff6b1380c4e46df7b086af6ce6bc1ed
+        594b8dd64aed2a7e
 
-tag128: 58038e00f6b7e861e2badb160beb71d4
+tag128: 0e56ab94e2e85db80f9d54010caabfb4
 
-tag256: 01d860572aa4ce5b83183cc94bc9fb44
-        5e2d70c0687f6fbc6991c2918d3ab0e8
+tag256: 69abf0f64a137dd6e122478d777e98bc
+        422823006cf57f5ee822dd78397230b2
 ~~~
 
 ## AEGIS-256X Test Vectors
@@ -2168,19 +2168,19 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : a1b0f4b9b83eb676c8d2b8d1692be03d
-        95280efa4e2c09962880dc614f94642b
-        a7581f933d98c7355623ff63be82bb8a
-        476ddd0dfe0185b4e8da6c25bd9f38b9
-        d09e0ec9baf01cd47369dbca9d331bfc
-        d49fb4e6806e61f344d61b11ac552e4c
-        50c6d26570210e1202eb9b347b908a55
-        361ea8d15f8494e3
+ct    : 73110d21a920608fd77b580f1e442808
+        7a7365cb153b4eeca6b62e1a70f7f9a8
+        d1f31f17da4c3acfacb2517f2f5e1575
+        8c35532e33751a964d18d29a599d2dc0
+        7f9378339b9d8c9fa03d30a4d7837cc8
+        eb8b99bcbba2d11cd1a0f994af2b8f94
+        7ef18473bd519e5283736758480abc99
+        0e79d4ccab93dde9
 
-tag128: 3c24d8bed42e92d3f85535946545fe38
+tag128: 94a3bd44ad3381e36335014620ee638e
 
-tag256: 3e3543e177aec683d341ca2ae92a8a1b
-        02119b5fa38054502b14ffbe8c6f7423
+tag256: 0392c62b17ddb00c172a010b5a327d0f
+        97317b6fbaee31ef741f004d7adc1e81
 ~~~
 
 ### AEGIS-256X4 Test Vector
@@ -2203,19 +2203,19 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : a1b0f4b9b83eb676c8d2b8d1692be03d
-        95280efa4e2c09962880dc614f94642b
-        d4f1068ba92cf7bfd89c2acd70ef492b
-        0544105f5c3b948cee0248486b4a3411
-        a7581f933d98c7355623ff63be82bb8a
-        476ddd0dfe0185b4e8da6c25bd9f38b9
-        d1da0307b0f33484ed9abad2c9184cb4
-        b58d7a8a486c0605
+ct    : bec109547f8316d598b3b7d947ad4c0e
+        f5b98e217cffa0d858ad49ae34109a95
+        abc5b5fada820c4d6ae2fca0f5e2444e
+        52a04a1edb7bec71408de3e199500521
+        94506be3ba6a4de51a15a577ea0e4c14
+        f7539a13e751a555f48d0f49fecffb22
+        0525e60d381e2efa803b09b7164ba59f
+        dc66656affd51e06
 
-tag128: 2ddf105d8bb7a2d7adb60cd5a5285183
+tag128: ec44b512d713f745547be345bcc66b6c
 
-tag256: da85a761bdd56e8c11d3179e11ed353a
-        f75ab73c3662cc5bbc651b4bb4c564b9
+tag256: ba3168ecd7f7120c5e204a7e0d616e39
+        5675ddfe00e4e5490a5ba93bb1a70555
 ~~~
 
 # Acknowledgments

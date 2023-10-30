@@ -72,6 +72,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
                 var contexts_bytes = [_]u8{0} ** (blockx_length);
                 for (1..degree) |i| {
                     contexts_bytes[i * 16] = @intCast(i);
+                    contexts_bytes[i * 16 + 1] = @intCast(degree - 1);
                 }
                 break :ctx_v AesBlockX.fromBytes(&contexts_bytes);
             };
