@@ -2119,7 +2119,7 @@ V[7,0]: ca549badf8faa58222412478598651cf
 V[7,1]: 3407279a54ce76d2e2e8a90ec5d108eb
 ~~~
 
-### Test Vector
+### Test Vector 1
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2211,7 +2211,7 @@ V[7,2]: 0b3af0250ae36831a1b072e499929bcb
 V[7,3]: 5cce4d00329d69f1aae36aa541347512
 ~~~
 
-### Test Vector
+### Test Vector 1
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2244,7 +2244,7 @@ tag256: 69abf0f64a137dd6e122478d777e98bc
         422823006cf57f5ee822dd78397230b2
 ~~~
 
-## AEGIS-256X2 Test Vector
+## AEGIS-256X2 Test Vectors
 
 ### Initial State
 
@@ -2281,7 +2281,7 @@ V[5,0]: 9f76560dcae1efacabdcce446ae283bc
 V[5,1]: bd52a6b9c8f976a26ec1409df19e8bfe
 ~~~
 
-### Test Vector
+### Test Vector 1
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2367,7 +2367,7 @@ V[5,2]: 10bc7ec34d4119b5bdeb6c7dfc458247
 V[5,3]: 591ece530aeaa5c9867220156f5c25e3
 ~~~
 
-### Test Vector
+### Test Vector 1
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
