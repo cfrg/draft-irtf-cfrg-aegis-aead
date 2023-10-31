@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-26T00:30:19.674197+00:00",
+  "timestamp": "2023-10-31T00:31:33.951558+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -156,6 +156,38 @@
           "updatedAt": "2023-10-22T10:16:36Z"
         }
       ]
+    },
+    {
+      "number": 15,
+      "id": "I_kwDOKeDGj851YJXz",
+      "title": "\"byte\" vs \"octet\"",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/15",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The document uses both \"byte\" and \"octet\".\r\n\r\nMaybe we should use only \"octet\" everywhere.",
+      "createdAt": "2023-10-30T21:35:41Z",
+      "updatedAt": "2023-10-30T21:35:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOKeDGj851YMKe",
+      "title": "Mention that different variants produce different [ciphertexts and] tags",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/16",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It's not clear that the parallelism degree affects not only performance, but also the output.\r\n\r\nWe should mention somewhere that for a given `(key,nonce,ad,msg)`, different parallelism degrees can produce different authentication tags. \r\n\r\nIf #14 is merged, we should extend that to the ciphertexts.\r\n\r\nWhat would be the best place for that? In the security considerations?\r\n\r\n",
+      "createdAt": "2023-10-30T21:45:43Z",
+      "updatedAt": "2023-10-30T21:45:43Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -2105,6 +2137,40 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOKeDGj85eKyx2",
+      "title": "AEGIS-X: include the parallelism degree in the context",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/14",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is a breaking change, and it is not strictly necessary, but since it is not too late, it may be desirable.\r\n\r\nCurrently, if a (key,nonce) is reused with different variants of the same security level, the key streams initialized with the same context will be the same.\r\n\r\nFor example, with AEGIS-128L and AEGIS-128X2, the 128L key stream will be the same as the first half of the 128X2 key stream.\r\n\r\nTags will be different, but reusing a (key,nonce) with different variants would still reveal the difference between the messages.\r\n\r\nWe can document that (key,nonce) pairs must not be reused with different algorithms.\r\n\r\nBut a better alternative would be to include the degree in the context.\r\n\r\nWe actually use (degree - 1), so that when the degree is 1, the context remains all-zero, and it doesn't break the equivalence between AEGIS-128L and AEGIS-128X1.",
+      "createdAt": "2023-10-30T21:34:17Z",
+      "updatedAt": "2023-10-30T23:03:26Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "b234ed37c69d2bf7edf77ec3605ec5d9f44da89d",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "aegis-x-d",
+      "headRefOid": "018f79cb6469472a0ec90052f5692db7fc71204e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "If you agree with that change, the paper will be updated as well.",
+          "createdAt": "2023-10-30T21:37:27Z",
+          "updatedAt": "2023-10-30T21:37:27Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
