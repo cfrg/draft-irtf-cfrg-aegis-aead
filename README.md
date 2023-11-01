@@ -36,10 +36,14 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 - [PicoTLS](https://github.com/h2o/picotls)
 - [Zig TLS client](https://ziglang.org/documentation/master/std/#A;std:crypto.tls.CipherSuite)
 
-## Additional test vectors
+## Test vectors
 
-* [Project Wycheproof test vectors for AEGIS-128L](https://github.com/google/wycheproof/blob/master/testvectors/aegis128L_test.json)
-* [Project Wycheproof test vectors for AEGIS-256](https://github.com/google/wycheproof/blob/master/testvectors/aegis256_test.json)
+For convenience, test vectors can be downloaded in JSON format from the [`test-vectors` directory](https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/main/test-vectors).
+
+Google's Project Wycheproof includes additional test vectors:
+
+* [for AEGIS-128L](https://github.com/google/wycheproof/blob/master/testvectors/aegis128L_test.json)
+* [for AEGIS-256](https://github.com/google/wycheproof/blob/master/testvectors/aegis256_test.json)
 
 ## Contributing
 
