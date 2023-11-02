@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-31T00:31:33.951558+00:00",
+  "timestamp": "2023-11-02T00:31:17.067286+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -186,6 +186,46 @@
       "body": "It's not clear that the parallelism degree affects not only performance, but also the output.\r\n\r\nWe should mention somewhere that for a given `(key,nonce,ad,msg)`, different parallelism degrees can produce different authentication tags. \r\n\r\nIf #14 is merged, we should extend that to the ciphertexts.\r\n\r\nWhat would be the best place for that? In the security considerations?\r\n\r\n",
       "createdAt": "2023-10-30T21:45:43Z",
       "updatedAt": "2023-10-30T21:45:43Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 17,
+      "id": "I_kwDOKeDGj851knNi",
+      "title": "Rejecting weak states",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/17",
+      "state": "CLOSED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As in many constructions, AEGIS has weak states. If the keys are randomly chosen as required, getting them is very unlikely. But with specifically crafted keys and inputs, weak states be reached.\r\n\r\nAs a safeguard, we can add an additional step in the decryption function, before `expected_tag = Finalize(|ad|, |msg|)`, that checks if all the AES blocks are identical, and returns an error if this is the case.",
+      "createdAt": "2023-11-01T14:51:45Z",
+      "updatedAt": "2023-11-01T17:54:22Z",
+      "closedAt": "2023-11-01T17:54:22Z",
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Scratch that. In order to be useful, it should be done after every update, which would be way too expensive.",
+          "createdAt": "2023-11-01T17:54:22Z",
+          "updatedAt": "2023-11-01T17:54:22Z"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOKeDGj851m44o",
+      "title": "Mention that AEGIS must not not used as a hash function",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/19",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "AEGIS is a very good and fast MAC, so it could be tempting to use it as a replacement for a hash function.\r\n\r\nBut if the key is known, inputs generating state collisions can be easily crafted. So, we should make that clear somewhere, probably in the security considerations.\r\n",
+      "createdAt": "2023-11-01T21:18:55Z",
+      "updatedAt": "2023-11-01T21:18:55Z",
       "closedAt": null,
       "comments": []
     }
@@ -2170,6 +2210,32 @@
           "updatedAt": "2023-10-30T21:37:27Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDOKeDGj85eX6rj",
+      "title": "Add test vectors in JSON format",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/18",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The Python code is horrible, but the resulting JSON files can still be very useful to test implementations.\r\n\r\nFixes #9 ",
+      "createdAt": "2023-11-01T21:08:30Z",
+      "updatedAt": "2023-11-01T21:08:30Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "b234ed37c69d2bf7edf77ec3605ec5d9f44da89d",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "test-vectors",
+      "headRefOid": "8bfbebbed0f7341b5f1eebecb39df21cf1abd056",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
