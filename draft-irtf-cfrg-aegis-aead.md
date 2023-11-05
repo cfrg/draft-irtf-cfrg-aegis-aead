@@ -979,7 +979,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 - `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
-- `ctx[i]`: the `i`-th context separator: a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
+- `ctx[i]`: the `i`-th context separator. This is a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
 - `Byte(x)`: the value `x` encoded as 8 bits.
 
 ## Authenticated Encryption
