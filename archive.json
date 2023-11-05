@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-02T00:31:17.067286+00:00",
+  "timestamp": "2023-11-05T00:34:34.067692+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -2190,7 +2190,7 @@
       "labels": [],
       "body": "This is a breaking change, and it is not strictly necessary, but since it is not too late, it may be desirable.\r\n\r\nCurrently, if a (key,nonce) is reused with different variants of the same security level, the key streams initialized with the same context will be the same.\r\n\r\nFor example, with AEGIS-128L and AEGIS-128X2, the 128L key stream will be the same as the first half of the 128X2 key stream.\r\n\r\nTags will be different, but reusing a (key,nonce) with different variants would still reveal the difference between the messages.\r\n\r\nWe can document that (key,nonce) pairs must not be reused with different algorithms.\r\n\r\nBut a better alternative would be to include the degree in the context.\r\n\r\nWe actually use (degree - 1), so that when the degree is 1, the context remains all-zero, and it doesn't break the equivalence between AEGIS-128L and AEGIS-128X1.",
       "createdAt": "2023-10-30T21:34:17Z",
-      "updatedAt": "2023-10-30T23:03:26Z",
+      "updatedAt": "2023-11-04T22:22:49Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "b234ed37c69d2bf7edf77ec3605ec5d9f44da89d",
@@ -2208,6 +2208,27 @@
           "body": "If you agree with that change, the paper will be updated as well.",
           "createdAt": "2023-10-30T21:37:27Z",
           "updatedAt": "2023-10-30T21:37:27Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi @samuel-lucas6 , whenever it's convenient for you, could you take a look at this? It would be great to tag a new version with the parallel variants.",
+          "createdAt": "2023-11-04T17:00:52Z",
+          "updatedAt": "2023-11-04T17:00:52Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Sorry Frank, I was on holiday. I'll take a look tomorrow morning. It sounds sensible, and it's a good idea to also update the paper.",
+          "createdAt": "2023-11-04T20:42:31Z",
+          "updatedAt": "2023-11-04T20:42:31Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "No worries Samuel! Vacations are more important than anything \ud83d\ude0a",
+          "createdAt": "2023-11-04T22:22:49Z",
+          "updatedAt": "2023-11-04T22:22:49Z"
         }
       ],
       "reviews": []
