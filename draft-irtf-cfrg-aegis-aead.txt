@@ -80,7 +80,7 @@ Table of Contents
      4.7.  The Dec Function
      4.8.  The DecPartial Function
      4.9.  The Finalize Function
-   5.  Parallel modes
+   5.  Parallel Modes
      5.1.  Additional Conventions and Definitions
      5.2.  Authenticated Encryption
      5.3.  Authenticated Decryption
@@ -1005,7 +1005,7 @@ Table of Contents
 
    return tag
 
-5.  Parallel modes
+5.  Parallel Modes
 
    Some CPUs, such as Intel and Intel-compatible CPUs with the VAES
    extensions, include instructions to efficiently apply the AES round
