@@ -70,8 +70,9 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
             const nonce_v = AesBlockX.fromBytes(&(nonce ** degree));
             const ctx_v = ctx_v: {
                 var contexts_bytes = [_]u8{0} ** blockx_length;
-                for (1..degree) |i| {
+                for (0..degree) |i| {
                     contexts_bytes[i * 16] = @intCast(i);
+                    contexts_bytes[i * 16 + 1] = @intCast(degree - 1);
                 }
                 break :ctx_v AesBlockX.fromBytes(&contexts_bytes);
             };

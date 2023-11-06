@@ -979,7 +979,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 - `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
-- `ctx`: the context separator.
+- `ctx[i]`: the `i`-th context separator. This is a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
 - `Byte(x)`: the value `x` encoded as 8 bits.
 
 ## Authenticated Encryption
@@ -1056,7 +1056,7 @@ else:
 Init(key, nonce)
 ~~~
 
-The `Init` function initializes a vector of `D` AEGIS-128L states with the same `key` and `nonce` but a different context `ctx`. The context is added to the state before every update.
+The `Init` function initializes a vector of `D` AEGIS-128L states with the same `key` and `nonce` but a different context `ctx[i]`. The context is added to the state before every update.
 
 Steps:
 
@@ -1079,9 +1079,9 @@ for i in 0..D:
 
 Repeat(10,
     for i in 0..D:
-        ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[7,i] = V[7,i] ^ ZeroPad(ctx, 128)
+        ctx[i] = ZeroPad(Byte(i) || Byte(D - 1), 128)
+        V[3,i] = V[3,i] ^ ctx[i]
+        V[7,i] = V[7,i] ^ ctx[i]
 
     Update(nonce_v, key_v)
 )
@@ -1261,7 +1261,7 @@ return tag
 Init(key, nonce)
 ~~~
 
-The `Init` function initializes a vector of `D` AEGIS-256 states with the same `key` and `nonce` but a different context `ctx`. The context is added to the state before every update.
+The `Init` function initializes a vector of `D` AEGIS-256 states with the same `key` and `nonce` but a different context `ctx[i]`. The context is added to the state before every update.
 
 Steps:
 
@@ -1287,18 +1287,18 @@ for i in 0..D:
 
 Repeat(4,
     for i in 0..D:
-        ctx = Byte(i)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        ctx[i] = ZeroPad(Byte(i) || Byte(D - 1), 128)
+        V[3,i] = V[3,i] ^ ctx[i]
+        V[5,i] = V[5,i] ^ ctx[i]
         Update(k0_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        V[3,i] = V[3,i] ^ ctx[i]
+        V[5,i] = V[5,i] ^ ctx[i]
         Update(k1_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        V[3,i] = V[3,i] ^ ctx[i]
+        V[5,i] = V[5,i] ^ ctx[i]
         Update(k0n0_v)
-        V[3,i] = V[3,i] ^ ZeroPad(ctx, 128)
-        V[5,i] = V[5,i] ^ ZeroPad(ctx, 128)
+        V[3,i] = V[3,i] ^ ctx[i]
+        V[5,i] = V[5,i] ^ ctx[i]
         Update(k1n1_v)
 )
 ~~~
@@ -2078,9 +2078,67 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
         4a175b2efbdc31e61a98b4465235c2da
 ~~~
 
-## AEGIS-128X Test Vectors
+## AEGIS-128X2 Test Vectors
 
-### AEGIS-128X2 Test Vector
+### Initial State
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+
+ctx[0]: 00010000000000000000000000000000
+ctx[1]: 01010000000000000000000000000000
+~~~
+
+After initialization:
+
+~~~
+V[0,0]: a4fc1ad9a72942fb88bd2cabbba6509a
+V[0,1]: 80a40e392fc71084209b6c3319bdc6cc
+
+V[1,0]: 380f435cf801763b1f0c2a2f7212052d
+V[1,1]: 73796607b59b1b650ee91c152af1f18a
+
+V[2,0]: 6ee1de433ea877fa33bc0782abff2dcb
+V[2,1]: b9fab2ab496e16d1facaffd5453cbf14
+
+V[3,0]: 85f94b0d4263bfa86fdf45a603d8b6ac
+V[3,1]: 90356c8cadbaa2c969001da02e3feca0
+
+V[4,0]: 09bd69ad3730174bcd2ce9a27cd1357e
+V[4,1]: e610b45125796a4fcf1708cef5c4f718
+
+V[5,0]: fcdeb0cf0a87bf442fc82383ddb0f6d6
+V[5,1]: 61ad32a4694d6f3cca313a2d3f4687aa
+
+V[6,0]: 571c207988659e2cdfbdaae77f4f37e3
+V[6,1]: 32e6094e217573bf91fb28c145a3efa8
+
+V[7,0]: ca549badf8faa58222412478598651cf
+V[7,1]: 3407279a54ce76d2e2e8a90ec5d108eb
+~~~
+
+### Test Vector 1
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+
+ad    :
+
+msg   :
+
+ct    :
+
+tag128: 63117dc57756e402819a82e13eca8379
+
+tag256: b92c71fdbd358b8a4de70b27631ace90
+        cffd9b9cfba82028412bac41b4f53759
+~~~
+
+### Test Vector 2
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2098,22 +2156,100 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : 9958ad79ff1feea50a27d5dd88728d15
-        7a4ce0cd996b9fffb4fde113ef646de4
-        aa67278fb1ebcb6571526b309d708447
-        c818ffc3d84c9c73b0cca3040bb85b81
-        d366311956f4cb1a66b02b25b58a7f75
-        9797169b0e398c4db16c9a577d4de180
-        5d646b823fa095ec34feefb58768efc0
-        6d9516c55b653f91
+ct    : 5795544301997f93621b278809d6331b
+        3bfa6f18e90db12c4aa35965b5e98c5f
+        c6fb4e54bcb6111842c20637252eff74
+        7cb3a8f85b37de80919a589fe0f24872
+        bc926360696739e05520647e390989e1
+        eb5fd42f99678a0276a498f8c454761c
+        9d6aacb647ad56be62b29c22cd4b5761
+        b38f43d5a5ee062
 
-tag128: 179247ab85ea2c4f9f712cac8bb7c9d3
+tag128: 1aebc200804f405cab637f2adebb6d77
 
-tag256: 04ad653f69c3e3bf3d29013367473ade
-        573551bdcf71f32a0debb089e58fb9e1
+tag256: c471876f9b4978c44f2ae1ce770cdb11
+        a094ee3feca64e7afcd48bfe52c60eca
 ~~~
 
-### AEGIS-128X4 Test Vector
+## AEGIS-128X4 Test Vectors
+
+### Initial State
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+
+ctx[0]: 00030000000000000000000000000000
+ctx[1]: 01030000000000000000000000000000
+ctx[2]: 02030000000000000000000000000000
+ctx[3]: 03030000000000000000000000000000
+~~~
+
+After initialization:
+
+~~~
+V[0,0]: 924eb07635003a37e6c6575ba8ce1929
+V[0,1]: c8b6a5d91475445e936d48e794be0ce2
+V[0,2]: fcd37d050e24084befe3bbb219d64760
+V[0,3]: 2e9f58cfb893a8800220242c373a8b18
+
+V[1,0]: 1a1f60c4fab64e5471dc72edfcf6fe6b
+V[1,1]: c1e525ebea2d6375a9edd045dce96381
+V[1,2]: 97a3e25abd228a44d4a14a6d3fe9185c
+V[1,3]: c2d4cf7f4287a98744645674265d4ca8
+
+V[2,0]: 7bb50c534f6ec4780530ff1cce8a16e8
+V[2,1]: 7b08d57557da0b5ef7b5f7d98b0ba189
+V[2,2]: 6bfcac34ddb68404821a4d665303cb0f
+V[2,3]: d95626f6dfad1aed7467622c38529932
+
+V[3,0]: af339fd2d50ee45fc47665c647cf6586
+V[3,1]: d0669b39d140f0e118a4a511efe2f95a
+V[3,2]: 7a94330f35c194fadda2a87e42cdeccc
+V[3,3]: 233b640d1f4d56e2757e72c1a9d8ecb1
+
+V[4,0]: 9f93737d699ba05c11e94f2b201bef5e
+V[4,1]: 61caf387cf7cfd3f8300ac7680ccfd76
+V[4,2]: 5825a671ecef03b7a9c98a601ae32115
+V[4,3]: 87a1fe4d558161a8f4c38731f3223032
+
+V[5,0]: 7a5aca78d636c05bbc702b2980196ab6
+V[5,1]: 915d868408495d07eb527789f282c575
+V[5,2]: d0947bfbc1d3309cdffc9be1503aea62
+V[5,3]: 8834ea57a15b9fbdc0245464a4b8cbef
+
+V[6,0]: e46f4cf71a95ac45b6f0823e3aba1a86
+V[6,1]: 8c4ecef682fc44a8eba911b3fc7d99f9
+V[6,2]: a4fb61e2c928a2ca760b8772f2ea5f2e
+V[6,3]: 3d34ea89da73caa3016c280500a155a3
+
+V[7,0]: 85075f0080e9d618e7eb40f57c32d9f7
+V[7,1]: d2ab2b320c6e93b155a3787cb83e5281
+V[7,2]: 0b3af0250ae36831a1b072e499929bcb
+V[7,3]: 5cce4d00329d69f1aae36aa541347512
+~~~
+
+### Test Vector 1
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+
+ad    :
+
+msg   :
+
+ct    :
+
+tag128: 5bef762d0947c00455b97bb3af30dfa3
+
+tag256: a4b25437f4be93cfa856a2f27e4416b4
+        2cac79fd4698f2cdbe6af25673e10a68
+~~~
+
+### Test Vector 2
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2131,24 +2267,80 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : 9958ad79ff1feea50a27d5dd88728d15
-        7a4ce0cd996b9fffb4fde113ef646de4
-        6e4c5230174a6268f89f01d557879360
-        a9068d7cb825bb0e8a97ea2e82059f69
-        aa67278fb1ebcb6571526b309d708447
-        c818ffc3d84c9c73b0cca3040bb85b81
-        93fc9a4499e384ae87bfeaa46f514b63
-        30c147c3ddbb6e94
+ct    : e836118562f4479c9d35c17356a83311
+        4c21f9aa39e4dda5e5c87f4152a00fce
+        9a7c38f832eafe8b1c12f8a7cf12a81a
+        1ad8a9c24ba9dedfbdaa586ffea67ddc
+        801ea97d9ab4a872f42d0e352e2713da
+        cd609f9442c17517c5a29daf3e2a3fac
+        4ff6b1380c4e46df7b086af6ce6bc1ed
+        594b8dd64aed2a7e
 
-tag128: 58038e00f6b7e861e2badb160beb71d4
+tag128: 0e56ab94e2e85db80f9d54010caabfb4
 
-tag256: 01d860572aa4ce5b83183cc94bc9fb44
-        5e2d70c0687f6fbc6991c2918d3ab0e8
+tag256: 69abf0f64a137dd6e122478d777e98bc
+        422823006cf57f5ee822dd78397230b2
 ~~~
 
-## AEGIS-256X Test Vectors
+## AEGIS-256X2 Test Vectors
 
-### AEGIS-256X2 Test Vector
+### Initial State
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+
+ctx[0]: 00010000000000000000000000000000
+ctx[1]: 01010000000000000000000000000000
+~~~
+
+After initialization:
+
+~~~
+V[0,0]: eca2bf4538442e8712d4972595744039
+V[0,1]: 201405efa9264f07911db58101903087
+
+V[1,0]: 3e536a998799408a97f3479a6f779d48
+V[1,1]: 0d79a7d822a5d215f78c3bf2feb33ae1
+
+V[2,0]: cf8c63d6f2b4563cdd9231107c85950e
+V[2,1]: 78d17ed7d8d563ff11bd202c76864839
+
+V[3,0]: d7e0707e6bfbbad913bc94b6993a9fa0
+V[3,1]: 097e4b1bff40d4c19cb29dfd125d62f2
+
+V[4,0]: a373cf6d537dd66bc0ef0f2f9285359f
+V[4,1]: c0d0ae0c48f9df3faaf0e7be7768c326
+
+V[5,0]: 9f76560dcae1efacabdcce446ae283bc
+V[5,1]: bd52a6b9c8f976a26ec1409df19e8bfe
+~~~
+
+### Test Vector 1
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+
+ad    :
+
+msg   :
+
+ct    :
+
+tag128: 62cdbab084c83dacdb945bb446f049c8
+
+tag256: 25d7e799b49a80354c3f881ac2f1027f
+        471a5d293052bd9997abd3ae84014bb7
+~~~
+
+### Test Vector 2
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2168,22 +2360,94 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : a1b0f4b9b83eb676c8d2b8d1692be03d
-        95280efa4e2c09962880dc614f94642b
-        a7581f933d98c7355623ff63be82bb8a
-        476ddd0dfe0185b4e8da6c25bd9f38b9
-        d09e0ec9baf01cd47369dbca9d331bfc
-        d49fb4e6806e61f344d61b11ac552e4c
-        50c6d26570210e1202eb9b347b908a55
-        361ea8d15f8494e3
+ct    : 73110d21a920608fd77b580f1e442808
+        7a7365cb153b4eeca6b62e1a70f7f9a8
+        d1f31f17da4c3acfacb2517f2f5e1575
+        8c35532e33751a964d18d29a599d2dc0
+        7f9378339b9d8c9fa03d30a4d7837cc8
+        eb8b99bcbba2d11cd1a0f994af2b8f94
+        7ef18473bd519e5283736758480abc99
+        0e79d4ccab93dde9
 
-tag128: 3c24d8bed42e92d3f85535946545fe38
+tag128: 94a3bd44ad3381e36335014620ee638e
 
-tag256: 3e3543e177aec683d341ca2ae92a8a1b
-        02119b5fa38054502b14ffbe8c6f7423
+tag256: 0392c62b17ddb00c172a010b5a327d0f
+        97317b6fbaee31ef741f004d7adc1e81
 ~~~
 
-### AEGIS-256X4 Test Vector
+## AEGIS-256X4 Test Vectors
+
+### Initial State
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+
+ctx[0]: 00030000000000000000000000000000
+ctx[1]: 01030000000000000000000000000000
+ctx[2]: 02030000000000000000000000000000
+ctx[3]: 03030000000000000000000000000000
+~~~
+
+After initialization:
+
+~~~
+V[0,0]: 482a86e8436cd2361063a4b2702769b9
+V[0,1]: d95a2be81c9245b22996f68eea0122f9
+V[0,2]: 0c2a3b348b1a5e256c6751377318c41e
+V[0,3]: f64436a21653fe7cf2e0829a177db383
+
+V[1,0]: e705e8866267717d96092e58e78b574c
+V[1,1]: d1dd412142df9806cc267af2fe1d830e
+V[1,2]: 30e7dfd3c9941b8394e95bdf5bac99d9
+V[1,3]: 9f27186f8a4fab86820689822c3c74d2
+
+V[2,0]: e1aa6af5d9e31dde8d94a48a0810fa89
+V[2,1]: 63555cdf0d98f18fb75b029ad80786c0
+V[2,2]: a3ee0e4a3429a9539e4fcec385475608
+V[2,3]: 28ea527d31ef61df498dc107fe02df99
+
+V[3,0]: 37f06808410c8f3954525ae44584d3be
+V[3,1]: 8fcc23bca2fe2209f93d34e2da35b33d
+V[3,2]: 33156347df89eaa69ab11096362daccf
+V[3,3]: bbe58d9dbe8c5b0469be5a87086db5d4
+
+V[4,0]: d1c9eb37fecbc5ada7b351fa4f501f32
+V[4,1]: 0b9b803283c1538628b507c8f6432434
+V[4,2]: bfb8b6d4f87cce28825c7e92f54b8728
+V[4,3]: 8917bb5b09c32f900c6a5a1d63c46264
+
+V[5,0]: 4f6110c2ef0c3c687e90c1e5532ddf8e
+V[5,1]: 031bd85d99f64684d23728a0453c72a1
+V[5,2]: 10bc7ec34d4119b5bdeb6c7dfc458247
+V[5,3]: 591ece530aeaa5c9867220156f5c25e3
+~~~
+
+### Test Vector 1
+
+~~~
+key   : 000102030405060708090a0b0c0d0e0f
+        101112131415161718191a1b1c1d1e1f
+
+nonce : 101112131415161718191a1b1c1d1e1f
+        202122232425262728292a2b2c2d2e2f
+
+ad    :
+
+msg   :
+
+ct    :
+
+tag128: 3b7fee6cee7bf17888ad11ed2397beb4
+
+tag256: 6093a1a8aab20ec635dc1ca71745b01b
+        5bec4fc444c9ffbebd710d4a34d20eaf
+~~~
+
+### Test Vector 2
 
 ~~~
 key   : 000102030405060708090a0b0c0d0e0f
@@ -2203,19 +2467,19 @@ msg   : 04050607040506070405060704050607
         04050607040506070405060704050607
         0405060704050607
 
-ct    : a1b0f4b9b83eb676c8d2b8d1692be03d
-        95280efa4e2c09962880dc614f94642b
-        d4f1068ba92cf7bfd89c2acd70ef492b
-        0544105f5c3b948cee0248486b4a3411
-        a7581f933d98c7355623ff63be82bb8a
-        476ddd0dfe0185b4e8da6c25bd9f38b9
-        d1da0307b0f33484ed9abad2c9184cb4
-        b58d7a8a486c0605
+ct    : bec109547f8316d598b3b7d947ad4c0e
+        f5b98e217cffa0d858ad49ae34109a95
+        abc5b5fada820c4d6ae2fca0f5e2444e
+        52a04a1edb7bec71408de3e199500521
+        94506be3ba6a4de51a15a577ea0e4c14
+        f7539a13e751a555f48d0f49fecffb22
+        0525e60d381e2efa803b09b7164ba59f
+        dc66656affd51e06
 
-tag128: 2ddf105d8bb7a2d7adb60cd5a5285183
+tag128: ec44b512d713f745547be345bcc66b6c
 
-tag256: da85a761bdd56e8c11d3179e11ed353a
-        f75ab73c3662cc5bbc651b4bb4c564b9
+tag256: ba3168ecd7f7120c5e204a7e0d616e39
+        5675ddfe00e4e5490a5ba93bb1a70555
 ~~~
 
 # Acknowledgments
