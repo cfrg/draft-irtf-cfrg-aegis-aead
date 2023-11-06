@@ -53,7 +53,6 @@ See the
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
 
-
 ## Command Line Usage
 
 Formatted text and HTML versions of the draft can be built using `make`.
