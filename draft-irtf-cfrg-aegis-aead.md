@@ -961,7 +961,7 @@ else:                # 256 bits
 return tag
 ~~~
 
-# Parallel modes
+# Parallel Modes
 
 Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, include instructions to efficiently apply the AES round function to a vector of AES blocks.
 
