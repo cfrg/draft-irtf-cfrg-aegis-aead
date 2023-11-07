@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 9 May 2024                               Individual Contributor
-                                                         6 November 2023
+Expires: 10 May 2024                              Individual Contributor
+                                                         7 November 2023
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 May 2024.
+   This Internet-Draft will expire on 10 May 2024.
 
 Copyright Notice
 
@@ -222,9 +222,9 @@ Table of Contents
    Note that an earlier version of Hongjun Wu and Bart Preneel’s paper
    introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting
    differences with regards to the computation of the authentication tag
-   and the number of rounds in Finalize() respectively.  We follow the
-   specification of [AEGIS] that is current at the time of writing,
-   which can be found in the References section of this document.
+   and the number of rounds in the Finalize() function.  We follow the
+   specification of [AEGIS], which can be found in the References
+   section of this document.
 
 2.  Conventions and Definitions
 
