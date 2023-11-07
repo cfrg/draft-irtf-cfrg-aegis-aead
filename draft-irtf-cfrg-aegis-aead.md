@@ -245,7 +245,7 @@ Unlike most other AES-based AEAD constructions, leaking a state does not leak th
 
 Finally, an AEGIS key is not required after the setup phase, and there is no key schedule. Thus, ephemeral keys can be erased from memory before any data has been encrypted or decrypted, mitigating cold boot attacks.
 
-Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in `Finalize()` respectively. We follow the specification of {{AEGIS}} that is current at the time of writing, which can be found in the References section of this document.
+Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in the `Finalize()` function. We follow the specification of {{AEGIS}}, which can be found in the References section of this document.
 
 # Conventions and Definitions
 
