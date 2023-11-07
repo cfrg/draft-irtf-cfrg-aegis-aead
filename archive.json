@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-05T00:34:34.067692+00:00",
+  "timestamp": "2023-11-07T00:32:08.989525+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -131,15 +131,15 @@
       "id": "I_kwDOKeDGj850kEPh",
       "title": "Downloadable test vectors",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The document includes test vectors that are easy to parse.\r\n\r\nBut maybe it would be useful to also offer them as files that can be downloaded from this repository, in various formats (KAT, JSON, etc.)\r\n\r\nSimilar to the implementation table, the link would have to be removed before the RFC publication.",
       "createdAt": "2023-10-21T18:18:15Z",
-      "updatedAt": "2023-10-22T10:16:36Z",
-      "closedAt": null,
+      "updatedAt": "2023-11-05T11:15:26Z",
+      "closedAt": "2023-11-05T11:15:26Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -169,9 +169,24 @@
       "labels": [],
       "body": "The document uses both \"byte\" and \"octet\".\r\n\r\nMaybe we should use only \"octet\" everywhere.",
       "createdAt": "2023-10-30T21:35:41Z",
-      "updatedAt": "2023-10-30T21:35:41Z",
+      "updatedAt": "2023-11-05T22:31:51Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Would we change the `Byte(x)` function? I would prefer byte everywhere, but I presume octet eliminates any ambiguity. The ChaCha20-Poly1305 RFC seems to use both.",
+          "createdAt": "2023-11-05T10:26:03Z",
+          "updatedAt": "2023-11-05T10:26:03Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm not a big fan of \"octet\" either. Even less as a function name. But we can't assume that both terms are interchangeable, as this is not true, even today (e.g. DSPs).\r\n\r\nMaybe we can use `byte` everywhere, and mention somewhere that thorough this document, `byte`  refers to a 8-bit  sequence? I'm not sure how/where that could be doable, but it may be worth it, no matter what the ChaChaPoly RFC did.\r\n",
+          "createdAt": "2023-11-05T22:31:51Z",
+          "updatedAt": "2023-11-05T22:31:51Z"
+        }
+      ]
     },
     {
       "number": 16,
@@ -185,9 +200,24 @@
       "labels": [],
       "body": "It's not clear that the parallelism degree affects not only performance, but also the output.\r\n\r\nWe should mention somewhere that for a given `(key,nonce,ad,msg)`, different parallelism degrees can produce different authentication tags. \r\n\r\nIf #14 is merged, we should extend that to the ciphertexts.\r\n\r\nWhat would be the best place for that? In the security considerations?\r\n\r\n",
       "createdAt": "2023-10-30T21:45:43Z",
-      "updatedAt": "2023-10-30T21:45:43Z",
+      "updatedAt": "2023-11-05T22:25:18Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, that makes sense. I think it could go there. We haven't mentioned that different associated data affects the ciphertext for the standard variants either have we? Perhaps we could mention both in one paragraph.",
+          "createdAt": "2023-11-05T10:30:34Z",
+          "updatedAt": "2023-11-05T10:30:34Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> We haven't mentioned that different associated data affects the ciphertext for the standard variants either have we? \r\n\r\nWe haven't, but if we do, we should be cautious and set the preconditions for that to hold true. It can be a little bit complicated and confusing.\r\n\r\nThe AD and the message are absorbed the same way. \r\n\r\nWhich implies that `Enc(ad=AA...ABB...B, msg=CC...CDD...D)` produces the same ciphertext as `Enc(ad=AA...A, msg=BB...BCC...CDD....D)` for `DD....D`.\r\n\r\n",
+          "createdAt": "2023-11-05T22:25:18Z",
+          "updatedAt": "2023-11-05T22:25:18Z"
+        }
+      ]
     },
     {
       "number": 17,
@@ -225,7 +255,31 @@
       "labels": [],
       "body": "AEGIS is a very good and fast MAC, so it could be tempting to use it as a replacement for a hash function.\r\n\r\nBut if the key is known, inputs generating state collisions can be easily crafted. So, we should make that clear somewhere, probably in the security considerations.\r\n",
       "createdAt": "2023-11-01T21:18:55Z",
-      "updatedAt": "2023-11-01T21:18:55Z",
+      "updatedAt": "2023-11-05T10:21:51Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I agree. That's a sensible place to put it.",
+          "createdAt": "2023-11-05T10:21:51Z",
+          "updatedAt": "2023-11-05T10:21:51Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "I_kwDOKeDGj8515wKD",
+      "title": "Require SHA512 for the variants with 256-bit security?",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/20",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It's 2am and I need to get some sleep before reading this, but @emanjon just dropped this:\r\n\r\nhttps://eprint.iacr.org/2023/913.pdf\r\n\r\nFor AEGIS-256X, this is not an issue, as the IANA request hasn't been made yet.\r\n\r\nFor `TLS_AEGIS_256_SHA384`, I don't know if the suite name can be updated (that would be a breaking change for existing implementations, but this is fine as the document is still a draft), or if we should ask for a new one.\r\n\r\n",
+      "createdAt": "2023-11-06T00:58:49Z",
+      "updatedAt": "2023-11-06T00:58:49Z",
       "closedAt": null,
       "comments": []
     }
@@ -2183,24 +2237,26 @@
       "id": "PR_kwDOKeDGj85eKyx2",
       "title": "AEGIS-X: include the parallelism degree in the context",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/14",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This is a breaking change, and it is not strictly necessary, but since it is not too late, it may be desirable.\r\n\r\nCurrently, if a (key,nonce) is reused with different variants of the same security level, the key streams initialized with the same context will be the same.\r\n\r\nFor example, with AEGIS-128L and AEGIS-128X2, the 128L key stream will be the same as the first half of the 128X2 key stream.\r\n\r\nTags will be different, but reusing a (key,nonce) with different variants would still reveal the difference between the messages.\r\n\r\nWe can document that (key,nonce) pairs must not be reused with different algorithms.\r\n\r\nBut a better alternative would be to include the degree in the context.\r\n\r\nWe actually use (degree - 1), so that when the degree is 1, the context remains all-zero, and it doesn't break the equivalence between AEGIS-128L and AEGIS-128X1.",
       "createdAt": "2023-10-30T21:34:17Z",
-      "updatedAt": "2023-11-04T22:22:49Z",
+      "updatedAt": "2023-11-06T01:04:59Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "b234ed37c69d2bf7edf77ec3605ec5d9f44da89d",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "aegis-x-d",
-      "headRefOid": "018f79cb6469472a0ec90052f5692db7fc71204e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "37fc91520a3359681ae61a1b6e27cfcc77e05dc9",
+      "closedAt": "2023-11-06T01:04:56Z",
+      "mergedAt": "2023-11-06T01:04:56Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "2b1cfaa0145f67f30a93a81e37a5e12c08830565"
+      },
       "comments": [
         {
           "author": "jedisct1",
@@ -2229,35 +2285,105 @@
           "body": "No worries Samuel! Vacations are more important than anything \ud83d\ude0a",
           "createdAt": "2023-11-04T22:22:49Z",
           "updatedAt": "2023-11-04T22:22:49Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The `ZeroPad` repetition was originally there because the context itself was the byte, not the padding.\r\n\r\nBut that didn't really match the way it would actually be implemented. Describing it as a mask solved it :)",
+          "createdAt": "2023-11-05T20:37:44Z",
+          "updatedAt": "2023-11-05T20:37:44Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85mKNkt",
+          "commit": {
+            "abbreviatedOid": "018f79c"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Looks good. One potential change I can see. The `ZeroPad()` once is an improvement.",
+          "createdAt": "2023-11-05T10:06:52Z",
+          "updatedAt": "2023-11-05T10:19:39Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "It's perhaps worth rephrasing this without the colon due to the colon on the left.",
+              "createdAt": "2023-11-05T10:06:52Z",
+              "updatedAt": "2023-11-05T10:19:39Z"
+            },
+            {
+              "originalPosition": 5,
+              "body": "Could be `context separator. This is a 128-bit mask...` or similar.",
+              "createdAt": "2023-11-05T10:19:31Z",
+              "updatedAt": "2023-11-05T10:19:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85mKlly",
+          "commit": {
+            "abbreviatedOid": "018f79c"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-11-05T20:34:25Z",
+          "updatedAt": "2023-11-05T20:34:26Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "It sounds indeed better without the column. Your suggestion was merged. Thank you Samuel!",
+              "createdAt": "2023-11-05T20:34:25Z",
+              "updatedAt": "2023-11-05T20:34:26Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 18,
       "id": "PR_kwDOKeDGj85eX6rj",
       "title": "Add test vectors in JSON format",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/18",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The Python code is horrible, but the resulting JSON files can still be very useful to test implementations.\r\n\r\nFixes #9 ",
       "createdAt": "2023-11-01T21:08:30Z",
-      "updatedAt": "2023-11-01T21:08:30Z",
+      "updatedAt": "2023-11-05T11:15:25Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "b234ed37c69d2bf7edf77ec3605ec5d9f44da89d",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "test-vectors",
       "headRefOid": "8bfbebbed0f7341b5f1eebecb39df21cf1abd056",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-11-05T11:15:25Z",
+      "mergedAt": "2023-11-05T11:15:25Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "122b8e33140262677c6b8535ca76719db95fd1e0"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85mKQJb",
+          "commit": {
+            "abbreviatedOid": "8bfbebb"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-05T11:13:56Z",
+          "updatedAt": "2023-11-05T11:13:56Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
