@@ -251,7 +251,7 @@ Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing 
 
 {::boilerplate bcp14-tagged}
 
-Throughout this document, "byte" is used instead of "octet" and refers to an 8-bit sequence.
+Throughout this document, "byte" is used interchangeably with "octet" and refers to an 8-bit sequence.
 
 Primitives:
 
