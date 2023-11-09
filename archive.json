@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-07T00:32:08.989525+00:00",
+  "timestamp": "2023-11-09T00:31:50.935484+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -169,7 +169,7 @@
       "labels": [],
       "body": "The document uses both \"byte\" and \"octet\".\r\n\r\nMaybe we should use only \"octet\" everywhere.",
       "createdAt": "2023-10-30T21:35:41Z",
-      "updatedAt": "2023-11-05T22:31:51Z",
+      "updatedAt": "2023-11-07T18:44:27Z",
       "closedAt": null,
       "comments": [
         {
@@ -185,6 +185,13 @@
           "body": "I'm not a big fan of \"octet\" either. Even less as a function name. But we can't assume that both terms are interchangeable, as this is not true, even today (e.g. DSPs).\r\n\r\nMaybe we can use `byte` everywhere, and mention somewhere that thorough this document, `byte`  refers to a 8-bit  sequence? I'm not sure how/where that could be doable, but it may be worth it, no matter what the ChaChaPoly RFC did.\r\n",
           "createdAt": "2023-11-05T22:31:51Z",
           "updatedAt": "2023-11-05T22:31:51Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Maybe we can use byte everywhere, and mention somewhere that thorough this document, byte refers to a 8-bit sequence? I'm not sure how/where that could be doable, but it may be worth it\r\n\r\nI like that idea, but I'm not sure where that would go. Could we have a sentence at the top of `Conventions and Definitions`? Kind of like the [age spec](https://github.com/C2SP/C2SP/blob/main/age.md) but after the key words bit.",
+          "createdAt": "2023-11-07T18:44:27Z",
+          "updatedAt": "2023-11-07T18:44:27Z"
         }
       ]
     },
@@ -279,9 +286,17 @@
       "labels": [],
       "body": "It's 2am and I need to get some sleep before reading this, but @emanjon just dropped this:\r\n\r\nhttps://eprint.iacr.org/2023/913.pdf\r\n\r\nFor AEGIS-256X, this is not an issue, as the IANA request hasn't been made yet.\r\n\r\nFor `TLS_AEGIS_256_SHA384`, I don't know if the suite name can be updated (that would be a breaking change for existing implementations, but this is fine as the document is still a draft), or if we should ask for a new one.\r\n\r\n",
       "createdAt": "2023-11-06T00:58:49Z",
-      "updatedAt": "2023-11-06T00:58:49Z",
+      "updatedAt": "2023-11-07T18:41:15Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I haven't read the full paper yet, but it does seem like that should be swapped. Guess [Sabrina Tanamal](https://mailarchive.ietf.org/arch/msg/tls-reg-review/NTUFnKVAqI832Jt-fe-HzT-xaJw/) who assigned that needs to be contacted/asked.",
+          "createdAt": "2023-11-07T18:41:14Z",
+          "updatedAt": "2023-11-07T18:41:14Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -2381,6 +2396,48 @@
           "body": "",
           "createdAt": "2023-11-05T11:13:56Z",
           "updatedAt": "2023-11-05T11:13:56Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDOKeDGj85e0F2y",
+      "title": "\"respectively\" doesn't seem necessary here.",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/21",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also, the AEGIS paper is unlikely to change. We shouldn't give the feeling that it's still a moving target.",
+      "createdAt": "2023-11-07T14:26:18Z",
+      "updatedAt": "2023-11-07T18:34:24Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "009d4c61548b3bbd976839dbbd3c2330b70aadaa",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "dif-fin",
+      "headRefOid": "3b32b1f58f6089afa0b64b3f703b084081ce3a1d",
+      "closedAt": "2023-11-07T18:34:24Z",
+      "mergedAt": "2023-11-07T18:34:24Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "3b0411933a6b4520c0ecc98a9e913c9d524cf280"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85mbXJm",
+          "commit": {
+            "abbreviatedOid": "3b32b1f"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-07T18:33:59Z",
+          "updatedAt": "2023-11-07T18:33:59Z",
           "comments": []
         }
       ]
