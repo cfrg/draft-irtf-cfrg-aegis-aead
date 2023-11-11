@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 12 May 2024                              Individual Contributor
-                                                         9 November 2023
+Expires: 14 May 2024                              Individual Contributor
+                                                        11 November 2023
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 May 2024.
+   This Internet-Draft will expire on 14 May 2024.
 
 Copyright Notice
 
@@ -1646,6 +1646,13 @@ return tag
    Init function; other functions only depend on the resulting state.
    Therefore, implementations can overwrite ephemeral keys with zeros
    right after the last Update call of the initialization function.
+
+   Each variant can be used as a MAC by calling the Encrypt() function
+   with the message as the ad and leaving msg empty, resulting in just a
+   tag.  However, they MUST NOT be used as a hash function; if the key
+   is known, inputs generating state collisions can easily be crafted.
+   Similarly, as opposed to hash-based MACs, tags MUST NOT be used for
+   key derivation as there is no proof they are uniformly random.
 
    As shown in [D23], AEGIS-128X and AEGIS-256X share the same security
    properties and requirements as AEGIS-128L and AEGIS-256 respectively.
