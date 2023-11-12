@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-09T00:31:50.935484+00:00",
+  "timestamp": "2023-11-12T00:34:43.883614+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -162,15 +162,15 @@
       "id": "I_kwDOKeDGj851YJXz",
       "title": "\"byte\" vs \"octet\"",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/15",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The document uses both \"byte\" and \"octet\".\r\n\r\nMaybe we should use only \"octet\" everywhere.",
       "createdAt": "2023-10-30T21:35:41Z",
-      "updatedAt": "2023-11-07T18:44:27Z",
-      "closedAt": null,
+      "updatedAt": "2023-11-09T19:59:44Z",
+      "closedAt": "2023-11-09T19:59:43Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -192,6 +192,13 @@
           "body": "> Maybe we can use byte everywhere, and mention somewhere that thorough this document, byte refers to a 8-bit sequence? I'm not sure how/where that could be doable, but it may be worth it\r\n\r\nI like that idea, but I'm not sure where that would go. Could we have a sentence at the top of `Conventions and Definitions`? Kind of like the [age spec](https://github.com/C2SP/C2SP/blob/main/age.md) but after the key words bit.",
           "createdAt": "2023-11-07T18:44:27Z",
           "updatedAt": "2023-11-07T18:44:27Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed in #22 ",
+          "createdAt": "2023-11-09T19:59:43Z",
+          "updatedAt": "2023-11-09T19:59:43Z"
         }
       ]
     },
@@ -255,15 +262,15 @@
       "id": "I_kwDOKeDGj851m44o",
       "title": "Mention that AEGIS must not not used as a hash function",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/19",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "AEGIS is a very good and fast MAC, so it could be tempting to use it as a replacement for a hash function.\r\n\r\nBut if the key is known, inputs generating state collisions can be easily crafted. So, we should make that clear somewhere, probably in the security considerations.\r\n",
       "createdAt": "2023-11-01T21:18:55Z",
-      "updatedAt": "2023-11-05T10:21:51Z",
-      "closedAt": null,
+      "updatedAt": "2023-11-11T17:30:46Z",
+      "closedAt": "2023-11-11T17:30:46Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -2439,6 +2446,166 @@
           "createdAt": "2023-11-07T18:33:59Z",
           "updatedAt": "2023-11-07T18:33:59Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDOKeDGj85fENF7",
+      "title": "Say bytes instead of octets",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/22",
+      "state": "MERGED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Let me know what you think of the sentence placement and phrasing.",
+      "createdAt": "2023-11-09T18:41:57Z",
+      "updatedAt": "2023-11-09T19:59:28Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "3b0411933a6b4520c0ecc98a9e913c9d524cf280",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "4445b28351c38355b48c7fdb03fec0fd27014d59",
+      "closedAt": "2023-11-09T19:59:20Z",
+      "mergedAt": "2023-11-09T19:59:20Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "f8190ca5a9d45884ee1f15b9111ca27865f50b52"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Not a big fan of \"instead of\" (-> \"why didn't you use 'octet', then?\")\r\n\r\nHow about \"interchangeably with\" instead?",
+          "createdAt": "2023-11-09T18:46:21Z",
+          "updatedAt": "2023-11-09T18:46:21Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Samuel!",
+          "createdAt": "2023-11-09T19:59:28Z",
+          "updatedAt": "2023-11-09T19:59:28Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 23,
+      "id": "PR_kwDOKeDGj85fNas2",
+      "title": "Mention that AEGIS must not be used as a hash function",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/23",
+      "state": "MERGED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #19.",
+      "createdAt": "2023-11-11T11:28:40Z",
+      "updatedAt": "2023-11-11T17:30:45Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "f8190ca5a9d45884ee1f15b9111ca27865f50b52",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "4e0e2b660fa5ef88ee50c6995f61cbdeb7c44e78",
+      "closedAt": "2023-11-11T17:30:45Z",
+      "mergedAt": "2023-11-11T17:30:45Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "82e74af44e303f540c041b2982714b5366fcfa4f"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Looks good!\r\n\r\nThank you Samuel!",
+          "createdAt": "2023-11-11T17:30:42Z",
+          "updatedAt": "2023-11-11T17:30:42Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85m4cM5",
+          "commit": {
+            "abbreviatedOid": "40f81b9"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-11-11T14:25:59Z",
+          "updatedAt": "2023-11-11T14:26:00Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "\"performing encryption with the message\" can be a bit confusing, as we don't encrypt anything. Maybe replace it with \"by calling the `Encrypt()` function\"?",
+              "createdAt": "2023-11-11T14:25:59Z",
+              "updatedAt": "2023-11-11T14:26:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85m4cN-",
+          "commit": {
+            "abbreviatedOid": "40f81b9"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-11-11T14:26:42Z",
+          "updatedAt": "2023-11-11T14:26:42Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "\"Both algorithms\" -> maybe \"All the variants\"?",
+              "createdAt": "2023-11-11T14:26:42Z",
+              "updatedAt": "2023-11-11T14:26:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85m4dUE",
+          "commit": {
+            "abbreviatedOid": "40f81b9"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-11-11T15:10:27Z",
+          "updatedAt": "2023-11-11T15:10:27Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Both good suggestions. I put `Both algorithms` because that was used for the nonce-respecting setting part, which we might want to change.",
+              "createdAt": "2023-11-11T15:10:27Z",
+              "updatedAt": "2023-11-11T15:10:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj85m4dWt",
+          "commit": {
+            "abbreviatedOid": "40f81b9"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-11-11T15:11:55Z",
+          "updatedAt": "2023-11-11T15:11:55Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Now I'm debating `Each variant`, but then `However, they` may have to change.",
+              "createdAt": "2023-11-11T15:11:55Z",
+              "updatedAt": "2023-11-11T15:12:49Z"
+            }
+          ]
         }
       ]
     }
