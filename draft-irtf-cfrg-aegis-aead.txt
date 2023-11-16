@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 14 May 2024                              Individual Contributor
-                                                        11 November 2023
+Expires: 19 May 2024                              Individual Contributor
+                                                        16 November 2023
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 May 2024.
+   This Internet-Draft will expire on 19 May 2024.
 
 Copyright Notice
 
@@ -1646,6 +1646,13 @@ return tag
    Init function; other functions only depend on the resulting state.
    Therefore, implementations can overwrite ephemeral keys with zeros
    right after the last Update call of the initialization function.
+
+   For the same (key, nonce, ad, msg) tuple, a different degree of
+   parallelism in AEGIS-128X and AEGIS-256X can produce a different ct
+   and tag.  Furthermore, different ad with the same (key, nonce, msg)
+   can produce a different ct and tag with all variants.  However, as
+   the ad and msg are absorbed into the state identically in that order,
+   this does not necessarily hold when the msg changes.
 
    Each variant can be used as a MAC by calling the Encrypt() function
    with the message as the ad and leaving msg empty, resulting in just a
