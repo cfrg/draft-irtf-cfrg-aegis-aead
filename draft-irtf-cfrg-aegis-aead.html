@@ -22,13 +22,13 @@
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.0.0
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
-    wcwidth 0.2.9
+    wcwidth 0.2.10
 -->
 <link href="draft-irtf-cfrg-aegis-aead.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 19 May 2024</td>
+<td class="center">Expires 22 May 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-11-16" class="published">16 November 2023</time>
+<time datetime="2023-11-19" class="published">19 November 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-05-19">19 May 2024</time></dd>
+<dd class="expires"><time datetime="2024-05-22">22 May 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3391,14 +3391,14 @@ return stream
         <h3 id="name-dtls-13-record-number-encry">
 <a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-dtls-13-record-number-encry" class="section-name selfRef">DTLS 1.3 Record Number Encryption</a>
         </h3>
-<p id="section-11.1-1">In DTLS 1.3, record sequence numbers are encrypted as specified in [RFC9147].<a href="#section-11.1-1" class="pilcrow">¶</a></p>
+<p id="section-11.1-1">In DTLS 1.3, record sequence numbers are encrypted as specified in <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span>.<a href="#section-11.1-1" class="pilcrow">¶</a></p>
 <p id="section-11.1-2">For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS <code>Stream</code> function with:<a href="#section-11.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-11.1-3.1">
             <p id="section-11.1-3.1.1">a 128-bit tag length<a href="#section-11.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-11.1-3.2">
-            <p id="section-11.1-3.2.1"><code>sn_key</code>, as defined in Section 4.2.3 of [RFC9147]<a href="#section-11.1-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-11.1-3.2.1"><code>sn_key</code>, as defined in <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>], <a href="https://rfc-editor.org/rfc/rfc9147#section-4.2.3" class="relref">Section 4.2.3</a></span><a href="#section-11.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-11.1-3.3">
             <p id="section-11.1-3.3.1"><code>ciphertext[0..16]</code>: the first 16 bytes of the DTLS ciphertext<a href="#section-11.1-3.3.1" class="pilcrow">¶</a></p>
@@ -3420,14 +3420,14 @@ mask = Stream(5, sn_key, ZeroPad(ciphertext[0..16], nonce_len))
         <h3 id="name-quic-header-protection">
 <a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-quic-header-protection" class="section-name selfRef">QUIC Header Protection</a>
         </h3>
-<p id="section-11.2-1">In QUIC, parts of the QUIC packet headers are encrypted as specified in [RFC9001].<a href="#section-11.2-1" class="pilcrow">¶</a></p>
+<p id="section-11.2-1">In QUIC, parts of the QUIC packet headers are encrypted as specified in <span>[<a href="#RFC9001" class="cite xref">RFC9001</a>]</span>.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
 <p id="section-11.2-2">For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS <code>Encrypt</code> function with:<a href="#section-11.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-11.2-3.1">
             <p id="section-11.2-3.1.1">a 128-bit tag length<a href="#section-11.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-11.2-3.2">
-            <p id="section-11.2-3.2.1"><code>hp_key</code>, as defined in Section 5.4 of [RFC9001]<a href="#section-11.2-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-11.2-3.2.1"><code>hp_key</code>, as defined in <span>[<a href="#RFC9001" class="cite xref">RFC9001</a>], <a href="https://rfc-editor.org/rfc/rfc9001#section-5.4" class="relref">Section 5.4</a></span><a href="#section-11.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-11.2-3.3">
             <p id="section-11.2-3.3.1"><code>sample</code>: the 16 bytes QUIC ciphertext sample<a href="#section-11.2-3.3.1" class="pilcrow">¶</a></p>
@@ -3473,8 +3473,16 @@ mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
 <span class="refAuthor">Eastlake 3rd, D.</span> and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)"</span>, <span class="seriesInfo">RFC 6234</span>, <span class="seriesInfo">DOI 10.17487/RFC6234</span>, <time datetime="2011-05" class="refDate">May 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6234">https://www.rfc-editor.org/rfc/rfc6234</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9001">[RFC9001]</dt>
+        <dd>
+<span class="refAuthor">Thomson, M., Ed.</span> and <span class="refAuthor">S. Turner, Ed.</span>, <span class="refTitle">"Using TLS to Secure QUIC"</span>, <span class="seriesInfo">RFC 9001</span>, <span class="seriesInfo">DOI 10.17487/RFC9001</span>, <time datetime="2021-05" class="refDate">May 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9001">https://www.rfc-editor.org/rfc/rfc9001</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9147">[RFC9147]</dt>
+      <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">N. Modadugu</span>, <span class="refTitle">"The Datagram Transport Layer Security (DTLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 9147</span>, <span class="seriesInfo">DOI 10.17487/RFC9147</span>, <time datetime="2022-04" class="refDate">April 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9147">https://www.rfc-editor.org/rfc/rfc9147</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
