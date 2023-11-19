@@ -1611,12 +1611,12 @@ as well as the following identifiers in the TLS Cipher Suite Registry:
 
 ## DTLS 1.3 Record Number Encryption
 
-In DTLS 1.3, record sequence numbers are encrypted as specified in [RFC9147].
+In DTLS 1.3, record sequence numbers are encrypted as specified in {{!RFC9147}}.
 
 For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Stream` function with:
 
 - a 128-bit tag length
-- `sn_key`, as defined in Section 4.2.3 of [RFC9147]
+- `sn_key`, as defined in {{!RFC9147, Section 4.2.3}}
 - `ciphertext[0..16]`: the first 16 bytes of the DTLS ciphertext
 - `nonce_len`: the AEGIS nonce length
 
@@ -1628,12 +1628,12 @@ mask = Stream(5, sn_key, ZeroPad(ciphertext[0..16], nonce_len))
 
 ## QUIC Header Protection
 
-In QUIC, parts of the QUIC packet headers are encrypted as specified in [RFC9001].
+In QUIC, parts of the QUIC packet headers are encrypted as specified in {{!RFC9001}}.
 
 For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Encrypt` function with:
 
 - a 128-bit tag length
-- `hp_key`, as defined in Section 5.4 of [RFC9001]
+- `hp_key`, as defined in {{!RFC9001, Section 5.4}}
 - `sample`: the 16 bytes QUIC ciphertext sample
 - `nonce_len`: the AEGIS nonce length
 
