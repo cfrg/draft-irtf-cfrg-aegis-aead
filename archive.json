@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-12T00:34:43.883614+00:00",
+  "timestamp": "2023-11-19T00:35:57.503135+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -207,15 +207,15 @@
       "id": "I_kwDOKeDGj851YMKe",
       "title": "Mention that different variants produce different [ciphertexts and] tags",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/16",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "It's not clear that the parallelism degree affects not only performance, but also the output.\r\n\r\nWe should mention somewhere that for a given `(key,nonce,ad,msg)`, different parallelism degrees can produce different authentication tags. \r\n\r\nIf #14 is merged, we should extend that to the ciphertexts.\r\n\r\nWhat would be the best place for that? In the security considerations?\r\n\r\n",
       "createdAt": "2023-10-30T21:45:43Z",
-      "updatedAt": "2023-11-05T22:25:18Z",
-      "closedAt": null,
+      "updatedAt": "2023-11-16T21:26:02Z",
+      "closedAt": "2023-11-16T21:26:02Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -293,7 +293,7 @@
       "labels": [],
       "body": "It's 2am and I need to get some sleep before reading this, but @emanjon just dropped this:\r\n\r\nhttps://eprint.iacr.org/2023/913.pdf\r\n\r\nFor AEGIS-256X, this is not an issue, as the IANA request hasn't been made yet.\r\n\r\nFor `TLS_AEGIS_256_SHA384`, I don't know if the suite name can be updated (that would be a breaking change for existing implementations, but this is fine as the document is still a draft), or if we should ask for a new one.\r\n\r\n",
       "createdAt": "2023-11-06T00:58:49Z",
-      "updatedAt": "2023-11-07T18:41:15Z",
+      "updatedAt": "2023-11-16T21:26:54Z",
       "closedAt": null,
       "comments": [
         {
@@ -302,6 +302,13 @@
           "body": "I haven't read the full paper yet, but it does seem like that should be swapped. Guess [Sabrina Tanamal](https://mailarchive.ietf.org/arch/msg/tls-reg-review/NTUFnKVAqI832Jt-fe-HzT-xaJw/) who assigned that needs to be contacted/asked.",
           "createdAt": "2023-11-07T18:41:14Z",
           "updatedAt": "2023-11-07T18:41:14Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I reached out to Sabrina. Waiting for her response.",
+          "createdAt": "2023-11-16T21:26:53Z",
+          "updatedAt": "2023-11-16T21:26:53Z"
         }
       ]
     }
@@ -2608,6 +2615,42 @@
           ]
         }
       ]
+    },
+    {
+      "number": 24,
+      "id": "PR_kwDOKeDGj85fq1iG",
+      "title": "Mention that different variants produce different ciphertexts and tags",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/24",
+      "state": "MERGED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #16.",
+      "createdAt": "2023-11-16T19:23:40Z",
+      "updatedAt": "2023-11-16T21:26:01Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "82e74af44e303f540c041b2982714b5366fcfa4f",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "e1fd8b7caacf836fd01290b20b17b22a23dd755e",
+      "closedAt": "2023-11-16T21:26:01Z",
+      "mergedAt": "2023-11-16T21:26:01Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "ee96ea581414cef6afcf36f131e08e65cdd92f4f"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Looks good!\r\n\r\nThat was tricky to explain, but you did a wonderful job at it!",
+          "createdAt": "2023-11-16T21:25:57Z",
+          "updatedAt": "2023-11-16T21:25:57Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
