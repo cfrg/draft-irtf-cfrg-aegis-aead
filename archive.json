@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-19T00:35:57.503135+00:00",
+  "timestamp": "2023-11-21T00:33:59.116021+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -2648,6 +2648,42 @@
           "body": "Looks good!\r\n\r\nThat was tricky to explain, but you did a wonderful job at it!",
           "createdAt": "2023-11-16T21:25:57Z",
           "updatedAt": "2023-11-16T21:25:57Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDOKeDGj85f1yf6",
+      "title": "Fix missing RFC links",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/25",
+      "state": "MERGED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Spotted these the other day. The other links/references appear to be fine.",
+      "createdAt": "2023-11-19T14:11:21Z",
+      "updatedAt": "2023-11-19T16:51:25Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "ee96ea581414cef6afcf36f131e08e65cdd92f4f",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "10ec7e03554219226f44bb9982c83a8048050f18",
+      "closedAt": "2023-11-19T16:51:25Z",
+      "mergedAt": "2023-11-19T16:51:25Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "9c82d660b43b13bbf70c00569668753cfc7d399a"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Good catch!",
+          "createdAt": "2023-11-19T16:51:20Z",
+          "updatedAt": "2023-11-19T16:51:20Z"
         }
       ],
       "reviews": []
