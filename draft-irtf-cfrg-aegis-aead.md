@@ -1585,7 +1585,7 @@ IANA has also assigned the following TLS cipher suites in the TLS Cipher Suite R
 
 | Cipher Suite Name       | Value         |
 | ----------------------- | ------------- |
-| `TLS_AEGIS_256_SHA384`  | `{0x13,0x06}` |
+| `TLS_AEGIS_256_SHA512`  | `{0x13,0x06}` |
 | `TLS_AEGIS_128L_SHA256` | `{0x13,0x07}` |
 {: title="AEGIS entries in the TLS Cipher Suite Registry"}
 
@@ -1604,8 +1604,8 @@ as well as the following identifiers in the TLS Cipher Suite Registry:
 
 - `TLS_AEGIS_128X2_SHA256`
 - `TLS_AEGIS_128X4_SHA256`
-- `TLS_AEGIS_256X2_SHA384`
-- `TLS_AEGIS_256X4_SHA384`
+- `TLS_AEGIS_256X2_SHA512`
+- `TLS_AEGIS_256X4_SHA512`
 
 # QUIC and DTLS 1.3 Header Protection
 
