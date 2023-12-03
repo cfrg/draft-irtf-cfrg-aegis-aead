@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-21T00:33:59.116021+00:00",
+  "timestamp": "2023-12-03T00:35:34.022347+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -286,15 +286,15 @@
       "id": "I_kwDOKeDGj8515wKD",
       "title": "Require SHA512 for the variants with 256-bit security?",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "It's 2am and I need to get some sleep before reading this, but @emanjon just dropped this:\r\n\r\nhttps://eprint.iacr.org/2023/913.pdf\r\n\r\nFor AEGIS-256X, this is not an issue, as the IANA request hasn't been made yet.\r\n\r\nFor `TLS_AEGIS_256_SHA384`, I don't know if the suite name can be updated (that would be a breaking change for existing implementations, but this is fine as the document is still a draft), or if we should ask for a new one.\r\n\r\n",
       "createdAt": "2023-11-06T00:58:49Z",
-      "updatedAt": "2023-11-16T21:26:54Z",
-      "closedAt": null,
+      "updatedAt": "2023-12-01T16:28:01Z",
+      "closedAt": "2023-12-01T16:26:40Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -309,6 +309,13 @@
           "body": "I reached out to Sabrina. Waiting for her response.",
           "createdAt": "2023-11-16T21:26:53Z",
           "updatedAt": "2023-11-16T21:26:53Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "IANA updated the entry: https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4\r\n\r\nI'm going to inform/update existing implementations.",
+          "createdAt": "2023-12-01T16:28:00Z",
+          "updatedAt": "2023-12-01T16:28:00Z"
         }
       ]
     }
