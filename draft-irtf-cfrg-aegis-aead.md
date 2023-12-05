@@ -1581,16 +1581,6 @@ IANA has assigned the following identifiers in the AEAD Algorithms Registry:
 | `AEAD_AEGIS256`  | `33` |
 {: title="AEGIS entries in the AEAD Algorithms Registry"}
 
-IANA has also assigned the following TLS cipher suites in the TLS Cipher Suite Registry:
-
-| Cipher Suite Name       | Value         |
-| ----------------------- | ------------- |
-| `TLS_AEGIS_256_SHA512`  | `{0x13,0x06}` |
-| `TLS_AEGIS_128L_SHA256` | `{0x13,0x07}` |
-{: title="AEGIS entries in the TLS Cipher Suite Registry"}
-
-A 128-bit tag length must be used with these cipher suites.
-
 IANA is requested to update the references of these entries to refer to the final version of this document.
 
 IANA is also requested to register the following identifiers in the AEAD Algorithms Registry:
@@ -1599,49 +1589,6 @@ IANA is also requested to register the following identifiers in the AEAD Algorit
 - `AEAD_AEGIS128X4`
 - `AEAD_AEGIS256X2`
 - `AEAD_AEGIS256X4`
-
-as well as the following identifiers in the TLS Cipher Suite Registry:
-
-- `TLS_AEGIS_128X2_SHA256`
-- `TLS_AEGIS_128X4_SHA256`
-- `TLS_AEGIS_256X2_SHA512`
-- `TLS_AEGIS_256X4_SHA512`
-
-# QUIC and DTLS 1.3 Header Protection
-
-## DTLS 1.3 Record Number Encryption
-
-In DTLS 1.3, record sequence numbers are encrypted as specified in {{!RFC9147}}.
-
-For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Stream` function with:
-
-- a 128-bit tag length
-- `sn_key`, as defined in {{!RFC9147, Section 4.2.3}}
-- `ciphertext[0..16]`: the first 16 bytes of the DTLS ciphertext
-- `nonce_len`: the AEGIS nonce length
-
-The 5-byte mask is computed as follows:
-
-~~~
-mask = Stream(5, sn_key, ZeroPad(ciphertext[0..16], nonce_len))
-~~~
-
-## QUIC Header Protection
-
-In QUIC, parts of the QUIC packet headers are encrypted as specified in {{!RFC9001}}.
-
-For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS `Encrypt` function with:
-
-- a 128-bit tag length
-- `hp_key`, as defined in {{!RFC9001, Section 5.4}}
-- `sample`: the 16 bytes QUIC ciphertext sample
-- `nonce_len`: the AEGIS nonce length
-
-The mask is computed as follows:
-
-~~~
-mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
-~~~
 
 --- back
 
