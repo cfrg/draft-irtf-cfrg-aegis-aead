@@ -28,6 +28,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [aegis-js](https://github.com/psve/aegis-js)                                                                                        | JavaScript |
 | [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                                | Kotlin     |
 | [aegis-jasmin](https://github.com/jedisct1/aegis-jasmin)                                                                            | Jasmin     |
+| [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java       |
 
 ## AEGIS support in TLS stacks
 
