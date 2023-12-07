@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 10 May 2024                              Individual Contributor
-                                                         7 November 2023
+Expires: 9 June 2024                              Individual Contributor
+                                                         7 December 2023
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 May 2024.
+   This Internet-Draft will expire on 9 June 2024.
 
 Copyright Notice
 
@@ -107,12 +107,9 @@ Table of Contents
    8.  Implementation Status
    9.  Security Considerations
    10. IANA Considerations
-   11. QUIC and DTLS 1.3 Header Protection
-     11.1.  DTLS 1.3 Record Number Encryption
-     11.2.  QUIC Header Protection
-   12. References
-     12.1.  Normative References
-     12.2.  Informative References
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  AESRound Test Vector
      A.2.  AEGIS-128L Test Vectors
@@ -234,6 +231,9 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
+   Throughout this document, “byte” is used interchangeably with “octet”
+   and refers to an 8-bit sequence.
+
    Primitives:
 
    *  {}: an empty bit array.
@@ -336,19 +336,18 @@ Table of Contents
    The parameters for this algorithm, whose meaning is defined in
    [RFC5116], Section 4 are:
 
-   *  K_LEN (key length) is 16 octets (128 bits).
+   *  K_LEN (key length) is 16 bytes (128 bits).
 
-   *  P_MAX (maximum length of the plaintext) is 2^61 octets (2^64
-      bits).
+   *  P_MAX (maximum length of the plaintext) is 2^61 bytes (2^64 bits).
 
-   *  A_MAX (maximum length of the associated data) is 2^61 octets (2^64
+   *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
       bits).
 
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 16
-      octets (128 bits).
+      bytes (128 bits).
 
    *  C_MAX (maximum ciphertext length) = P_MAX + tag length = 2^61 + 16
-      or 32 octets (2^64 + 128 or 256 bits).
+      or 32 bytes (2^64 + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
@@ -680,19 +679,18 @@ Table of Contents
    The parameters for this algorithm, whose meaning is defined in
    [RFC5116], Section 4 are:
 
-   *  K_LEN (key length) is 32 octets (256 bits).
+   *  K_LEN (key length) is 32 bytes (256 bits).
 
-   *  P_MAX (maximum length of the plaintext) is 2^61 octets (2^64
-      bits).
+   *  P_MAX (maximum length of the plaintext) is 2^61 bytes (2^64 bits).
 
-   *  A_MAX (maximum length of the associated data) is 2^61 octets (2^64
+   *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
       bits).
 
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 32
-      octets (256 bits).
+      bytes (256 bits).
 
    *  C_MAX (maximum ciphertext length) = P_MAX + tag length = 2^61 + 16
-      or 32 octets (2^64 + 128 or 256 bits).
+      or 32 bytes (2^64 + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
@@ -1556,7 +1554,7 @@ return tag
 
    Inputs:
 
-   *  len: the length of the keystream to generate.
+   *  len: the length of the keystream to generate, in bits.
 
    *  key: the AEGIS key.
 
@@ -1572,7 +1570,7 @@ return tag
 
    return stream
 
-   This is equivalent to encrypting a len all-zero bytes message without
+   This is equivalent to encrypting a len all-zero bits message without
    associated data, and discarding the authentication tag.
 
    Instead of relying on the generic Encrypt function, implementations
@@ -1646,6 +1644,20 @@ return tag
    Therefore, implementations can overwrite ephemeral keys with zeros
    right after the last Update call of the initialization function.
 
+   For the same (key, nonce, ad, msg) tuple, a different degree of
+   parallelism in AEGIS-128X and AEGIS-256X can produce a different ct
+   and tag.  Furthermore, different ad with the same (key, nonce, msg)
+   can produce a different ct and tag with all variants.  However, as
+   the ad and msg are absorbed into the state identically in that order,
+   this does not necessarily hold when the msg changes.
+
+   Each variant can be used as a MAC by calling the Encrypt() function
+   with the message as the ad and leaving msg empty, resulting in just a
+   tag.  However, they MUST NOT be used as a hash function; if the key
+   is known, inputs generating state collisions can easily be crafted.
+   Similarly, as opposed to hash-based MACs, tags MUST NOT be used for
+   key derivation as there is no proof they are uniformly random.
+
    As shown in [D23], AEGIS-128X and AEGIS-256X share the same security
    properties and requirements as AEGIS-128L and AEGIS-256 respectively.
    In particular, the security level and usage limits remain the same.
@@ -1684,22 +1696,6 @@ return tag
                            in the AEAD Algorithms
                                   Registry
 
-   IANA has also assigned the following TLS cipher suites in the TLS
-   Cipher Suite Registry:
-
-                  +=======================+=============+
-                  | Cipher Suite Name     | Value       |
-                  +=======================+=============+
-                  | TLS_AEGIS_256_SHA384  | {0x13,0x06} |
-                  +-----------------------+-------------+
-                  | TLS_AEGIS_128L_SHA256 | {0x13,0x07} |
-                  +-----------------------+-------------+
-
-                     Table 3: AEGIS entries in the TLS
-                           Cipher Suite Registry
-
-   A 128-bit tag length must be used with these cipher suites.
-
    IANA is requested to update the references of these entries to refer
    to the final version of this document.
 
@@ -1714,62 +1710,9 @@ return tag
 
    *  AEAD_AEGIS256X4
 
-   as well as the following identifiers in the TLS Cipher Suite
-   Registry:
+11.  References
 
-   *  TLS_AEGIS_128X2_SHA256
-
-   *  TLS_AEGIS_128X4_SHA256
-
-   *  TLS_AEGIS_256X2_SHA384
-
-   *  TLS_AEGIS_256X4_SHA384
-
-11.  QUIC and DTLS 1.3 Header Protection
-
-11.1.  DTLS 1.3 Record Number Encryption
-
-   In DTLS 1.3, record sequence numbers are encrypted as specified in
-   [RFC9147].
-
-   For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS
-   Stream function with:
-
-   *  a 128-bit tag length
-
-   *  sn_key, as defined in Section 4.2.3 of [RFC9147]
-
-   *  ciphertext[0..16]: the first 16 bytes of the DTLS ciphertext
-
-   *  nonce_len: the AEGIS nonce length
-
-   The 5-byte mask is computed as follows:
-
-   mask = Stream(5, sn_key, ZeroPad(ciphertext[0..16], nonce_len))
-
-11.2.  QUIC Header Protection
-
-   In QUIC, parts of the QUIC packet headers are encrypted as specified
-   in [RFC9001].
-
-   For AEGIS-128L and AEGIS-256, the mask is generated using the AEGIS
-   Encrypt function with:
-
-   *  a 128-bit tag length
-
-   *  hp_key, as defined in Section 5.4 of [RFC9001]
-
-   *  sample: the 16 bytes QUIC ciphertext sample
-
-   *  nonce_len: the AEGIS nonce length
-
-   The mask is computed as follows:
-
-   mask = Encrypt("", "", hp_key, ZeroPad(sample, nonce_len))
-
-12.  References
-
-12.1.  Normative References
+11.1.  Normative References
 
    [FIPS-AES] NIST, "Advanced encryption standard (AES)", NIST Federal
               Information Processing Standards Publications 197,
@@ -1795,7 +1738,7 @@ return tag
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-12.2.  Informative References
+11.2.  Informative References
 
    [AEGIS]    Wu, H. and B. Preneel, "AEGIS: A Fast Authenticated
               Encryption Algorithm (v1.1)", 2016,
