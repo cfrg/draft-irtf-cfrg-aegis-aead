@@ -1554,7 +1554,7 @@ return tag
 
    Inputs:
 
-   *  len: the length of the keystream to generate, in bits.
+   *  len: the length of the keystream to generate in bits.
 
    *  key: the AEGIS key.
 
