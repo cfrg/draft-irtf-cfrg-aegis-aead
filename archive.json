@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-03T00:35:34.022347+00:00",
+  "timestamp": "2023-12-07T00:33:11.777181+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -318,6 +318,22 @@
           "updatedAt": "2023-12-01T16:28:00Z"
         }
       ]
+    },
+    {
+      "number": 26,
+      "id": "I_kwDOKeDGj854uHkH",
+      "title": "Remove documentation on TLS / DTLS / QUIC",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/26",
+      "state": "CLOSED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed on the CFRG list, the TLS WG would be a better place for this, and it should be a distinct document.",
+      "createdAt": "2023-12-05T06:08:11Z",
+      "updatedAt": "2023-12-05T14:55:02Z",
+      "closedAt": "2023-12-05T14:55:02Z",
+      "comments": []
     }
   ],
   "pulls": [
@@ -2691,6 +2707,42 @@
           "body": "Good catch!",
           "createdAt": "2023-11-19T16:51:20Z",
           "updatedAt": "2023-11-19T16:51:20Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDOKeDGj85hIhg8",
+      "title": "Remove documentation on TLS / DTLS / QUIC",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/27",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Including the TLS code points.\r\n\r\nFixes #26",
+      "createdAt": "2023-12-05T06:15:12Z",
+      "updatedAt": "2023-12-05T14:55:06Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "d9e92df5aa692728580ce1439ba1a8079f8d86dc",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "remove-protocol-bits",
+      "headRefOid": "34d8dfa5bc081e12c843415d4b63613cf285bebf",
+      "closedAt": "2023-12-05T14:55:01Z",
+      "mergedAt": "2023-12-05T14:55:01Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "3e08062f3cb3b45a110fcc732e64a9ea1bcf94bd"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "/cc @ekr\r\n",
+          "createdAt": "2023-12-05T14:17:08Z",
+          "updatedAt": "2023-12-05T14:17:08Z"
         }
       ],
       "reviews": []
