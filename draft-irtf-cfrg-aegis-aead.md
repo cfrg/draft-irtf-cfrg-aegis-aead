@@ -1503,7 +1503,7 @@ The `Stream` function expands a key and an optional nonce into a variable-length
 
 Inputs:
 
-- `len`: the length of the keystream to generate, in bits.
+- `len`: the length of the keystream to generate in bits.
 - `key`: the AEGIS key.
 - `nonce`: the nonce. If unspecified, it is set to `N_MAX` zero bytes.
 
