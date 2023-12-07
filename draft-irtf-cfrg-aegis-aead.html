@@ -1095,7 +1095,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">Source for this draft and an issue tracker can be found at
-    <span><a href="https://github.com/jedisct1/draft-denis-tls-aegis">https://github.com/jedisct1/draft-denis-tls-aegis</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+    <span><a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -3206,7 +3206,7 @@ Stream(len, key, nonce)
 <p id="section-7-4">Inputs:<a href="#section-7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7-5.1">
-          <p id="section-7-5.1.1"><code>len</code>: the length of the keystream to generate.<a href="#section-7-5.1.1" class="pilcrow">¶</a></p>
+          <p id="section-7-5.1.1"><code>len</code>: the length of the keystream to generate in bits.<a href="#section-7-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-7-5.2">
           <p id="section-7-5.2.1"><code>key</code>: the AEGIS key.<a href="#section-7-5.2.1" class="pilcrow">¶</a></p>
@@ -3229,7 +3229,7 @@ stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
 return stream
 </pre><a href="#section-7-9" class="pilcrow">¶</a>
 </div>
-<p id="section-7-10">This is equivalent to encrypting a <code>len</code> all-zero bytes message without associated data, and discarding the authentication tag.<a href="#section-7-10" class="pilcrow">¶</a></p>
+<p id="section-7-10">This is equivalent to encrypting a <code>len</code> all-zero bits message without associated data, and discarding the authentication tag.<a href="#section-7-10" class="pilcrow">¶</a></p>
 <p id="section-7-11">Instead of relying on the generic <code>Encrypt</code> function, implementations can skip the finalization step.<a href="#section-7-11" class="pilcrow">¶</a></p>
 <p id="section-7-12">After initialization, the <code>Update</code> function is called with constant parameters, allowing further optimizations.<a href="#section-7-12" class="pilcrow">¶</a></p>
 </section>

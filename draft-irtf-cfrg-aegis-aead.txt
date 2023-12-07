@@ -26,7 +26,7 @@ Discussion Venues
    This note is to be removed before publishing as an RFC.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/jedisct1/draft-denis-tls-aegis.
+   https://github.com/cfrg/draft-irtf-cfrg-aegis-aead.
 
 Status of This Memo
 
@@ -1554,7 +1554,7 @@ return tag
 
    Inputs:
 
-   *  len: the length of the keystream to generate.
+   *  len: the length of the keystream to generate in bits.
 
    *  key: the AEGIS key.
 
@@ -1570,7 +1570,7 @@ return tag
 
    return stream
 
-   This is equivalent to encrypting a len all-zero bytes message without
+   This is equivalent to encrypting a len all-zero bits message without
    associated data, and discarding the authentication tag.
 
    Instead of relying on the generic Encrypt function, implementations
