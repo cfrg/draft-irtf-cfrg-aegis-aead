@@ -1503,7 +1503,7 @@ The `Stream` function expands a key and an optional nonce into a variable-length
 
 Inputs:
 
-- `len`: the length of the keystream to generate.
+- `len`: the length of the keystream to generate in bits.
 - `key`: the AEGIS key.
 - `nonce`: the nonce. If unspecified, it is set to `N_MAX` zero bytes.
 
@@ -1519,7 +1519,7 @@ stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
 return stream
 ~~~
 
-This is equivalent to encrypting a `len` all-zero bytes message without associated data, and discarding the authentication tag.
+This is equivalent to encrypting a `len` all-zero bits message without associated data, and discarding the authentication tag.
 
 Instead of relying on the generic `Encrypt` function, implementations can skip the finalization step.
 
