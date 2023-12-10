@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-07T00:33:11.777181+00:00",
+  "timestamp": "2023-12-10T00:36:24.942341+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -2746,6 +2746,56 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDOKeDGj85hdWtk",
+      "title": "Mention the unit of \"len\" in the Stream() function",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/28",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Implementations can use a different unit, but when the function is used in other documents, having a well-defined unit is useful.",
+      "createdAt": "2023-12-07T19:53:28Z",
+      "updatedAt": "2023-12-07T21:04:36Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "3e08062f3cb3b45a110fcc732e64a9ea1bcf94bd",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "stream-units",
+      "headRefOid": "fc3bd795ff8e237a9dd5d0214bc65f49fa48b24b",
+      "closedAt": "2023-12-07T21:04:32Z",
+      "mergedAt": "2023-12-07T21:04:32Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "c8143d5fcf53b6e21d3e5edabf078614e5c4103e"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Samuel!\r\n\r\n",
+          "createdAt": "2023-12-07T21:04:29Z",
+          "updatedAt": "2023-12-07T21:04:29Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj85pkPdt",
+          "commit": {
+            "abbreviatedOid": "fc3bd79"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "This makes a lot of sense. I've removed a comma to match previous `Inputs:` sections.",
+          "createdAt": "2023-12-07T20:49:58Z",
+          "updatedAt": "2023-12-07T20:49:58Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
