@@ -85,6 +85,29 @@ informative:
         org: Graz University of Technology
     date: 2020
 
+  FLLW17:
+    title: "Reforgeability of Authenticated Encryption Schemes"
+    rc: "Cryptology ePrint Archive, Paper 2017/332"
+    target: https://eprint.iacr.org/2017/332
+    author:
+      -
+        ins: C. Forler
+        name: Christian Forler
+        org: Beuth Hochschule für Technik Berlin
+      -
+        ins: E. List
+        name: Eik List
+        org: Bauhaus-Universität Weimar
+      -
+        ins: S. Lucks
+        name: Stefan Lucks
+        org: Bauhaus-Universität Weimar
+      -
+        ins: J. Wenzel
+        name: Jakob Wenzel
+        org: Bauhaus-Universität Weimar
+    date: 2017
+
   IR23:
     title: "Key Committing Security Analysis of AEGIS"
     rc: "Cryptology ePrint Archive, Paper 2023/1495"
@@ -226,7 +249,7 @@ The document is a product of the Crypto Forum Research Group (CFRG). It is not a
 
 # Introduction
 
-This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has a better security margin alongside improved performance and AEGIS-256 uses a 256-bit key {{LIMS21}}. All variants of AEGIS are constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
+This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR). Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has a better security margin alongside improved performance and AEGIS-256 uses a 256-bit key {{LIMS21}}. All variants of AEGIS are inverse-free and constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}. This document specifies:
 
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.
@@ -1539,23 +1562,27 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery, 
 
 An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same `(ad, ct, tag)` tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
 
-However, it is NOT fully committing because the authentication tag doesn't commit to the associated data. As shown in {{IR23}}, with the ability to also alter `ad`, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
+It is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in {{IR23}}, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
 
-Protocols mandating a fully committing scheme can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
+Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
 
-Under the assumption that the secret key is unknown to the attacker both AEGIS-128L and AEGIS-256 target 128-bit security against forgery attacks regardless of the tag size.
+Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
 
-Both algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+AEGIS algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
-If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
 The nonce MAY be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
-With AEGIS-128L, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.
+With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.
 
-With AEGIS-256, random nonces can be used with no practical limits.
+With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.
+
+AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide an even ampler space for nonces, surpassing the 192-bit requirement for secure utilization of random nonces without practical limitations.
+
+In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
 
 Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
@@ -1565,11 +1592,13 @@ Each variant can be used as a MAC by calling the `Encrypt()` function with the m
 
 As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.
 
+Without the ability to set the associated data, a successful forgery doesn't increase the probability of subsequent forgeries. Reforgeability reilience of AEGIS is analyzed in {{FLLW17}}.
+
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, and {{BS23}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}} and {{FLLW17}}.
 
 # IANA Considerations
 
