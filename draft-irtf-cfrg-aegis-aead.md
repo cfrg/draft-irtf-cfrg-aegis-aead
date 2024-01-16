@@ -1568,7 +1568,7 @@ Protocols mandating a fully committing scheme without that restriction can provi
 
 Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
 
-AEGIS algorithms MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
@@ -1580,7 +1580,7 @@ With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48<
 
 With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.
 
-AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide an even ampler space for nonces, surpassing the 192-bit requirement for secure utilization of random nonces without practical limitations.
+AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide provide even larger nonces, surpassing the 192-bit requirement for secure utilization of random nonces without practical limitations.
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
 
@@ -1592,13 +1592,13 @@ Each variant can be used as a MAC by calling the `Encrypt()` function with the m
 
 As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.
 
-Without the ability to set the associated data, a successful forgery doesn't increase the probability of subsequent forgeries. Reforgeability reilience of AEGIS is analyzed in {{FLLW17}}.
+Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries and the reforgeability resilience of AEGIS is analyzed in {{FLLW17}}.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}} and {{FLLW17}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, and {{FLLW17}}.
 
 # IANA Considerations
 
