@@ -1560,9 +1560,9 @@ A comprehensive list of known implementations and integrations can be found at [
 
 ## Usage Guidelines
 
-All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+### Key And Nonce Selection
 
-If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
@@ -1571,10 +1571,6 @@ The nonce MAY be public or predictable. It can be a counter, the output of a per
 With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.
 
 With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.
-
-All variants can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
-
-For the same `(key, nonce, ad, msg)` tuple, a different degree of parallelism in AEGIS-128X and AEGIS-256X can produce a different `ct` and `tag`. Furthermore, different `ad` with the same `(key, nonce, msg)` can produce a different `ct` and `tag` with all variants. However, as the `ad` and `msg` are absorbed into the state identically in that order, this does not necessarily hold when the `msg` changes.
 
 ### Key Commitment
 
@@ -1589,6 +1585,12 @@ Protocols mandating a fully committing scheme without that restriction can provi
 AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
+
+### Additional Considerations
+
+If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+
+All variants can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
 
 ## Security Guarantees
 
