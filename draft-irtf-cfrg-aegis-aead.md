@@ -1592,7 +1592,7 @@ Each variant can be used as a MAC by calling the `Encrypt()` function with the m
 
 As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.
 
-Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries and the reforgeability resilience of AEGIS is analyzed in {{FLLW17}}.
+AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
 
