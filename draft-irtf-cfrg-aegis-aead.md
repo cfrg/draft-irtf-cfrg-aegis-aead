@@ -1580,7 +1580,7 @@ With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48<
 
 With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.
 
-AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces, surpassing the 192-bit requirement for secure utilization of random nonces without practical limitations.
+AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
 
