@@ -1586,9 +1586,15 @@ AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bi
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
 
-### Additional Considerations
+## Implementation Security
 
 If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+
+The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
+
+Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
+
+### Additional Considerations
 
 All variants can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
 
@@ -1605,12 +1611,6 @@ AEGIS-128X and AEGIS-256X share the same security properties and requirements as
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
 Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, and {{FLLW17}}.
-
-## Implementation Security
-
-The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
-
-Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
 # IANA Considerations
 
