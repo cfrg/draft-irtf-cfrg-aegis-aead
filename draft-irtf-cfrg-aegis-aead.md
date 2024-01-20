@@ -1560,7 +1560,7 @@ A comprehensive list of known implementations and integrations can be found at [
 
 ## Usage Guidelines
 
-### Key And Nonce Selection
+### Key and Nonce Selection
 
 All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
 
@@ -1594,7 +1594,7 @@ The security of AEGIS against timing and physical attacks is limited by the impl
 
 Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
-### Additional Considerations
+## Additional Considerations
 
 All variants can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
 
@@ -1603,6 +1603,8 @@ All variants can be used as a MAC by calling the `Encrypt()` function with the m
 AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
 
 Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
+
+Encrypting a message with the same key and nonce but different additional data generates distinct ciphertexts that do not reveal any additional information about the message.
 
 AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.
 
