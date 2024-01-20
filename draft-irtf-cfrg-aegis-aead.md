@@ -1558,19 +1558,11 @@ A comprehensive list of known implementations and integrations can be found at [
 
 # Security Considerations
 
-AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
+## Usage Guidelines
 
-An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same `(ad, ct, tag)` tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
-
-It is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in {{IR23}}, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
-
-Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
-
-Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
+### Key and Nonce Selection
 
 All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
-
-If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
@@ -1580,25 +1572,47 @@ With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48<
 
 With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.
 
+### Key Commitment
+
+An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same `(ad, ct, tag)` tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
+
+It is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in {{IR23}}, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
+
+Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
+
+### Multi-User Security
+
 AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
 
+### Other Uses of AEGIS
+
+All variants can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
+
+## Implementation Security
+
+If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+
+The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
+
 Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
-For the same `(key, nonce, ad, msg)` tuple, a different degree of parallelism in AEGIS-128X and AEGIS-256X can produce a different `ct` and `tag`. Furthermore, different `ad` with the same `(key, nonce, msg)` can produce a different `ct` and `tag` with all variants. However, as the `ad` and `msg` are absorbed into the state identically in that order, this does not necessarily hold when the `msg` changes.
+## Security Guarantees
 
-Each variant can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
+AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
 
-As shown in {{D23}}, AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same.
+Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
+
+Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
 
 AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.
 
-The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
+AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same {{D23}}.
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, and {{FLLW17}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, and {{BS23}}.
 
 # IANA Considerations
 
