@@ -1604,7 +1604,7 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery, 
 
 Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
 
-Encrypting the same message with the same key and nonce but different additional data generates distinct ciphertexts that do not reveal any additional information about the message.
+Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
 
 AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.
 
