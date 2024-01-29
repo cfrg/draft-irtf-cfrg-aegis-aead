@@ -1102,9 +1102,11 @@ for i in 0..D:
     nonce_v = nonce_v || nonce
     key_v = key_v || key
 
+for i in 0..D:
+    ctx[i] = ZeroPad(Byte(i) || Byte(D - 1), 128)
+
 Repeat(10,
     for i in 0..D:
-        ctx[i] = ZeroPad(Byte(i) || Byte(D - 1), 128)
         V[3,i] = V[3,i] ^ ctx[i]
         V[7,i] = V[7,i] ^ ctx[i]
 
@@ -1310,21 +1312,30 @@ for i in 0..D:
     k0n0_v = k0n0_v || (k0 ^ n0)
     k1n1_v = k1n1_v || (k1 ^ n1)
 
+for i in 0..D:
+    ctx[i] = ZeroPad(Byte(i) || Byte(D - 1), 128)
+
 Repeat(4,
     for i in 0..D:
-        ctx[i] = ZeroPad(Byte(i) || Byte(D - 1), 128)
         V[3,i] = V[3,i] ^ ctx[i]
         V[5,i] = V[5,i] ^ ctx[i]
-        Update(k0_v)
+
+    Update(k0_v)
+    for i in 0..D:
         V[3,i] = V[3,i] ^ ctx[i]
         V[5,i] = V[5,i] ^ ctx[i]
-        Update(k1_v)
+
+    Update(k1_v)
+    for i in 0..D:
         V[3,i] = V[3,i] ^ ctx[i]
         V[5,i] = V[5,i] ^ ctx[i]
-        Update(k0n0_v)
+
+    Update(k0n0_v)
+    for i in 0..D:
         V[3,i] = V[3,i] ^ ctx[i]
         V[5,i] = V[5,i] ^ ctx[i]
-        Update(k1n1_v)
+
+    Update(k1n1_v)
 )
 ~~~
 
