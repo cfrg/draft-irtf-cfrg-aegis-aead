@@ -1573,7 +1573,7 @@ A comprehensive list of known implementations and integrations can be found at [
 
 ### Key and Nonce Selection
 
-All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once. Failure to do so would immediately reveal the bitwise difference between two messages.
+All AEGIS variants MUST be used in a nonce-respecting setting: for a given `key`, a `nonce` MUST only be used once, even with different `tag` lengths. Failure to do so would immediately reveal the bitwise difference between two messages.
 
 Every key MUST be randomly chosen from a uniform distribution.
 
