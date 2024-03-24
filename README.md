@@ -29,6 +29,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                                | Kotlin     |
 | [aegis-jasmin](https://github.com/jedisct1/aegis-jasmin)                                                                            | Jasmin     |
 | [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java       |
+| [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit    |
 
 ## AEGIS support in TLS stacks
 
