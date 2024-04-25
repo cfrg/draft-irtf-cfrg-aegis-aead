@@ -30,7 +30,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [aegis-jasmin](https://github.com/jedisct1/aegis-jasmin)                                                                            | Jasmin     |
 | [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java       |
 | [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit    |
-| [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)]                                             | PHP        |
+| [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP        |
 
 ## AEGIS support in TLS stacks
 
