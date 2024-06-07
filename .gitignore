@@ -14,3 +14,4 @@ draft-irtf-cfrg-aegis-aead.xml
 lib
 report.xml
 venv/
+reference-implementations/.zig-cache
