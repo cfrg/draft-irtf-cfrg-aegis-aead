@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-01T00:33:21.514225+00:00",
+  "timestamp": "2024-06-09T00:39:31.229288+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -411,6 +411,65 @@
           "body": "After the RGLC, if there are enough votes, the chairs are going to review the document.\r\n\r\nThen, no major changes to the content nor the structure can be made.\r\n\r\nHowever, the document will be reviewed by the IRTF and then by the RFC editor with an emphasis on conformance/spelling/grammar. \r\n\r\nIt doesn't mean that we shouldn't proactively proofread everything (even though you did a stellar job in all your contributions and reviews), just that this is not required for the RGLC.",
           "createdAt": "2024-01-16T19:52:13Z",
           "updatedAt": "2024-01-16T19:52:13Z"
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "id": "I_kwDOKeDGj86LiN9j",
+      "title": "Another way to achieve full commitment",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/40",
+      "state": "CLOSED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Hashing the AD is mostly a workaround, and relies on an external primitive.\r\n\r\nThere's a more straightforward way to get full commitment, if required.\r\n\r\nRight after initialization, and prior to absorbing the AD, call `Update(0*)`, and use 128 bits of the output function as the commitment.\r\n\r\nThis is similar to the practice of adding a fixed block to the plaintext that works with AES-GCM, but not with AEGIS since a collision can happen before the plaintext. But unlike with GCM, side channels in the context of partitioning oracle attacks are not a concern here. Applications are only required to check *both* the commitment and the tag.\r\n\r\nThere would be a lack of explicit context separation between regular AEAD usage, and usage with the extra `Update(0*)` call. But in a nonce-respecting setting, that shouldn't be an issue, especially since the actual input sizes are included in the finalization step.\r\n\r\nThe downside is ciphertext expansion. But it may be acceptable. And that would only be necessary for protocols that actually require full commitment, including the AD.\r\n\r\nIt should be possible to document this in a single paragraph of the Security section.\r\n\r\nImplementing this would be trivial, but may complicate APIs.\r\n\r\nWhat do you think, @samuel-lucas6 ?",
+      "createdAt": "2024-06-07T18:56:35Z",
+      "updatedAt": "2024-06-08T22:41:47Z",
+      "closedAt": "2024-06-08T18:29:28Z",
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "That's an interesting idea. So, it would be the `Enc()` function getting called once to get an output before `Absorb()` for the associated data?\r\n\r\nI think this could be documented as I agree with your points; however, I'm not sure many people are likely to use this. It would need to be clear that this is basically modifying the algorithm, unlike the padding fix with AES-GCM.",
+          "createdAt": "2024-06-08T10:34:07Z",
+          "updatedAt": "2024-06-08T10:34:07Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> That's an interesting idea. So, it would be the `Enc()` function getting called once to get an output before `Absorb()` for the associated data?\r\n\r\nCorrect. \r\n\r\n> I think this could be documented as I agree with your points; however, I'm not sure many people are likely to use this. It would need to be clear that this is basically modifying the algorithm, unlike the padding fix with AES-GCM.\r\n\r\nThat can be especially useful when AEGIS is used as a MAC.\r\n\r\nThat extra step should not be mentioned in the rest of the document, only in the section on commitment, as an alternative to hashing the AD. And we have to make it clear that implementations are absolutely not required to support this.",
+          "createdAt": "2024-06-08T11:36:43Z",
+          "updatedAt": "2024-06-08T11:36:43Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> That can be especially useful when AEGIS is used as a MAC.\r\n\r\nI hadn't thought about that, and the expansion is more reasonable with a 128-bit tag.\r\n\r\n> That extra step should not be mentioned in the rest of the document, only in the section on commitment, as an alternative to hashing the AD. And we have to make it clear that implementations are absolutely not required to support this.\r\n\r\nYes, exactly. Let's do it then. Do you want me to take a stab at it?",
+          "createdAt": "2024-06-08T13:06:14Z",
+          "updatedAt": "2024-06-08T13:06:14Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thinking more about it... it would still be possible to find a `{ (k,n, ad), (k, n, ad') }` pair causing a state collision. So that still wouldn't give us full commitment.\r\n\r\nLet's forget about this, then. In real-world protocols, it's still fairly uncommon for an attack to have full control over the AD.",
+          "createdAt": "2024-06-08T18:29:28Z",
+          "updatedAt": "2024-06-08T18:29:28Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Oh yeah, I didn't connect the dots either. The padding fix is limited to key commitment, which AEGIS already has when `ad` is fixed.\r\n\r\nDo you think it's worth saying `ad` can be specified during key derivation (e.g., with HKDF) for full commitment? That's one alternative we could discuss.",
+          "createdAt": "2024-06-08T19:35:13Z",
+          "updatedAt": "2024-06-08T19:35:13Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Specifying `ad` during key derivation is indeed a good option, that would be worth documenting. ",
+          "createdAt": "2024-06-08T22:41:45Z",
+          "updatedAt": "2024-06-08T22:41:45Z"
         }
       ]
     }
