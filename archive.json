@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-09T00:39:31.229288+00:00",
+  "timestamp": "2024-06-13T00:35:40.733280+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -426,7 +426,7 @@
       "labels": [],
       "body": "Hashing the AD is mostly a workaround, and relies on an external primitive.\r\n\r\nThere's a more straightforward way to get full commitment, if required.\r\n\r\nRight after initialization, and prior to absorbing the AD, call `Update(0*)`, and use 128 bits of the output function as the commitment.\r\n\r\nThis is similar to the practice of adding a fixed block to the plaintext that works with AES-GCM, but not with AEGIS since a collision can happen before the plaintext. But unlike with GCM, side channels in the context of partitioning oracle attacks are not a concern here. Applications are only required to check *both* the commitment and the tag.\r\n\r\nThere would be a lack of explicit context separation between regular AEAD usage, and usage with the extra `Update(0*)` call. But in a nonce-respecting setting, that shouldn't be an issue, especially since the actual input sizes are included in the finalization step.\r\n\r\nThe downside is ciphertext expansion. But it may be acceptable. And that would only be necessary for protocols that actually require full commitment, including the AD.\r\n\r\nIt should be possible to document this in a single paragraph of the Security section.\r\n\r\nImplementing this would be trivial, but may complicate APIs.\r\n\r\nWhat do you think, @samuel-lucas6 ?",
       "createdAt": "2024-06-07T18:56:35Z",
-      "updatedAt": "2024-06-08T22:41:47Z",
+      "updatedAt": "2024-06-12T13:15:58Z",
       "closedAt": "2024-06-08T18:29:28Z",
       "comments": [
         {
@@ -470,6 +470,44 @@
           "body": "Specifying `ad` during key derivation is indeed a good option, that would be worth documenting. ",
           "createdAt": "2024-06-08T22:41:45Z",
           "updatedAt": "2024-06-08T22:41:45Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'll do a PR for this when I get a minute.",
+          "createdAt": "2024-06-12T12:43:39Z",
+          "updatedAt": "2024-06-12T12:43:39Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Samuel!",
+          "createdAt": "2024-06-12T13:15:57Z",
+          "updatedAt": "2024-06-12T13:15:57Z"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "I_kwDOKeDGj86L_frd",
+      "title": "Updated paper for AEGIS key commitment",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/41",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Came across [this](https://tosc.iacr.org/index.php/ToSC/article/view/11404/) paper the other day, which seems to be an update of the [preprint](https://eprint.iacr.org/2023/1495) we reference, although the updates are more about other algorithms. Do you think it's worth changing the reference and/or updating the Acknowledgments?",
+      "createdAt": "2024-06-12T12:42:23Z",
+      "updatedAt": "2024-06-12T13:15:09Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, this is the paper that was presented at FSE. I had an opportunity to chat with Mostafizar.\r\n\r\nThe results and methodology are the same as the one we reference, except that it expands to other algorithms.\r\n\r\nSo I'm not sure that it's worth changing the link. The current one has the advantage of being more focused.",
+          "createdAt": "2024-06-12T13:15:08Z",
+          "updatedAt": "2024-06-12T13:15:08Z"
         }
       ]
     }
