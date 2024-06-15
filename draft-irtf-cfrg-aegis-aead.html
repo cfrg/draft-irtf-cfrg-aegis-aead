@@ -11,22 +11,22 @@
        This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications. 
        The document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard. 
     " name="description">
-<meta content="xml2rfc 3.20.0" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-irtf-cfrg-aegis-aead-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.20.0
-    Python 3.11.8
+  xml2rfc 3.21.0
+    Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 4.9.3
-    platformdirs 4.2.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
-    setuptools 68.2.2
+    setuptools 69.5.1
     six 1.16.0
     wcwidth 0.2.13
 -->
@@ -1047,11 +1047,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The AEGIS Family of Authenticated Encryp</td>
-<td class="right">March 2024</td>
+<td class="right">June 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 13 September 2024</td>
+<td class="center">Expires 17 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-12" class="published">12 March 2024</time>
+<time datetime="2024-06-15" class="published">15 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-13">13 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-17">17 December 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3310,6 +3310,7 @@ return stream
 <p id="section-9.1.2-1">An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same <code>(ad, ct, tag)</code> tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.<a href="#section-9.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.1.2-2">AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.<a href="#section-9.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-9.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-9.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-9.1.2-4">Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span>, via the <code>info</code> input to derive the <code>key</code> parameter. The <code>ad</code> parameter can then be left empty. Note that the <code>salt</code> input <span class="bcp14">MUST NOT</span> be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the <code>info</code> input to be unambiguously encoded, like by appending their lengths.<a href="#section-9.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="multi-user-security">
@@ -3432,6 +3433,10 @@ return stream
 <dt id="RFC5116">[RFC5116]</dt>
         <dd>
 <span class="refAuthor">McGrew, D.</span>, <span class="refTitle">"An Interface and Algorithms for Authenticated Encryption"</span>, <span class="seriesInfo">RFC 5116</span>, <span class="seriesInfo">DOI 10.17487/RFC5116</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5116">https://www.rfc-editor.org/rfc/rfc5116</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5869">[RFC5869]</dt>
+        <dd>
+<span class="refAuthor">Krawczyk, H.</span> and <span class="refAuthor">P. Eronen</span>, <span class="refTitle">"HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"</span>, <span class="seriesInfo">RFC 5869</span>, <span class="seriesInfo">DOI 10.17487/RFC5869</span>, <time datetime="2010-05" class="refDate">May 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5869">https://www.rfc-editor.org/rfc/rfc5869</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6234">[RFC6234]</dt>
         <dd>
