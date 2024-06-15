@@ -1591,6 +1591,8 @@ AEGIS is fully committing in the restricted setting where an adversary cannot co
 
 Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
 
+Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF {{!RFC5869}}, via the `info` input to derive the `key` parameter. The `ad` parameter can then be left empty. Note that the `salt` input MUST NOT be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the `info` input to be unambiguously encoded, like by appending their lengths.
+
 ### Multi-User Security
 
 AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
