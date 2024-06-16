@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-13T00:35:40.733280+00:00",
+  "timestamp": "2024-06-16T00:39:02.907653+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -492,15 +492,15 @@
       "id": "I_kwDOKeDGj86L_frd",
       "title": "Updated paper for AEGIS key commitment",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/41",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Came across [this](https://tosc.iacr.org/index.php/ToSC/article/view/11404/) paper the other day, which seems to be an update of the [preprint](https://eprint.iacr.org/2023/1495) we reference, although the updates are more about other algorithms. Do you think it's worth changing the reference and/or updating the Acknowledgments?",
       "createdAt": "2024-06-12T12:42:23Z",
-      "updatedAt": "2024-06-12T13:15:09Z",
-      "closedAt": null,
+      "updatedAt": "2024-06-13T19:52:18Z",
+      "closedAt": "2024-06-13T19:52:18Z",
       "comments": [
         {
           "author": "jedisct1",
@@ -508,6 +508,13 @@
           "body": "Yes, this is the paper that was presented at FSE. I had an opportunity to chat with Mostafizar.\r\n\r\nThe results and methodology are the same as the one we reference, except that it expands to other algorithms.\r\n\r\nSo I'm not sure that it's worth changing the link. The current one has the advantage of being more focused.",
           "createdAt": "2024-06-12T13:15:08Z",
           "updatedAt": "2024-06-12T13:15:08Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Cool, I did wonder if you'd say that. I'll close this then.",
+          "createdAt": "2024-06-13T19:52:18Z",
+          "updatedAt": "2024-06-13T19:52:18Z"
         }
       ]
     }
@@ -4750,6 +4757,63 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 42,
+      "id": "PR_kwDOKeDGj85yaHbh",
+      "title": "Mention another way to achieve full commitment",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/42",
+      "state": "MERGED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed in #40.",
+      "createdAt": "2024-06-13T20:12:05Z",
+      "updatedAt": "2024-06-15T11:39:31Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "8d7bdd34832ab4808888fb7ef1a895b551919441",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "37ce3ac7031049650ee421f457ef685239c65328",
+      "closedAt": "2024-06-15T11:39:31Z",
+      "mergedAt": "2024-06-15T11:39:31Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "7c9cdeaef774f8084b34bea424be83db1d0b0fe2"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The output of a KDF must be indistinguishable from a random function , so given the key size required by AEGIS, collision resistance is implied.\r\n\r\nHowever, for key commitment, the KDF needs to be preimage-resistant, or else it remains possible to find distinct `(k,ad)` input pairs that produce the same key.\r\n\r\nBut I'm not sure that preimage resistance is a required property for a KDF. \r\n\r\nThis is certainly true for HKDF when instantiated with secure hash functions. But we can't generalize that to any KDF.\r\n\r\n",
+          "createdAt": "2024-06-13T20:45:09Z",
+          "updatedAt": "2024-06-13T20:45:09Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It's very common to have a key derivation step using HKDF before using an AEAD.\r\n\r\nSo, maybe we could suggest including what would be the AD in that derivation step, as the HKDF salt parameter.",
+          "createdAt": "2024-06-13T20:54:59Z",
+          "updatedAt": "2024-06-13T20:54:59Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The output of a KDF must be indistinguishable from a random function , so given the key size required by AEGIS, collision resistance is implied.\r\n\r\nI see what you mean. However, commitment papers like [BH22](https://eprint.iacr.org/2022/268) and [ADGKLS22](https://www.usenix.org/conference/usenixsecurity22/presentation/albertini) call this a collision-resistant PRF, and obviously PRFs are used for KDFs.\r\n\r\nYou could use HMAC-SHA1, which is obviously a PRF that produces a 160-bit output (large enough for collision resistance), and it isn't collision-resistant due to SHA-1 so isn't committing. As another example, CBC-MAC is a PRF with prefix-free inputs but [not collision resistant](https://en.wikipedia.org/wiki/CBC-MAC#Using_the_same_key_for_encryption_and_authentication) and thus [not committing](https://tosc.iacr.org/index.php/ToSC/article/view/604).\r\n\r\n> However, for key commitment, the KDF needs to be preimage-resistant, or else it remains possible to find distinct (k,ad) input pairs that produce the same key.\r\n\r\nIs preimage resistance not [context discoverability](https://eprint.iacr.org/2023/526) rather than commitment? It's been a while since I've looked at that paper, but prior to that paper everybody only talked about collision resistance. The terminology is quite confusing.\r\n\r\n> But I'm not sure that preimage resistance is a required property for a KDF.\r\n\r\nCMAC [isn't preimage resistant](https://eprint.iacr.org/2023/526) but used as a [NIST KDF](https://csrc.nist.gov/pubs/sp/800/108/r1/upd1/final), so it doesn't seem to be.\r\n\r\n> This is certainly true for HKDF when instantiated with secure hash functions. But we can't generalize that to any KDF.\r\n\r\nThat's basically what I mean by a collision-resistant KDF; one that's hash-based.\r\n\r\n> maybe we could suggest including what would be the AD in that derivation step, as the HKDF salt parameter.\r\n\r\nYeah, I was debating whether to name the parameter, although I was thinking of the info parameter. The salt is a bit dodgy in that a large associated data would get hashed, which could affect the commitment. This variable length key issue is mentioned in a [recent paper](https://eprint.iacr.org/2024/928) (that I haven't read in full).",
+          "createdAt": "2024-06-14T07:59:06Z",
+          "updatedAt": "2024-06-14T07:59:06Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi Samuel,\r\n\r\n> Is preimage resistance not [context discoverability](https://eprint.iacr.org/2023/526) rather than commitment? It's been a while since I've looked at that paper, but prior to that paper everybody only talked about collision resistance. The terminology is quite confusing.\r\n\r\nThe terminology is indeed quite confusing. \"Context discoverability\" was introduced in that paper, and I don't think it's been widely used elsewhere.\r\n\r\n> That's basically what I mean by a collision-resistant KDF; one that's hash-based.\r\n\r\nAlright let's keep that, then. We can always clarify this later if we get feedback from the CFRG.\r\n\r\n> I was debating whether to name the parameter, although I was thinking of the info parameter. The salt is a bit dodgy in that a large associated data would get hashed, which could affect the commitment. This variable length key issue is mentioned in a [recent paper](https://eprint.iacr.org/2024/928) (that I haven't read in full).\r\n\r\n`info` would also be more efficient, but it's already commonly used by applications to describe the purpose of the derived key. So, adding the AD to it requires proper separation between the key context and the AD. Maybe we should provide a little bit more guidance. People may be confused about where exactly the AD should be added to their regular key derivation step.\r\n",
+          "createdAt": "2024-06-14T10:14:24Z",
+          "updatedAt": "2024-06-14T10:14:24Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
