@@ -34,6 +34,12 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit    |
 | [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP        |
 
+### Hardware implementations
+
+| Name                                                                                 | Language |
+| ------------------------------------------------------------------------------------ | -------- |
+| [Athena/AEGIS](https://cryptography.gmu.edu/athena/index.php?id=CAESAR_source_codes) | RTL VHDL |
+
 ## AEGIS support in TLS stacks
 
 - [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)
