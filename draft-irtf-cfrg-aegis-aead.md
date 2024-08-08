@@ -39,6 +39,34 @@ informative:
         org: KU Leuven
     date: 2016
 
+  AIKRS24:
+    title: "Differential fault attack on AES-based encryption schemes: application to B5G/6G ciphers—Rocca, Rocca-S and AEGIS"
+    rc: "Journal of Cryptographic Engineering, 2024"
+    seriesinfo:
+      DOI: 10.1007/s13389-024-00360-6
+    author:
+      -
+        ins: R. Anand
+        name: Ravi Anand
+        org: Indraprastha Institute of Information Technology Delhi; University of Hyogo
+      -
+        ins: T. Isobe
+        name: Takanori Isobe
+        org: University of Hyogo
+      -
+        ins: A. K. Kundu
+        name: Anup Kumar Kundu
+        org: Indian Statistical Institute Kolkata
+      -
+        ins: M. Rahman
+        name: Mostafizar Rahman
+        org: University of Hyogo
+      -
+        ins: S. Suryawanshi
+        name: Sahiba Suryawanshi
+        org: University of Hyogo; Indian Institute of Technology Bhilai
+    date: 2024
+
   BS23:
     title: "Single-query Quantum Hidden Shift Attacks"
     rc: "Cryptology ePrint Archive, Paper 2023/1306"
@@ -1625,7 +1653,7 @@ AEGIS-128X and AEGIS-256X share the same security properties and requirements as
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, and {{BS23}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, and {{AIKRS24}}.
 
 # IANA Considerations
 
