@@ -33,6 +33,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java       |
 | [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit    |
 | [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP        |
+| [aegis-ts](https://github.com/stknob/aegis-ts)                                                                                      | TypeScript |
 
 ### Hardware implementations
 
