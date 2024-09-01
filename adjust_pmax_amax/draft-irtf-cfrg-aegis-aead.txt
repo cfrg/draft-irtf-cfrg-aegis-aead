@@ -347,8 +347,8 @@ Table of Contents
    *  P_MAX (maximum length of the plaintext) is 2^61 - 1 bytes (2^64 -
       8 bits).
 
-   *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
-      bits).
+   *  A_MAX (maximum length of the associated data) is 2^61 - 1 bytes
+      (2^64 - 8 bits).
 
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 16
       bytes (128 bits).
