@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 22 January 2025                          Individual Contributor
-                                                            21 July 2024
+Expires: 5 March 2025                             Individual Contributor
+                                                        1 September 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 January 2025.
+   This Internet-Draft will expire on 5 March 2025.
 
 Copyright Notice
 
@@ -344,7 +344,8 @@ Table of Contents
 
    *  K_LEN (key length) is 16 bytes (128 bits).
 
-   *  P_MAX (maximum length of the plaintext) is 2^61 bytes (2^64 bits).
+   *  P_MAX (maximum length of the plaintext) is 2^61 - 1 bytes (2^64 -
+      8 bits).
 
    *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
       bits).
@@ -352,8 +353,8 @@ Table of Contents
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 16
       bytes (128 bits).
 
-   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = 2^61 + 16
-      or 32 bytes (2^64 + 128 or 256 bits).
+   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
+      1) + 16 or 32 bytes ((2^64 - 8) + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
@@ -1733,7 +1734,7 @@ return tag
    previously recorded ciphertexts or achieving key recovery.
 
    Security analyses of AEGIS can be found in [AEGIS], [M14], [FLLW17],
-   [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], and [BS23].
+   [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], and [AIKRS24].
 
 10.  IANA Considerations
 
@@ -1804,6 +1805,13 @@ return tag
    [AEGIS]    Wu, H. and B. Preneel, "AEGIS: A Fast Authenticated
               Encryption Algorithm (v1.1)", 2016,
               <https://competitions.cr.yp.to/round3/aegisv11.pdf>.
+
+   [AIKRS24]  Anand, R., Isobe, T., Kundu, A. K., Rahman, M., and S.
+              Suryawanshi, "Differential fault attack on AES-based
+              encryption schemes: application to B5G/6G ciphers—Rocca,
+              Rocca-S and AEGIS", Journal of Cryptographic Engineering,
+              2024, DOI 10.1007/s13389-024-00360-6, 2024,
+              <https://doi.org/10.1007/s13389-024-00360-6>.
 
    [BS23]     Bonnetain, X. and A. Schrottenloher, "Single-query Quantum
               Hidden Shift Attacks", Cryptology ePrint Archive, Paper
