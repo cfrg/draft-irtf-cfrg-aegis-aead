@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 5 March 2025                             Individual Contributor
-                                                        1 September 2024
+Expires: 6 March 2025                             Individual Contributor
+                                                        2 September 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 March 2025.
+   This Internet-Draft will expire on 6 March 2025.
 
 Copyright Notice
 
@@ -354,7 +354,7 @@ Table of Contents
       bytes (128 bits).
 
    *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
-      1) + 16 or 32 bytes ((2^64 - 8) + 128 or 256 bits).
+      1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
@@ -688,7 +688,8 @@ Table of Contents
 
    *  K_LEN (key length) is 32 bytes (256 bits).
 
-   *  P_MAX (maximum length of the plaintext) is 2^61 bytes (2^64 bits).
+   *  P_MAX (maximum length of the plaintext) is 2^61 - 1 bytes (2^64 -
+      8 bits).
 
    *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
       bits).
@@ -696,8 +697,8 @@ Table of Contents
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 32
       bytes (256 bits).
 
-   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = 2^61 + 16
-      or 32 bytes (2^64 + 128 or 256 bits).
+   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
+      1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
