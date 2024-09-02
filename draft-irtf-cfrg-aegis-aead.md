@@ -382,8 +382,8 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted (length MUST be less than `P_MAX`).
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `msg`: the message to be encrypted (length MUST be less than or equal to `P_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -428,9 +428,9 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted (length MUST be less than `C_MAX`).
+- `ct`: the ciphertext to be decrypted (length MUST be less than or equal to `C_MAX`).
 - `tag`: the authentication tag.
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -718,8 +718,8 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted (length MUST be less than `P_MAX`).
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `msg`: the message to be encrypted (length MUST be less than or equal to `P_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -764,9 +764,9 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted (length MUST be less than `C_MAX`).
+- `ct`: the ciphertext to be decrypted (length MUST be less than or equal to `C_MAX`).
 - `tag`: the authentication tag.
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
