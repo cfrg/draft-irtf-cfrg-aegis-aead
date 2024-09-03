@@ -359,10 +359,10 @@ AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 16 bytes (128 bits).
-- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> bytes (2<sup>64</sup> bits).
-- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> bytes (2<sup>64</sup> bits).
+- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).
+- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 bytes (128 bits).
-- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 or 32 bytes (2<sup>64</sup> + 128 or 256 bits).
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
@@ -382,8 +382,8 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted (length MUST be less than `P_MAX`).
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `msg`: the message to be encrypted (length MUST be less than or equal to `P_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -428,9 +428,9 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted (length MUST be less than `C_MAX`).
+- `ct`: the ciphertext to be decrypted (length MUST be less than or equal to `C_MAX`).
 - `tag`: the authentication tag.
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -695,10 +695,10 @@ AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
 The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
 
 - `K_LEN` (key length) is 32 bytes (256 bits).
-- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> bytes (2<sup>64</sup> bits).
+- `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).
 - `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> bytes (2<sup>64</sup> bits).
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 bytes (256 bits).
-- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = 2<sup>61</sup> + 16 or 32 bytes (2<sup>64</sup> + 128 or 256 bits).
+- `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).
 
 Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
@@ -718,8 +718,8 @@ Security:
 
 Inputs:
 
-- `msg`: the message to be encrypted (length MUST be less than `P_MAX`).
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `msg`: the message to be encrypted (length MUST be less than or equal to `P_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
@@ -764,9 +764,9 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted (length MUST be less than `C_MAX`).
+- `ct`: the ciphertext to be decrypted (length MUST be less than or equal to `C_MAX`).
 - `tag`: the authentication tag.
-- `ad`: the associated data to authenticate (length MUST be less than `A_MAX`).
+- `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
