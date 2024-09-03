@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 9 February 2025                          Individual Contributor
-                                                           8 August 2024
+Expires: 7 March 2025                             Individual Contributor
+                                                        3 September 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 February 2025.
+   This Internet-Draft will expire on 7 March 2025.
 
 Copyright Notice
 
@@ -344,16 +344,17 @@ Table of Contents
 
    *  K_LEN (key length) is 16 bytes (128 bits).
 
-   *  P_MAX (maximum length of the plaintext) is 2^61 bytes (2^64 bits).
+   *  P_MAX (maximum length of the plaintext) is 2^61 - 1 bytes (2^64 -
+      8 bits).
 
-   *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
-      bits).
+   *  A_MAX (maximum length of the associated data) is 2^61 - 1 bytes
+      (2^64 - 8 bits).
 
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 16
       bytes (128 bits).
 
-   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = 2^61 + 16
-      or 32 bytes (2^64 + 128 or 256 bits).
+   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
+      1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
@@ -378,10 +379,11 @@ Table of Contents
 
    Inputs:
 
-   *  msg: the message to be encrypted (length MUST be less than P_MAX).
+   *  msg: the message to be encrypted (length MUST be less than or
+      equal to P_MAX).
 
    *  ad: the associated data to authenticate (length MUST be less than
-      A_MAX).
+      or equal to A_MAX).
 
    *  key: the encryption key.
 
@@ -431,13 +433,13 @@ Table of Contents
 
    Inputs:
 
-   *  ct: the ciphertext to be decrypted (length MUST be less than
-      C_MAX).
+   *  ct: the ciphertext to be decrypted (length MUST be less than or
+      equal to C_MAX).
 
    *  tag: the authentication tag.
 
    *  ad: the associated data to authenticate (length MUST be less than
-      A_MAX).
+      or equal to A_MAX).
 
    *  key: the encryption key.
 
@@ -687,7 +689,8 @@ Table of Contents
 
    *  K_LEN (key length) is 32 bytes (256 bits).
 
-   *  P_MAX (maximum length of the plaintext) is 2^61 bytes (2^64 bits).
+   *  P_MAX (maximum length of the plaintext) is 2^61 - 1 bytes (2^64 -
+      8 bits).
 
    *  A_MAX (maximum length of the associated data) is 2^61 bytes (2^64
       bits).
@@ -695,8 +698,8 @@ Table of Contents
    *  N_MIN (minimum nonce length) = N_MAX (maximum nonce length) = 32
       bytes (256 bits).
 
-   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = 2^61 + 16
-      or 32 bytes (2^64 + 128 or 256 bits).
+   *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
+      1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
    Distinct associated data inputs, as described in [RFC5116], Section 3
    shall be unambiguously encoded as a single input.  It is up to the
@@ -721,10 +724,11 @@ Table of Contents
 
    Inputs:
 
-   *  msg: the message to be encrypted (length MUST be less than P_MAX).
+   *  msg: the message to be encrypted (length MUST be less than or
+      equal to P_MAX).
 
    *  ad: the associated data to authenticate (length MUST be less than
-      A_MAX).
+      or equal to A_MAX).
 
    *  key: the encryption key.
 
@@ -774,13 +778,13 @@ Table of Contents
 
    Inputs:
 
-   *  ct: the ciphertext to be decrypted (length MUST be less than
-      C_MAX).
+   *  ct: the ciphertext to be decrypted (length MUST be less than or
+      equal to C_MAX).
 
    *  tag: the authentication tag.
 
    *  ad: the associated data to authenticate (length MUST be less than
-      A_MAX).
+      or equal to A_MAX).
 
    *  key: the encryption key.
 
