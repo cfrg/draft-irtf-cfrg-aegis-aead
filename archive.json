@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-11T00:41:40.038668+00:00",
+  "timestamp": "2024-09-03T00:39:15.723173+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -539,6 +539,30 @@
           "body": "Sounds good to me. Happy to do the PR.",
           "createdAt": "2024-08-08T17:15:39Z",
           "updatedAt": "2024-08-08T17:15:39Z"
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "id": "I_kwDOKeDGj86U-3YG",
+      "title": "spec: Off-by-one error in the definition of RFC 5116 constants",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/45",
+      "state": "OPEN",
+      "author": "Yawning",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "[RFC 5116](https://www.rfc-editor.org/rfc/rfc5116) defines `A_MAX` and `P_MAX` as an inclusive range (Section 4)\r\n\r\n> Each AEAD algorithm MUST accept any plaintext with a length between\r\n> zero and P_MAX octets, inclusive, where the value P_MAX is specific\r\n> to that algorithm.\r\n\r\n> Each AEAD algorithm MUST accept any associated data with a length\r\n> between zero and A_MAX octets, inclusive, where the value A_MAX is\r\n> specific to that algorithm.\r\n\r\nThe draft algorithm high-level definitions appear to follow this convention (Section 3, 4):\r\n\r\nhttps://github.com/cfrg/draft-irtf-cfrg-aegis-aead/blob/dc1f4805eba4c4305b16f9741524dbde0ccea586/draft-irtf-cfrg-aegis-aead.md?plain=1#L362-L363\r\n\r\nhttps://github.com/cfrg/draft-irtf-cfrg-aegis-aead/blob/dc1f4805eba4c4305b16f9741524dbde0ccea586/draft-irtf-cfrg-aegis-aead.md?plain=1#L698-L699\r\n\r\nHowever, it is clear from the algorithm pseduocode sections and how the tag is generated that this P_MAX/A_MAX must be exclusive (Links to the AEGIS-256 copies omitted for brevity).\r\n\r\nhttps://github.com/cfrg/draft-irtf-cfrg-aegis-aead/blob/dc1f4805eba4c4305b16f9741524dbde0ccea586/draft-irtf-cfrg-aegis-aead.md?plain=1#L385-L386\r\n\r\nhttps://github.com/cfrg/draft-irtf-cfrg-aegis-aead/blob/dc1f4805eba4c4305b16f9741524dbde0ccea586/draft-irtf-cfrg-aegis-aead.md?plain=1#L679\r\n\r\nWhile it is a combination of impossible/impractical/unlikely that data will every reach the length where this discrepancy actually matters, `P_MAX` and `A_MAX` should be changed to be `2^61 - 1 bytes (2^64 - 8 bits)`, and `C_MAX` should be updated accordingly.",
+      "createdAt": "2024-09-01T14:36:25Z",
+      "updatedAt": "2024-09-01T21:24:53Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Good catch! Thank you!",
+          "createdAt": "2024-09-01T21:24:52Z",
+          "updatedAt": "2024-09-01T21:24:52Z"
         }
       ]
     }
@@ -4881,6 +4905,75 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 46,
+      "id": "PR_kwDOKeDGj856GHxN",
+      "title": "Fix off-by-one in P_MAX and A_MAX",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/46",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Spotted by @Yawning, thanks!\r\n\r\nFixes #45",
+      "createdAt": "2024-09-01T21:24:36Z",
+      "updatedAt": "2024-09-02T20:44:06Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "dc1f4805eba4c4305b16f9741524dbde0ccea586",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "adjust_pmax_amax",
+      "headRefOid": "83cb4f395ea89d71f2d7a99c529c8809fcb6a6ca",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "Yawning",
+          "authorAssociation": "NONE",
+          "body": "No problem.\r\n\r\nThe AEGIS-256 description also has the issue, so one more place to update.\r\n\r\nhttps://github.com/cfrg/draft-irtf-cfrg-aegis-aead/blob/9cccd938bb387ca9f643d438b2b139a073b3bc8a/draft-irtf-cfrg-aegis-aead.md?plain=1#L698-L701",
+          "createdAt": "2024-09-02T10:19:14Z",
+          "updatedAt": "2024-09-02T10:19:14Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "/cc @samuel-lucas6 ",
+          "createdAt": "2024-09-02T10:26:39Z",
+          "updatedAt": "2024-09-02T10:26:39Z"
+        },
+        {
+          "author": "Yawning",
+          "authorAssociation": "NONE",
+          "body": "> Shouldn't `length MUST be less than P_MAX` and `length MUST be less than A_MAX` (in Section 3.1 and 4.1) still be changed? Otherwise, the maximum is technically 261 - 2 bytes.\r\n> \r\n> If I'm right about that, `length MUST be less than C_MAX` and `length MUST be less than A_MAX` should also be changed in Section 3.2 and 4.2.\r\n\r\nAh, yes.  That's right.\r\n\r\nUnrelated, thanks for the nice spec, I've been working on implementing 128L and 256, and it's been easy to do.",
+          "createdAt": "2024-09-02T18:46:20Z",
+          "updatedAt": "2024-09-02T18:46:20Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Good catch, @samuel-lucas6 !\r\n",
+          "createdAt": "2024-09-02T20:44:05Z",
+          "updatedAt": "2024-09-02T20:44:05Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86HqaAd",
+          "commit": {
+            "abbreviatedOid": "d6bd6b1"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Shouldn't `length MUST be less than P_MAX` and `length MUST be less than A_MAX` (in Section 3.1 and 4.1) still be changed? Otherwise, the maximum is technically 2<sup>61</sup> - 2 bytes.\r\n\r\nIf I'm right about that, `length MUST be less than C_MAX` and `length MUST be less than A_MAX` should also be changed in Section 3.2 and 4.2.\r\n\r\nBesides that, it looks ok. I'm not super keen on the brackets inside brackets, but there's not really anything you can do.",
+          "createdAt": "2024-09-02T18:10:53Z",
+          "updatedAt": "2024-09-02T18:10:53Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
