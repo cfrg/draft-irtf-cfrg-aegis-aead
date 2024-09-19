@@ -239,11 +239,11 @@ informative:
       -
         ins: K. Sakamoto
         name: Kosei Sakamoto
-        org: University of Hyogo
+        org: Mitsubishi Electric Corporation
       -
         ins: T. Isobe
         name: Takanori Isobe
-        org: University of Hyogo; National Institute of Information and Communications Technology
+        org: University of Hyogo
     date: 2024
 
   STSI23:
