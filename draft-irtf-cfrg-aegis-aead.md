@@ -226,6 +226,26 @@ informative:
         org: ANSSI
     date: 2014
 
+  SSI24:
+    title: "Bit-Wise Analysis for Forgery Attacks on AES-Based AEAD Schemes"
+    rc: "Advances in Information and Computer Security. IWSEC 2024. Lecture Notes in Computer Science, vol 14977"
+    seriesinfo:
+      DOI: 10.1007/978-981-97-7737-2_1
+    author:
+      -
+        ins: T. Shiraya
+        name: Takuro Shiraya
+        org: University of Hyogo
+      -
+        ins: K. Sakamoto
+        name: Kosei Sakamoto
+        org: Mitsubishi Electric Corporation
+      -
+        ins: T. Isobe
+        name: Takanori Isobe
+        org: University of Hyogo
+    date: 2024
+
   STSI23:
     title: "MILP-based security evaluation for AEGIS/Tiaoxin-346/Rocca"
     rc: "IET Information Security, vol 17, 2023(3), pp. 458-467"
@@ -1643,7 +1663,7 @@ Regardless of the variant, the `key` and `nonce` are only required by the `Init`
 
 AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
 
-Under the assumption that the secret key is unknown to the attacker, all AEGIS variants target 128-bit security against forgery attacks regardless of the tag size.
+Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.
 
 Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
 
@@ -1653,7 +1673,7 @@ AEGIS-128X and AEGIS-256X share the same security properties and requirements as
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, and {{AIKRS24}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
 
 # IANA Considerations
 
