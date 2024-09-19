@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 7 March 2025                             Individual Contributor
-                                                        3 September 2024
+Expires: 23 March 2025                            Individual Contributor
+                                                       19 September 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 March 2025.
+   This Internet-Draft will expire on 23 March 2025.
 
 Copyright Notice
 
@@ -1714,8 +1714,8 @@ return tag
    recovery, whereas AEGIS-128L offers 128-bit security.
 
    Under the assumption that the secret key is unknown to the attacker,
-   all AEGIS variants target 128-bit security against forgery attacks
-   regardless of the tag size.
+   all AEGIS variants offer at least 128-bit security against forgery
+   attacks.
 
    Encrypting the same message with the same key and nonce but different
    associated data generates distinct ciphertexts that do not reveal any
@@ -1737,7 +1737,8 @@ return tag
    previously recorded ciphertexts or achieving key recovery.
 
    Security analyses of AEGIS can be found in [AEGIS], [M14], [FLLW17],
-   [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], and [AIKRS24].
+   [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], [AIKRS24], and
+   [SSI24].
 
 10.  IANA Considerations
 
@@ -1862,6 +1863,13 @@ return tag
               Science, vol 8781, pp. 290–305,
               DOI 10.1007/978-3-319-13051-4_18, 2014,
               <https://doi.org/10.1007/978-3-319-13051-4_18>.
+
+   [SSI24]    Shiraya, T., Sakamoto, K., and T. Isobe, "Bit-Wise
+              Analysis for Forgery Attacks on AES-Based AEAD Schemes",
+              Advances in Information and Computer Security. IWSEC 2024.
+              Lecture Notes in Computer Science, vol 14977,
+              DOI 10.1007/978-981-97-7737-2_1, 2024,
+              <https://doi.org/10.1007/978-981-97-7737-2_1>.
 
    [STSI23]   Shiraya, T., Takeuchi, N., Sakamoto, K., and T. Isobe,
               "MILP-based security evaluation for AEGIS/Tiaoxin-346/
