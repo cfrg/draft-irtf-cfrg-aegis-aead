@@ -1891,8 +1891,8 @@ return tag
 Appendix A.  Test Vectors
 
    The following test vectors are also available in JSON format at
-   [TEST-VECTORS].  In the JSON test vectors, byte string values are
-   JSON strings containing the hex encoding of the byte strings.
+   [TEST-VECTORS].  In this format, byte strings are represented as JSON
+   strings containing their hexadecimal encoding.
 
 A.1.  AESRound Test Vector
 
