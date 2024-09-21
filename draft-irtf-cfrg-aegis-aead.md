@@ -1704,7 +1704,7 @@ IANA is also requested to register the following identifiers in the AEAD Algorit
 
 # Test Vectors
 
-The following test vectors are also available in JSON format at [TEST-VECTORS]. In the JSON test vectors, byte string values are JSON strings containing the hex encoding of the byte strings.
+The following test vectors are also available in JSON format at {{TEST-VECTORS}}. In the JSON test vectors, byte string values are JSON strings containing the hex encoding of the byte strings.
 
 ## AESRound Test Vector
 
