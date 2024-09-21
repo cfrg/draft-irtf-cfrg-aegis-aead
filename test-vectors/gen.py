@@ -45,15 +45,18 @@ with open("../draft-irtf-cfrg-aegis-aead.md") as f:
             in_tv = False
             continue
 
-        if line == "~~~":
-            if in_tv:
-                tvs.append(tv)
-            in_tv = not in_tv
-            current_key = None
+        if line == "~~~ test-vectors":
+            in_tv = True
             tv = {"name": tv_name}
             if must_fail:
                 tv["error"] = "verification failed"
                 must_fail = False
+            continue
+
+        if line == "~~~":
+            tvs.append(tv)
+            in_tv = False
+            current_key = None
             continue
 
         if line.find("verification failed") != -1:

@@ -270,6 +270,12 @@ informative:
         org: University of Hyogo; National Institute of Information and Communications Technology
     date: 2023
 
+  TEST-VECTORS:
+    title: "AEGIS Test Vectors"
+    refcontent: commit 167cab9e
+    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/167cab9e/test-vectors
+    date: 2024
+
   VV18:
     title: "Can Caesar Beat Galois?"
     rc: "Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892, pp. 476–494"
@@ -1698,9 +1704,11 @@ IANA is also requested to register the following identifiers in the AEAD Algorit
 
 # Test Vectors
 
+The following test vectors are also available in JSON format at {{TEST-VECTORS}}. In this format, byte strings are represented as JSON strings containing their hexadecimal encoding.
+
 ## AESRound Test Vector
 
-~~~
+~~~ test-vectors
 in   : 000102030405060708090a0b0c0d0e0f
 
 rk   : 101112131415161718191a1b1c1d1e1f
@@ -1712,7 +1720,7 @@ out  : 7a7b4e5638782546a8c0477a3b813f43
 
 ### Update Test Vector
 
-~~~
+~~~ test-vectors
 S0   : 9b7e60b24cc873ea894ecc07911049a3
 S1   : 330be08f35300faa2ebf9a7b0d274658
 S2   : 7bbd5bd2b049f7b9b515cf26fbe7756c
@@ -1738,7 +1746,7 @@ S7   : 61279ba73167f0ab76f0a11bf203bdff
 
 ### Test Vector 1
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1757,7 +1765,7 @@ tag256: 25835bfbb21632176cf03840687cb968
 
 ### Test Vector 2
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1776,7 +1784,7 @@ tag256: 1360dc9db8ae42455f6e5b6a9d488ea4
 
 ### Test Vector 3
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1797,7 +1805,7 @@ tag256: 022cb796fe7e0ae1197525ff67e30948
 
 ### Test Vector 4
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1816,7 +1824,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 
 ### Test Vector 5
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1843,7 +1851,7 @@ tag256: b91e2947a33da8bee89b6794e647baf0
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10000200000000000000000000000000
 
 nonce : 10010000000000000000000000000000
@@ -1862,7 +1870,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1881,7 +1889,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1900,7 +1908,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
 
 nonce : 10000200000000000000000000000000
@@ -1919,7 +1927,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 
 ### Update Test Vector
 
-~~~
+~~~ test-vectors
 S0   : 1fa1207ed76c86f2c4bb40e8b395b43e
 S1   : b44c375e6c1e1978db64bcd12e9e332f
 S2   : 0dab84bfa9f0226432ff630f233d4e5b
@@ -1940,7 +1948,7 @@ S5   : a3240fceb68e32d5d114df1b5363ab67
 
 ### Test Vector 1
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -1961,7 +1969,7 @@ tag256: 1181a1d18091082bf0266f66297d167d
 
 ### Test Vector 2
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -1982,7 +1990,7 @@ tag256: 6a348c930adbd654896e1666aad67de9
 
 ### Test Vector 3
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -2005,7 +2013,7 @@ tag256: b7d28d0c3c0ebd409fd22b4416050307
 
 ### Test Vector 4
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -2026,7 +2034,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 
 ### Test Vector 5
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -2055,7 +2063,7 @@ tag256: a3aca270c006094d71c20e6910b5161c
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10000200000000000000000000000000
         00000000000000000000000000000000
 
@@ -2076,7 +2084,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -2097,7 +2105,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -2118,7 +2126,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 
 This test MUST return a "verification failed" error.
 
-~~~
+~~~ test-vectors
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
 
@@ -2139,7 +2147,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 
 ### Initial State
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
 
 nonce : 101112131415161718191a1b1c1d1e1f
@@ -2150,7 +2158,7 @@ ctx[1]: 01010000000000000000000000000000
 
 After initialization:
 
-~~~
+~~~ test-vectors
 V[0,0]: a4fc1ad9a72942fb88bd2cabbba6509a
 V[0,1]: 80a40e392fc71084209b6c3319bdc6cc
 
@@ -2178,7 +2186,7 @@ V[7,1]: 3407279a54ce76d2e2e8a90ec5d108eb
 
 ### Test Vector 1
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
 
 nonce : 101112131415161718191a1b1c1d1e1f
@@ -2197,7 +2205,7 @@ tag256: b92c71fdbd358b8a4de70b27631ace90
 
 ### Test Vector 2
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
 
 nonce : 101112131415161718191a1b1c1d1e1f
@@ -2232,7 +2240,7 @@ tag256: c471876f9b4978c44f2ae1ce770cdb11
 
 ### Initial State
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
 
 nonce : 101112131415161718191a1b1c1d1e1f
@@ -2245,7 +2253,7 @@ ctx[3]: 03030000000000000000000000000000
 
 After initialization:
 
-~~~
+~~~ test-vectors
 V[0,0]: 924eb07635003a37e6c6575ba8ce1929
 V[0,1]: c8b6a5d91475445e936d48e794be0ce2
 V[0,2]: fcd37d050e24084befe3bbb219d64760
@@ -2289,7 +2297,7 @@ V[7,3]: 5cce4d00329d69f1aae36aa541347512
 
 ### Test Vector 1
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
 
 nonce : 101112131415161718191a1b1c1d1e1f
@@ -2308,7 +2316,7 @@ tag256: a4b25437f4be93cfa856a2f27e4416b4
 
 ### Test Vector 2
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
 
 nonce : 101112131415161718191a1b1c1d1e1f
@@ -2343,7 +2351,7 @@ tag256: 69abf0f64a137dd6e122478d777e98bc
 
 ### Initial State
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
 
@@ -2356,7 +2364,7 @@ ctx[1]: 01010000000000000000000000000000
 
 After initialization:
 
-~~~
+~~~ test-vectors
 V[0,0]: eca2bf4538442e8712d4972595744039
 V[0,1]: 201405efa9264f07911db58101903087
 
@@ -2378,7 +2386,7 @@ V[5,1]: bd52a6b9c8f976a26ec1409df19e8bfe
 
 ### Test Vector 1
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
 
@@ -2399,7 +2407,7 @@ tag256: 25d7e799b49a80354c3f881ac2f1027f
 
 ### Test Vector 2
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
 
@@ -2436,7 +2444,7 @@ tag256: 0392c62b17ddb00c172a010b5a327d0f
 
 ### Initial State
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
 
@@ -2451,7 +2459,7 @@ ctx[3]: 03030000000000000000000000000000
 
 After initialization:
 
-~~~
+~~~ test-vectors
 V[0,0]: 482a86e8436cd2361063a4b2702769b9
 V[0,1]: d95a2be81c9245b22996f68eea0122f9
 V[0,2]: 0c2a3b348b1a5e256c6751377318c41e
@@ -2485,7 +2493,7 @@ V[5,3]: 591ece530aeaa5c9867220156f5c25e3
 
 ### Test Vector 1
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
 
@@ -2506,7 +2514,7 @@ tag256: 6093a1a8aab20ec635dc1ca71745b01b
 
 ### Test Vector 2
 
-~~~
+~~~ test-vectors
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
 
