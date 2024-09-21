@@ -1050,7 +1050,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 23 March 2025</td>
+<td class="center">Expires 25 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-19" class="published">19 September 2024</time>
+<time datetime="2024-09-21" class="published">21 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-23">23 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-25">25 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3507,6 +3507,10 @@ return stream
         <dd>
 <span class="refAuthor">Shiraya, T.</span>, <span class="refAuthor">Takeuchi, N.</span>, <span class="refAuthor">Sakamoto, K.</span>, and <span class="refAuthor">T. Isobe</span>, <span class="refTitle">"MILP-based security evaluation for AEGIS/Tiaoxin-346/Rocca"</span>, <span class="refContent">IET Information Security, vol 17, 2023(3), pp. 458-467</span>, <span class="seriesInfo">DOI 10.1049/ise2.12109</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://doi.org/10.1049/ise2.12109">https://doi.org/10.1049/ise2.12109</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="TEST-VECTORS">[TEST-VECTORS]</dt>
+        <dd>
+<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 167cab9e</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/167cab9e/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/167cab9e/test-vectors</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="VV18">[VV18]</dt>
       <dd>
 <span class="refAuthor">Vaudenay, S.</span> and <span class="refAuthor">D. Vizár</span>, <span class="refTitle">"Can Caesar Beat Galois?"</span>, <span class="refContent">Applied Cryptography and Network Security. ACNS 2018. Lecture Notes in Computer Science, vol 10892, pp. 476–494</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-93387-0_25</span>, <time datetime="2018" class="refDate">2018</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-319-93387-0_25">https://doi.org/10.1007/978-3-319-93387-0_25</a>&gt;</span>. </dd>
@@ -3521,12 +3525,13 @@ return stream
       <h2 id="name-test-vectors">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
+<p id="appendix-A-1">The following test vectors are also available in JSON format at <span>[<a href="#TEST-VECTORS" class="cite xref">TEST-VECTORS</a>]</span>. In this format, byte strings are represented as JSON strings containing their hexadecimal encoding.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <div id="aesround-test-vector">
 <section id="appendix-A.1">
         <h3 id="name-aesround-test-vector">
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-aesround-test-vector" class="section-name selfRef">AESRound Test Vector</a>
         </h3>
-<div class="alignLeft art-text artwork" id="appendix-A.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.1-1">
 <pre>
 in   : 000102030405060708090a0b0c0d0e0f
 
@@ -3547,7 +3552,7 @@ out  : 7a7b4e5638782546a8c0477a3b813f43
           <h4 id="name-update-test-vector">
 <a href="#appendix-A.2.1" class="section-number selfRef">A.2.1. </a><a href="#name-update-test-vector" class="section-name selfRef">Update Test Vector</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.1-1">
 <pre>
 S0   : 9b7e60b24cc873ea894ecc07911049a3
 S1   : 330be08f35300faa2ebf9a7b0d274658
@@ -3579,7 +3584,7 @@ S7   : 61279ba73167f0ab76f0a11bf203bdff
           <h4 id="name-test-vector-1">
 <a href="#appendix-A.2.2" class="section-number selfRef">A.2.2. </a><a href="#name-test-vector-1" class="section-name selfRef">Test Vector 1</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.2-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.2-1">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3604,7 +3609,7 @@ tag256: 25835bfbb21632176cf03840687cb968
           <h4 id="name-test-vector-2">
 <a href="#appendix-A.2.3" class="section-number selfRef">A.2.3. </a><a href="#name-test-vector-2" class="section-name selfRef">Test Vector 2</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.3-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.3-1">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3629,7 +3634,7 @@ tag256: 1360dc9db8ae42455f6e5b6a9d488ea4
           <h4 id="name-test-vector-3">
 <a href="#appendix-A.2.4" class="section-number selfRef">A.2.4. </a><a href="#name-test-vector-3" class="section-name selfRef">Test Vector 3</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.4-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.4-1">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3656,7 +3661,7 @@ tag256: 022cb796fe7e0ae1197525ff67e30948
           <h4 id="name-test-vector-4">
 <a href="#appendix-A.2.5" class="section-number selfRef">A.2.5. </a><a href="#name-test-vector-4" class="section-name selfRef">Test Vector 4</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.5-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.5-1">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3681,7 +3686,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
           <h4 id="name-test-vector-5">
 <a href="#appendix-A.2.6" class="section-number selfRef">A.2.6. </a><a href="#name-test-vector-5" class="section-name selfRef">Test Vector 5</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.6-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.6-1">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3713,7 +3718,7 @@ tag256: b91e2947a33da8bee89b6794e647baf0
 <a href="#appendix-A.2.7" class="section-number selfRef">A.2.7. </a><a href="#name-test-vector-6" class="section-name selfRef">Test Vector 6</a>
           </h4>
 <p id="appendix-A.2.7-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.2.7-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.7-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.7-2">
 <pre>
 key   : 10000200000000000000000000000000
 
@@ -3737,7 +3742,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 <a href="#appendix-A.2.8" class="section-number selfRef">A.2.8. </a><a href="#name-test-vector-7" class="section-name selfRef">Test Vector 7</a>
           </h4>
 <p id="appendix-A.2.8-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.2.8-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.8-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.8-2">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3761,7 +3766,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 <a href="#appendix-A.2.9" class="section-number selfRef">A.2.9. </a><a href="#name-test-vector-8" class="section-name selfRef">Test Vector 8</a>
           </h4>
 <p id="appendix-A.2.9-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.2.9-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.9-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.9-2">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3785,7 +3790,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
 <a href="#appendix-A.2.10" class="section-number selfRef">A.2.10. </a><a href="#name-test-vector-9" class="section-name selfRef">Test Vector 9</a>
           </h4>
 <p id="appendix-A.2.10-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.2.10-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.10-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.2.10-2">
 <pre>
 key   : 10010000000000000000000000000000
 
@@ -3815,7 +3820,7 @@ tag256: 86f1b80bfb463aba711d15405d094baf
           <h4 id="name-update-test-vector-2">
 <a href="#appendix-A.3.1" class="section-number selfRef">A.3.1. </a><a href="#name-update-test-vector-2" class="section-name selfRef">Update Test Vector</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.3.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.1-1">
 <pre>
 S0   : 1fa1207ed76c86f2c4bb40e8b395b43e
 S1   : b44c375e6c1e1978db64bcd12e9e332f
@@ -3842,7 +3847,7 @@ S5   : a3240fceb68e32d5d114df1b5363ab67
           <h4 id="name-test-vector-1-2">
 <a href="#appendix-A.3.2" class="section-number selfRef">A.3.2. </a><a href="#name-test-vector-1-2" class="section-name selfRef">Test Vector 1</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.3.2-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.2-1">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -3869,7 +3874,7 @@ tag256: 1181a1d18091082bf0266f66297d167d
           <h4 id="name-test-vector-2-2">
 <a href="#appendix-A.3.3" class="section-number selfRef">A.3.3. </a><a href="#name-test-vector-2-2" class="section-name selfRef">Test Vector 2</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.3.3-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.3-1">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -3896,7 +3901,7 @@ tag256: 6a348c930adbd654896e1666aad67de9
           <h4 id="name-test-vector-3-2">
 <a href="#appendix-A.3.4" class="section-number selfRef">A.3.4. </a><a href="#name-test-vector-3-2" class="section-name selfRef">Test Vector 3</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.3.4-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.4-1">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -3925,7 +3930,7 @@ tag256: b7d28d0c3c0ebd409fd22b4416050307
           <h4 id="name-test-vector-4-2">
 <a href="#appendix-A.3.5" class="section-number selfRef">A.3.5. </a><a href="#name-test-vector-4-2" class="section-name selfRef">Test Vector 4</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.3.5-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.5-1">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -3952,7 +3957,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
           <h4 id="name-test-vector-5-2">
 <a href="#appendix-A.3.6" class="section-number selfRef">A.3.6. </a><a href="#name-test-vector-5-2" class="section-name selfRef">Test Vector 5</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.3.6-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.6-1">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -3986,7 +3991,7 @@ tag256: a3aca270c006094d71c20e6910b5161c
 <a href="#appendix-A.3.7" class="section-number selfRef">A.3.7. </a><a href="#name-test-vector-6-2" class="section-name selfRef">Test Vector 6</a>
           </h4>
 <p id="appendix-A.3.7-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.3.7-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.3.7-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.7-2">
 <pre>
 key   : 10000200000000000000000000000000
         00000000000000000000000000000000
@@ -4012,7 +4017,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 <a href="#appendix-A.3.8" class="section-number selfRef">A.3.8. </a><a href="#name-test-vector-7-2" class="section-name selfRef">Test Vector 7</a>
           </h4>
 <p id="appendix-A.3.8-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.3.8-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.3.8-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.8-2">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -4038,7 +4043,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 <a href="#appendix-A.3.9" class="section-number selfRef">A.3.9. </a><a href="#name-test-vector-8-2" class="section-name selfRef">Test Vector 8</a>
           </h4>
 <p id="appendix-A.3.9-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.3.9-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.3.9-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.9-2">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -4064,7 +4069,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
 <a href="#appendix-A.3.10" class="section-number selfRef">A.3.10. </a><a href="#name-test-vector-9-2" class="section-name selfRef">Test Vector 9</a>
           </h4>
 <p id="appendix-A.3.10-1">This test <span class="bcp14">MUST</span> return a “verification failed” error.<a href="#appendix-A.3.10-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.3.10-2">
+<div class="lang-test-vectors sourcecode" id="appendix-A.3.10-2">
 <pre>
 key   : 10010000000000000000000000000000
         00000000000000000000000000000000
@@ -4096,7 +4101,7 @@ tag256: 8c1cc703c81281bee3f6d9966e14948b
           <h4 id="name-initial-state">
 <a href="#appendix-A.4.1" class="section-number selfRef">A.4.1. </a><a href="#name-initial-state" class="section-name selfRef">Initial State</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.4.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.4.1-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
 
@@ -4107,7 +4112,7 @@ ctx[1]: 01010000000000000000000000000000
 </pre><a href="#appendix-A.4.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A.4.1-2">After initialization:<a href="#appendix-A.4.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.4.1-3">
+<div class="lang-test-vectors sourcecode" id="appendix-A.4.1-3">
 <pre>
 V[0,0]: a4fc1ad9a72942fb88bd2cabbba6509a
 V[0,1]: 80a40e392fc71084209b6c3319bdc6cc
@@ -4141,7 +4146,7 @@ V[7,1]: 3407279a54ce76d2e2e8a90ec5d108eb
           <h4 id="name-test-vector-1-3">
 <a href="#appendix-A.4.2" class="section-number selfRef">A.4.2. </a><a href="#name-test-vector-1-3" class="section-name selfRef">Test Vector 1</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.4.2-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.4.2-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
 
@@ -4166,7 +4171,7 @@ tag256: b92c71fdbd358b8a4de70b27631ace90
           <h4 id="name-test-vector-2-3">
 <a href="#appendix-A.4.3" class="section-number selfRef">A.4.3. </a><a href="#name-test-vector-2-3" class="section-name selfRef">Test Vector 2</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.4.3-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.4.3-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
 
@@ -4212,7 +4217,7 @@ tag256: c471876f9b4978c44f2ae1ce770cdb11
           <h4 id="name-initial-state-2">
 <a href="#appendix-A.5.1" class="section-number selfRef">A.5.1. </a><a href="#name-initial-state-2" class="section-name selfRef">Initial State</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.5.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.5.1-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
 
@@ -4225,7 +4230,7 @@ ctx[3]: 03030000000000000000000000000000
 </pre><a href="#appendix-A.5.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A.5.1-2">After initialization:<a href="#appendix-A.5.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.5.1-3">
+<div class="lang-test-vectors sourcecode" id="appendix-A.5.1-3">
 <pre>
 V[0,0]: 924eb07635003a37e6c6575ba8ce1929
 V[0,1]: c8b6a5d91475445e936d48e794be0ce2
@@ -4275,7 +4280,7 @@ V[7,3]: 5cce4d00329d69f1aae36aa541347512
           <h4 id="name-test-vector-1-4">
 <a href="#appendix-A.5.2" class="section-number selfRef">A.5.2. </a><a href="#name-test-vector-1-4" class="section-name selfRef">Test Vector 1</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.5.2-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.5.2-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
 
@@ -4300,7 +4305,7 @@ tag256: a4b25437f4be93cfa856a2f27e4416b4
           <h4 id="name-test-vector-2-4">
 <a href="#appendix-A.5.3" class="section-number selfRef">A.5.3. </a><a href="#name-test-vector-2-4" class="section-name selfRef">Test Vector 2</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.5.3-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.5.3-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
 
@@ -4346,7 +4351,7 @@ tag256: 69abf0f64a137dd6e122478d777e98bc
           <h4 id="name-initial-state-3">
 <a href="#appendix-A.6.1" class="section-number selfRef">A.6.1. </a><a href="#name-initial-state-3" class="section-name selfRef">Initial State</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.6.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.6.1-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
@@ -4359,7 +4364,7 @@ ctx[1]: 01010000000000000000000000000000
 </pre><a href="#appendix-A.6.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A.6.1-2">After initialization:<a href="#appendix-A.6.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.6.1-3">
+<div class="lang-test-vectors sourcecode" id="appendix-A.6.1-3">
 <pre>
 V[0,0]: eca2bf4538442e8712d4972595744039
 V[0,1]: 201405efa9264f07911db58101903087
@@ -4387,7 +4392,7 @@ V[5,1]: bd52a6b9c8f976a26ec1409df19e8bfe
           <h4 id="name-test-vector-1-5">
 <a href="#appendix-A.6.2" class="section-number selfRef">A.6.2. </a><a href="#name-test-vector-1-5" class="section-name selfRef">Test Vector 1</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.6.2-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.6.2-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
@@ -4414,7 +4419,7 @@ tag256: 25d7e799b49a80354c3f881ac2f1027f
           <h4 id="name-test-vector-2-5">
 <a href="#appendix-A.6.3" class="section-number selfRef">A.6.3. </a><a href="#name-test-vector-2-5" class="section-name selfRef">Test Vector 2</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.6.3-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.6.3-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
@@ -4462,7 +4467,7 @@ tag256: 0392c62b17ddb00c172a010b5a327d0f
           <h4 id="name-initial-state-4">
 <a href="#appendix-A.7.1" class="section-number selfRef">A.7.1. </a><a href="#name-initial-state-4" class="section-name selfRef">Initial State</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.7.1-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.1-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
@@ -4477,7 +4482,7 @@ ctx[3]: 03030000000000000000000000000000
 </pre><a href="#appendix-A.7.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A.7.1-2">After initialization:<a href="#appendix-A.7.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.7.1-3">
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.1-3">
 <pre>
 V[0,0]: 482a86e8436cd2361063a4b2702769b9
 V[0,1]: d95a2be81c9245b22996f68eea0122f9
@@ -4517,7 +4522,7 @@ V[5,3]: 591ece530aeaa5c9867220156f5c25e3
           <h4 id="name-test-vector-1-6">
 <a href="#appendix-A.7.2" class="section-number selfRef">A.7.2. </a><a href="#name-test-vector-1-6" class="section-name selfRef">Test Vector 1</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.7.2-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.2-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
@@ -4544,7 +4549,7 @@ tag256: 6093a1a8aab20ec635dc1ca71745b01b
           <h4 id="name-test-vector-2-6">
 <a href="#appendix-A.7.3" class="section-number selfRef">A.7.3. </a><a href="#name-test-vector-2-6" class="section-name selfRef">Test Vector 2</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.7.3-1">
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.3-1">
 <pre>
 key   : 000102030405060708090a0b0c0d0e0f
         101112131415161718191a1b1c1d1e1f
