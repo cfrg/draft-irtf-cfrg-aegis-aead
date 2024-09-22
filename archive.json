@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-09-19T00:41:15.941246+00:00",
+  "timestamp": "2024-09-22T00:45:41.948879+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -571,15 +571,15 @@
       "id": "I_kwDOKeDGj86XGDGM",
       "title": "New analysis",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/47",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "New analysis: https://www.springerprofessional.de/en/bit-wise-analysis-for-forgery-attacks-on-aes-based-aead-schemes/50004862\r\n\r\nI got a copy of the paper. To summarize:\r\n\r\n- With a 256 bit tag (they quote the construction used in the draft), AEGIS-256 could claim 256 bit security against forgery.\r\n- But with AEGIS-128L and a 256 bit tag, probably of a successful forgery is 2^-216, so > 2^-256.\r\n\r\nThe fact that a state collision on AEGIS-128L has a complexity above 2^128 but below 2^256 isn't new. This is why in the security guarantees section, we only guarantee 128 bit security regardless of the variant. \r\n\r\nWhat's new is the fact that we *could* claim 256 bit security against forgeries for AEGIS-256.\r\n\r\nI don't know if we should, or if we should remain conservative as this has little practical implications and further analysis may invalidate that claim.\r\n\r\nRegardless, that's one more paper we can cite.\r\n\r\n<img width=\"1315\" alt=\"Screenshot 2024-09-19 at 01 12 18\" src=\"https://github.com/user-attachments/assets/4870d50a-59a6-48b6-a137-e7704ad338f2\">\r\n<img width=\"995\" alt=\"Screenshot 2024-09-19 at 01 14 04\" src=\"https://github.com/user-attachments/assets/fb08dd04-ae38-4e78-a7a7-f5e13d86284a\">\r\n",
+      "body": "New analysis: https://link.springer.com/chapter/10.1007/978-981-97-7737-2_1\r\n\r\nI got a copy of the paper. To summarize:\r\n\r\n- With a 256 bit tag (they quote the construction used in the draft), AEGIS-256 could claim 256 bit security against forgery.\r\n- But with AEGIS-128L and a 256 bit tag, probably of a successful forgery is 2^-216, so > 2^-256.\r\n\r\nThe fact that a state collision on AEGIS-128L has a complexity above 2^128 but below 2^256 isn't new. This is why in the security guarantees section, we only guarantee 128 bit security regardless of the variant. \r\n\r\nWhat's new is the fact that we *could* claim 256 bit security against forgeries for AEGIS-256.\r\n\r\nI don't know if we should, or if we should remain conservative as this has little practical implications and further analysis may invalidate that claim.\r\n\r\nRegardless, that's one more paper we can cite.\r\n\r\n<img width=\"1315\" alt=\"Screenshot 2024-09-19 at 01 12 18\" src=\"https://github.com/user-attachments/assets/4870d50a-59a6-48b6-a137-e7704ad338f2\">\r\n<img width=\"995\" alt=\"Screenshot 2024-09-19 at 01 14 04\" src=\"https://github.com/user-attachments/assets/fb08dd04-ae38-4e78-a7a7-f5e13d86284a\">\r\n",
       "createdAt": "2024-09-18T23:30:03Z",
-      "updatedAt": "2024-09-18T23:30:03Z",
-      "closedAt": null,
+      "updatedAt": "2024-09-19T19:45:24Z",
+      "closedAt": "2024-09-19T19:45:24Z",
       "comments": []
     }
   ],
@@ -5003,6 +5003,185 @@
           "createdAt": "2024-09-03T18:00:09Z",
           "updatedAt": "2024-09-03T18:00:09Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "id": "PR_kwDOKeDGj858As4g",
+      "title": "Cite paper on bitwise analysis",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/48",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #47",
+      "createdAt": "2024-09-19T09:56:13Z",
+      "updatedAt": "2024-09-19T19:45:26Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "55b91329f7987e20724727c959a0a4b0a1460dd2",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "ssi24",
+      "headRefOid": "07ff81e11c858987276af2a74ddd26e219a47ba3",
+      "closedAt": "2024-09-19T19:45:23Z",
+      "mergedAt": "2024-09-19T19:45:23Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "dc1cec12bcd5efdc01eeebb68bf68a8521be0a49"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Shall we also update their affiliations in other cited papers?",
+          "createdAt": "2024-09-19T16:41:43Z",
+          "updatedAt": "2024-09-19T16:41:43Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Shall we also update their affiliations in other cited papers?\r\n\r\nI think we should just copy each paper since it's correct at the time of publication. It'll get confusing otherwise.",
+          "createdAt": "2024-09-19T16:52:36Z",
+          "updatedAt": "2024-09-19T16:52:36Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86KDE3S",
+          "commit": {
+            "abbreviatedOid": "554f8f0"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Two author changes. Otherwise, looks good and happy with the `at least 128-bit security` claim. Probably safest for now.",
+          "createdAt": "2024-09-19T16:30:34Z",
+          "updatedAt": "2024-09-19T16:33:34Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Should be `Mitsubishi Electric Corporation`.",
+              "createdAt": "2024-09-19T16:30:34Z",
+              "updatedAt": "2024-09-19T16:33:34Z"
+            },
+            {
+              "originalPosition": 21,
+              "body": "`National Institute of Information and Communications Technology` isn't mentioned in this paper so not sure if he's still there.",
+              "createdAt": "2024-09-19T16:31:23Z",
+              "updatedAt": "2024-09-19T16:33:34Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDOKeDGj858PHng",
+      "title": "Improve the structure of test vectors",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/49",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As recommended by the RFC editor:\r\n\r\n- Label test vectors sections as \"test-vectors\"\r\n- Add a link to the JSON version\r\n\r\nSee https://mailarchive.ietf.org/arch/msg/cfrg/sWa_WkzOW5IPvQ71Hmz21HsBNVY/",
+      "createdAt": "2024-09-21T08:52:13Z",
+      "updatedAt": "2024-09-21T11:58:20Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "dc1cec12bcd5efdc01eeebb68bf68a8521be0a49",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "tv",
+      "headRefOid": "c2fa1836825825567a8741ac10ecc5669fd1e7d5",
+      "closedAt": "2024-09-21T11:58:16Z",
+      "mergedAt": "2024-09-21T11:58:16Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "ad695412dfe29dbba4c57a410fd8873de125daad"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86KQ-vy",
+          "commit": {
+            "abbreviatedOid": "caed669"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2024-09-21T10:17:37Z",
+          "updatedAt": "2024-09-21T10:20:39Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "`[TEST-VECTORS]` should be `{{TEST-VECTORS}}` I believe.\r\n\r\nI also wonder if the second sentence can be phrased better, but I see that you've taken it from RFC 9605.",
+              "createdAt": "2024-09-21T10:17:37Z",
+              "updatedAt": "2024-09-21T10:20:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86KQ_A3",
+          "commit": {
+            "abbreviatedOid": "caed669"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-21T10:28:18Z",
+          "updatedAt": "2024-09-21T10:28:18Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "I did. But it can still be phrased better. What would you suggest?",
+              "createdAt": "2024-09-21T10:28:18Z",
+              "updatedAt": "2024-09-21T10:28:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86KRAOd",
+          "commit": {
+            "abbreviatedOid": "d34850b"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-21T11:11:06Z",
+          "updatedAt": "2024-09-21T11:11:06Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "How about \"In this format, byte strings are represented as JSON strings containing their hexadecimal encoding.\" ?",
+              "createdAt": "2024-09-21T11:11:06Z",
+              "updatedAt": "2024-09-21T11:11:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86KRCIe",
+          "commit": {
+            "abbreviatedOid": "d34850b"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-21T11:19:43Z",
+          "updatedAt": "2024-09-21T11:19:43Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "> How about \"In this format, byte strings are represented as JSON strings containing their hexadecimal encoding.\" ?\r\n\r\nYeah that's better.",
+              "createdAt": "2024-09-21T11:19:43Z",
+              "updatedAt": "2024-09-21T11:19:43Z"
+            }
+          ]
         }
       ]
     }
