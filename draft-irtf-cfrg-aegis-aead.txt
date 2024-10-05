@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 27 March 2025                            Individual Contributor
-                                                       23 September 2024
+Expires: 8 April 2025                             Individual Contributor
+                                                          5 October 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 March 2025.
+   This Internet-Draft will expire on 8 April 2025.
 
 Copyright Notice
 
@@ -217,10 +217,10 @@ Table of Contents
    Unlike most other AES-based AEAD constructions, leaking a state does
    not leak the key or previous states.
 
-   Finally, an AEGIS key is not required after the setup phase, and
-   there is no key schedule.  Thus, ephemeral keys can be erased from
-   memory before any data has been encrypted or decrypted, mitigating
-   cold boot attacks.
+   Finally, an AEGIS key is not required after the initialization
+   function, and there is no key schedule.  Thus, ephemeral keys can be
+   erased from memory before any data has been encrypted or decrypted,
+   mitigating cold boot attacks.
 
    Note that an earlier version of Hongjun Wu and Bart Preneel’s paper
    introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting
