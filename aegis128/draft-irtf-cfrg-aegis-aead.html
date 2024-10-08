@@ -1463,25 +1463,26 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR).<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The variants are as follows:<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which were chosen for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span> <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span> <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span> <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>.
+Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Accordingly, this document specifies the following variants:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-3.1">
-          <p id="section-1-3.1.1">AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-1-4.1">
+          <p id="section-1-4.1.1">AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-1-3.2">
-          <p id="section-1-3.2.1">AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-1-4.2">
+          <p id="section-1-4.2.1">AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-1-3.3">
-          <p id="section-1-3.3.1">AEGIS-128X, which is a mode based on AEGIS-128L, specialized for CPUs with large vector registers and vector AES instructions.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-1-4.3">
+          <p id="section-1-4.3.1">AEGIS-128X, which is a mode based on AEGIS-128L, specialized for CPUs with large vector registers and vector AES instructions.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-1-3.4">
-          <p id="section-1-3.4.1">AEGIS-256X, which is a mode based on AEGIS-256, specialized for CPUs with large vector registers and vector AES instructions.<a href="#section-1-3.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-1-4.4">
+          <p id="section-1-4.4.1">AEGIS-256X, which is a mode based on AEGIS-256, specialized for CPUs with large vector registers and vector AES instructions.<a href="#section-1-4.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-4">These are all inverse-free and constructed from the AES encryption round function <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has improved performance alongside a better security margin <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span> <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span> <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span> <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support for parallelizable AES block encryption <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>. Similarly, software implementations can also be faster, although to a lesser extent.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-5">All variants are inverse-free and constructed from the AES encryption round function <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM on CPUs with AES instructions. Similarly, software implementations not using AES instructions can also be faster, although to a lesser extent.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <p id="section-1-7">Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256 and AEGIS-256X. AEGIS-128L and AEGIS-128X also allow for more messages to be safely encrypted when using random nonces.<a href="#section-1-7" class="pilcrow">¶</a></p>
 <p id="section-1-8">With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) <span>[<a href="#LGR21" class="cite xref">LGR21</a>]</span>. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.<a href="#section-1-8" class="pilcrow">¶</a></p>
 <p id="section-1-9">In AEGIS, finding distinct (key, nonce) pairs that successfully decrypt a given (associated data, ciphertext, authentication tag) tuple is believed to have a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical.<a href="#section-1-9" class="pilcrow">¶</a></p>
@@ -3492,7 +3493,7 @@ return stream
 <dd class="break"></dd>
 <dt id="TEST-VECTORS">[TEST-VECTORS]</dt>
         <dd>
-<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit ad695412</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/ad695412/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/ad695412/test-vectors</a>&gt;</span>. </dd>
+<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 81fb2602</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/81fb2602/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/81fb2602/test-vectors</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="VV18">[VV18]</dt>
       <dd>
@@ -3547,14 +3548,14 @@ S6   : 1639b56ea322c88568a176585bc915de
 S7   : 640818ffb57dc0fbc2e72ae93457e39a
 
 M0   : 033e6975b94816879e42917650955aa0
-M1   : 033e6975b94816879e42917650955aa0
+M1   : fcc1968a46b7e97861bd6e89af6aa55f
 
 After Update:
 S0   : 596ab773e4433ca0127c73f60536769d
 S1   : 790394041a3d26ab697bde865014652d
 S2   : 38cf49e4b65248acd533041b64dd0611
 S3   : 16d8e58748f437bfff1797f780337cee
-S4   : 69761320f7dd738b281cc9f335ac2f5a
+S4   : 9689ecdf08228c74d7e3360cca53d0a5
 S5   : a21746bb193a569e331e1aa985d0d729
 S6   : 09d714e6fcf9177a8ed1cde7e3d259a6
 S7   : 61279ba73167f0ab76f0a11bf203bdff
