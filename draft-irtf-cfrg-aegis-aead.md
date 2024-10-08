@@ -305,14 +305,14 @@ The document is a product of the Crypto Forum Research Group (CFRG). It is not a
 
 This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen as additional finalists for high-performance applications in the Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR).
 
-All variants of AEGIS are inverse-free and constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}.
-
-This document specifies:
+The variants are as follows:
 
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.
 - AEGIS-128X, which is a mode based on AEGIS-128L, specialized for CPUs with large vector registers and vector AES instructions.
 - AEGIS-256X, which is a mode based on AEGIS-256, specialized for CPUs with large vector registers and vector AES instructions.
+
+These are all inverse-free and constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}.
 
 Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has improved performance alongside a better security margin {{ENP19}} {{JLD21}} {{LIMS21}} {{STSI23}}.
 
