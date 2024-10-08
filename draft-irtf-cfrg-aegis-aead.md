@@ -272,8 +272,8 @@ informative:
 
   TEST-VECTORS:
     title: "AEGIS Test Vectors"
-    refcontent: commit ad695412
-    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/ad695412/test-vectors
+    refcontent: commit 81fb2602
+    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/81fb2602/test-vectors
     date: 2024
 
   VV18:
@@ -316,7 +316,7 @@ These are all inverse-free and constructed from the AES encryption round functio
 
 Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has improved performance alongside a better security margin {{ENP19}} {{JLD21}} {{LIMS21}} {{STSI23}}.
 
-The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support for parallelizable AES block encryption {{AEGIS}}. Similarly, software implementations can also be faster, although to a lesser extent.
+The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM on CPUs with AES instructions. Similarly, software implementations not using AES instructions can also be faster, although to a lesser extent.
 
 Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256 and AEGIS-256X. AEGIS-128L and AEGIS-128X also allow for more messages to be safely encrypted when using random nonces.
 
@@ -1737,14 +1737,14 @@ S6   : 1639b56ea322c88568a176585bc915de
 S7   : 640818ffb57dc0fbc2e72ae93457e39a
 
 M0   : 033e6975b94816879e42917650955aa0
-M1   : 033e6975b94816879e42917650955aa0
+M1   : fcc1968a46b7e97861bd6e89af6aa55f
 
 After Update:
 S0   : 596ab773e4433ca0127c73f60536769d
 S1   : 790394041a3d26ab697bde865014652d
 S2   : 38cf49e4b65248acd533041b64dd0611
 S3   : 16d8e58748f437bfff1797f780337cee
-S4   : 69761320f7dd738b281cc9f335ac2f5a
+S4   : 9689ecdf08228c74d7e3360cca53d0a5
 S5   : a21746bb193a569e331e1aa985d0d729
 S6   : 09d714e6fcf9177a8ed1cde7e3d259a6
 S7   : 61279ba73167f0ab76f0a11bf203bdff
