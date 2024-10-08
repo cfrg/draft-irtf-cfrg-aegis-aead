@@ -164,8 +164,9 @@ Table of Contents
 
    This document describes the AEGIS family of authenticated encryption
    with associated data (AEAD) algorithms [AEGIS], which were chosen for
-   high-performance applications in the Competition for Authenticated
-   Encryption: Security, Applicability, and Robustness (CAESAR).
+   high-performance applications in the CAESAR (Competition for
+   Authenticated Encryption: Security, Applicability, and Robustness)
+   competition.
 
    Among the finalists, AEGIS-128 was chosen as the winner for this
    category.  However, AEGIS-128L, another finalist, offers enhanced
