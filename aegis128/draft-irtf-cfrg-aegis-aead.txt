@@ -168,10 +168,7 @@ Table of Contents
    Competition for Authenticated Encryption: Security, Applicability,
    and Robustness (CAESAR).
 
-   All variants of AEGIS are inverse-free and constructed from the AES
-   encryption round function [FIPS-AES].
-
-   This document specifies:
+   The variants are as follows:
 
    *  AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit
       state, a 128- or 256-bit authentication tag, and processes 256-bit
@@ -186,6 +183,9 @@ Table of Contents
 
    *  AEGIS-256X, which is a mode based on AEGIS-256, specialized for
       CPUs with large vector registers and vector AES instructions.
+
+   These are all inverse-free and constructed from the AES encryption
+   round function [FIPS-AES].
 
    Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-
    128L has improved performance alongside a better security margin
