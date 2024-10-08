@@ -314,7 +314,7 @@ This document specifies:
 - AEGIS-128X, which is a mode based on AEGIS-128L, specialized for CPUs with large vector registers and vector AES instructions.
 - AEGIS-256X, which is a mode based on AEGIS-256, specialized for CPUs with large vector registers and vector AES instructions.
 
-Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has improved performance alonside a better security margin {{ENP19}} {{JLD21}} {{LIMS21}} {{STSI23}}.
+Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-128L has improved performance alongside a better security margin {{ENP19}} {{JLD21}} {{LIMS21}} {{STSI23}}.
 
 The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support for parallelizable AES block encryption {{AEGIS}}. Similarly, software implementations can also be faster, although to a lesser extent.
 
