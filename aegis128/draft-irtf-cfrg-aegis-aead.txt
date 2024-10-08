@@ -188,7 +188,7 @@ Table of Contents
       CPUs with large vector registers and vector AES instructions.
 
    Whilst AEGIS-128 was selected as a winner for this use case, AEGIS-
-   128L has improved performance alonside a better security margin
+   128L has improved performance alongside a better security margin
    [ENP19] [JLD21] [LIMS21] [STSI23].
 
    The AEGIS cipher family offers performance that significantly exceeds
