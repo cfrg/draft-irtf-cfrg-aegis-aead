@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 8 April 2025                             Individual Contributor
-                                                          5 October 2024
+Expires: 11 April 2025                            Individual Contributor
+                                                          8 October 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2025.
+   This Internet-Draft will expire on 11 April 2025.
 
 Copyright Notice
 
@@ -1916,14 +1916,14 @@ A.2.1.  Update Test Vector
    S7   : 640818ffb57dc0fbc2e72ae93457e39a
 
    M0   : 033e6975b94816879e42917650955aa0
-   M1   : 033e6975b94816879e42917650955aa0
+   M1   : fcc1968a46b7e97861bd6e89af6aa55f
 
    After Update:
    S0   : 596ab773e4433ca0127c73f60536769d
    S1   : 790394041a3d26ab697bde865014652d
    S2   : 38cf49e4b65248acd533041b64dd0611
    S3   : 16d8e58748f437bfff1797f780337cee
-   S4   : 69761320f7dd738b281cc9f335ac2f5a
+   S4   : 9689ecdf08228c74d7e3360cca53d0a5
    S5   : a21746bb193a569e331e1aa985d0d729
    S6   : 09d714e6fcf9177a8ed1cde7e3d259a6
    S7   : 61279ba73167f0ab76f0a11bf203bdff
