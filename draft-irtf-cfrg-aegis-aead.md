@@ -1679,6 +1679,9 @@ AEGIS-128X and AEGIS-256X share the same security properties and requirements as
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts. This resilience extends to quantum adversaries in the Q1 model, wherein quantum attacks do not confer any practical advantage for decrypting previously recorded ciphertexts or achieving key recovery.
 
+This document extends the original specification by introducing optional support for 256-bit authentication tags, which are constructed similarly to the 128-bit tags.
+As shown in {{SSI24}}, with 256-bit tags, all AEGIS variants achieve more than 128-bit forgery security by differential attacks.
+
 Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
 
 # IANA Considerations
