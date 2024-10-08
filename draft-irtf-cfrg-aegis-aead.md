@@ -2559,3 +2559,4 @@ We would like to thank the following individuals for their contributions:
 - Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector and Daniel Bleichenbacher for many helpful suggestions.
 - John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
 - Bart Mennink and Charlotte Lefevre as well as Takanori Isobe and Mostafizar Rahman for investigating the commitment security of the schemes specified in this document.
+- Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Panel.
