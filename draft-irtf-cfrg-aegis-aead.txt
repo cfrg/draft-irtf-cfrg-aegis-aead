@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 11 April 2025                            Individual Contributor
-                                                          8 October 2024
+Expires: 12 April 2025                            Individual Contributor
+                                                          9 October 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 April 2025.
+   This Internet-Draft will expire on 12 April 2025.
 
 Copyright Notice
 
@@ -2684,6 +2684,9 @@ Acknowledgments
    *  Bart Mennink and Charlotte Lefevre as well as Takanori Isobe and
       Mostafizar Rahman for investigating the commitment security of the
       schemes specified in this document.
+
+   *  Scott Fluhrer for his review of the draft as a member of the CFRG
+      Crypto Panel.
 
 Authors' Addresses
 
