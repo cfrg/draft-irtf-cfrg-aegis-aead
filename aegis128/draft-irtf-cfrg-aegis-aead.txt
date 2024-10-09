@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 11 April 2025                            Individual Contributor
-                                                          8 October 2024
+Expires: 12 April 2025                            Individual Contributor
+                                                          9 October 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 April 2025.
+   This Internet-Draft will expire on 12 April 2025.
 
 Copyright Notice
 
@@ -174,7 +174,7 @@ Table of Contents
    [STSI23].  Additionally, AEGIS-256, which also reached the final
    round, provides 256-bit security and supports higher usage limits.
 
-   Accordingly, this document specifies the following variants:
+   Therefore, this document specifies the following variants:
 
    *  AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit
       state, a 128- or 256-bit authentication tag, and processes 256-bit
