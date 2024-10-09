@@ -308,7 +308,7 @@ This document describes the AEGIS family of authenticated encryption with associ
 Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP19}} {{JLD21}} {{LIMS21}} {{STSI23}}.
 Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.
 
-Accordingly, this document specifies the following variants:
+Therefore, this document specifies the following variants:
 
 - AEGIS-128L, which has a 128-bit key, a 128-bit nonce, a 1024-bit state, a 128- or 256-bit authentication tag, and processes 256-bit input blocks.
 - AEGIS-256, which has a 256-bit key, a 256-bit nonce, a 768-bit state, a 128- or 256-bit authentication tag, and processes 128-bit input blocks.
