@@ -1747,6 +1747,12 @@ return tag
    advantage in decrypting previously recorded ciphertexts or in
    recovering the encryption key.
 
+   This document extends the original specification by introducing
+   optional support for 256-bit authentication tags, which are
+   constructed similarly to the 128-bit tags.  As shown in [SSI24], with
+   256-bit tags, all AEGIS variants achieve more than 128-bit security
+   against forgery by differential attacks.
+
    Security analyses of AEGIS can be found in [AEGIS], [M14], [FLLW17],
    [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], [AIKRS24], and
    [SSI24].
