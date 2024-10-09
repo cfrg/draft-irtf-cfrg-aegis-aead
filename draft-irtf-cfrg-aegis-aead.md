@@ -1678,6 +1678,7 @@ AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without th
 AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same {{D23}}.
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.
+
 This resilience extends to quantum adversaries operating within the Q1 model, where the attacker has access to a quantum computer but is restricted to classical (non-quantum) communications with the systems under attack. In this model, quantum attacks offer no practical advantage in decrypting previously recorded ciphertexts or in recovering the encryption key.
 
 Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
