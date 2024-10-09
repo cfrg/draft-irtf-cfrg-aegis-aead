@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 11 April 2025                            Individual Contributor
-                                                          8 October 2024
+Expires: 12 April 2025                            Individual Contributor
+                                                          9 October 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 April 2025.
+   This Internet-Draft will expire on 12 April 2025.
 
 Copyright Notice
 
@@ -1731,13 +1731,14 @@ return tag
    [D23].
 
    AEGIS is considered secure against guess-and-determine attacks aimed
-   at recovering the state from observed ciphertexts.  This resilience
-   extends to quantum adversaries operating within the Q1 model, where
-   the attacker has access to a quantum computer but is restricted to
-   classical (non-quantum) communications with the systems under attack.
-   In this model, quantum attacks offer no practical advantage in
-   decrypting previously recorded ciphertexts or in recovering the
-   encryption key.
+   at recovering the state from observed ciphertexts.
+
+   This resilience extends to quantum adversaries operating within the
+   Q1 model, where the attacker has access to a quantum computer but is
+   restricted to classical (non-quantum) communications with the systems
+   under attack.  In this model, quantum attacks offer no practical
+   advantage in decrypting previously recorded ciphertexts or in
+   recovering the encryption key.
 
    Security analyses of AEGIS can be found in [AEGIS], [M14], [FLLW17],
    [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], [AIKRS24], and
