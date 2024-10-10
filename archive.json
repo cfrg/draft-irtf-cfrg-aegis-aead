@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-08T00:42:09.840348+00:00",
+  "timestamp": "2024-10-10T00:42:11.371944+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -5297,6 +5297,574 @@
           "body": "",
           "createdAt": "2024-10-05T10:35:17Z",
           "updatedAt": "2024-10-05T10:35:17Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "PR_kwDOKeDGj859-Umy",
+      "title": "Update the 128L Update test vector so that M0 != M1",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/52",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Part of #50 ",
+      "createdAt": "2024-10-08T16:22:28Z",
+      "updatedAt": "2024-10-08T17:34:46Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "15249ce7ad37448b87bd3fd6e57feb0241cfd2ef",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "tv128",
+      "headRefOid": "0f6c31fe2e12372413750b653ceabc386e223e22",
+      "closedAt": "2024-10-08T17:34:46Z",
+      "mergedAt": "2024-10-08T17:34:45Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "81fb260200568cdb0cdf0ebebf4776606fd64fbb"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86MYGg4",
+          "commit": {
+            "abbreviatedOid": "0f6c31f"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-08T17:34:22Z",
+          "updatedAt": "2024-10-08T17:34:22Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "id": "PR_kwDOKeDGj859-clh",
+      "title": "Add more references to justify the 128L security margin over 128",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/53",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also remove the mention that AEGIS-256 has a 256-bit key.\r\n\r\nThis is already documented right after, in the list of specified variants.\r\n\r\nAnd move the 128L vs 128 justification after the list of variants, for clarity.",
+      "createdAt": "2024-10-08T16:43:14Z",
+      "updatedAt": "2024-10-09T17:43:55Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "4e8885ddad6a94ade57ab7778b3eaf084e21a49b",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "aegis128",
+      "headRefOid": "d47b660791a13c8b6bd204ce0614cf6a9c771961",
+      "closedAt": "2024-10-09T17:43:50Z",
+      "mergedAt": "2024-10-09T17:43:49Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "2035a59172ab87c3db79e7bdf73f595c1d9dfce9"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Part of #50 ",
+          "createdAt": "2024-10-08T16:43:22Z",
+          "updatedAt": "2024-10-08T16:43:22Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86MYImW",
+          "commit": {
+            "abbreviatedOid": "1c4a8a0"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2024-10-08T17:39:03Z",
+          "updatedAt": "2024-10-08T17:40:06Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "`alonside` =>`alongside`",
+              "createdAt": "2024-10-08T17:39:03Z",
+              "updatedAt": "2024-10-08T17:40:06Z"
+            },
+            {
+              "originalPosition": 7,
+              "body": "Should we move this (line 308) under the bullet points?",
+              "createdAt": "2024-10-08T17:39:53Z",
+              "updatedAt": "2024-10-08T17:40:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MYLvu",
+          "commit": {
+            "abbreviatedOid": "1c4a8a0"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-08T17:45:57Z",
+          "updatedAt": "2024-10-08T17:45:57Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "That would be better, but then it gets a bit redundant:\r\n\r\n    This document describes...\r\n    This document specifies:\r\n\r\nMaybe we could move it after \"Whilst AEGIS-128 was selected as a winner for this use case\", rather than right after the bullet list?",
+              "createdAt": "2024-10-08T17:45:57Z",
+              "updatedAt": "2024-10-08T17:45:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MYcTs",
+          "commit": {
+            "abbreviatedOid": "1c4a8a0"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-08T18:20:08Z",
+          "updatedAt": "2024-10-08T18:20:08Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "> That would be better, but then it gets a bit redundant:\r\n\r\nCould we change it to `The variants are as follows:` or similar?\r\n\r\n> Maybe we could move it after \"Whilst AEGIS-128 was selected as a winner for this use case\", rather than right after the bullet list?\r\n\r\nIf you think that would be better. An alternative would be with the above rewording, you could also reword `All variants of AEGIS` to `These are all inverse-free and constructed from the AES encryption round function`. I think it'll work either way around.",
+              "createdAt": "2024-10-08T18:20:08Z",
+              "updatedAt": "2024-10-08T18:20:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MZt4S",
+          "commit": {
+            "abbreviatedOid": "1c4a8a0"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-08T21:16:09Z",
+          "updatedAt": "2024-10-08T21:16:09Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "What do you think about the current version?",
+              "createdAt": "2024-10-08T21:16:09Z",
+              "updatedAt": "2024-10-08T21:16:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiRpK",
+          "commit": {
+            "abbreviatedOid": "1c4a8a0"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:38:34Z",
+          "updatedAt": "2024-10-09T17:38:34Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "That's good. I'd probably change `accordingly` to `therefore` because some of the previous sentences started with words beginning with a. Up to you though. I'm just being nitpicky.",
+              "createdAt": "2024-10-09T17:38:34Z",
+              "updatedAt": "2024-10-09T17:38:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiS08",
+          "commit": {
+            "abbreviatedOid": "1c4a8a0"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:41:05Z",
+          "updatedAt": "2024-10-09T17:41:05Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Too many A's indeed!\r\n\r\nChanged!",
+              "createdAt": "2024-10-09T17:41:05Z",
+              "updatedAt": "2024-10-09T17:41:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiTpy",
+          "commit": {
+            "abbreviatedOid": "d47b660"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-09T17:42:59Z",
+          "updatedAt": "2024-10-09T17:42:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "id": "PR_kwDOKeDGj859-hmB",
+      "title": "Replace \"hardware support\" with \"CPUs with AES instructions\"",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/54",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also remove the reference to the original AEGIS paper as a source for performance measurements.\r\n\r\nThis paper is getting old and doesn't reflect the performance of AEGIS and AES-GCM on modern CPUs. It also doesn't include parallel variants.\r\n\r\nPart of #50 ",
+      "createdAt": "2024-10-08T16:56:36Z",
+      "updatedAt": "2024-10-09T18:15:35Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "15249ce7ad37448b87bd3fd6e57feb0241cfd2ef",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "aes-instructions",
+      "headRefOid": "1191438fd07569d8ff1f1cabb0c6a54cfa8b72d8",
+      "closedAt": "2024-10-08T18:38:25Z",
+      "mergedAt": "2024-10-08T18:38:25Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "4e8885ddad6a94ade57ab7778b3eaf084e21a49b"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Fair enough. LGTM, although shouldn't we have an alternate reference like D23?\r\n\r\nI'm not sure. 10 years from now, benchmarks conducted on an AMD Zen 4 CPU are going to feel old and irrelevant.\r\n\r\n",
+          "createdAt": "2024-10-08T18:17:55Z",
+          "updatedAt": "2024-10-08T18:17:55Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Even the benchmark from D23 is outdated, because since then, OpenSSL got an AES-GCM implementation specialized for AVX-512.  ",
+          "createdAt": "2024-10-08T18:20:34Z",
+          "updatedAt": "2024-10-08T18:20:34Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Ok good point. Happy to leave it, and we can revisit it if someone mentions it. At least some of the referenced papers have benchmarks.",
+          "createdAt": "2024-10-08T18:24:49Z",
+          "updatedAt": "2024-10-08T18:24:49Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86MYF7d",
+          "commit": {
+            "abbreviatedOid": "1191438"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Fair enough. LGTM, although shouldn't we have an alternate reference like D23?",
+          "createdAt": "2024-10-08T17:33:04Z",
+          "updatedAt": "2024-10-08T17:33:04Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "id": "PR_kwDOKeDGj85-AFwE",
+      "title": "Add a blurb about the addition of 256-bit tags",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/55",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Part of #50 ",
+      "createdAt": "2024-10-08T21:36:39Z",
+      "updatedAt": "2024-10-09T18:03:18Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "4e8885ddad6a94ade57ab7778b3eaf084e21a49b",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "256bit-tag",
+      "headRefOid": "627ead5f4bd9cecf6727b24b977be89b7629b3bc",
+      "closedAt": "2024-10-09T18:03:13Z",
+      "mergedAt": "2024-10-09T18:03:13Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "750351fe710e4a8c8164fe0560c43ff7a3af6fbf"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86MiWsv",
+          "commit": {
+            "abbreviatedOid": "2a9a8ed"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:49:40Z",
+          "updatedAt": "2024-10-09T17:49:40Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Is this meant to be on a new line? Please ignore this question if the same answer applies to the other PR.\r\n\r\nAlso `forgery security by differential attacks` sounds a bit awkward to me. Could we rephrase this? Is `forgery security` a common term?",
+              "createdAt": "2024-10-09T17:49:40Z",
+              "updatedAt": "2024-10-09T17:49:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiZzj",
+          "commit": {
+            "abbreviatedOid": "2a9a8ed"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:56:34Z",
+          "updatedAt": "2024-10-09T17:56:34Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Ok my bad. I've signed in to view the paper and it says that so let's leave it. I've just normally heard 'security against forgery'.",
+              "createdAt": "2024-10-09T17:56:34Z",
+              "updatedAt": "2024-10-09T17:56:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiZ8g",
+          "commit": {
+            "abbreviatedOid": "2a9a8ed"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-09T17:56:52Z",
+          "updatedAt": "2024-10-09T17:56:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MibE9",
+          "commit": {
+            "abbreviatedOid": "2a9a8ed"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:59:25Z",
+          "updatedAt": "2024-10-09T17:59:25Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "We can replace `forgery security` by `security against forgery`. It feels indeed more natural.",
+              "createdAt": "2024-10-09T17:59:25Z",
+              "updatedAt": "2024-10-09T17:59:25Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOKeDGj85-AHU2",
+      "title": "Explain what the Q1 model is",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/56",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Part of #50 ",
+      "createdAt": "2024-10-08T21:42:24Z",
+      "updatedAt": "2024-10-09T18:00:43Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "4e8885ddad6a94ade57ab7778b3eaf084e21a49b",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "q1",
+      "headRefOid": "77aaa4a67ee3e2949a96315227dd39e83f128dd7",
+      "closedAt": "2024-10-09T18:00:40Z",
+      "mergedAt": "2024-10-09T18:00:40Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "19324a6e386b10cb92ba6974f5c37b2f1d90ec16"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86MiUnj",
+          "commit": {
+            "abbreviatedOid": "e020976"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:45:06Z",
+          "updatedAt": "2024-10-09T17:45:06Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Is this meant to be on a new line? Otherwise, LGTM.",
+              "createdAt": "2024-10-09T17:45:06Z",
+              "updatedAt": "2024-10-09T17:45:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiV0a",
+          "commit": {
+            "abbreviatedOid": "e020976"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:47:40Z",
+          "updatedAt": "2024-10-09T17:47:41Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "This is just for clarity in the Markdown file. In generated files, there will be no line breaks.",
+              "createdAt": "2024-10-09T17:47:40Z",
+              "updatedAt": "2024-10-09T17:47:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiWhp",
+          "commit": {
+            "abbreviatedOid": "e020976"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:49:17Z",
+          "updatedAt": "2024-10-09T17:49:17Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Do you suggest  there should be a new line? The paragraph is a bit long. OTOH, this is all directly related.",
+              "createdAt": "2024-10-09T17:49:17Z",
+              "updatedAt": "2024-10-09T17:49:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiXm1",
+          "commit": {
+            "abbreviatedOid": "e020976"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:51:43Z",
+          "updatedAt": "2024-10-09T17:51:43Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "> Do you suggest there should be a new line? The paragraph is a bit long. OTOH, this is all directly related.\r\n\r\nI think you could get away with it either way.",
+              "createdAt": "2024-10-09T17:51:43Z",
+              "updatedAt": "2024-10-09T17:51:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiZUD",
+          "commit": {
+            "abbreviatedOid": "e020976"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-09T17:55:28Z",
+          "updatedAt": "2024-10-09T17:55:28Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Let's add a new line, then, if only for the text version of the document.",
+              "createdAt": "2024-10-09T17:55:28Z",
+              "updatedAt": "2024-10-09T17:55:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86MiaYR",
+          "commit": {
+            "abbreviatedOid": "77aaa4a"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-09T17:57:50Z",
+          "updatedAt": "2024-10-09T17:57:50Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "id": "PR_kwDOKeDGj85-ANm8",
+      "title": "Add Scott Fluhrer to the acknowledgements",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/57",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-08T22:07:08Z",
+      "updatedAt": "2024-10-09T17:40:01Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "d507a8f8159c8491f56dbfdea01472f1ca92e673",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "scott",
+      "headRefOid": "ee6029b5677a6cf610c216b484b132820fcf5307",
+      "closedAt": "2024-10-09T17:40:01Z",
+      "mergedAt": "2024-10-09T17:40:01Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "3c37820a3fa27f66666fbde9806f420582902fc4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86MiSOL",
+          "commit": {
+            "abbreviatedOid": "ee6029b"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-09T17:39:51Z",
+          "updatedAt": "2024-10-09T17:39:51Z",
           "comments": []
         }
       ]
