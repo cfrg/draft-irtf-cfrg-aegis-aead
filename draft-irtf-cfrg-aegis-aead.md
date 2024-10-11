@@ -329,7 +329,7 @@ Unlike most other AES-based AEAD constructions, leaking a state does not leak th
 
 Finally, an AEGIS key is not required after the initialization function, and there is no key schedule. Thus, ephemeral keys can be erased from memory before any data has been encrypted or decrypted, mitigating cold boot attacks.
 
-Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in the `Finalize()` function. We follow the specification of {{AEGIS}}, which can be found in the References section of this document.
+Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of state updates in the `Finalize()` function. We follow the specification of {{AEGIS}}, which can be found in the References section of this document.
 
 # Conventions and Definitions
 
@@ -2564,7 +2564,7 @@ tag256: ba3168ecd7f7120c5e204a7e0d616e39
 
 The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart Preneel.
 
-The round function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC, which partly motivated the design of the AEGIS MAC.
+The state update function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC, which partly motivated the design of the AEGIS MAC.
 
 We would like to thank the following individuals for their contributions:
 
