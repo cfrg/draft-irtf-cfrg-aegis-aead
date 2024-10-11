@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 12 April 2025                            Individual Contributor
-                                                          9 October 2024
+Expires: 14 April 2025                            Individual Contributor
+                                                         11 October 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 April 2025.
+   This Internet-Draft will expire on 14 April 2025.
 
 Copyright Notice
 
@@ -232,9 +232,9 @@ Table of Contents
    Note that an earlier version of Hongjun Wu and Bart Preneel’s paper
    introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting
    differences with regards to the computation of the authentication tag
-   and the number of rounds in the Finalize() function.  We follow the
-   specification of [AEGIS], which can be found in the References
-   section of this document.
+   and the number of state updates in the Finalize() function.  We
+   follow the specification of [AEGIS], which can be found in the
+   References section of this document.
 
 2.  Conventions and Definitions
 
@@ -2683,9 +2683,9 @@ Acknowledgments
    The AEGIS authenticated encryption algorithm was invented by Hongjun
    Wu and Bart Preneel.
 
-   The round function leverages the AES permutation invented by Joan
-   Daemen and Vincent Rijmen.  They also authored the Pelican MAC, which
-   partly motivated the design of the AEGIS MAC.
+   The state update function leverages the AES permutation invented by
+   Joan Daemen and Vincent Rijmen.  They also authored the Pelican MAC,
+   which partly motivated the design of the AEGIS MAC.
 
    We would like to thank the following individuals for their
    contributions:

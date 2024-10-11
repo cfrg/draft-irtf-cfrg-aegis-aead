@@ -1030,7 +1030,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 12 April 2025</td>
+<td class="center">Expires 14 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1043,12 +1043,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-09" class="published">9 October 2024</time>
+<time datetime="2024-10-11" class="published">11 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-12">12 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-14">14 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1095,7 +1095,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1488,7 +1488,7 @@ Additionally, AEGIS-256, which also reached the final round, provides 256-bit se
 <p id="section-1-9">In AEGIS, finding distinct (key, nonce) pairs that successfully decrypt a given (associated data, ciphertext, authentication tag) tuple is believed to have a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical.<a href="#section-1-9" class="pilcrow">¶</a></p>
 <p id="section-1-10">Unlike most other AES-based AEAD constructions, leaking a state does not leak the key or previous states.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <p id="section-1-11">Finally, an AEGIS key is not required after the initialization function, and there is no key schedule. Thus, ephemeral keys can be erased from memory before any data has been encrypted or decrypted, mitigating cold boot attacks.<a href="#section-1-11" class="pilcrow">¶</a></p>
-<p id="section-1-12">Note that an earlier version of Hongjun Wu and Bart Preneel’s paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of rounds in the <code>Finalize()</code> function. We follow the specification of <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which can be found in the References section of this document.<a href="#section-1-12" class="pilcrow">¶</a></p>
+<p id="section-1-12">Note that an earlier version of Hongjun Wu and Bart Preneel’s paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of state updates in the <code>Finalize()</code> function. We follow the specification of <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which can be found in the References section of this document.<a href="#section-1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -4582,7 +4582,7 @@ tag256: ba3168ecd7f7120c5e204a7e0d616e39
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-B-1">The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart Preneel.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">The round function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC, which partly motivated the design of the AEGIS MAC.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">The state update function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC, which partly motivated the design of the AEGIS MAC.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <p id="appendix-B-3">We would like to thank the following individuals for their contributions:<a href="#appendix-B-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-4.1">
