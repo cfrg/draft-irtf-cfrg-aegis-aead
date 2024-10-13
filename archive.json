@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-10T00:42:11.371944+00:00",
+  "timestamp": "2024-10-13T00:45:55.280482+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -587,15 +587,15 @@
       "id": "I_kwDOKeDGj86Y9HN9",
       "title": "Addressing Scott Fluhrer's Review",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/50",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The full version can be found [here](https://mailarchive.ietf.org/arch/msg/cfrg/ikGi2zb6CmWyQIVhuo8QR_GrOsA/).\r\n\r\n> You state that AEGIS-128L has \u201ca better security margin\u201d than AEGIS-128.  Citation?  Against what attack(s)?  A bigger state doesn\u2019t necessarily translate into a bigger security margin, and AEGIS-128 does 5 AES rounds per plaintext block, while AEGIS-128L does 4 \u2013 does the decrease in the number of rounds decrease the security margin (I don\u2019t know, but it\u2019s certainly not obvious either way)\r\n\r\nThere's already a citation in that sentence. From Ctrl+F, it says `the successful attack on 5-round AEGIS-128 cannot be applied to 5-round AEGIS-128L`. Do we want to cite any other papers?\r\n\r\nI'm not sure we should start naming attacks as this is the Introduction.\r\n\r\n> You state that \u201cThe AEGIS cipher family offers performance that significantly exceeds that of AES-GCM with hardware support\u201d \u2013 is this true?  Or, are you talking about a software implementation with \u201chardware support\u201d (e.g. VAES).  I believe that, for pure hardware, AES-GCM is significantly faster (because of the pipelinability and the parallelizability)\r\n\r\nAgain, there's a citation for this claim, although we could perhaps also cite your parallel modes paper. I think saying `with hardware support` rather than `hardware implementation` is clear enough, although I suppose we could also mention the performance for a hardware implementation separately. From a quick glance at a few papers, I'm unsure which is faster in hardware as some say GCM is slower and one seems to suggest it's faster, not that I know anything about this topic.\r\n\r\n> You state \u201c\u2026 an AEGIS key is not required after the setup phase\u201d.  However, when you look at the encrypt and decrypt procedures, they use the key as an input to the internal Init function.\r\n\r\nThe Authenticated Encryption/Decryption sections are being discussed here. We could rephrase `after the setup phase` to `after initialization` or `after calling Init()/the initialization function`.\r\n\r\n> Are the 256 bit tag lengths your own innovation?  They do not appear in the Caesar submission.  It\u2019s also unclear to me in what scenario a \u2018longer than 128 bit tag\u2019 would be required \u2013 are you worried about collisions?  I also note that for AEGIS-256, you can compute the 16 byte tag by xor\u2019ing the two halves of the 32 byte tag (but the same does not apply to AEGIS-128L).  I don\u2019t see how that leads to a weakness \u2013 it does look odd.\r\n\r\nGiven this wasn't in the CAESAR submission, this probably does warrant further explanation, like design rationale and references in Security Guarantees. However, we say why a 256-bit tag is important when discussing commitment in the Introduction.\r\n\r\n> AESRound \u2013 you might want to define that more explicitly; I don\u2019t know if it\u2019s obvious you mean to perform the SubBytes, Shiftrows and MixColumn operations on \u2018in\u2019 and then xor in \u2018rk\u2019.  For an internal function as fundamental (and nontrivial) as this, you might want to have several descriptions.\r\n\r\nI don't think this is a problem. We've basically said that and with a citation.\r\n\r\n> You mention about security in the \u201cQ1 model\u201d.  One suggestion (not a requirement for this review) would be to spell out what that \u201cQ1 model\u201d is; that is, an attack model where the attacker has access to a Quantum Computer, but is limited to classical (nonquantum) communications to the systems under attack.  I suspect that most implementors wouldn\u2019t don\u2019t know what \u201cQ1\u201d is.\r\n\r\nI think this is a good idea if it can be done in a sentence or two.\r\n\r\n> I did like the test vectors, the test vectors for the subcomponents makes things more straightforward.  Just one comment: for the 128L Update text vector, you might want to make M0 and M1 different (to catch cases where the implementation uses the wrong one).\r\n\r\nI presume we can do this without much trouble.",
       "createdAt": "2024-10-04T11:35:10Z",
-      "updatedAt": "2024-10-05T10:29:18Z",
-      "closedAt": null,
+      "updatedAt": "2024-10-10T16:20:22Z",
+      "closedAt": "2024-10-10T16:20:22Z",
       "comments": [
         {
           "author": "jedisct1",
@@ -645,6 +645,13 @@
           "body": "> The bigger state and more complex linear layer affects the security of the initialization phase, as well as the key stream.\r\n\r\nThanks for the detailed reply. How do you feel about citing more papers for the `better security margin` claim? Citing all of them may be a bit over the top though, especially when we have references in the Security Guarantees section.\r\n\r\n> In https://www.researchgate.net/publication/283542585_Efficient_Hardware_Accelerator_for_AEGIS-128_Authenticated_Encryption they describe large-area AEGIS as much faster than AES-GCM, but the benchmarked AES-GCM implementation may process blocks sequentially.\r\n\r\nYeah, that was one paper I saw. Happy to leave that then.\r\n\r\n> Maybe we could replace \"with hardware support\" with \"on CPUs with AES instructions\"?\r\n\r\nThat sounds good. Perhaps `software implementations` should be reworded too, like `Similarly, software implementations not using AES instructions can also be faster`.\r\n\r\n> \"setup phase\" was used to avoid a repetition, but if this is confusing, yes, we can explicitly name the function.\r\n\r\nI'll do a PR for that.\r\n\r\n> The finalization rounds provides full diffusion, so arbitrary words could be used to compute tags. The designers used a linear combination, which is akin to a sum of PRFs, only to improve randomness. We construct 256-bit tags exactly the same way.\r\n\r\nDo you think it's worth a sentence saying that 256-bit tags weren't in the CAESAR submission but have been constructed in the same fashion? I remember Rocca-S doing the same. We could maybe cite that 256-bit tag paper.",
           "createdAt": "2024-10-05T10:29:17Z",
           "updatedAt": "2024-10-05T10:29:17Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I believe we've addressed all of his comments so going to close this.",
+          "createdAt": "2024-10-10T16:20:22Z",
+          "updatedAt": "2024-10-10T16:20:22Z"
         }
       ]
     }
@@ -5865,6 +5872,48 @@
           "body": "",
           "createdAt": "2024-10-09T17:39:51Z",
           "updatedAt": "2024-10-09T17:39:51Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "id": "PR_kwDOKeDGj85-WuHJ",
+      "title": "\"round\" -> \"state update\"",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/58",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As pointed out by Scott, AEGIS doesn't really have a round function, so consistently refer to a state update as \"state update\" instead.",
+      "createdAt": "2024-10-11T15:09:30Z",
+      "updatedAt": "2024-10-11T18:27:19Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "750351fe710e4a8c8164fe0560c43ff7a3af6fbf",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "round2update",
+      "headRefOid": "1d04d623b14e6f917e07927ba8cc0c2c8a203ab6",
+      "closedAt": "2024-10-11T18:02:01Z",
+      "mergedAt": "2024-10-11T18:02:01Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "3cc1d3a085cd85687b34cd207ffd5aa183c19ca5"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86M3Yh1",
+          "commit": {
+            "abbreviatedOid": "1d04d62"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-11T18:01:48Z",
+          "updatedAt": "2024-10-11T18:01:48Z",
           "comments": []
         }
       ]
