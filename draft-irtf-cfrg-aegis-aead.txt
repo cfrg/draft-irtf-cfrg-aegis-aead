@@ -1895,9 +1895,9 @@ return tag
               <https://doi.org/10.1049/ise2.12109>.
 
    [TEST-VECTORS]
-              "AEGIS Test Vectors", commit 81fb2602, 2024,
+              "AEGIS Test Vectors", commit 7e4a38d1, 2024,
               <https://github.com/cfrg/draft-irtf-cfrg-aegis-
-              aead/tree/81fb2602/test-vectors>.
+              aead/tree/7e4a38d1/test-vectors>.
 
    [VV18]     Vaudenay, S. and D. Vizár, "Can Caesar Beat Galois?",
               Applied Cryptography and Network Security. ACNS 2018.
