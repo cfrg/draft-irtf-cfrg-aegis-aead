@@ -130,8 +130,7 @@ fn Aegis128L_(comptime tag_bits: u9) type {
             }
             var tag: [tag_length]u8 = undefined;
             if (tag_length == 16) {
-                mem.copy(
-                    u8,
+                @memcpy(
                     tag[0..],
                     &s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[6]).toBytes(),
                 );
