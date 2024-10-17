@@ -19,6 +19,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [angt/aegis256](https://github.com/angt/aegis256)                                                                                   | C          |
 | [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                         | C          |
 | [libaegis](https://github.com/jedisct1/libaegis)                                                                                    | C          |
+| [aegis-bitsliced](https://github.com/jedisct1/aegis-bitsliced)                                                                      | C          |
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                       | C++        |
 | [aegis](https://crates.io/crates/aegis)                                                                                             | Rust       |
 | [crypto-rust](https://github.com/sayantn/crypto-rust/tree/master/src/)                                                              | Rust       |
