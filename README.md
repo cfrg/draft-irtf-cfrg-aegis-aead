@@ -9,34 +9,34 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 
 ## Known Implementations
 
-| Name                                                                                                                                | Language   |
-| ----------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| [This document's reference implementations](https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/main/reference-implementations) | Zig        |
-| [CAESAR reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l)               | C          |
-| [CAESAR reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)                 | C          |
-| [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)                                | C          |
-| [libsodium](https://libsodium.org)                                                                                                  | C          |
-| [angt/aegis256](https://github.com/angt/aegis256)                                                                                   | C          |
-| [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                         | C          |
-| [libaegis](https://github.com/jedisct1/libaegis)                                                                                    | C          |
-| [aegis-bitsliced](https://github.com/jedisct1/aegis-bitsliced)                                                                      | C          |
-| [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                       | C++        |
-| [aegis](https://crates.io/crates/aegis)                                                                                             | Rust       |
-| [raycrypt](https://github.com/somehybrid/raycrypt/tree/main/src/aeads/aegis256)                                                     | Rust       |
-| [crypto-rust](https://github.com/sayantn/crypto-rust/tree/master/src/)                                                              | Rust       |
-| [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                         | Zig        |
-| [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                                   | Python     |
-| [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                       | Go         |
-| [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                               | C#         |
-| [aegis-128L](https://github.com/Sayem98/aegis-128L)                                                                                 | JavaScript |
-| [aegis-js](https://github.com/psve/aegis-js)                                                                                        | JavaScript |
-| [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                                | Kotlin     |
-| [aegis-jasmin](https://github.com/jedisct1/aegis-jasmin)                                                                            | Jasmin     |
-| [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java       |
-| [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit    |
-| [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP        |
-| [aegis-ts](https://github.com/stknob/aegis-ts)                                                                                      | TypeScript |
-| [yawning/odin](https://github.com/Yawning/Odin/commit/00e013bd1e62e237c37b3b848eb4163e9c183ca0)                                     | Odin       |
+| Name                                                                                                                                | Language          |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| [This document's reference implementations](https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/main/reference-implementations) | Zig               |
+| [CAESAR reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l)               | C                 |
+| [CAESAR reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)                 | C                 |
+| [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)                                | C                 |
+| [libsodium](https://libsodium.org)                                                                                                  | C                 |
+| [angt/aegis256](https://github.com/angt/aegis256)                                                                                   | C                 |
+| [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                         | C                 |
+| [libaegis](https://github.com/jedisct1/libaegis)                                                                                    | C                 |
+| [aegis-bitsliced](https://github.com/jedisct1/aegis-bitsliced)                                                                      | C                 |
+| [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                       | C++               |
+| [aegis](https://crates.io/crates/aegis)                                                                                             | Rust              |
+| [raycrypt](https://github.com/somehybrid/raycrypt/tree/main/src/aeads/aegis256)                                                     | Rust              |
+| [crypto-rust](https://github.com/sayantn/crypto-rust/tree/master/src/)                                                              | Rust              |
+| [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                         | Zig               |
+| [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                                   | Python            |
+| [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                       | Go                |
+| [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                               | C#                |
+| [aegis-128L](https://github.com/Sayem98/aegis-128L)                                                                                 | JavaScript        |
+| [aegis-js](https://github.com/psve/aegis-js)                                                                                        | JavaScript        |
+| [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                                | Kotlin            |
+| [aegis-jasmin](https://github.com/jedisct1/aegis-jasmin)                                                                            | Assembly (Jasmin) |
+| [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java              |
+| [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit           |
+| [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP               |
+| [aegis-ts](https://github.com/stknob/aegis-ts)                                                                                      | TypeScript        |
+| [yawning/odin](https://github.com/Yawning/Odin/commit/00e013bd1e62e237c37b3b848eb4163e9c183ca0)                                     | Odin              |
 
 ### Hardware implementations
 
