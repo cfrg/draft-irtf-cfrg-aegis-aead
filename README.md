@@ -18,8 +18,8 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [libsodium](https://libsodium.org)                                                                                                  | C                 |
 | [angt/aegis256](https://github.com/angt/aegis256)                                                                                   | C                 |
 | [TwoEightNine/aegis](https://github.com/TwoEightNine/aegis)                                                                         | C                 |
-| [libaegis](https://github.com/jedisct1/libaegis)                                                                                    | C                 |
-| [aegis-bitsliced](https://github.com/jedisct1/aegis-bitsliced)                                                                      | C                 |
+| [libaegis](https://github.com/aegis-aead/libaegis)                                                                                  | C                 |
+| [aegis-bitsliced](https://github.com/aegis-aead/aegis-bitsliced)                                                                    | C                 |
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                       | C++               |
 | [aegis](https://crates.io/crates/aegis)                                                                                             | Rust              |
 | [raycrypt](https://github.com/somehybrid/raycrypt/tree/main/src/aeads/aegis256)                                                     | Rust              |
@@ -31,8 +31,8 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [aegis-128L](https://github.com/Sayem98/aegis-128L)                                                                                 | JavaScript        |
 | [aegis-js](https://github.com/psve/aegis-js)                                                                                        | JavaScript        |
 | [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                                | Kotlin            |
-| [aegis-jasmin](https://github.com/jedisct1/aegis-jasmin)                                                                            | Assembly (Jasmin) |
-| [aegis-java](https://github.com/jedisct1/aegis-java)                                                                                | Java              |
+| [aegis-jasmin](https://github.com/aegis-aead/aegis-jasmin)                                                                          | Assembly (Jasmin) |
+| [aegis-java](https://github.com/aegis-aead/aegis-java)                                                                              | Java              |
 | [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit           |
 | [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP               |
 | [aegis-ts](https://github.com/stknob/aegis-ts)                                                                                      | TypeScript        |
@@ -47,7 +47,8 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 
 ## AEGIS support in TLS stacks
 
-- [Experimental support for BoringSSL](https://github.com/jedisct1/boringssl/tree/aegis)
+- [Experimental support for BoringSSL](https://github.com/aegis-aead/boringssl/tree/aegis)
+- [Experimental support for OpenSSL](https://github.com/aegis-aead/openssl/tree/aegis)
 - [Facebook's Fizz](https://github.com/facebookincubator/fizz)
 - [PicoTLS](https://github.com/h2o/picotls)
 - [Zig TLS client](https://ziglang.org/documentation/master/std/#A;std:crypto.tls.CipherSuite)
