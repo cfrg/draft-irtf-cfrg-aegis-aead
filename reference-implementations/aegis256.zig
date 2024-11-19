@@ -95,7 +95,7 @@ fn Aegis256_(comptime tag_bits: u9) type {
             @memcpy(pad[0..cn.len], cn);
             const t = AesBlock.fromBytes(&pad);
             const out = t.xorBlocks(z);
-            @memcpy(&pad, &out.toBytes());
+            pad = out.toBytes();
             @memcpy(xn, pad[0..cn.len]);
             @memset(pad[cn.len..], 0);
             const v = AesBlock.fromBytes(&pad);
@@ -113,13 +113,10 @@ fn Aegis256_(comptime tag_bits: u9) type {
             }
             var tag: [tag_length]u8 = undefined;
             if (tag_length == 16) {
-                @memcpy(
-                    tag[0..],
-                    &s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes(),
-                );
+                tag = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
             } else {
-                @memcpy(tag[0..16], &s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes());
-                @memcpy(tag[16..], &s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes());
+                tag[0..16].* = s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes();
+                tag[16..].* = s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
             }
             return tag;
         }
@@ -148,7 +145,7 @@ fn Aegis256_(comptime tag_bits: u9) type {
 
             i = 0;
             while (i + 16 <= msg.len) : (i += 16) {
-                @memcpy(ct[i..][0..16], &aegis.enc(msg[i..][0..16]));
+                ct[i..][0..16].* = aegis.enc(msg[i..][0..16]);
             }
             if (msg.len % 16 != 0) {
                 var pad = [_]u8{0} ** 16;
@@ -184,7 +181,7 @@ fn Aegis256_(comptime tag_bits: u9) type {
 
             i = 0;
             while (i + 16 <= ct.len) : (i += 16) {
-                @memcpy(msg[i..][0..16], &aegis.dec(ct[i..][0..16]));
+                msg[i..][0..16].* = aegis.dec(ct[i..][0..16]);
             }
             if (ct.len % 16 != 0) {
                 aegis.decLast(msg[i..], ct[i..]);
@@ -209,7 +206,7 @@ fn Aegis256_(comptime tag_bits: u9) type {
 
             var i: usize = 0;
             while (i + 16 <= out.len) : (i += 16) {
-                @memcpy(out[i..][0..16], &aegis.enc(&zero));
+                out[i..][0..16].* = aegis.enc(&zero);
             }
             if (out.len % 16 != 0) {
                 @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % 16]);

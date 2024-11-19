@@ -13,16 +13,16 @@ const mem = std.mem;
 const has_vaes = builtin.cpu.arch == .x86_64 and std.Target.x86.featureSetHas(builtin.cpu.features, .vaes);
 const has_avx512f = builtin.cpu.arch == .x86_64 and std.Target.x86.featureSetHas(builtin.cpu.features, .avx512f);
 
-pub fn AesBlockMulti(comptime degree: u7) type {
+pub fn BlockVec(comptime degree: comptime_int) type {
     const IntelAesBlockMulti = struct {
         const Self = @This();
-        const BlockVec = @Vector(degree * 2, u64);
-        repr: BlockVec,
+        const Repr = @Vector(degree * 2, u64);
+        repr: Repr,
 
         pub const block_length = @as(usize, degree) * 16;
 
         pub inline fn fromBytes(bytes: *const [degree * 16]u8) Self {
-            const repr = mem.bytesToValue(BlockVec, bytes);
+            const repr = mem.bytesToValue(Repr, bytes);
             return Self{ .repr = repr };
         }
 
@@ -39,7 +39,7 @@ pub fn AesBlockMulti(comptime degree: u7) type {
             return Self{
                 .repr = asm (
                     \\ vaesenc %[rk], %[in], %[out]
-                    : [out] "=x" (-> BlockVec),
+                    : [out] "=x" (-> Repr),
                     : [in] "x" (block.repr),
                       [rk] "x" (round_key.repr),
                 ),
@@ -57,15 +57,15 @@ pub fn AesBlockMulti(comptime degree: u7) type {
 
     const GenericAesBlockMulti = struct {
         const Self = @This();
-        const BlockVec = crypto.core.aes.Block;
-        repr: [degree]BlockVec,
+        const Repr = crypto.core.aes.Block;
+        repr: [degree]Repr,
 
         pub const block_length = @as(usize, degree) * 16;
 
         pub inline fn fromBytes(bytes: *const [degree * 16]u8) Self {
             var out: Self = undefined;
             inline for (0..degree) |i| {
-                out.repr[i] = BlockVec.fromBytes(bytes[i * 16 ..][0..16]);
+                out.repr[i] = Repr.fromBytes(bytes[i * 16 ..][0..16]);
             }
             return out;
         }

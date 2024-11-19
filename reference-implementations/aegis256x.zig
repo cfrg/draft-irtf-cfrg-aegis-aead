@@ -2,7 +2,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const crypto = std.crypto;
 const mem = std.mem;
-const AesBlockMulti = @import("aes_block_multi.zig").AesBlockMulti;
+const AesBlockVec = @import("aes_block_multi.zig").BlockVec;
 const AuthenticationError = std.crypto.errors.AuthenticationError;
 
 pub const Aegis256X2 = Aegis256_(2, 128);
@@ -37,7 +37,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
         pub const msg_max_length = 1 << 61;
         pub const ct_max_length = msg_max_length + tag_length;
 
-        const AesBlockX = AesBlockMulti(degree);
+        const AesBlockX = AesBlockVec(degree);
         const blockx_length = AesBlockX.block_length;
         const rate = blockx_length;
 
@@ -131,7 +131,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             @memcpy(pad[0..cn.len], cn);
             const t = AesBlockX.fromBytes(&pad);
             const out = t.xorBlocks(z);
-            @memcpy(&pad, &out.toBytes());
+            pad = out.toBytes();
             @memcpy(xn, pad[0..cn.len]);
             @memset(pad[cn.len..], 0);
             const v = AesBlockX.fromBytes(&pad);
@@ -144,7 +144,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             mem.writeInt(u64, b[0..8], @as(u64, ad_len) * 8, .little);
             mem.writeInt(u64, b[8..16], @as(u64, msg_len) * 8, .little);
             for (1..degree) |i| {
-                @memcpy(b[i * 16 ..][0..16], b[0..16]);
+                b[i * 16 ..][0..16].* = b[0..16].*;
             }
             const t = s[3].xorBlocks(AesBlockX.fromBytes(&b));
             for (0..7) |_| {
@@ -153,7 +153,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             var tag: [tag_length]u8 = undefined;
             if (tag_length == 16) {
                 var tag_multi = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
-                @memcpy(tag[0..], tag_multi[0..16]);
+                tag = tag_multi[0..16].*;
                 for (1..degree) |d| {
                     for (0..16) |i| {
                         tag[i] ^= tag_multi[d * 16 + i];
@@ -162,8 +162,8 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             } else {
                 var tag_multi_0 = s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes();
                 var tag_multi_1 = s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
-                @memcpy(tag[0..16], tag_multi_0[0..16]);
-                @memcpy(tag[16..32], tag_multi_1[0..16]);
+                tag[0..16].* = tag_multi_0[0..16].*;
+                tag[16..32].* = tag_multi_1[0..16].*;
                 for (1..degree) |d| {
                     for (0..16) |i| {
                         tag[i] ^= tag_multi_0[d * 16 + i];
@@ -198,7 +198,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
 
             i = 0;
             while (i + rate <= msg.len) : (i += rate) {
-                @memcpy(ct[i..][0..rate], &aegis.enc(msg[i..][0..rate]));
+                ct[i..][0..rate].* = aegis.enc(msg[i..][0..rate]);
             }
             if (msg.len % rate != 0) {
                 var pad = [_]u8{0} ** rate;
@@ -234,7 +234,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
 
             i = 0;
             while (i + rate <= ct.len) : (i += rate) {
-                @memcpy(msg[i..][0..rate], &aegis.dec(ct[i..][0..rate]));
+                msg[i..][0..rate].* = aegis.dec(ct[i..][0..rate]);
             }
             if (ct.len % rate != 0) {
                 aegis.decLast(msg[i..], ct[i..]);
@@ -259,7 +259,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
 
             var i: usize = 0;
             while (i + rate <= out.len) : (i += rate) {
-                @memcpy(out[i..][0..rate], &aegis.enc(&zero));
+                out[i..][0..rate].* = aegis.enc(&zero);
             }
             if (out.len % rate != 0) {
                 @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % rate]);
