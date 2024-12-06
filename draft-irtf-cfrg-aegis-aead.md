@@ -1620,6 +1620,201 @@ Instead of relying on the generic `Encrypt` function, implementations can skip t
 
 After initialization, the `Update` function is called with constant parameters, allowing further optimizations.
 
+# AEGIS as a Message Authentication Code
+
+All AEGIS variants can be used to construct a MAC.
+
+For all the variants, The `Mac` function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.
+
+This is the only function that permits the reuse of `(key, nonce)` pairs with different inputs.
+
+AEGIS-based MAC functions MUST NOT be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
+Likewise, unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee they are uniformly random.
+
+~~~
+Mac(data, key, nonce)
+~~~
+
+Inputs:
+
+- `data`: the input data to be authenticate (length MUST be less than or equal to `A_MAX`).
+- `key`: the encryption key.
+- `nonce`: the public nonce.
+
+Outputs:
+
+- `tag`: the authentication tag.
+
+## AEGISMAC-128L
+
+AEGISMAC-128L refers to the `Mac` function built upon the building blocks of AEGIS-128L.
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, 256), 256)
+for di in data_blocks:
+    Absorb(di)
+tag = Finalize(|data|)
+return tag
+~~~
+
+It is equivalent to an evaluation of the `Encrypt` function of AEGIS-128L with the input data as the `ad` and leaving `msg` empty, resulting in just a tag.
+
+## AEGISMAC-256
+
+Similarily, AEGISMAC-256 refers to the `Mac` function build upon the building blocks of AEGIS-256.
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, 128), 128)
+for di in data_blocks:
+    Absorb(di)
+tag = Finalize(|data|)
+return tag
+~~~
+
+## AEGISMAC-128X
+
+The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+
+### The Mac function
+
+Inputs:
+
+- `data`: the input data to be authenticate (length MUST be less than or equal to `A_MAX`).
+- `key`: the encryption key.
+- `nonce`: the public nonce.
+
+Outputs:
+
+- `tag`: the authentication tag.
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, R), R)
+for di in data_blocks:
+    Absorb(di)
+tag = FinalizeMac(|data|)
+return tag
+~~~
+
+### The FinalizeMac function
+
+~~~
+FinalizeMac(data_len_bits)
+~~~
+
+The `FinalizeMac` function computes a 128- or 256-bit tag.
+
+It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state as in AEGIS-128L.
+
+Steps:
+
+~~~
+t = {}
+u = LE64(data_len_bits) || LE64(0)
+for i in 0..D:
+    t = t || (V[2,i] ^ u)
+
+Repeat(7, Update(t, t))
+
+tags = {}
+if tag_length == 16: # 128 bits
+    for i in 0..D:   # tag from state 0 is included
+        tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+
+else:                # 256 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        tag0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        tag1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+        tags = tags || (tag0 || tag1)
+
+if D > 1:
+    # Absorb tags into state 0; other states are not used any more
+    for ti in Split(tags, 256):
+        Absorb(ZeroPad(ti, R))
+
+    u = LE64(tag_length) || LE64(D)
+    t = ZeroPad(V[2,0] ^ u, R)
+    Repeat(7, Update(t, t))
+
+if tag_length == 16: # 128 bits
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+else:                # 256 bits
+    tag0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    tag1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = tag0 || tag1
+~~~
+
+## AEGISMAC-256X
+
+The AEGISMAC-256X MAC is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+
+### The Mac function
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, R), R)
+for di in data_blocks:
+    Absorb(di)
+tag = FinalizeMac(|data|)
+return tag
+~~~
+
+### The FinalizeMac function
+
+~~~
+FinalizeMac(data_len_bits)
+~~~
+
+The `FinalizeMac` function computes a 128- or 256-bit tag that authenticates the input data.
+
+It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state as in AEGIS-256.
+
+~~~
+t = {}
+u = LE64(data_len_bits) || LE64(0)
+for i in 0..D:
+    t = t || (V[3,i] ^ u)
+
+Repeat(7, Update(t, t))
+
+tags = {}
+if tag_length == 16: # 128 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+
+else:                # 256 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        tag0 = V[0,i] ^ V[1,i] ^ V[2,i]
+        tag1 = V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || (tag0 || tag1)
+
+if D > 1:
+    # Absorb tags into state 0; other states are not used any more
+    for ti in Split(tags, 128):
+        Absorb(ZeroPad(ti, R))
+
+    u = LE64(tag_length) || LE64(D)
+    t = ZeroPad(V[3,0] ^ u, R)
+    Repeat(7, Update(t, t))
+
+if tag_length == 16: # 128 bits
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+else:                # 256 bits
+    tag0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    tag1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = tag0 || tag1
+~~~
+
 # Implementation Status
 
 *This note is to be removed before publishing as an RFC.*

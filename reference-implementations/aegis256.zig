@@ -212,5 +212,25 @@ fn Aegis256_(comptime tag_bits: u9) type {
                 @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % 16]);
             }
         }
+
+        pub fn mac(
+            ad: []const u8,
+            key: [key_length]u8,
+            nonce: [nonce_length]u8,
+        ) [tag_length]u8 {
+            assert(ad.len <= ad_max_length);
+            var aegis = init(key, nonce);
+
+            var i: usize = 0;
+            while (i + 16 <= ad.len) : (i += 16) {
+                aegis.absorb(ad[i..][0..16]);
+            }
+            if (ad.len % 16 != 0) {
+                var pad = [_]u8{0} ** 16;
+                @memcpy(pad[0 .. ad.len % 16], ad[i..]);
+                aegis.absorb(&pad);
+            }
+            return aegis.finalize(ad.len, 0);
+        }
     };
 }
