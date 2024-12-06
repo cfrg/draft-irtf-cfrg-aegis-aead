@@ -229,5 +229,25 @@ fn Aegis128L_(comptime tag_bits: u9) type {
                 @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % 32]);
             }
         }
+
+        pub fn mac(
+            ad: []const u8,
+            key: [key_length]u8,
+            nonce: [nonce_length]u8,
+        ) [tag_length]u8 {
+            assert(ad.len <= ad_max_length);
+            var aegis = init(key, nonce);
+
+            var i: usize = 0;
+            while (i + 32 <= ad.len) : (i += 32) {
+                aegis.absorb(ad[i..][0..32]);
+            }
+            if (ad.len % 32 != 0) {
+                var pad = [_]u8{0} ** 32;
+                @memcpy(pad[0 .. ad.len % 32], ad[i..]);
+                aegis.absorb(&pad);
+            }
+            return aegis.finalize(ad.len, 0);
+        }
     };
 }

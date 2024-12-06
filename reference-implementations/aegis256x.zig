@@ -174,6 +174,53 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             return tag;
         }
 
+        fn finalizeMac(self: *Self, ad_len: usize) [tag_length]u8 {
+            var s = &self.s;
+            var b: [blockx_length]u8 = undefined;
+            mem.writeInt(u64, b[0..8], @as(u64, ad_len) * 8, .little);
+            mem.writeInt(u64, b[8..16], 0, .little);
+            for (1..degree) |i| {
+                b[i * 16 ..][0..16].* = b[0..16].*;
+            }
+            var t = s[3].xorBlocks(AesBlockX.fromBytes(&b));
+            for (0..7) |_| {
+                self.update(t);
+            }
+            var ti = [_]u8{0} ** rate;
+            if (tag_length == 16) {
+                const tags = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
+                for (1..degree) |d| {
+                    ti[0..16].* = tags[d * 16 ..][0..16].*;
+                    self.absorb(&ti);
+                }
+            } else {
+                const tags_0 = s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes();
+                const tags_1 = s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
+                for (1..degree) |d| {
+                    ti[0..16].* = tags_0[d * 16 ..][0..16].*;
+                    self.absorb(&ti);
+                    ti[0..16].* = tags_1[d * 16 ..][0..16].*;
+                    self.absorb(&ti);
+                }
+            }
+            if (degree > 1) {
+                mem.writeInt(u64, b[0..8], tag_length, .little);
+                mem.writeInt(u64, b[8..16], rate, .little);
+                t = s[3].xorBlocks(AesBlockX.fromBytes(&b));
+                for (0..7) |_| {
+                    self.update(t);
+                }
+            }
+            if (tag_length == 16) {
+                const tags = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
+                return tags[0..16].*;
+            } else {
+                const tags_0 = s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes();
+                const tags_1 = s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
+                return tags_0[0..16].* ++ tags_1[0..16].*;
+            }
+        }
+
         pub fn encrypt(
             ct: []u8,
             msg: []const u8,
@@ -264,6 +311,26 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             if (out.len % rate != 0) {
                 @memcpy(out[i..], aegis.enc(&zero)[0 .. out.len % rate]);
             }
+        }
+
+        pub fn mac(
+            ad: []const u8,
+            key: [key_length]u8,
+            nonce: [nonce_length]u8,
+        ) [tag_length]u8 {
+            assert(ad.len <= ad_max_length);
+            var aegis = init(key, nonce);
+
+            var i: usize = 0;
+            while (i + rate <= ad.len) : (i += rate) {
+                aegis.absorb(ad[i..][0..rate]);
+            }
+            if (ad.len % rate != 0) {
+                var pad = [_]u8{0} ** rate;
+                @memcpy(pad[0 .. ad.len % rate], ad[i..]);
+                aegis.absorb(&pad);
+            }
+            return aegis.finalizeMac(ad.len);
         }
     };
 }
