@@ -11,11 +11,11 @@
        This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications. 
        The document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard. 
     " name="description">
-<meta content="xml2rfc 3.24.0" name="generator">
+<meta content="xml2rfc 3.25.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-irtf-cfrg-aegis-aead-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.24.0
+  xml2rfc 3.25.0
     Python 3.12.7
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1042,11 +1042,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The AEGIS Family of Authenticated Encryp</td>
-<td class="right">November 2024</td>
+<td class="right">December 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 23 May 2025</td>
+<td class="center">Expires 10 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1059,12 +1059,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-11-19" class="published">19 November 2024</time>
+<time datetime="2024-12-07" class="published">7 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-05-23">23 May 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-10">10 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1111,7 +1111,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 May 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3144,7 +3144,7 @@ return tag
         <h3 id="name-implementation-consideratio">
 <a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
         </h3>
-<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.6-2">In AEGIS-128X, <code>V</code> can be represented as eight 256-bit registers (when <code>D = 2</code>) or eight 512-bit registers (when <code>D = 4</code>). In AEGIS-256X, <code>V</code> can be represented as six 256-bit registers (when <code>D = 2</code>) or six 512-bit registers (when <code>D = 4</code>). With this representation, loops over <code>0..D</code> in the above pseudocode can be replaced by vector instructions.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>

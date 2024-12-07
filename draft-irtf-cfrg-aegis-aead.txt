@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 23 May 2025                              Individual Contributor
-                                                        19 November 2024
+Expires: 10 June 2025                             Individual Contributor
+                                                         7 December 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 May 2025.
+   This Internet-Draft will expire on 10 June 2025.
 
 Copyright Notice
 
@@ -1509,8 +1509,8 @@ return tag
 5.6.  Implementation Considerations
 
    AEGIS-128X and AEGIS-256X with a degree of 1 are identical to AEGIS-
-   128L and AEGIS-256.  This property can be used to reduce the code
-   size of a generic implementation.
+   128L and AEGIS-256.  This property can be used to reduce the size of
+   a generic implementation.
 
    In AEGIS-128X, V can be represented as eight 256-bit registers (when
    D = 2) or eight 512-bit registers (when D = 4).  In AEGIS-256X, V can
