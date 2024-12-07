@@ -1664,7 +1664,7 @@ In all these variants, unused nonce bits can encode a key identifier, enhancing 
 
 All variants can be used solely for authentication by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
 
-Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces MUST NOT be reused with the parallel variants AEGIS-128X and AEGIS-256X to ensure security against forgery.
+Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces MUST NOT be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.
 
 ## Implementation Security
 
