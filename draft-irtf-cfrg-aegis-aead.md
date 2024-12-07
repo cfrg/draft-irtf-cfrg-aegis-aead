@@ -1549,7 +1549,7 @@ return tag
 
 ## Implementation Considerations
 
-AEGIS-128X and AEGIS-256X with a degree of `1` are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.
+AEGIS-128X and AEGIS-256X with a degree of `1` are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the size of a generic implementation.
 
 In AEGIS-128X, `V` can be represented as eight 256-bit registers (when `D = 2`) or eight 512-bit registers (when `D = 4`). In AEGIS-256X, `V` can be represented as six 256-bit registers (when `D = 2`) or six 512-bit registers (when `D = 4`). With this representation, loops over `0..D` in the above pseudocode can be replaced by vector instructions.
 
