@@ -2705,7 +2705,7 @@ Acknowledgments
    *  Scott Fluhrer for his review of the draft as a member of the CFRG
       Crypto Panel.
 
-   *  Neil Madden, Yawning Angel and Chris Barber for their review of
+   *  Yawning Angel, Chris Barber, and Neil Madden for their review of
       the draft.
 
 Authors' Addresses
