@@ -1624,7 +1624,7 @@ After initialization, the `Update` function is called with constant parameters, 
 
 All AEGIS variants can be used to construct a MAC.
 
-For all the variants, The `Mac` function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.
+For all the variants, the `Mac` function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.
 
 This is the only function that permits the reuse of `(key, nonce)` pairs with different inputs.
 
