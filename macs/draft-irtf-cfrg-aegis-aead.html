@@ -1493,6 +1493,27 @@ svg :is([fill="white"], [fill^="#fff"]) {
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.3">
                     <p id="section-toc.1-1.13.2.7.2.3.1"><a href="#appendix-A.7.3" class="auto internal xref">A.7.3</a>.  <a href="#name-test-vector-2-6" class="internal xref">Test Vector 2</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.4">
+                    <p id="section-toc.1-1.13.2.7.2.4.1"><a href="#appendix-A.7.4" class="auto internal xref">A.7.4</a>.  <a href="#name-aegismac-test-vectors" class="internal xref">AEGISMAC Test Vectors</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.5">
+                    <p id="section-toc.1-1.13.2.7.2.5.1"><a href="#appendix-A.7.5" class="auto internal xref">A.7.5</a>.  <a href="#name-aegismac-128l-test-vector" class="internal xref">AEGISMAC-128L Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.6">
+                    <p id="section-toc.1-1.13.2.7.2.6.1"><a href="#appendix-A.7.6" class="auto internal xref">A.7.6</a>.  <a href="#name-aegismac-128x2-test-vector" class="internal xref">AEGISMAC-128X2 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.7">
+                    <p id="section-toc.1-1.13.2.7.2.7.1"><a href="#appendix-A.7.7" class="auto internal xref">A.7.7</a>.  <a href="#name-aegismac-128x4-test-vector" class="internal xref">AEGISMAC-128X4 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.8">
+                    <p id="section-toc.1-1.13.2.7.2.8.1"><a href="#appendix-A.7.8" class="auto internal xref">A.7.8</a>.  <a href="#name-aegismac-256-test-vector" class="internal xref">AEGISMAC-256 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.9">
+                    <p id="section-toc.1-1.13.2.7.2.9.1"><a href="#appendix-A.7.9" class="auto internal xref">A.7.9</a>.  <a href="#name-aegismac-256x2-test-vector" class="internal xref">AEGISMAC-256X2 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.10">
+                    <p id="section-toc.1-1.13.2.7.2.10.1"><a href="#appendix-A.7.10" class="auto internal xref">A.7.10</a>. <a href="#name-aegismac-256x4-test-vector" class="internal xref">AEGISMAC-256X4 Test Vector</a></p>
+</li>
                 </ul>
 </li>
             </ul>
@@ -4847,6 +4868,191 @@ tag128: ec44b512d713f745547be345bcc66b6c
 tag256: ba3168ecd7f7120c5e204a7e0d616e39
         5675ddfe00e4e5490a5ba93bb1a70555
 </pre><a href="#appendix-A.7.3-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-test-vectors">
+<section id="appendix-A.7.4">
+          <h4 id="name-aegismac-test-vectors">
+<a href="#appendix-A.7.4" class="section-number selfRef">A.7.4. </a><a href="#name-aegismac-test-vectors" class="section-name selfRef">AEGISMAC Test Vectors</a>
+        </h4>
+</section>
+</div>
+<div id="aegismac-128l-test-vector">
+<section id="appendix-A.7.5">
+          <h4 id="name-aegismac-128l-test-vector">
+<a href="#appendix-A.7.5" class="section-number selfRef">A.7.5. </a><a href="#name-aegismac-128l-test-vector" class="section-name selfRef">AEGISMAC-128L Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.5-1">
+<pre>
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tag128 : 3982e98c66fa9232e9190ec57b120725
+
+tag256 : a7d01b4636e8d312af8b65b3bb680feb
+         8ffd62aa234584001b1e419b4b40c317
+</pre><a href="#appendix-A.7.5-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-128x2-test-vector">
+<section id="appendix-A.7.6">
+          <h4 id="name-aegismac-128x2-test-vector">
+<a href="#appendix-A.7.6" class="section-number selfRef">A.7.6. </a><a href="#name-aegismac-128x2-test-vector" class="section-name selfRef">AEGISMAC-128X2 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.6-1">
+<pre>
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: f8ba02f2babf9c9707b10c491d1c1692
+         d6d0470068232ebe369ef41dc6eb9240
+
+tag128 : f472304012396667f51ab7450d87f460
+
+tags256: d7088f01a5d6c42585c403b84c32ed88
+         930ac4d8e414a4482df71e5e43720464
+
+tag256 : f376288f13b51c73ecb814922919a31f
+         2cbe1fd322a0062ef7860327a2bc3159
+</pre><a href="#appendix-A.7.6-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-128x4-test-vector">
+<section id="appendix-A.7.7">
+          <h4 id="name-aegismac-128x4-test-vector">
+<a href="#appendix-A.7.7" class="section-number selfRef">A.7.7. </a><a href="#name-aegismac-128x4-test-vector" class="section-name selfRef">AEGISMAC-128X4 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.7-1">
+<pre>
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 810bd9aa60ebdd51de214fb2ac639d32
+         d2b6852eb5ae0ad21717e14bb386c796
+         10c69c9d09f39ce1af1893a7b9b5fb35
+         8ac2edd67acd534400c5cf3651626d5f
+
+tag128 : 3742a0bf0a9e8604841fe520fc57621c
+
+tags256: 03a2e95d5d40819364a571281e6b12ce
+         893c2981ed238d58d41004355ad299df
+         2de609340135cccdf594a23024a95b12
+         f024d2bcdd3616f218712d080c5408da
+         22254d900bf5cccee1e3e4d2b64e3578
+         15816f112607ea40139f67b097bb300d
+
+tag256 : 3da44ead4e192d0df3c47c994c242b69
+         dab2fdf0d98f58f96838d634ab945d3a
+</pre><a href="#appendix-A.7.7-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256-test-vector">
+<section id="appendix-A.7.8">
+          <h4 id="name-aegismac-256-test-vector">
+<a href="#appendix-A.7.8" class="section-number selfRef">A.7.8. </a><a href="#name-aegismac-256-test-vector" class="section-name selfRef">AEGISMAC-256 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.8-1">
+<pre>
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tag128 : 49f70470ccf49529674babd6db6670c9
+
+tag256 : f5945eccdb14c836d8470b8abcf87e26
+         bc635abc17e05d1fbf0ca05c679e0eef
+</pre><a href="#appendix-A.7.8-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256x2-test-vector">
+<section id="appendix-A.7.9">
+          <h4 id="name-aegismac-256x2-test-vector">
+<a href="#appendix-A.7.9" class="section-number selfRef">A.7.9. </a><a href="#name-aegismac-256x2-test-vector" class="section-name selfRef">AEGISMAC-256X2 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.9-1">
+<pre>
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 5330b347e55da0e97dfb95abdb3c3774
+
+tag128 : a88b1e17c62fbda5a65202e0fe38c8a6
+
+tags256: 4ca4e65a82521e2cc04e2ef139ad62ed
+         1f94551d670fbec5bdb5bb5ae2915599
+
+tag256 : 084cb5d2d6392f7d219579181488197e
+         811746fd85d5524c671ccd846dfbe8d9
+</pre><a href="#appendix-A.7.9-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256x4-test-vector">
+<section id="appendix-A.7.10">
+          <h4 id="name-aegismac-256x4-test-vector">
+<a href="#appendix-A.7.10" class="section-number selfRef">A.7.10. </a><a href="#name-aegismac-256x4-test-vector" class="section-name selfRef">AEGISMAC-256X4 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.7.10-1">
+<pre>
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: dda9b17458670d6edade7b8c495c7f6c
+         713819ddf13b39cf1f995786e7e20301
+         ca2714cfadc4e26ee43e9ac6b8d14890
+
+tag128 : 710e7906d06a2551eb8eced73fa6e565
+
+tags256: 293111be5b6cbbb480652cbca9c8e860
+         f498a0ca030bb6da5abb5730e094970c
+         b08246a84d847f22eb752db9e7937f4e
+         c1ba5f75bcbf46edf4ec7a3f00717c4f
+         69b5f79332a2cbebd8992955d69927f8
+         a392e35c9f6629853ca7b3936e486f68
+
+tag256 : 5f0b301a7bbd45f560767f7f28d42f2a
+         ce7d812ae049dc997aa7ad68d8da98dd
+</pre><a href="#appendix-A.7.10-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
