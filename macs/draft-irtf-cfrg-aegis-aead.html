@@ -1792,7 +1792,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-3.2-3">Security:<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-4.1">
-            <p id="section-3.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before being returned.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-4.2">
             <p id="section-3.2-4.2.1">The comparison of the input <code>tag</code> with the <code>expected_tag</code> <span class="bcp14">MUST</span> be done in constant time.<a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
@@ -2609,7 +2609,7 @@ return tag
             <p id="section-5.1-1.1.1"><code>D</code>: the degree of parallelism.<a href="#section-5.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.2">
-            <p id="section-5.1-1.2.1"><code>R</code>: the absorption and output rate of the mode. With AEGIS-128X, the rate is <code>2 * 128 * D</code> bits. With AEGIS-256X, the rate is <code>128 * D</code> bits.<a href="#section-5.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-1.2.1"><code>R</code>: the absorption and output rate of the mode. With AEGIS-128X, the rate is <code>256 * D</code> bits. With AEGIS-256X, the rate is <code>128 * D</code> bits.<a href="#section-5.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.3">
             <p id="section-5.1-1.3.1"><code>V[j,i]</code>: the <code>j</code>-th AES block of the <code>i</code>-th state. <code>i</code> is in the <code>[0..D)</code> range. For AEGIS-128X, <code>j</code> is in the <code>[0..8)</code> range, while for AEGIS-256, <code>j</code> is in the <code>[0..6)</code> range.<a href="#section-5.1-1.3.1" class="pilcrow">¶</a></p>
@@ -2761,7 +2761,7 @@ Repeat(10,
 Update(M0, M1)
 </pre><a href="#section-5.4.2-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function, but absorbs <code>R</code> (<code>2 * 128 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function, but absorbs <code>R</code> (= <code>256 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.2-3">Steps:<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.2-4">
 <pre>
@@ -3200,7 +3200,7 @@ return tag
         <h3 id="name-implementation-consideratio">
 <a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
         </h3>
-<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.6-2">In AEGIS-128X, <code>V</code> can be represented as eight 256-bit registers (when <code>D = 2</code>) or eight 512-bit registers (when <code>D = 4</code>). In AEGIS-256X, <code>V</code> can be represented as six 256-bit registers (when <code>D = 2</code>) or six 512-bit registers (when <code>D = 4</code>). With this representation, loops over <code>0..D</code> in the above pseudocode can be replaced by vector instructions.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3611,7 +3611,8 @@ else:                # 256 bits
           <h4 id="name-other-uses-of-aegis">
 <a href="#section-10.1.4" class="section-number selfRef">10.1.4. </a><a href="#name-other-uses-of-aegis" class="section-name selfRef">Other Uses of AEGIS</a>
           </h4>
-<p id="section-10.1.4-1">All variants can be used as a MAC by calling the <code>Encrypt()</code> function with the message as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag. However, they <span class="bcp14">MUST NOT</span> be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no proof they are uniformly random.<a href="#section-10.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.4-1">All variants can be used solely for authentication by calling the <code>Encrypt()</code> function with the message as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag. However, they <span class="bcp14">MUST NOT</span> be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no proof they are uniformly random.<a href="#section-10.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.4-2">Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces <span class="bcp14">MUST NOT</span> be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.<a href="#section-10.1.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3633,7 +3634,8 @@ else:                # 256 bits
         </h3>
 <p id="section-10.3-1">AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.<a href="#section-10.3-1" class="pilcrow">¶</a></p>
 <p id="section-10.3-2">Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.<a href="#section-10.3-2" class="pilcrow">¶</a></p>
-<p id="section-10.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.<a href="#section-10.3-3" class="pilcrow">¶</a></p>
+<p id="section-10.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
+However, <code>(key, nonce)</code> pairs <span class="bcp14">MUST NOT</span> be reused, even if the associated data differs.<a href="#section-10.3-3" class="pilcrow">¶</a></p>
 <p id="section-10.3-4">AEGIS has been shown to have reforgeability resilience in <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.<a href="#section-10.3-4" class="pilcrow">¶</a></p>
 <p id="section-10.3-5">AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same <span>[<a href="#D23" class="cite xref">D23</a>]</span>.<a href="#section-10.3-5" class="pilcrow">¶</a></p>
 <p id="section-10.3-6">AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.<a href="#section-10.3-6" class="pilcrow">¶</a></p>
@@ -5082,6 +5084,9 @@ tag256 : 5f0b301a7bbd45f560767f7f28d42f2a
 </li>
         <li class="normal" id="appendix-B-4.4">
           <p id="appendix-B-4.4.1">Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Panel.<a href="#appendix-B-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-4.5">
+          <p id="appendix-B-4.5.1">Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.<a href="#appendix-B-4.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
