@@ -1732,7 +1732,8 @@ return tag
 
    Encrypting the same message with the same key and nonce but different
    associated data generates distinct ciphertexts that do not reveal any
-   additional information about the message.
+   additional information about the message.  However, (key, nonce)
+   pairs MUST NOT be reused, even if the associated data differs.
 
    AEGIS has been shown to have reforgeability resilience in [FLLW17].
    Without the ability to set the associated data, a successful forgery

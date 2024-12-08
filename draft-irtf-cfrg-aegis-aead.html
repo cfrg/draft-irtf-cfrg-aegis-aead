@@ -3349,7 +3349,8 @@ return stream
         </h3>
 <p id="section-9.3-1">AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
 <p id="section-9.3-2">Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.<a href="#section-9.3-2" class="pilcrow">¶</a></p>
-<p id="section-9.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
+<p id="section-9.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
+However, <code>(key, nonce)</code> pairs <span class="bcp14">MUST NOT</span> be reused, even if the associated data differs.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
 <p id="section-9.3-4">AEGIS has been shown to have reforgeability resilience in <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.<a href="#section-9.3-4" class="pilcrow">¶</a></p>
 <p id="section-9.3-5">AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same <span>[<a href="#D23" class="cite xref">D23</a>]</span>.<a href="#section-9.3-5" class="pilcrow">¶</a></p>
 <p id="section-9.3-6">AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.<a href="#section-9.3-6" class="pilcrow">¶</a></p>
