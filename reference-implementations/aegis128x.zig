@@ -185,10 +185,10 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
             return tag;
         }
 
-        fn finalizeMac(self: *Self, ad_len: usize) [tag_length]u8 {
+        fn finalizeMac(self: *Self, data_len: usize) [tag_length]u8 {
             var s = &self.s;
             var b: [blockx_length]u8 = undefined;
-            mem.writeInt(u64, b[0..8], @as(u64, ad_len) * 8, .little);
+            mem.writeInt(u64, b[0..8], @as(u64, data_len) * 8, .little);
             mem.writeInt(u64, b[8..16], 0, .little);
             for (1..degree) |i| {
                 b[i * 16 ..][0..16].* = b[0..16].*;
@@ -323,22 +323,22 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
         }
 
         pub fn mac(
-            ad: []const u8,
+            data: []const u8,
             key: [key_length]u8,
             nonce: [nonce_length]u8,
         ) [tag_length]u8 {
-            assert(ad.len <= ad_max_length);
+            assert(data.len <= ad_max_length);
             var aegis = init(key, nonce);
             var i: usize = 0;
-            while (i + rate <= ad.len) : (i += rate) {
-                aegis.absorb(ad[i..][0..rate]);
+            while (i + rate <= data.len) : (i += rate) {
+                aegis.absorb(data[i..][0..rate]);
             }
-            if (ad.len % rate != 0) {
+            if (data.len % rate != 0) {
                 var pad = [_]u8{0} ** rate;
-                @memcpy(pad[0 .. ad.len % rate], ad[i..]);
+                @memcpy(pad[0 .. data.len % rate], data[i..]);
                 aegis.absorb(&pad);
             }
-            return aegis.finalizeMac(ad.len);
+            return aegis.finalizeMac(data.len);
         }
     };
 }
