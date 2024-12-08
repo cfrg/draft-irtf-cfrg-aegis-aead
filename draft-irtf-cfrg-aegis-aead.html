@@ -3326,7 +3326,8 @@ return stream
           <h4 id="name-other-uses-of-aegis">
 <a href="#section-9.1.4" class="section-number selfRef">9.1.4. </a><a href="#name-other-uses-of-aegis" class="section-name selfRef">Other Uses of AEGIS</a>
           </h4>
-<p id="section-9.1.4-1">All variants can be used as a MAC by calling the <code>Encrypt()</code> function with the message as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag. However, they <span class="bcp14">MUST NOT</span> be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no proof they are uniformly random.<a href="#section-9.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-9.1.4-1">All variants can be used solely for authentication by calling the <code>Encrypt()</code> function with the message as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag. However, they <span class="bcp14">MUST NOT</span> be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no proof they are uniformly random.<a href="#section-9.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-9.1.4-2">Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces <span class="bcp14">MUST NOT</span> be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.<a href="#section-9.1.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
