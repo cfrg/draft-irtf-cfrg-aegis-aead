@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-05T00:47:42.085093+00:00",
+  "timestamp": "2024-12-08T00:53:09.101170+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -652,6 +652,96 @@
           "body": "I believe we've addressed all of his comments so going to close this.",
           "createdAt": "2024-10-10T16:20:22Z",
           "updatedAt": "2024-10-10T16:20:22Z"
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "id": "I_kwDOKeDGj86iVrRz",
+      "title": "Addressing Gilles feedback",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/59",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Quoting Gilles VAN ASSCHE:\r\n\r\n> I have one comment on the parallel instances AEGIS-{128,256}X. These instances internally call AEGIS-128L and AEGIS-256, respectively, with parts of the plaintext and associated data (AD), so that they can be computed in parallel branches. The resulting tag is obtained simply by XORing the tags coming from the different branches. Although the draft clearly mandates a nonce-respecting setting, when AEGIS-{128,256}X is used solely to compute a MAC, the user may be tempted to ignore this and fix the nonce. In a nonce-less MAC setting, this leads to a forgery attack: one obtains the tags for XY, ZY and XT (with X, Z being plaintext or AD in one branch, and Y, T in another branch) and then computes the tag for ZT as tag(ZT)=tag(XY)^tag(ZY)^tag(XT).\r\n>\r\n> Section 9 warns about the consequences of nonce reuse for encryption, but not for authentication. Also, the third paragraph of Section 9.3 suggests that one can trade nonce uniqueness for AD uniqueness, but that does not work for authentication with AEGIS-{128,256}X.\r\n> \r\n> So, this probably deserves some warnings or clarifications in the text before the draft is published.\r\n\r\nWe indeed need to emphasize the importance of the nonce for authentication.\r\n\r\nSection 9.3 contains:\r\n\"Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.\"\r\n\r\nThis is true and nice, but the practical importance of this is limited. And as Gilles pointed out, it may suggest that one can trade nonce uniqueness for AD uniqueness. Maybe we should remove that sentence?\r\n\r\nRegarding usage as a MAC. Section 9.1.4 is currently very sparse and misleading. We can remove it, and emphasize that AEGIS must not be used as a hash function elsewhere.\r\n\r\nHowever, usage with a fixed nonce is legitimate, and there are already applications doing this in the wild.\r\n\r\nSo, another thing we could do is expand section 9.1.4.\r\n\r\nFirst, we can introduce the AEGIS128L-MAC, AEGIS128X-MAC, AEGIS256L-MAC, AEGIS256X-MAC names, so that applications can refer to AEGIS being used in that context consistently.\r\n\r\nAEGIS128L-MAC and AEGIS256-MAC are exactly AEGIS128L and AEGIS256 with an empty input message.\r\n\r\nFor the parallel variants, there are simple ways to safely support nonce reuse (for the MAC use case only):\r\n\r\n> the value (tag[0] || tag[1] || ... || tag[D-1]) can be used as input to a non-parallel variant to compute the final MAC.\r\n>\r\n> Or equivalently:\r\n>\r\n> ```sh\r\n> # compute tags { tag[0], tag[1], ... tag[D-1] } as usual, then:\r\n> Absorb(Pad(tag[1], R) || ... || Pad(tag[D-1], R)) # absorb tags from states 1..D-1 into state 0\r\n> t = ZeroPad(LE64(tag_length) || LE64(D), R) # context separation is free\r\n> Repeat(7, Update(t, t))\r\n> # compute final tag from V[0] blocks as usual\r\n> ```\r\n\r\nI implemented this, and the changes were trivial.\r\n\r\nBut that requires defining alternative Finalization functions in section 9.1.4. Although it can be concise, and would not touch any other sections in the document, it can clearly feel a bit like a last-minute addition.\r\n\r\nThe easiest thing to do would be to only emphasize the importance of nonces, and not deal at all with nonce-less authentication. However, defining proper MAC functions would better deserve the users. But the draft may be too far in the process to make non-editorial changes. OTOH, the 256-bit versions of TurboSHAKE and KT were also added at the last minute, so this is doable.\r\n\r\nWhat do you think @samuel-lucas6 ?",
+      "createdAt": "2024-12-06T17:36:19Z",
+      "updatedAt": "2024-12-07T13:19:50Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "/cc @gvanas\r\n",
+          "createdAt": "2024-12-06T17:36:44Z",
+          "updatedAt": "2024-12-06T17:36:44Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Implementation-friendly example `FinalizeMac` function for 128X:\r\n\r\n```sh\r\nt = {}\r\nu = LE64(ad_len_bits) || LE64(0)\r\nfor i in 0..D:\r\n    t = t || (V[2,i] ^ u)\r\n   \r\n    Repeat(7, Update(t, t))\r\n\r\nif D > 1:\r\n    # Concatenate tags from states [1..D)\r\n    tags = {}\r\n    if tag_length == 16: # 128 bits\r\n        for i in 1..D:\r\n            tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]\r\n\r\n    else:                # 256 bits\r\n        for i in 1..D:\r\n            tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]) || (V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i])\r\n        \r\n    # Absorb tags from states [1..D) into state 0\r\n    for ti in Split(tags, 256):\r\n        Absorb(ZeroPad(ti, R))\r\n\r\n    t = ZeroPad(LE64(tag_length) || LE64(D), R)\r\n    Repeat(7, Update(t, t))\r\n\r\nif tag_length == 16: # 128 bits\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    tag = (V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]) || (V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0])\r\n```\r\n\r\nFor 256X:\r\n\r\n```sh\r\nt = {}\r\nu = LE64(ad_len_bits) || LE64(0)\r\nfor i in 0..D:\r\n    t = t || (V[3,i] ^ u)\r\n   \r\n    Repeat(7, Update(t, t))\r\n\r\nif D > 1:\r\n    # Concatenate tags from states [1..D)\r\n    tags = {}\r\n    if tag_length == 16: # 128 bits\r\n        for i in 1..D:\r\n            tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]\r\n\r\n    else:                # 256 bits\r\n        for i in 1..D:\r\n            tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i]) || (V[3,i] ^ V[4,i] ^ V[5,i])\r\n\r\n        # Absorb tags from states [1..D) into state 0\r\n        for ti in Split(tags, 128):\r\n            Absorb(ZeroPad(ti, R))\r\n            \r\n        t = ZeroPad(LE64(tag_length) || LE64(D), R)\r\n        Repeat(7, Update(t, t))\r\n\r\nif tag_length == 16: # 128 bits\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    tag = (V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]) || (V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0])\r\n```\r\n\r\n",
+          "createdAt": "2024-12-06T18:00:06Z",
+          "updatedAt": "2024-12-06T18:00:06Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "So, that would expand section 9.1.4 quite a bit, in addition to the test vectors.",
+          "createdAt": "2024-12-06T18:01:00Z",
+          "updatedAt": "2024-12-06T18:01:00Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you for all these PRs/issues. I think the related PRs are appropriate changes.\r\n\r\nI think naming them is a good idea. My concern is that Section 9.1.4 is in the Security Considerations, which probably shouldn't be specifying something like this. It might be better as a dedicated section like `AEGIS as a Message Authentication Code`, and then you could perhaps remove Section 9.1.4. The other issue is indeed more variants/test vectors, but I suppose there's nothing that can really be done about this. Different Finalization functions is fine by me as long as it doesn't cause confusion.",
+          "createdAt": "2024-12-07T10:40:04Z",
+          "updatedAt": "2024-12-07T10:40:04Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Also, we need to remember to thank Chris and Gilles in the Acknowledgments.",
+          "createdAt": "2024-12-07T10:41:39Z",
+          "updatedAt": "2024-12-07T10:41:39Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I think naming them is a good idea. My concern is that Section 9.1.4 is in the Security Considerations, which probably shouldn't be specifying something like this. It might be better as a dedicated section like `AEGIS as a Message Authentication Code`, and then you could perhaps remove Section 9.1.4. The other issue is indeed more variants/test vectors, but I suppose there's nothing that can really be done about this. Different Finalization functions is fine by me as long as it doesn't cause confusion.\r\n\r\nSection 9.1.4 is called \"Other Uses`, but only covers usage as a MAC. So, yes, it makes total sense to convert it into a section explicitly called `AEGIS as a Message Authentication Code`.",
+          "createdAt": "2024-12-07T13:19:50Z",
+          "updatedAt": "2024-12-07T13:19:50Z"
+        }
+      ]
+    },
+    {
+      "number": 60,
+      "id": "I_kwDOKeDGj86iXUMo",
+      "title": "Addressing Chris feedback",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/60",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> Section 3.2: \"The decrypted message MUST be overwritten with zeros.\"\r\nProposed change: \"The decrypted message MUST be overwritten with zeros\r\nbefore being returned.\"\r\n>\r\n> Accounts for implementations where the message and ciphertext don't overlap and the function either returns the message or throws an exception. Overwriting is unnecessary if the value is no longer accessible after the function returns.\r\n> \r\n> Section 5.1: \"The rate is 2 * 128 * D bits.\"\r\n> Proposed change: \"256 * D bits.\"\r\n> \r\n> The expanded form is unnecessary and, in my opinion, less clear.\r\n> \r\n> Section 5.4.2: \"but absorbs R (2 * 128 * D) bits at once.\"\r\n> Proposed change: \"but absorbs R (= 256 * D) bits at once.\"\r\n>\r\n> Clarifies that R is equal to 256 * D and not interpreted as R * 2 * 128 * D\r\n\r\nI don't have strong feelings about 2*128 vs 256.\r\n\r\nRegarding the message buffer that must be overwritten on verification failure, we discussed this a while back. But it was about using MUST NOT vs SHOULD NOT. \r\nI like the suggestion, as it still makes it clear that the buffer MUST be zeroed when relevant.",
+      "createdAt": "2024-12-06T22:16:09Z",
+      "updatedAt": "2024-12-07T12:46:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Regarding the message buffer that must be overwritten on verification failure, we discussed this a while back. But it was about using MUST NOT vs SHOULD NOT.\r\n> I like the suggestion, as it still makes it clear that the buffer MUST be zeroed when relevant.\r\n\r\nI'm happy with that change as well. I guess you could also say `If possible in your programming language, ...`, but that's somewhat common sense.\r\n\r\n> I don't have strong feelings about 2*128 vs 256.\r\n\r\nI think this should be 256 as it matches how AEGIS-128L is described.",
+          "createdAt": "2024-12-07T10:01:52Z",
+          "updatedAt": "2024-12-07T10:01:52Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I'm happy with that change as well. I guess you could also say `If possible in your programming language, ...`, but that's somewhat common sense.\r\n\r\nYeah, that's common sense. And even in a given programming language, different calling conventions can be implemented.\r\n\r\n> \r\n> > I don't have strong feelings about 2*128 vs 256.\r\n> \r\n> I think this should be 256 as it matches how AEGIS-128L is described.\r\n\r\nOk.\r\n\r\n",
+          "createdAt": "2024-12-07T12:46:45Z",
+          "updatedAt": "2024-12-07T12:46:45Z"
         }
       ]
     }
@@ -5917,6 +6007,327 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 61,
+      "id": "PR_kwDOKeDGj86EYRKT",
+      "title": "Address Chris' feedback",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/61",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #60",
+      "createdAt": "2024-12-06T22:20:27Z",
+      "updatedAt": "2024-12-07T13:05:06Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "issue60",
+      "headRefOid": "6fb98600a1487c3d068470a1f12826be7b202f36",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86UNI2k",
+          "commit": {
+            "abbreviatedOid": "6fb9860"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Just want to get your take on these points.",
+          "createdAt": "2024-12-07T10:05:11Z",
+          "updatedAt": "2024-12-07T10:07:02Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "Do you prefer this with or without the equals sign?",
+              "createdAt": "2024-12-07T10:05:11Z",
+              "updatedAt": "2024-12-07T10:07:02Z"
+            },
+            {
+              "originalPosition": 5,
+              "body": "As said in the issue, should we add `if this is possible in your programming language` to the end?",
+              "createdAt": "2024-12-07T10:06:34Z",
+              "updatedAt": "2024-12-07T10:07:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UNOaw",
+          "commit": {
+            "abbreviatedOid": "6fb9860"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-07T12:55:48Z",
+          "updatedAt": "2024-12-07T12:55:48Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "If this is not possible, it's probably due to implementing this with an insecure API (pushing the result into a queue before verifying the tag) rather than a specific language. \"if this is possible\" would also contradict MUST NOT. So, I'd leave it as is.",
+              "createdAt": "2024-12-07T12:55:48Z",
+              "updatedAt": "2024-12-07T12:55:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UNOsu",
+          "commit": {
+            "abbreviatedOid": "6fb9860"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-07T13:05:06Z",
+          "updatedAt": "2024-12-07T13:05:06Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "With the context, I don't think `R (256 * D)` can be interpreted as `R * (256 * D)`, but without the context, I understand that it could, so adding a separator doesn't hurt.\r\n\r\nWe could write something in English (\"equaling\"?) but that looks weird.",
+              "createdAt": "2024-12-07T13:05:06Z",
+              "updatedAt": "2024-12-07T13:05:07Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 62,
+      "id": "PR_kwDOKeDGj86EYRsR",
+      "title": "code size -> size",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/62",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This property can also reduce memory requirements in software implementations, as well as the area size of hardware implementations, so maybe we shouldn't be too specific.",
+      "createdAt": "2024-12-06T22:22:48Z",
+      "updatedAt": "2024-12-07T10:08:49Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "codesize",
+      "headRefOid": "f2a800231d2ae5a6dae34ec014e015e9f828e912",
+      "closedAt": "2024-12-07T10:08:48Z",
+      "mergedAt": "2024-12-07T10:08:48Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "0fa8ef09b341b88b564406aad368c20986376df5"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86UNI77",
+          "commit": {
+            "abbreviatedOid": "f2a8002"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Makes sense to me. Good spot.",
+          "createdAt": "2024-12-07T10:08:19Z",
+          "updatedAt": "2024-12-07T10:08:19Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "id": "PR_kwDOKeDGj86EYfPN",
+      "title": "Authentication: mention the nonce uniqueness requirements for the parallel variants",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/63",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also avoid the MAC acronym here, since MACs typically don't require nonces.\r\n\r\nPart of #59 ",
+      "createdAt": "2024-12-06T22:50:02Z",
+      "updatedAt": "2024-12-07T13:15:42Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "mac-nonces",
+      "headRefOid": "96040376fd8eb9d4cdee54cdd41fd121353f76cd",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86UNJje",
+          "commit": {
+            "abbreviatedOid": "71b0b90"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "One potential change,",
+          "createdAt": "2024-12-07T10:29:16Z",
+          "updatedAt": "2024-12-07T10:29:35Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "What do you think about putting `parallel variants (AEGIS-128X and AEGIS-256X)` or removing `parallel variants` and just saying the names?",
+              "createdAt": "2024-12-07T10:29:17Z",
+              "updatedAt": "2024-12-07T10:29:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UNPBB",
+          "commit": {
+            "abbreviatedOid": "71b0b90"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-07T13:15:42Z",
+          "updatedAt": "2024-12-07T13:15:42Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Having the word \"parallel\" suggests that the degree is > 1, while `AEGIS-128X` can be instantiated as `AEGIS-128L`.\r\n\r\nBut the names should indeed be placed inside parentheses. --Done. Thanks!",
+              "createdAt": "2024-12-07T13:15:42Z",
+              "updatedAt": "2024-12-07T13:15:42Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "id": "PR_kwDOKeDGj86EYgYH",
+      "title": "Mention that nonces must not be reused, even with different ADs",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/64",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Part of #59 ",
+      "createdAt": "2024-12-06T22:54:31Z",
+      "updatedAt": "2024-12-07T13:09:46Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "ad-vs-nonce",
+      "headRefOid": "9f0426ca2e72492a9e7f0c0ba2954bdda026d937",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86UNJel",
+          "commit": {
+            "abbreviatedOid": "a3a355f"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Some potential changes.",
+          "createdAt": "2024-12-07T10:26:23Z",
+          "updatedAt": "2024-12-07T10:27:00Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "1. Do we want to go a step further and say SHOULD NOT or MUST NOT intentionally be reused?\r\n2. Elsewhere in the document, we say `(key, nonce) pairs`, so I wonder if they should both be written the same way around.",
+              "createdAt": "2024-12-07T10:26:23Z",
+              "updatedAt": "2024-12-07T10:27:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UNO1W",
+          "commit": {
+            "abbreviatedOid": "a3a355f"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-07T13:09:46Z",
+          "updatedAt": "2024-12-07T13:09:46Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Indeed. MUST NOT would be appropriate here. And good catch for the order of the tuple!\r\n\r\nChanged to simply \"However, `(key,nonce)` pairs MUST NOT be reused, even if the associated data differs.\"",
+              "createdAt": "2024-12-07T13:09:46Z",
+              "updatedAt": "2024-12-07T13:09:46Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 65,
+      "id": "PR_kwDOKeDGj86EaQt1",
+      "title": "Add Neil Madden, Yawning Angel and Chris Barber to the acknowledgements",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/65",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-12-07T13:58:35Z",
+      "updatedAt": "2024-12-07T14:30:08Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "0fa8ef09b341b88b564406aad368c20986376df5",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "ack2",
+      "headRefOid": "1378f0539e3b09531371311153d4ca1dc125f38f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 66,
+      "id": "PR_kwDOKeDGj86Ea7oq",
+      "title": "Document AEGISMAC (WIP)",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/66",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Just a draft for initial feedback.",
+      "createdAt": "2024-12-07T23:05:47Z",
+      "updatedAt": "2024-12-08T00:14:41Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "0fa8ef09b341b88b564406aad368c20986376df5",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "macs",
+      "headRefOid": "050e55a0cc6c235f651d56499f025eeb5baf3a71",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
