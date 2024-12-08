@@ -1328,15 +1328,16 @@ Repeat(7, Update(t, t))
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
     for i in 0..D:
-        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        tag = tag ^ ti
 
 else:                # 256 bits
-    tag0 = ZeroPad({}, 128)
-    tag1 = ZeroPad({}, 128)
+    ti0 = ZeroPad({}, 128)
+    ti1 = ZeroPad({}, 128)
     for i in 0..D:
-        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
-        tag1 = tag1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
-    tag = tag0 || tag1
+        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+    tag = ti0 || ti1
 
 return tag
 ~~~
@@ -1534,15 +1535,16 @@ Repeat(7, Update(t))
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
     for i in 0..D:
-        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        tag = tag ^ ti
 
 else:                # 256 bits
-    tag0 = ZeroPad({}, 128)
-    tag1 = ZeroPad({}, 128)
+    ti0 = ZeroPad({}, 128)
+    ti1 = ZeroPad({}, 128)
     for i in 0..D:
-        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
-        tag1 = tag1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
-    tag = tag0 || tag1
+        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
+        ti1 = ti1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
+    tag = ti0 || ti1
 
 return tag
 ~~~
@@ -1717,13 +1719,14 @@ Repeat(7, Update(t, t))
 tags = {}
 if tag_length == 16: # 128 bits
     for i in 0..D:   # tag from state 0 is included
-        tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        tags = tags || ti
 
 else:                # 256 bits
     for i in 1..D:   # tag from state 0 is skipped
-        tag0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
-        tag1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
-        tags = tags || (tag0 || tag1)
+        ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+        tags = tags || (ti0 || ti1)
 
 if D > 1:
     # Absorb tags into state 0; other states are not used anymore
@@ -1737,9 +1740,9 @@ if D > 1:
 if tag_length == 16: # 128 bits
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
 else:                # 256 bits
-    tag0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
-    tag1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
-    tag = tag0 || tag1
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = t0 || t1
 ~~~
 
 ## AEGISMAC-256X
@@ -1780,13 +1783,14 @@ Repeat(7, Update(t))
 tags = {}
 if tag_length == 16: # 128 bits
     for i in 1..D:   # tag from state 0 is skipped
-        tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || ti
 
 else:                # 256 bits
     for i in 1..D:   # tag from state 0 is skipped
-        tag0 = V[0,i] ^ V[1,i] ^ V[2,i]
-        tag1 = V[3,i] ^ V[4,i] ^ V[5,i]
-        tags = tags || (tag0 || tag1)
+        ti0 = V[0,i] ^ V[1,i] ^ V[2,i]
+        ti1 = V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || (ti0 || ti1)
 
 if D > 1:
     # Absorb tags into state 0; other states are not used anymore
@@ -1800,9 +1804,9 @@ if D > 1:
 if tag_length == 16: # 128 bits
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
 else:                # 256 bits
-    tag0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
-    tag1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
-    tag = tag0 || tag1
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = t0 || t1
 ~~~
 
 # Implementation Status
