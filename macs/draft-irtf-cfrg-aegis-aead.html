@@ -3308,7 +3308,7 @@ return stream
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-aegis-as-a-message-authenti" class="section-name selfRef">AEGIS as a Message Authentication Code</a>
       </h2>
 <p id="section-8-1">All AEGIS variants can be used to construct a MAC.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">For all the variants, The <code>Mac</code> function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-2">For all the variants, the <code>Mac</code> function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3">This is the only function that permits the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-3" class="pilcrow">¶</a></p>
 <p id="section-8-4">AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
 Likewise, unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee they are uniformly random.<a href="#section-8-4" class="pilcrow">¶</a></p>
