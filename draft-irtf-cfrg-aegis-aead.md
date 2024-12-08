@@ -1775,7 +1775,7 @@ u = LE64(data_len_bits) || LE64(0)
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
-Repeat(7, Update(t, t))
+Repeat(7, Update(t))
 
 tags = {}
 if tag_length == 16: # 128 bits
@@ -1795,7 +1795,7 @@ if D > 1:
 
     u = LE64(tag_length) || LE64(D)
     t = ZeroPad(V[3,0] ^ u, R)
-    Repeat(7, Update(t, t))
+    Repeat(7, Update(t))
 
 if tag_length == 16: # 128 bits
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
