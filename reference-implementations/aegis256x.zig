@@ -186,21 +186,21 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             for (0..7) |_| {
                 self.update(t);
             }
-            var ti = [_]u8{0} ** rate;
+            var v = [_]u8{0} ** rate;
             if (tag_length == 16) {
                 const tags = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
                 for (1..degree) |d| {
-                    ti[0..16].* = tags[d * 16 ..][0..16].*;
-                    self.absorb(&ti);
+                    v[0..16].* = tags[d * 16 ..][0..16].*;
+                    self.absorb(&v);
                 }
             } else {
                 const tags_0 = s[0].xorBlocks(s[1]).xorBlocks(s[2]).toBytes();
                 const tags_1 = s[3].xorBlocks(s[4]).xorBlocks(s[5]).toBytes();
                 for (1..degree) |d| {
-                    ti[0..16].* = tags_0[d * 16 ..][0..16].*;
-                    self.absorb(&ti);
-                    ti[0..16].* = tags_1[d * 16 ..][0..16].*;
-                    self.absorb(&ti);
+                    v[0..16].* = tags_0[d * 16 ..][0..16].*;
+                    self.absorb(&v);
+                    v[0..16].* = tags_1[d * 16 ..][0..16].*;
+                    self.absorb(&v);
                 }
             }
             if (degree > 1) {
