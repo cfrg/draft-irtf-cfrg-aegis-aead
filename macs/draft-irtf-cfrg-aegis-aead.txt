@@ -1666,7 +1666,7 @@ return tag
 
 8.2.  AEGISMAC-256
 
-   Similarly, AEGISMAC-256 refers to the Mac function build upon the
+   Similarly, AEGISMAC-256 refers to the Mac function built upon the
    building blocks of AEGIS-256.
 
    Steps:
