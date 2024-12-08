@@ -1637,7 +1637,7 @@ Mac(data, key, nonce)
 
 Inputs:
 
-- `data`: the input data to be authenticate (length MUST be less than or equal to `A_MAX`).
+- `data`: the input data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
 - `nonce`: the public nonce.
 
