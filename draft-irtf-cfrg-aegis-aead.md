@@ -1626,12 +1626,12 @@ After initialization, the `Update` function is called with constant parameters, 
 
 All AEGIS variants can be used to construct a MAC.
 
-For all the variants, the `Mac` function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.
+For all the variants, the `Mac` function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.
 
-This is the only function that permits the reuse of `(key, nonce)` pairs with different inputs.
+This is the only function that allows the reuse of `(key, nonce)` pairs with different inputs.
 
 AEGIS-based MAC functions MUST NOT be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
-Likewise, unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee they are uniformly random.
+Likewise, unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee that they are uniformly random.
 
 ~~~
 Mac(data, key, nonce)
@@ -1704,7 +1704,7 @@ FinalizeMac(data_len_bits)
 
 The `FinalizeMac` function computes a 128- or 256-bit tag.
 
-It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state as in AEGIS-128L.
+It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-128L.
 
 Steps:
 
@@ -1770,7 +1770,7 @@ FinalizeMac(data_len_bits)
 
 The `FinalizeMac` function computes a 128- or 256-bit tag that authenticates the input data.
 
-It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state as in AEGIS-256.
+It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-256.
 
 ~~~
 t = {}
