@@ -456,7 +456,7 @@ The `Decrypt` function decrypts a ciphertext, verifies that the authentication t
 
 Security:
 
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
+- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before being returned.
 - The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
@@ -1062,7 +1062,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 ## Additional Conventions and Definitions
 
 - `D`: the degree of parallelism.
-- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
+- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `256 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
 - `ctx[i]`: the `i`-th context separator. This is a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
@@ -1181,7 +1181,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
