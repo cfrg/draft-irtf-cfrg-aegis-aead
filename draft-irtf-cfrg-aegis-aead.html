@@ -1046,7 +1046,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 10 June 2025</td>
+<td class="center">Expires 11 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1059,12 +1059,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-07" class="published">7 December 2024</time>
+<time datetime="2024-12-08" class="published">8 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-10">10 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-11">11 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1111,7 +1111,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1736,7 +1736,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-3.2-3">Security:<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-4.1">
-            <p id="section-3.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before being returned.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-4.2">
             <p id="section-3.2-4.2.1">The comparison of the input <code>tag</code> with the <code>expected_tag</code> <span class="bcp14">MUST</span> be done in constant time.<a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
@@ -2553,7 +2553,7 @@ return tag
             <p id="section-5.1-1.1.1"><code>D</code>: the degree of parallelism.<a href="#section-5.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.2">
-            <p id="section-5.1-1.2.1"><code>R</code>: the absorption and output rate of the mode. With AEGIS-128X, the rate is <code>2 * 128 * D</code> bits. With AEGIS-256X, the rate is <code>128 * D</code> bits.<a href="#section-5.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-1.2.1"><code>R</code>: the absorption and output rate of the mode. With AEGIS-128X, the rate is <code>256 * D</code> bits. With AEGIS-256X, the rate is <code>128 * D</code> bits.<a href="#section-5.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.3">
             <p id="section-5.1-1.3.1"><code>V[j,i]</code>: the <code>j</code>-th AES block of the <code>i</code>-th state. <code>i</code> is in the <code>[0..D)</code> range. For AEGIS-128X, <code>j</code> is in the <code>[0..8)</code> range, while for AEGIS-256, <code>j</code> is in the <code>[0..6)</code> range.<a href="#section-5.1-1.3.1" class="pilcrow">¶</a></p>
@@ -2705,7 +2705,7 @@ Repeat(10,
 Update(M0, M1)
 </pre><a href="#section-5.4.2-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function, but absorbs <code>R</code> (<code>2 * 128 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function, but absorbs <code>R</code> (= <code>256 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.2-3">Steps:<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.2-4">
 <pre>
