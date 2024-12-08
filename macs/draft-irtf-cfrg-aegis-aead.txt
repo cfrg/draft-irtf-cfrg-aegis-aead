@@ -166,13 +166,13 @@ Table of Contents
        A.7.1.  Initial State
        A.7.2.  Test Vector 1
        A.7.3.  Test Vector 2
-       A.7.4.  AEGISMAC Test Vectors
-       A.7.5.  AEGISMAC-128L Test Vector
-       A.7.6.  AEGISMAC-128X2 Test Vector
-       A.7.7.  AEGISMAC-128X4 Test Vector
-       A.7.8.  AEGISMAC-256 Test Vector
-       A.7.9.  AEGISMAC-256X2 Test Vector
-       A.7.10. AEGISMAC-256X4 Test Vector
+     A.8.  AEGISMAC Test Vectors
+       A.8.1.  AEGISMAC-128L Test Vector
+       A.8.2.  AEGISMAC-128X2 Test Vector
+       A.8.3.  AEGISMAC-128X4 Test Vector
+       A.8.4.  AEGISMAC-256 Test Vector
+       A.8.5.  AEGISMAC-256X2 Test Vector
+       A.8.6.  AEGISMAC-256X4 Test Vector
    Acknowledgments
    Authors' Addresses
 
@@ -2881,9 +2881,9 @@ A.7.3.  Test Vector 2
    tag256: ba3168ecd7f7120c5e204a7e0d616e39
            5675ddfe00e4e5490a5ba93bb1a70555
 
-A.7.4.  AEGISMAC Test Vectors
+A.8.  AEGISMAC Test Vectors
 
-A.7.5.  AEGISMAC-128L Test Vector
+A.8.1.  AEGISMAC-128L Test Vector
 
    key    : 10010000000000000000000000000000
 
@@ -2898,7 +2898,7 @@ A.7.5.  AEGISMAC-128L Test Vector
    tag256 : a7d01b4636e8d312af8b65b3bb680feb
             8ffd62aa234584001b1e419b4b40c317
 
-A.7.6.  AEGISMAC-128X2 Test Vector
+A.8.2.  AEGISMAC-128X2 Test Vector
 
    key    : 10010000000000000000000000000000
 
@@ -2919,7 +2919,7 @@ A.7.6.  AEGISMAC-128X2 Test Vector
    tag256 : f376288f13b51c73ecb814922919a31f
             2cbe1fd322a0062ef7860327a2bc3159
 
-A.7.7.  AEGISMAC-128X4 Test Vector
+A.8.3.  AEGISMAC-128X4 Test Vector
 
    key    : 10010000000000000000000000000000
 
@@ -2946,7 +2946,7 @@ A.7.7.  AEGISMAC-128X4 Test Vector
    tag256 : 3da44ead4e192d0df3c47c994c242b69
             dab2fdf0d98f58f96838d634ab945d3a
 
-A.7.8.  AEGISMAC-256 Test Vector
+A.8.4.  AEGISMAC-256 Test Vector
 
    key    : 10010000000000000000000000000000
             00000000000000000000000000000000
@@ -2963,7 +2963,7 @@ A.7.8.  AEGISMAC-256 Test Vector
    tag256 : f5945eccdb14c836d8470b8abcf87e26
             bc635abc17e05d1fbf0ca05c679e0eef
 
-A.7.9.  AEGISMAC-256X2 Test Vector
+A.8.5.  AEGISMAC-256X2 Test Vector
 
    key    : 10010000000000000000000000000000
             00000000000000000000000000000000
@@ -2985,7 +2985,7 @@ A.7.9.  AEGISMAC-256X2 Test Vector
    tag256 : 084cb5d2d6392f7d219579181488197e
             811746fd85d5524c671ccd846dfbe8d9
 
-A.7.10.  AEGISMAC-256X4 Test Vector
+A.8.6.  AEGISMAC-256X4 Test Vector
 
    key    : 10010000000000000000000000000000
             00000000000000000000000000000000
