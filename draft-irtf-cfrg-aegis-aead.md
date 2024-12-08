@@ -1683,16 +1683,6 @@ The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X but replaces
 
 ### The Mac function
 
-Inputs:
-
-- `data`: the input data to be authenticate (length MUST be less than or equal to `A_MAX`).
-- `key`: the encryption key.
-- `nonce`: the public nonce.
-
-Outputs:
-
-- `tag`: the authentication tag.
-
 Steps:
 
 ~~~
