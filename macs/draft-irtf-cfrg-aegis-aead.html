@@ -3333,10 +3333,10 @@ return stream
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-aegis-as-a-message-authenti" class="section-name selfRef">AEGIS as a Message Authentication Code</a>
       </h2>
 <p id="section-8-1">All AEGIS variants can be used to construct a MAC.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">For all the variants, the <code>Mac</code> function takes as input a key, a nonce, and data, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">This is the only function that permits the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-2">For all the variants, the <code>Mac</code> function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">This is the only function that allows the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-3" class="pilcrow">¶</a></p>
 <p id="section-8-4">AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
-Likewise, unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee they are uniformly random.<a href="#section-8-4" class="pilcrow">¶</a></p>
+Likewise, unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee that they are uniformly random.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-5">
 <pre>
 Mac(data, key, nonce)
@@ -3434,7 +3434,7 @@ FinalizeMac(data_len_bits)
 </pre><a href="#section-8.3.2-1" class="pilcrow">¶</a>
 </div>
 <p id="section-8.3.2-2">The <code>FinalizeMac</code> function computes a 128- or 256-bit tag.<a href="#section-8.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-8.3.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state as in AEGIS-128L.<a href="#section-8.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-8.3.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-128L.<a href="#section-8.3.2-3" class="pilcrow">¶</a></p>
 <p id="section-8.3.2-4">Steps:<a href="#section-8.3.2-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8.3.2-5">
 <pre>
@@ -3513,7 +3513,7 @@ FinalizeMac(data_len_bits)
 </pre><a href="#section-8.4.2-1" class="pilcrow">¶</a>
 </div>
 <p id="section-8.4.2-2">The <code>FinalizeMac</code> function computes a 128- or 256-bit tag that authenticates the input data.<a href="#section-8.4.2-2" class="pilcrow">¶</a></p>
-<p id="section-8.4.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state as in AEGIS-256.<a href="#section-8.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-8.4.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-256.<a href="#section-8.4.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8.4.2-4">
 <pre>
 t = {}
