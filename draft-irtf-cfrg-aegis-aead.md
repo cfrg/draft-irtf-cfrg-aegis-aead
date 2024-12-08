@@ -1681,7 +1681,7 @@ return tag
 
 The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
 
-### The Mac function
+### The Mac Function
 
 Steps:
 
@@ -1694,7 +1694,7 @@ tag = FinalizeMac(|data|)
 return tag
 ~~~
 
-### The FinalizeMac function
+### The FinalizeMac Function
 
 ~~~
 FinalizeMac(data_len_bits)
@@ -1746,7 +1746,7 @@ else:                # 256 bits
 
 The AEGISMAC-256X MAC is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
 
-### The Mac function
+### The Mac Function
 
 Steps:
 
@@ -1759,7 +1759,7 @@ tag = FinalizeMac(|data|)
 return tag
 ~~~
 
-### The FinalizeMac function
+### The FinalizeMac Function
 
 ~~~
 FinalizeMac(data_len_bits)
