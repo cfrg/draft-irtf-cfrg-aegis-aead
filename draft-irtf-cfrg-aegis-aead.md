@@ -1730,8 +1730,8 @@ else:                # 256 bits
 
 if D > 1:
     # Absorb tags into state 0; other states are not used anymore
-    for ti in Split(tags, 256):
-        Absorb(ZeroPad(ti, R))
+    for v in Split(tags, 256):
+        Absorb(ZeroPad(v, R))
 
     u = LE64(tag_length) || LE64(D)
     t = ZeroPad(V[2,0] ^ u, R)
@@ -1794,8 +1794,8 @@ else:                # 256 bits
 
 if D > 1:
     # Absorb tags into state 0; other states are not used anymore
-    for ti in Split(tags, 128):
-        Absorb(ZeroPad(ti, R))
+    for v in Split(tags, 128):
+        Absorb(ZeroPad(v, R))
 
     u = LE64(tag_length) || LE64(D)
     t = ZeroPad(V[3,0] ^ u, R)
