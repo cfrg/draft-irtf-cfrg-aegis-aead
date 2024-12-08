@@ -456,7 +456,7 @@ The `Decrypt` function decrypts a ciphertext, verifies that the authentication t
 
 Security:
 
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
+- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before being returned.
 - The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
@@ -1062,7 +1062,7 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 ## Additional Conventions and Definitions
 
 - `D`: the degree of parallelism.
-- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `2 * 128 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
+- `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `256 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
 - `ctx[i]`: the `i`-th context separator. This is a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
@@ -1181,7 +1181,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (`2 * 128 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1549,7 +1549,7 @@ return tag
 
 ## Implementation Considerations
 
-AEGIS-128X and AEGIS-256X with a degree of `1` are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the code size of a generic implementation.
+AEGIS-128X and AEGIS-256X with a degree of `1` are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the size of a generic implementation.
 
 In AEGIS-128X, `V` can be represented as eight 256-bit registers (when `D = 2`) or eight 512-bit registers (when `D = 4`). In AEGIS-256X, `V` can be represented as six 256-bit registers (when `D = 2`) or six 512-bit registers (when `D = 4`). With this representation, loops over `0..D` in the above pseudocode can be replaced by vector instructions.
 
@@ -1847,7 +1847,9 @@ In all these variants, unused nonce bits can encode a key identifier, enhancing 
 
 ### Other Uses of AEGIS
 
-All variants can be used as a MAC by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
+All variants can be used solely for authentication by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
+
+Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces MUST NOT be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.
 
 ## Implementation Security
 
@@ -1864,6 +1866,7 @@ AEGIS-256 offers 256-bit message security against plaintext and state recovery, 
 Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.
 
 Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
+However, `(key, nonce)` pairs MUST NOT be reused, even if the associated data differs.
 
 AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.
 
@@ -2901,3 +2904,4 @@ We would like to thank the following individuals for their contributions:
 - John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
 - Bart Mennink and Charlotte Lefevre as well as Takanori Isobe and Mostafizar Rahman for investigating the commitment security of the schemes specified in this document.
 - Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Panel.
+- Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.
