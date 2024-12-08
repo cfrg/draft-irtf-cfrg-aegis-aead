@@ -1726,7 +1726,7 @@ else:                # 256 bits
         tags = tags || (tag0 || tag1)
 
 if D > 1:
-    # Absorb tags into state 0; other states are not used any more
+    # Absorb tags into state 0; other states are not used anymore
     for ti in Split(tags, 256):
         Absorb(ZeroPad(ti, R))
 
@@ -1789,7 +1789,7 @@ else:                # 256 bits
         tags = tags || (tag0 || tag1)
 
 if D > 1:
-    # Absorb tags into state 0; other states are not used any more
+    # Absorb tags into state 0; other states are not used anymore
     for ti in Split(tags, 128):
         Absorb(ZeroPad(ti, R))
 
