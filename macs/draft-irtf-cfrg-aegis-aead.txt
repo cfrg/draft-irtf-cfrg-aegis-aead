@@ -108,11 +108,11 @@ Table of Contents
      8.1.  AEGISMAC-128L
      8.2.  AEGISMAC-256
      8.3.  AEGISMAC-128X
-       8.3.1.  The Mac function
-       8.3.2.  The FinalizeMac function
+       8.3.1.  The Mac Function
+       8.3.2.  The FinalizeMac Function
      8.4.  AEGISMAC-256X
-       8.4.1.  The Mac function
-       8.4.2.  The FinalizeMac function
+       8.4.1.  The Mac Function
+       8.4.2.  The FinalizeMac Function
    9.  Implementation Status
    10. Security Considerations
      10.1.  Usage Guidelines
@@ -1684,7 +1684,7 @@ return tag
    but replaces the Finalize function with a dedicated FinalizeMac
    function.
 
-8.3.1.  The Mac function
+8.3.1.  The Mac Function
 
    Steps:
 
@@ -1695,7 +1695,7 @@ return tag
    tag = FinalizeMac(|data|)
    return tag
 
-8.3.2.  The FinalizeMac function
+8.3.2.  The FinalizeMac Function
 
    FinalizeMac(data_len_bits)
 
@@ -1747,7 +1747,7 @@ else:                # 256 bits
    but replaces the Finalize function with a dedicated FinalizeMac
    function.
 
-8.4.1.  The Mac function
+8.4.1.  The Mac Function
 
    Steps:
 
@@ -1758,7 +1758,7 @@ else:                # 256 bits
    tag = FinalizeMac(|data|)
    return tag
 
-8.4.2.  The FinalizeMac function
+8.4.2.  The FinalizeMac Function
 
    FinalizeMac(data_len_bits)
 
