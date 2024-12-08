@@ -2744,7 +2744,7 @@ tag256: ba3168ecd7f7120c5e204a7e0d616e39
         5675ddfe00e4e5490a5ba93bb1a70555
 ~~~
 
-### AEGISMAC Test Vectors
+## AEGISMAC Test Vectors
 
 ### AEGISMAC-128L Test Vector
 
