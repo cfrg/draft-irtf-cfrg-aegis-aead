@@ -1656,7 +1656,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|)
+tag = Finalize(|data|, 0)
 return tag
 ~~~
 
@@ -1673,7 +1673,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|)
+tag = Finalize(|data|, 0)
 return tag
 ~~~
 
