@@ -1647,7 +1647,7 @@ Outputs:
 
 ## AEGISMAC-128L
 
-AEGISMAC-128L refers to the `Mac` function built upon the building blocks of AEGIS-128L.
+AEGISMAC-128L refers to the `Mac` function based on the building blocks of AEGIS-128L.
 
 Steps:
 
@@ -1664,7 +1664,7 @@ It is equivalent to an evaluation of the `Encrypt` function of AEGIS-128L with t
 
 ## AEGISMAC-256
 
-Similarly, AEGISMAC-256 refers to the `Mac` function built upon the building blocks of AEGIS-256.
+Similarly, AEGISMAC-256 refers to the `Mac` function based on the building blocks of AEGIS-256.
 
 Steps:
 
