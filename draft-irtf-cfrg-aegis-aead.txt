@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 11 June 2025                             Individual Contributor
-                                                         8 December 2024
+Expires: 12 June 2025                             Individual Contributor
+                                                         9 December 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 June 2025.
+   This Internet-Draft will expire on 12 June 2025.
 
 Copyright Notice
 
@@ -1902,9 +1902,9 @@ return tag
               <https://doi.org/10.1049/ise2.12109>.
 
    [TEST-VECTORS]
-              "AEGIS Test Vectors", commit 7e4a38d1, 2024,
+              "AEGIS Test Vectors", commit ed51379d, 2024,
               <https://github.com/cfrg/draft-irtf-cfrg-aegis-
-              aead/tree/7e4a38d1/test-vectors>.
+              aead/tree/ed51379d/test-vectors>.
 
    [VV18]     Vaudenay, S. and D. Vizár, "Can Caesar Beat Galois?",
               Applied Cryptography and Network Security. ACNS 2018.
