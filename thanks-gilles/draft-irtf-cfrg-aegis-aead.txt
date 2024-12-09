@@ -2716,8 +2716,8 @@ Acknowledgments
       the draft.
 
    *  Gilles Van Assche for reviewing the draft and providing insightful
-      comments on the implications of nonce reuse for authentication
-      tags in parallel modes.
+      comments on the implications of nonce reuse in AEGIS-128X and
+      AEGIS-256X.
 
 Authors' Addresses
 
