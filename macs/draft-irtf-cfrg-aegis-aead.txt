@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 11 June 2025                             Individual Contributor
-                                                         8 December 2024
+Expires: 12 June 2025                             Individual Contributor
+                                                         9 December 2024
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 June 2025.
+   This Internet-Draft will expire on 12 June 2025.
 
 Copyright Notice
 
@@ -2109,9 +2109,9 @@ else:                # 256 bits
               <https://doi.org/10.1049/ise2.12109>.
 
    [TEST-VECTORS]
-              "AEGIS Test Vectors", commit 7e4a38d1, 2024,
+              "AEGIS Test Vectors", commit ed51379d, 2024,
               <https://github.com/cfrg/draft-irtf-cfrg-aegis-
-              aead/tree/7e4a38d1/test-vectors>.
+              aead/tree/ed51379d/test-vectors>.
 
    [VV18]     Vaudenay, S. and D. Vizár, "Can Caesar Beat Galois?",
               Applied Cryptography and Network Security. ACNS 2018.
@@ -2988,13 +2988,13 @@ A.8.5.  AEGISMAC-256X2 Test Vector
 
    tags128: 5330b347e55da0e97dfb95abdb3c3774
 
-   tag128 : a88b1e17c62fbda5a65202e0fe38c8a6
+   tag128 : 1468bcd6376f12ef29b2ba281f491dd8
 
    tags256: 4ca4e65a82521e2cc04e2ef139ad62ed
             1f94551d670fbec5bdb5bb5ae2915599
 
-   tag256 : 084cb5d2d6392f7d219579181488197e
-            811746fd85d5524c671ccd846dfbe8d9
+   tag256 : e854c36a63b86dc22130c7025b9ba84e
+            0e597871b075b563845171b856871bbf
 
 A.8.6.  AEGISMAC-256X4 Test Vector
 
@@ -3012,7 +3012,7 @@ A.8.6.  AEGISMAC-256X4 Test Vector
             713819ddf13b39cf1f995786e7e20301
             ca2714cfadc4e26ee43e9ac6b8d14890
 
-   tag128 : 710e7906d06a2551eb8eced73fa6e565
+   tag128 : 8ac8b254b708d1dd673535bd5dc77775
 
    tags256: 293111be5b6cbbb480652cbca9c8e860
             f498a0ca030bb6da5abb5730e094970c
@@ -3021,8 +3021,8 @@ A.8.6.  AEGISMAC-256X4 Test Vector
             69b5f79332a2cbebd8992955d69927f8
             a392e35c9f6629853ca7b3936e486f68
 
-   tag256 : 5f0b301a7bbd45f560767f7f28d42f2a
-            ce7d812ae049dc997aa7ad68d8da98dd
+   tag256 : 962abc85dcc6522311ae2fbfc6d0f66e
+            e263fd18be4d9135f36d14bf05fa460b
 
 Acknowledgments
 
@@ -3053,6 +3053,10 @@ Acknowledgments
 
    *  Yawning Angel, Chris Barber, and Neil Madden for their review of
       the draft.
+
+   *  Gilles Van Assche for reviewing the draft and providing insightful
+      comments on the implications of nonce reuse in AEGIS-128X and
+      AEGIS-256X.
 
 Authors' Addresses
 
