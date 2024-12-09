@@ -2715,6 +2715,10 @@ Acknowledgments
    *  Yawning Angel, Chris Barber, and Neil Madden for their review of
       the draft.
 
+   *  Gilles Van Assche for reviewing the draft and providing insightful
+      comments on the implications of nonce reuse in AEGIS-128X and
+      AEGIS-256X.
+
 Authors' Addresses
 
    Frank Denis
