@@ -536,7 +536,11 @@ figcaption, caption {
   }
   pre, svg {
     display: inline-block;
-    overflow-x: auto;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
   }
   pre {
     max-width: 100%;
@@ -1335,9 +1339,6 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.3">
                     <p id="section-toc.1-1.10.2.1.2.3.1"><a href="#section-10.1.3" class="auto internal xref">10.1.3</a>.  <a href="#name-multi-user-security" class="internal xref">Multi-User Security</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.4">
-                    <p id="section-toc.1-1.10.2.1.2.4.1"><a href="#section-10.1.4" class="auto internal xref">10.1.4</a>.  <a href="#name-other-uses-of-aegis" class="internal xref">Other Uses of AEGIS</a></p>
 </li>
                 </ul>
 </li>
@@ -3335,7 +3336,7 @@ return stream
 <p id="section-8-1">All AEGIS variants can be used to construct a MAC.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">For all the variants, the <code>Mac</code> function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3">This is the only function that allows the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
+<p id="section-8-4">However, AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
 Likewise, unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee that they are uniformly random.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-5">
 <pre>
@@ -3348,7 +3349,7 @@ Mac(data, key, nonce)
           <p id="section-8-7.1.1"><code>data</code>: the input data to authenticate (length <span class="bcp14">MUST</span> be less than or equal to <code>A_MAX</code>).<a href="#section-8-7.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-7.2">
-          <p id="section-8-7.2.1"><code>key</code>: the encryption key.<a href="#section-8-7.2.1" class="pilcrow">¶</a></p>
+          <p id="section-8-7.2.1"><code>key</code>: the secret key.<a href="#section-8-7.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-7.3">
           <p id="section-8-7.3.1"><code>nonce</code>: the public nonce.<a href="#section-8-7.3.1" class="pilcrow">¶</a></p>
@@ -3384,7 +3385,7 @@ return tag
         <h3 id="name-aegismac-256">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-aegismac-256" class="section-name selfRef">AEGISMAC-256</a>
         </h3>
-<p id="section-8.2-1">Similarly, AEGISMAC-256 refers to the <code>Mac</code> function based on the building blocks of AEGIS-256.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-1">AEGISMAC-256 refers to the <code>Mac</code> function based on the building blocks of AEGIS-256.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <p id="section-8.2-2">Steps:<a href="#section-8.2-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8.2-3">
 <pre>
@@ -3432,7 +3433,7 @@ return tag
 FinalizeMac(data_len_bits)
 </pre><a href="#section-8.3.2-1" class="pilcrow">¶</a>
 </div>
-<p id="section-8.3.2-2">The <code>FinalizeMac</code> function computes a 128- or 256-bit tag.<a href="#section-8.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.3.2-2">The <code>FinalizeMac</code> function computes a 128- or 256-bit tag that authenticates the input data.<a href="#section-8.3.2-2" class="pilcrow">¶</a></p>
 <p id="section-8.3.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-128L.<a href="#section-8.3.2-3" class="pilcrow">¶</a></p>
 <p id="section-8.3.2-4">Steps:<a href="#section-8.3.2-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8.3.2-5">
@@ -3607,15 +3608,6 @@ else:                # 256 bits
           </h4>
 <p id="section-10.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-10.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-10.1.3-2">In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don’t provide any advantage over single-target attacks.<a href="#section-10.1.3-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="other-uses-of-aegis">
-<section id="section-10.1.4">
-          <h4 id="name-other-uses-of-aegis">
-<a href="#section-10.1.4" class="section-number selfRef">10.1.4. </a><a href="#name-other-uses-of-aegis" class="section-name selfRef">Other Uses of AEGIS</a>
-          </h4>
-<p id="section-10.1.4-1">All variants can be used solely for authentication by calling the <code>Encrypt()</code> function with the message as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag. However, they <span class="bcp14">MUST NOT</span> be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no proof they are uniformly random.<a href="#section-10.1.4-1" class="pilcrow">¶</a></p>
-<p id="section-10.1.4-2">Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces <span class="bcp14">MUST NOT</span> be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.<a href="#section-10.1.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
