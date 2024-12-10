@@ -1328,15 +1328,16 @@ Repeat(7, Update(t, t))
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
     for i in 0..D:
-        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        tag = tag ^ ti
 
 else:                # 256 bits
-    tag0 = ZeroPad({}, 128)
-    tag1 = ZeroPad({}, 128)
+    ti0 = ZeroPad({}, 128)
+    ti1 = ZeroPad({}, 128)
     for i in 0..D:
-        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
-        tag1 = tag1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
-    tag = tag0 || tag1
+        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+    tag = ti0 || ti1
 
 return tag
 ~~~
@@ -1534,15 +1535,16 @@ Repeat(7, Update(t))
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
     for i in 0..D:
-        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        tag = tag ^ ti
 
 else:                # 256 bits
-    tag0 = ZeroPad({}, 128)
-    tag1 = ZeroPad({}, 128)
+    ti0 = ZeroPad({}, 128)
+    ti1 = ZeroPad({}, 128)
     for i in 0..D:
-        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
-        tag1 = tag1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
-    tag = tag0 || tag1
+        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
+        ti1 = ti1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
+    tag = ti0 || ti1
 
 return tag
 ~~~
@@ -1620,6 +1622,191 @@ Instead of relying on the generic `Encrypt` function, implementations can skip t
 
 After initialization, the `Update` function is called with constant parameters, allowing further optimizations.
 
+# AEGIS as a Message Authentication Code
+
+All AEGIS variants can be used to construct a MAC.
+
+For all the variants, the `Mac` function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.
+
+This is the only function that allows the reuse of `(key, nonce)` pairs with different inputs.
+
+However, AEGIS-based MAC functions MUST NOT be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
+Likewise, unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee that they are uniformly random.
+
+~~~
+Mac(data, key, nonce)
+~~~
+
+Inputs:
+
+- `data`: the input data to authenticate (length MUST be less than or equal to `A_MAX`).
+- `key`: the secret key.
+- `nonce`: the public nonce.
+
+Outputs:
+
+- `tag`: the authentication tag.
+
+## AEGISMAC-128L
+
+AEGISMAC-128L refers to the `Mac` function based on the building blocks of AEGIS-128L.
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, 256), 256)
+for di in data_blocks:
+    Absorb(di)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+return tag
+~~~
+
+## AEGISMAC-256
+
+AEGISMAC-256 refers to the `Mac` function based on the building blocks of AEGIS-256.
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, 128), 128)
+for di in data_blocks:
+    Absorb(di)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+return tag
+~~~
+
+## AEGISMAC-128X
+
+The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+
+### The Mac Function
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, R), R)
+for di in data_blocks:
+    Absorb(di)
+tag = FinalizeMac(|data|)
+return tag
+~~~
+
+### The FinalizeMac Function
+
+~~~
+FinalizeMac(data_len_bits)
+~~~
+
+The `FinalizeMac` function computes a 128- or 256-bit tag that authenticates the input data.
+
+It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-128L.
+
+Steps:
+
+~~~
+t = {}
+u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
+for i in 0..D:
+    t = t || (V[2,i] ^ u)
+
+Repeat(7, Update(t, t))
+
+tags = {}
+if tag_length == 16: # 128 bits
+    for i in 0..D:   # tag from state 0 is included
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        tags = tags || ti
+
+else:                # 256 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+        tags = tags || (ti0 || ti1)
+
+if D > 1:
+    # Absorb tags into state 0; other states are not used anymore
+    for v in Split(tags, 256):
+        Absorb(ZeroPad(v, R))
+
+    u = LE64(D) || LE64(tag_length)
+    t = ZeroPad(V[2,0] ^ u, R)
+    Repeat(7, Update(t, t))
+
+if tag_length == 16: # 128 bits
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+else:                # 256 bits
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = t0 || t1
+~~~
+
+## AEGISMAC-256X
+
+The AEGISMAC-256X MAC is based on the building blocks of AEGIS-256X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+
+### The Mac Function
+
+Steps:
+
+~~~
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, R), R)
+for di in data_blocks:
+    Absorb(di)
+tag = FinalizeMac(|data|)
+return tag
+~~~
+
+### The FinalizeMac Function
+
+~~~
+FinalizeMac(data_len_bits)
+~~~
+
+The `FinalizeMac` function computes a 128- or 256-bit tag that authenticates the input data.
+
+It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-256.
+
+~~~
+t = {}
+u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
+for i in 0..D:
+    t = t || (V[3,i] ^ u)
+
+Repeat(7, Update(t))
+
+tags = {}
+if tag_length == 16: # 128 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || ti
+
+else:                # 256 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        ti0 = V[0,i] ^ V[1,i] ^ V[2,i]
+        ti1 = V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || (ti0 || ti1)
+
+if D > 1:
+    # Absorb tags into state 0; other states are not used anymore
+    for v in Split(tags, 128):
+        Absorb(ZeroPad(v, R))
+
+    u = LE64(D) || LE64(tag_length)
+    t = ZeroPad(V[3,0] ^ u, R)
+    Repeat(7, Update(t))
+
+if tag_length == 16: # 128 bits
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+else:                # 256 bits
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = t0 || t1
+~~~
+
 # Implementation Status
 
 *This note is to be removed before publishing as an RFC.*
@@ -1659,12 +1846,6 @@ Alternatively, the associated data can be fed into a collision-resistant KDF, su
 AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
-
-### Other Uses of AEGIS
-
-All variants can be used solely for authentication by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
-
-Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces MUST NOT be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.
 
 ## Implementation Security
 
@@ -2560,6 +2741,150 @@ tag128: ec44b512d713f745547be345bcc66b6c
 
 tag256: ba3168ecd7f7120c5e204a7e0d616e39
         5675ddfe00e4e5490a5ba93bb1a70555
+~~~
+
+## AEGISMAC Test Vectors
+
+### AEGISMAC-128L Test Vector
+
+~~~ test-vectors
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tag128 : d3f09b2842ad301687d6902c921d7818
+
+tag256 : 9490e7c89d420c9f37417fa625eb38e8
+         cad53c5cbec55285e8499ea48377f2a3
+~~~
+
+### AEGISMAC-128X2 Test Vector
+
+~~~ test-vectors
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 4ee9988a70c8a864a11b97e4b47e7fdf
+         aa50e513525dc88346c094a7490a48cb
+
+tag128 : 21c6922d3ad6522ac57369600314c912
+
+tags256: e5475e88338c2859ab367ce0aa34deb0
+         2fd7293564f8fdbf3074a9335242b9f4
+
+tag256 : 83dd64b45d75ef3537f45f0ec5b27518
+         9b98fb241fed02672122c73f5ce8ac07
+~~~
+
+### AEGISMAC-128X4 Test Vector
+
+~~~ test-vectors
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 74e53f1ba0468d0202cec23d0b15c6a5
+         111e366ba0019a58364e9dab9c63dde2
+         671e3da717004bea7ee3325e98db6438
+         d3d32a38d2cbd76beb67be75dc6ebd05
+
+tag128 : 90b56cd04f89737f558e7add279bcfa6
+
+tags256: 4954de13381d142f623f778665416950
+         1204963db07974c21ee2f55b9c3415b5
+         22084db5d2f9801c541c86738c501318
+         2d15844ef3c5ffbbbbdfc16abc2939d0
+         23f6cddb8b055a15ed393028891ab87a
+         de44d86c69bb0efcfbb8888ea77c98f9
+
+tag256 : 2b6e56d61a23e15ab84967fe936f7a68
+         ae32b666412ed0504c57fff2cdb744a4
+~~~
+
+### AEGISMAC-256 Test Vector
+
+~~~ test-vectors
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tag128 : c08e20cfc56f27195a46c9cef5c162d4
+
+tag256 : a5c906ede3d69545c11e20afa360b221
+         f936e946ed2dba3d7c75ad6dc2784126
+~~~
+
+### AEGISMAC-256X2 Test Vector
+
+~~~ test-vectors
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 631331cfc9b058661c7e58dff104431a
+
+tag128 : 47fb35135afe3520cf0b47458024eca8
+
+tags256: 9e2fa48b9070ce8279e706dccd586d91
+         42c8d9e5e54cfb18406a1e2ccfa9095e
+
+tag256 : 894989e7d22b766fdb108374dabdb055
+         b0eda8776a27ae052f6ed36c25bf9a7a
+~~~
+
+### AEGISMAC-256X4 Test Vector
+
+~~~ test-vectors
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 14496e590661feefa8380fbd65ac2b3e
+         8fd3530c100b5cf5fc01e074bf08c6b2
+         28424fd58d93c2ed54063475f99a721c
+
+tag128 : 46478aec625986ecfed99348a7c2f13c
+
+tags256: dff8d1d3c5ac0c57cee27360c846e1e3
+         ef0495f572374f4010e5409f4f648456
+         769589e5a907a5963dc09b3985b38e21
+         69008a3fd2303c831e284cf313f5e429
+         d3c9bc2bf6375b57281d0cb5a43345c6
+         85ef8674e90d79e2d303080c549e91d6
+
+tag256 : d45ab883ba0917faa248e33a07d36699
+         bab4dc9cd0253c48e6dd7a8dcf5ce1b2
 ~~~
 
 # Acknowledgments
