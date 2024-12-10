@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-08T00:53:09.101170+00:00",
+  "timestamp": "2024-12-10T00:49:05.693219+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -667,7 +667,7 @@
       "labels": [],
       "body": "Quoting Gilles VAN ASSCHE:\r\n\r\n> I have one comment on the parallel instances AEGIS-{128,256}X. These instances internally call AEGIS-128L and AEGIS-256, respectively, with parts of the plaintext and associated data (AD), so that they can be computed in parallel branches. The resulting tag is obtained simply by XORing the tags coming from the different branches. Although the draft clearly mandates a nonce-respecting setting, when AEGIS-{128,256}X is used solely to compute a MAC, the user may be tempted to ignore this and fix the nonce. In a nonce-less MAC setting, this leads to a forgery attack: one obtains the tags for XY, ZY and XT (with X, Z being plaintext or AD in one branch, and Y, T in another branch) and then computes the tag for ZT as tag(ZT)=tag(XY)^tag(ZY)^tag(XT).\r\n>\r\n> Section 9 warns about the consequences of nonce reuse for encryption, but not for authentication. Also, the third paragraph of Section 9.3 suggests that one can trade nonce uniqueness for AD uniqueness, but that does not work for authentication with AEGIS-{128,256}X.\r\n> \r\n> So, this probably deserves some warnings or clarifications in the text before the draft is published.\r\n\r\nWe indeed need to emphasize the importance of the nonce for authentication.\r\n\r\nSection 9.3 contains:\r\n\"Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.\"\r\n\r\nThis is true and nice, but the practical importance of this is limited. And as Gilles pointed out, it may suggest that one can trade nonce uniqueness for AD uniqueness. Maybe we should remove that sentence?\r\n\r\nRegarding usage as a MAC. Section 9.1.4 is currently very sparse and misleading. We can remove it, and emphasize that AEGIS must not be used as a hash function elsewhere.\r\n\r\nHowever, usage with a fixed nonce is legitimate, and there are already applications doing this in the wild.\r\n\r\nSo, another thing we could do is expand section 9.1.4.\r\n\r\nFirst, we can introduce the AEGIS128L-MAC, AEGIS128X-MAC, AEGIS256L-MAC, AEGIS256X-MAC names, so that applications can refer to AEGIS being used in that context consistently.\r\n\r\nAEGIS128L-MAC and AEGIS256-MAC are exactly AEGIS128L and AEGIS256 with an empty input message.\r\n\r\nFor the parallel variants, there are simple ways to safely support nonce reuse (for the MAC use case only):\r\n\r\n> the value (tag[0] || tag[1] || ... || tag[D-1]) can be used as input to a non-parallel variant to compute the final MAC.\r\n>\r\n> Or equivalently:\r\n>\r\n> ```sh\r\n> # compute tags { tag[0], tag[1], ... tag[D-1] } as usual, then:\r\n> Absorb(Pad(tag[1], R) || ... || Pad(tag[D-1], R)) # absorb tags from states 1..D-1 into state 0\r\n> t = ZeroPad(LE64(tag_length) || LE64(D), R) # context separation is free\r\n> Repeat(7, Update(t, t))\r\n> # compute final tag from V[0] blocks as usual\r\n> ```\r\n\r\nI implemented this, and the changes were trivial.\r\n\r\nBut that requires defining alternative Finalization functions in section 9.1.4. Although it can be concise, and would not touch any other sections in the document, it can clearly feel a bit like a last-minute addition.\r\n\r\nThe easiest thing to do would be to only emphasize the importance of nonces, and not deal at all with nonce-less authentication. However, defining proper MAC functions would better deserve the users. But the draft may be too far in the process to make non-editorial changes. OTOH, the 256-bit versions of TurboSHAKE and KT were also added at the last minute, so this is doable.\r\n\r\nWhat do you think @samuel-lucas6 ?",
       "createdAt": "2024-12-06T17:36:19Z",
-      "updatedAt": "2024-12-07T13:19:50Z",
+      "updatedAt": "2024-12-08T22:15:57Z",
       "closedAt": null,
       "comments": [
         {
@@ -680,9 +680,9 @@
         {
           "author": "jedisct1",
           "authorAssociation": "COLLABORATOR",
-          "body": "Implementation-friendly example `FinalizeMac` function for 128X:\r\n\r\n```sh\r\nt = {}\r\nu = LE64(ad_len_bits) || LE64(0)\r\nfor i in 0..D:\r\n    t = t || (V[2,i] ^ u)\r\n   \r\n    Repeat(7, Update(t, t))\r\n\r\nif D > 1:\r\n    # Concatenate tags from states [1..D)\r\n    tags = {}\r\n    if tag_length == 16: # 128 bits\r\n        for i in 1..D:\r\n            tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]\r\n\r\n    else:                # 256 bits\r\n        for i in 1..D:\r\n            tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]) || (V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i])\r\n        \r\n    # Absorb tags from states [1..D) into state 0\r\n    for ti in Split(tags, 256):\r\n        Absorb(ZeroPad(ti, R))\r\n\r\n    t = ZeroPad(LE64(tag_length) || LE64(D), R)\r\n    Repeat(7, Update(t, t))\r\n\r\nif tag_length == 16: # 128 bits\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    tag = (V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]) || (V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0])\r\n```\r\n\r\nFor 256X:\r\n\r\n```sh\r\nt = {}\r\nu = LE64(ad_len_bits) || LE64(0)\r\nfor i in 0..D:\r\n    t = t || (V[3,i] ^ u)\r\n   \r\n    Repeat(7, Update(t, t))\r\n\r\nif D > 1:\r\n    # Concatenate tags from states [1..D)\r\n    tags = {}\r\n    if tag_length == 16: # 128 bits\r\n        for i in 1..D:\r\n            tags = tags || V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]\r\n\r\n    else:                # 256 bits\r\n        for i in 1..D:\r\n            tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i]) || (V[3,i] ^ V[4,i] ^ V[5,i])\r\n\r\n        # Absorb tags from states [1..D) into state 0\r\n        for ti in Split(tags, 128):\r\n            Absorb(ZeroPad(ti, R))\r\n            \r\n        t = ZeroPad(LE64(tag_length) || LE64(D), R)\r\n        Repeat(7, Update(t, t))\r\n\r\nif tag_length == 16: # 128 bits\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    tag = (V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]) || (V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0])\r\n```\r\n\r\n",
+          "body": "Implementation-friendly example `FinalizeMac` function for 128X:\r\n\r\n```sh\r\nt = {}\r\nu = LE64(data_len_bits) || LE64(0)\r\nfor i in 0..D:\r\n    t = t || (V[2,i] ^ u)\r\n\r\nRepeat(7, Update(t, t))\r\n\r\ntags = {}\r\nif tag_length == 16: # 128 bits\r\n    for i in 0..D:   # tag from state 0 is included\r\n        tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i])\r\n\r\nelse:                # 256 bits\r\n    for i in 1..D:   # tag from state 0 is skipped\r\n        tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]) || (V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i])\r\n\r\nif D > 1:\r\n    # Absorb tags into state 0; other states are not used anymore\r\n    for ti in Split(tags, 256):\r\n        Absorb(ZeroPad(ti, R))\r\n\r\n    u = LE64(tag_length) || LE64(D)\r\n    t = ZeroPad(V[2,0] ^ u, R)\r\n    Repeat(7, Update(t, t))\r\n\r\nif tag_length == 16: # 128 bits\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    tag = (V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]) || (V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0])\r\n```\r\n\r\nFor 256X:\r\n\r\n```sh\r\nt = {}\r\nu = LE64(data_len_bits) || LE64(0)\r\nfor i in 0..D:\r\n    t = t || (V[3,i] ^ u)\r\n\r\nRepeat(7, Update(t))\r\n\r\ntags = {}\r\nif tag_length == 16: # 128 bits\r\n    for i in 1..D:   # tag from state 0 is skipped\r\n        tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i])\r\n\r\nelse:                # 256 bits\r\n    for i in 1..D:   # tag from state 0 is skipped\r\n        tags = tags || (V[0,i] ^ V[1,i] ^ V[2,i]) || (V[3,i] ^ V[4,i] ^ V[5,i])\r\n\r\nif D > 1:\r\n    # Absorb tags into state 0; other states are not used anymore\r\n    for ti in Split(tags, 128):\r\n        Absorb(ZeroPad(ti, R))\r\n\r\n    u = LE64(tag_length) || LE64(D)\r\n    t = ZeroPad(V[3,0] ^ u, R)\r\n    Repeat(7, Update(t))\r\n\r\nif tag_length == 16: # 128 bits\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    tag = (V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]) || (V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0])\r\n```\r\n\r\n",
           "createdAt": "2024-12-06T18:00:06Z",
-          "updatedAt": "2024-12-06T18:00:06Z"
+          "updatedAt": "2024-12-08T22:15:57Z"
         },
         {
           "author": "jedisct1",
@@ -719,15 +719,15 @@
       "id": "I_kwDOKeDGj86iXUMo",
       "title": "Addressing Chris feedback",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/60",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "> Section 3.2: \"The decrypted message MUST be overwritten with zeros.\"\r\nProposed change: \"The decrypted message MUST be overwritten with zeros\r\nbefore being returned.\"\r\n>\r\n> Accounts for implementations where the message and ciphertext don't overlap and the function either returns the message or throws an exception. Overwriting is unnecessary if the value is no longer accessible after the function returns.\r\n> \r\n> Section 5.1: \"The rate is 2 * 128 * D bits.\"\r\n> Proposed change: \"256 * D bits.\"\r\n> \r\n> The expanded form is unnecessary and, in my opinion, less clear.\r\n> \r\n> Section 5.4.2: \"but absorbs R (2 * 128 * D) bits at once.\"\r\n> Proposed change: \"but absorbs R (= 256 * D) bits at once.\"\r\n>\r\n> Clarifies that R is equal to 256 * D and not interpreted as R * 2 * 128 * D\r\n\r\nI don't have strong feelings about 2*128 vs 256.\r\n\r\nRegarding the message buffer that must be overwritten on verification failure, we discussed this a while back. But it was about using MUST NOT vs SHOULD NOT. \r\nI like the suggestion, as it still makes it clear that the buffer MUST be zeroed when relevant.",
       "createdAt": "2024-12-06T22:16:09Z",
-      "updatedAt": "2024-12-07T12:46:45Z",
-      "closedAt": null,
+      "updatedAt": "2024-12-08T09:18:35Z",
+      "closedAt": "2024-12-08T09:18:35Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -6013,24 +6013,26 @@
       "id": "PR_kwDOKeDGj86EYRKT",
       "title": "Address Chris' feedback",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/61",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #60",
       "createdAt": "2024-12-06T22:20:27Z",
-      "updatedAt": "2024-12-07T13:05:06Z",
+      "updatedAt": "2024-12-08T09:18:34Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "issue60",
       "headRefOid": "6fb98600a1487c3d068470a1f12826be7b202f36",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-12-08T09:18:34Z",
+      "mergedAt": "2024-12-08T09:18:34Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "36ef5a3f24257c7f7bd5dd0e8d5dc66fe4c7e917"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6098,6 +6100,39 @@
               "updatedAt": "2024-12-07T13:05:07Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOh3Q",
+          "commit": {
+            "abbreviatedOid": "6fb9860"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T09:17:34Z",
+          "updatedAt": "2024-12-08T09:17:34Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "Fair point, happy to leave it as is.",
+              "createdAt": "2024-12-08T09:17:34Z",
+              "updatedAt": "2024-12-08T09:17:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOh5u",
+          "commit": {
+            "abbreviatedOid": "6fb9860"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-08T09:18:23Z",
+          "updatedAt": "2024-12-08T09:18:23Z",
+          "comments": []
         }
       ]
     },
@@ -6148,24 +6183,26 @@
       "id": "PR_kwDOKeDGj86EYfPN",
       "title": "Authentication: mention the nonce uniqueness requirements for the parallel variants",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/63",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Also avoid the MAC acronym here, since MACs typically don't require nonces.\r\n\r\nPart of #59 ",
       "createdAt": "2024-12-06T22:50:02Z",
-      "updatedAt": "2024-12-07T13:15:42Z",
+      "updatedAt": "2024-12-08T09:25:21Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "mac-nonces",
       "headRefOid": "96040376fd8eb9d4cdee54cdd41fd121353f76cd",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-12-08T09:25:21Z",
+      "mergedAt": "2024-12-08T09:25:21Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "aea4b26f704da74c67ad8429892822fd0c557f1b"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6207,6 +6244,19 @@
               "updatedAt": "2024-12-07T13:15:42Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOiNC",
+          "commit": {
+            "abbreviatedOid": "9604037"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-08T09:24:45Z",
+          "updatedAt": "2024-12-08T09:24:45Z",
+          "comments": []
         }
       ]
     },
@@ -6215,24 +6265,26 @@
       "id": "PR_kwDOKeDGj86EYgYH",
       "title": "Mention that nonces must not be reused, even with different ADs",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/64",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Part of #59 ",
       "createdAt": "2024-12-06T22:54:31Z",
-      "updatedAt": "2024-12-07T13:09:46Z",
+      "updatedAt": "2024-12-08T09:25:59Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "0281032a0afca41c3d412ff93d1389a36b6f6b2a",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "ad-vs-nonce",
-      "headRefOid": "9f0426ca2e72492a9e7f0c0ba2954bdda026d937",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "1ea11dfc9738f43e3f5e31523f1b23e8be82ecb5",
+      "closedAt": "2024-12-08T09:25:55Z",
+      "mergedAt": "2024-12-08T09:25:55Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "637bdb7bdf4ef29511c419403f6e8a2094707067"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6274,6 +6326,19 @@
               "updatedAt": "2024-12-07T13:09:46Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOiIj",
+          "commit": {
+            "abbreviatedOid": "1ea11df"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "I'll let you merge this one since I've made a small change. I presume the new line doesn't affect the formatting and is done for readability in the file.",
+          "createdAt": "2024-12-08T09:23:19Z",
+          "updatedAt": "2024-12-08T09:23:19Z",
+          "comments": []
         }
       ]
     },
@@ -6282,52 +6347,507 @@
       "id": "PR_kwDOKeDGj86EaQt1",
       "title": "Add Neil Madden, Yawning Angel and Chris Barber to the acknowledgements",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/65",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-12-07T13:58:35Z",
-      "updatedAt": "2024-12-07T14:30:08Z",
+      "updatedAt": "2024-12-08T09:29:23Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "0fa8ef09b341b88b564406aad368c20986376df5",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "ack2",
       "headRefOid": "1378f0539e3b09531371311153d4ca1dc125f38f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-12-08T09:29:19Z",
+      "mergedAt": "2024-12-08T09:29:19Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "ed51379df2f5c9bf63b2b7f0293cb06ecce01a79"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86UOiZf",
+          "commit": {
+            "abbreviatedOid": "1378f05"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-08T09:28:42Z",
+          "updatedAt": "2024-12-08T09:28:42Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 66,
       "id": "PR_kwDOKeDGj86Ea7oq",
-      "title": "Document AEGISMAC (WIP)",
+      "title": "Document AEGISMAC",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/66",
       "state": "OPEN",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "Just a draft for initial feedback.",
+      "body": "Part of #59",
       "createdAt": "2024-12-07T23:05:47Z",
-      "updatedAt": "2024-12-08T00:14:41Z",
+      "updatedAt": "2024-12-09T23:36:09Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
-      "baseRefOid": "0fa8ef09b341b88b564406aad368c20986376df5",
+      "baseRefOid": "fa468f5021d00b175a545e4edeeaa0739cf3ca9f",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "macs",
-      "headRefOid": "050e55a0cc6c235f651d56499f025eeb5baf3a71",
+      "headRefOid": "6eaa4e5ab0668ed77819fe3664937ecd984a52a9",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Test vectors have been added. This is not too invasive.",
+          "createdAt": "2024-12-08T22:07:18Z",
+          "updatedAt": "2024-12-08T22:07:18Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86UOijy",
+          "commit": {
+            "abbreviatedOid": "050e55a"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Here are my initial comments. Think it's good as a separate section.",
+          "createdAt": "2024-12-08T09:31:47Z",
+          "updatedAt": "2024-12-08T10:00:05Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Typo with `The`.",
+              "createdAt": "2024-12-08T09:31:47Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 21,
+              "body": "Typo with `authenticate`.",
+              "createdAt": "2024-12-08T09:34:11Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 48,
+              "body": "Typo with `Similarily`.",
+              "createdAt": "2024-12-08T09:36:31Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 48,
+              "body": "Also `build upon`.",
+              "createdAt": "2024-12-08T09:37:06Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "Could we rephrase these bits to avoid saying `built` and `building`?",
+              "createdAt": "2024-12-08T09:38:02Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 63,
+              "body": "> replaces the `Finalize` function with a dedicated `FinalizeMac` function\r\n\r\nDoes this apply to AEGISMAC-128L and -256 as well? Because their `Finalize()` function takes two lengths: `Finalize(ad_len_bits, msg_len_bits)`.\r\n",
+              "createdAt": "2024-12-08T09:40:14Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 63,
+              "body": "Scrolling down, there's no separate `Finalize()` function for those, so I think AEGISMAC-128L and -256 should have `Finalize(|data|)` changed to account for the other length.",
+              "createdAt": "2024-12-08T09:41:48Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "Capitalise `function`.",
+              "createdAt": "2024-12-08T09:42:12Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 69,
+              "body": "Typo with `authenticate`.",
+              "createdAt": "2024-12-08T09:42:39Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 88,
+              "body": "Capitalise function.",
+              "createdAt": "2024-12-08T09:44:07Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 117,
+              "body": "Can we remove the brackets?",
+              "createdAt": "2024-12-08T09:46:39Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 120,
+              "body": "`any more` => `anymore`.",
+              "createdAt": "2024-12-08T09:48:10Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 138,
+              "body": "Believe this should say `AEGIS-256X`.",
+              "createdAt": "2024-12-08T09:49:42Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 140,
+              "body": "Capitalise `function`.",
+              "createdAt": "2024-12-08T09:50:04Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 153,
+              "body": "Capitalise `function`.",
+              "createdAt": "2024-12-08T09:50:28Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 169,
+              "body": "AEGIS-256X seems to do `Repeat(7, Update(t))`.",
+              "createdAt": "2024-12-08T09:52:28Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 180,
+              "body": "Do we need brackets here again?",
+              "createdAt": "2024-12-08T09:53:15Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 183,
+              "body": "`any more` => `anymore` again.",
+              "createdAt": "2024-12-08T09:53:41Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 169,
+              "body": "Same appears below as well.",
+              "createdAt": "2024-12-08T09:54:20Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 189,
+              "body": "See comments above.",
+              "createdAt": "2024-12-08T09:54:39Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            },
+            {
+              "originalPosition": 6,
+              "body": "Should `ad` be renamed to match`data` in all these functions?",
+              "createdAt": "2024-12-08T09:56:43Z",
+              "updatedAt": "2024-12-08T10:00:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOmDW",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T10:06:14Z",
+          "updatedAt": "2024-12-08T10:06:14Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "Indeed, for 128L and 256, it should be `Finalize(|data|, 0)`. Fixed, thanks!",
+              "createdAt": "2024-12-08T10:06:14Z",
+              "updatedAt": "2024-12-08T10:06:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOm42",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T10:09:58Z",
+          "updatedAt": "2024-12-08T10:09:58Z",
+          "comments": [
+            {
+              "originalPosition": 180,
+              "body": "This is not necessary. The intent was to emphasize the construction of a regular 256-bit tag.\r\nIf you feel like they should be removed, let's remove them!",
+              "createdAt": "2024-12-08T10:09:58Z",
+              "updatedAt": "2024-12-08T10:09:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOm6q",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T10:10:35Z",
+          "updatedAt": "2024-12-08T10:10:35Z",
+          "comments": [
+            {
+              "originalPosition": 183,
+              "body": "Just a draft written at 1AM...",
+              "createdAt": "2024-12-08T10:10:35Z",
+              "updatedAt": "2024-12-08T10:10:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOm_P",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T10:12:05Z",
+          "updatedAt": "2024-12-08T10:12:05Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Of course. It should match the spec at much as possible.",
+              "createdAt": "2024-12-08T10:12:05Z",
+              "updatedAt": "2024-12-08T10:12:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOnIf",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T10:15:15Z",
+          "updatedAt": "2024-12-08T10:15:15Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "By the way, I don't know if `data` is the best parameter name here.\r\n\r\nTechnically, this is handled like `ad`. Inputs to MACs are typically referred to as \"messages\". But that would be confusing as we use `msg` for something else everywhere else. ",
+              "createdAt": "2024-12-08T10:15:15Z",
+              "updatedAt": "2024-12-08T10:15:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UOne8",
+          "commit": {
+            "abbreviatedOid": "442d7f3"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T10:22:59Z",
+          "updatedAt": "2024-12-08T10:22:59Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "Changed to \"based on the building blocks\", but I'm open to better ways to rephrase these bits!",
+              "createdAt": "2024-12-08T10:22:59Z",
+              "updatedAt": "2024-12-08T10:22:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UPK1v",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T14:13:08Z",
+          "updatedAt": "2024-12-08T14:13:08Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "What do you think of just `based on AEGIS-128L`?",
+              "createdAt": "2024-12-08T14:13:08Z",
+              "updatedAt": "2024-12-08T14:13:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UPK9z",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T14:15:20Z",
+          "updatedAt": "2024-12-08T14:15:20Z",
+          "comments": [
+            {
+              "originalPosition": 180,
+              "body": "Makes sense. I don't mind to be honest. Works either way.",
+              "createdAt": "2024-12-08T14:15:20Z",
+              "updatedAt": "2024-12-08T14:15:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UPLJq",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T14:17:17Z",
+          "updatedAt": "2024-12-08T14:17:18Z",
+          "comments": [
+            {
+              "originalPosition": 183,
+              "body": "No worries. You're doing very well for 1 AM. If I come across a bit blunt/harsh in these reviews, I'm just trying to be concise.",
+              "createdAt": "2024-12-08T14:17:18Z",
+              "updatedAt": "2024-12-08T14:17:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UPLPA",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T14:18:47Z",
+          "updatedAt": "2024-12-08T14:18:47Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Yeah, I think `data` works for that reason. Can't think of a better alternative.",
+              "createdAt": "2024-12-08T14:18:47Z",
+              "updatedAt": "2024-12-08T14:18:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UQLtr",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T20:35:27Z",
+          "updatedAt": "2024-12-08T20:35:28Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "That would work, too. I wrote \"building blocks\" to specifically refer to the function as they are defined in AEGIS-128L, rather than how the algorithm works in general.",
+              "createdAt": "2024-12-08T20:35:28Z",
+              "updatedAt": "2024-12-08T20:35:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UQSsB",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-08T22:08:06Z",
+          "updatedAt": "2024-12-08T22:08:06Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "If you think \"based on AEGIS-128L\" is enough, I'm totally fine with that!",
+              "createdAt": "2024-12-08T22:08:06Z",
+              "updatedAt": "2024-12-08T22:08:06Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 67,
+      "id": "PR_kwDOKeDGj86EiQp-",
+      "title": "Add Gilles to the acknowledgments section",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/67",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-12-09T13:00:47Z",
+      "updatedAt": "2024-12-09T22:13:33Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "ed51379df2f5c9bf63b2b7f0293cb06ecce01a79",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "thanks-gilles",
+      "headRefOid": "518c2d9a5344c2caa30f641703529fbc1a1f0073",
+      "closedAt": "2024-12-09T22:09:20Z",
+      "mergedAt": "2024-12-09T22:09:20Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "fa468f5021d00b175a545e4edeeaa0739cf3ca9f"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Samuel!",
+          "createdAt": "2024-12-09T22:13:32Z",
+          "updatedAt": "2024-12-09T22:13:32Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86Ubbhh",
+          "commit": {
+            "abbreviatedOid": "518c2d9"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM. I'll try to take a look at the AEGISMAC PR tomorrow.",
+          "createdAt": "2024-12-09T22:09:06Z",
+          "updatedAt": "2024-12-09T22:09:06Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
