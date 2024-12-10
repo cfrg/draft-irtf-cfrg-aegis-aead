@@ -1046,7 +1046,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 12 June 2025</td>
+<td class="center">Expires 13 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1059,12 +1059,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-09" class="published">9 December 2024</time>
+<time datetime="2024-12-10" class="published">10 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-12">12 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-13">13 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1111,7 +1111,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3373,11 +3373,10 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, 0)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
 return tag
 </pre><a href="#section-8.1-3" class="pilcrow">¶</a>
 </div>
-<p id="section-8.1-4">It is equivalent to an evaluation of the <code>Encrypt</code> function of AEGIS-128L with the input data as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="aegismac-256">
@@ -3393,7 +3392,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, 0)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
 return tag
 </pre><a href="#section-8.2-3" class="pilcrow">¶</a>
 </div>
@@ -3462,7 +3461,7 @@ if D &gt; 1:
     for v in Split(tags, 256):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(tag_length) || LE64(D)
+    u = LE64(D) || LE64(tag_length)
     t = ZeroPad(V[2,0] ^ u, R)
     Repeat(7, Update(t, t))
 
@@ -3540,7 +3539,7 @@ if D &gt; 1:
     for v in Split(tags, 128):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(tag_length) || LE64(D)
+    u = LE64(D) || LE64(tag_length)
     t = ZeroPad(V[3,0] ^ u, R)
     Repeat(7, Update(t))
 
@@ -4901,10 +4900,10 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tag128 : 3982e98c66fa9232e9190ec57b120725
+tag128 : d3f09b2842ad301687d6902c921d7818
 
-tag256 : a7d01b4636e8d312af8b65b3bb680feb
-         8ffd62aa234584001b1e419b4b40c317
+tag256 : 9490e7c89d420c9f37417fa625eb38e8
+         cad53c5cbec55285e8499ea48377f2a3
 </pre><a href="#appendix-A.8.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4927,13 +4926,13 @@ data   : 000102030405060708090a0b0c0d0e0f
 tags128: f8ba02f2babf9c9707b10c491d1c1692
          d6d0470068232ebe369ef41dc6eb9240
 
-tag128 : f472304012396667f51ab7450d87f460
+tag128 : 01b0e517aeb06e7b2799c596730aaaa3
 
 tags256: d7088f01a5d6c42585c403b84c32ed88
          930ac4d8e414a4482df71e5e43720464
 
-tag256 : f376288f13b51c73ecb814922919a31f
-         2cbe1fd322a0062ef7860327a2bc3159
+tag256 : 3fe7b4bbb1153575d048aebc623bf1bb
+         1878c592432843b3c68610f6fa097808
 </pre><a href="#appendix-A.8.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4958,7 +4957,7 @@ tags128: 810bd9aa60ebdd51de214fb2ac639d32
          10c69c9d09f39ce1af1893a7b9b5fb35
          8ac2edd67acd534400c5cf3651626d5f
 
-tag128 : 3742a0bf0a9e8604841fe520fc57621c
+tag128 : 1930de14c4f94f450b76d332b4bc91f1
 
 tags256: 03a2e95d5d40819364a571281e6b12ce
          893c2981ed238d58d41004355ad299df
@@ -4967,8 +4966,8 @@ tags256: 03a2e95d5d40819364a571281e6b12ce
          22254d900bf5cccee1e3e4d2b64e3578
          15816f112607ea40139f67b097bb300d
 
-tag256 : 3da44ead4e192d0df3c47c994c242b69
-         dab2fdf0d98f58f96838d634ab945d3a
+tag256 : 67b96718b12808b18e93d760e6e1346a
+         4a863c54317d2b09525234e42601a2f8
 </pre><a href="#appendix-A.8.3-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4990,10 +4989,10 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tag128 : 49f70470ccf49529674babd6db6670c9
+tag128 : c08e20cfc56f27195a46c9cef5c162d4
 
-tag256 : f5945eccdb14c836d8470b8abcf87e26
-         bc635abc17e05d1fbf0ca05c679e0eef
+tag256 : a5c906ede3d69545c11e20afa360b221
+         f936e946ed2dba3d7c75ad6dc2784126
 </pre><a href="#appendix-A.8.4-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5017,13 +5016,13 @@ data   : 000102030405060708090a0b0c0d0e0f
 
 tags128: 5330b347e55da0e97dfb95abdb3c3774
 
-tag128 : 1468bcd6376f12ef29b2ba281f491dd8
+tag128 : 8c4eab1157d68d43f5eaae89ca36d4ea
 
 tags256: 4ca4e65a82521e2cc04e2ef139ad62ed
          1f94551d670fbec5bdb5bb5ae2915599
 
-tag256 : e854c36a63b86dc22130c7025b9ba84e
-         0e597871b075b563845171b856871bbf
+tag256 : 8b66d8ec75d3d5611ae9149e1c8ba727
+         5a22ef940e5b405432ad011d16940e9d
 </pre><a href="#appendix-A.8.5-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5049,7 +5048,7 @@ tags128: dda9b17458670d6edade7b8c495c7f6c
          713819ddf13b39cf1f995786e7e20301
          ca2714cfadc4e26ee43e9ac6b8d14890
 
-tag128 : 8ac8b254b708d1dd673535bd5dc77775
+tag128 : 9362451363efb0d3bc48af53519cd1e5
 
 tags256: 293111be5b6cbbb480652cbca9c8e860
          f498a0ca030bb6da5abb5730e094970c
@@ -5058,8 +5057,8 @@ tags256: 293111be5b6cbbb480652cbca9c8e860
          69b5f79332a2cbebd8992955d69927f8
          a392e35c9f6629853ca7b3936e486f68
 
-tag256 : 962abc85dcc6522311ae2fbfc6d0f66e
-         e263fd18be4d9135f36d14bf05fa460b
+tag256 : 61cf1bd44254ae57b4c8c9cebdd9e202
+         70fbb39b39acb97e3cd7d27a62282cea
 </pre><a href="#appendix-A.8.6-1" class="pilcrow">¶</a>
 </div>
 </section>
