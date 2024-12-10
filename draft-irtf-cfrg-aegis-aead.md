@@ -1658,11 +1658,9 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, 0)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
 return tag
 ~~~
-
-It is equivalent to an evaluation of the `Encrypt` function of AEGIS-128L with the input data as the `ad` and leaving `msg` empty, resulting in just a tag.
 
 ## AEGISMAC-256
 
@@ -1675,7 +1673,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, 0)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
 return tag
 ~~~
 
@@ -1710,7 +1708,7 @@ Steps:
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(0)
+u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
 for i in 0..D:
     t = t || (V[2,i] ^ u)
 
@@ -1733,7 +1731,7 @@ if D > 1:
     for v in Split(tags, 256):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(tag_length) || LE64(D)
+    u = LE64(D) || LE64(tag_length)
     t = ZeroPad(V[2,0] ^ u, R)
     Repeat(7, Update(t, t))
 
@@ -1774,7 +1772,7 @@ It finalizes all the instances, absorbs the resulting tags into the first state,
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(0)
+u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
@@ -1797,7 +1795,7 @@ if D > 1:
     for v in Split(tags, 128):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(tag_length) || LE64(D)
+    u = LE64(D) || LE64(tag_length)
     t = ZeroPad(V[3,0] ^ u, R)
     Repeat(7, Update(t))
 
@@ -2764,10 +2762,10 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tag128 : 3982e98c66fa9232e9190ec57b120725
+tag128 : d3f09b2842ad301687d6902c921d7818
 
-tag256 : a7d01b4636e8d312af8b65b3bb680feb
-         8ffd62aa234584001b1e419b4b40c317
+tag256 : 9490e7c89d420c9f37417fa625eb38e8
+         cad53c5cbec55285e8499ea48377f2a3
 ~~~
 
 ### AEGISMAC-128X2 Test Vector
@@ -2781,16 +2779,16 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: f8ba02f2babf9c9707b10c491d1c1692
-         d6d0470068232ebe369ef41dc6eb9240
+tags128: 4ee9988a70c8a864a11b97e4b47e7fdf
+         aa50e513525dc88346c094a7490a48cb
 
-tag128 : f472304012396667f51ab7450d87f460
+tag128 : 21c6922d3ad6522ac57369600314c912
 
-tags256: d7088f01a5d6c42585c403b84c32ed88
-         930ac4d8e414a4482df71e5e43720464
+tags256: e5475e88338c2859ab367ce0aa34deb0
+         2fd7293564f8fdbf3074a9335242b9f4
 
-tag256 : f376288f13b51c73ecb814922919a31f
-         2cbe1fd322a0062ef7860327a2bc3159
+tag256 : 83dd64b45d75ef3537f45f0ec5b27518
+         9b98fb241fed02672122c73f5ce8ac07
 ~~~
 
 ### AEGISMAC-128X4 Test Vector
@@ -2804,22 +2802,22 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: 810bd9aa60ebdd51de214fb2ac639d32
-         d2b6852eb5ae0ad21717e14bb386c796
-         10c69c9d09f39ce1af1893a7b9b5fb35
-         8ac2edd67acd534400c5cf3651626d5f
+tags128: 74e53f1ba0468d0202cec23d0b15c6a5
+         111e366ba0019a58364e9dab9c63dde2
+         671e3da717004bea7ee3325e98db6438
+         d3d32a38d2cbd76beb67be75dc6ebd05
 
-tag128 : 3742a0bf0a9e8604841fe520fc57621c
+tag128 : 90b56cd04f89737f558e7add279bcfa6
 
-tags256: 03a2e95d5d40819364a571281e6b12ce
-         893c2981ed238d58d41004355ad299df
-         2de609340135cccdf594a23024a95b12
-         f024d2bcdd3616f218712d080c5408da
-         22254d900bf5cccee1e3e4d2b64e3578
-         15816f112607ea40139f67b097bb300d
+tags256: 4954de13381d142f623f778665416950
+         1204963db07974c21ee2f55b9c3415b5
+         22084db5d2f9801c541c86738c501318
+         2d15844ef3c5ffbbbbdfc16abc2939d0
+         23f6cddb8b055a15ed393028891ab87a
+         de44d86c69bb0efcfbb8888ea77c98f9
 
-tag256 : 3da44ead4e192d0df3c47c994c242b69
-         dab2fdf0d98f58f96838d634ab945d3a
+tag256 : 2b6e56d61a23e15ab84967fe936f7a68
+         ae32b666412ed0504c57fff2cdb744a4
 ~~~
 
 ### AEGISMAC-256 Test Vector
@@ -2835,10 +2833,10 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tag128 : 49f70470ccf49529674babd6db6670c9
+tag128 : c08e20cfc56f27195a46c9cef5c162d4
 
-tag256 : f5945eccdb14c836d8470b8abcf87e26
-         bc635abc17e05d1fbf0ca05c679e0eef
+tag256 : a5c906ede3d69545c11e20afa360b221
+         f936e946ed2dba3d7c75ad6dc2784126
 ~~~
 
 ### AEGISMAC-256X2 Test Vector
@@ -2854,15 +2852,15 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: 5330b347e55da0e97dfb95abdb3c3774
+tags128: 631331cfc9b058661c7e58dff104431a
 
-tag128 : 1468bcd6376f12ef29b2ba281f491dd8
+tag128 : 47fb35135afe3520cf0b47458024eca8
 
-tags256: 4ca4e65a82521e2cc04e2ef139ad62ed
-         1f94551d670fbec5bdb5bb5ae2915599
+tags256: 9e2fa48b9070ce8279e706dccd586d91
+         42c8d9e5e54cfb18406a1e2ccfa9095e
 
-tag256 : e854c36a63b86dc22130c7025b9ba84e
-         0e597871b075b563845171b856871bbf
+tag256 : 894989e7d22b766fdb108374dabdb055
+         b0eda8776a27ae052f6ed36c25bf9a7a
 ~~~
 
 ### AEGISMAC-256X4 Test Vector
@@ -2878,21 +2876,21 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: dda9b17458670d6edade7b8c495c7f6c
-         713819ddf13b39cf1f995786e7e20301
-         ca2714cfadc4e26ee43e9ac6b8d14890
+tags128: 14496e590661feefa8380fbd65ac2b3e
+         8fd3530c100b5cf5fc01e074bf08c6b2
+         28424fd58d93c2ed54063475f99a721c
 
-tag128 : 8ac8b254b708d1dd673535bd5dc77775
+tag128 : 46478aec625986ecfed99348a7c2f13c
 
-tags256: 293111be5b6cbbb480652cbca9c8e860
-         f498a0ca030bb6da5abb5730e094970c
-         b08246a84d847f22eb752db9e7937f4e
-         c1ba5f75bcbf46edf4ec7a3f00717c4f
-         69b5f79332a2cbebd8992955d69927f8
-         a392e35c9f6629853ca7b3936e486f68
+tags256: dff8d1d3c5ac0c57cee27360c846e1e3
+         ef0495f572374f4010e5409f4f648456
+         769589e5a907a5963dc09b3985b38e21
+         69008a3fd2303c831e284cf313f5e429
+         d3c9bc2bf6375b57281d0cb5a43345c6
+         85ef8674e90d79e2d303080c549e91d6
 
-tag256 : 962abc85dcc6522311ae2fbfc6d0f66e
-         e263fd18be4d9135f36d14bf05fa460b
+tag256 : d45ab883ba0917faa248e33a07d36699
+         bab4dc9cd0253c48e6dd7a8dcf5ce1b2
 ~~~
 
 # Acknowledgments

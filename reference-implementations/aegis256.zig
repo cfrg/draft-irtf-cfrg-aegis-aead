@@ -230,7 +230,7 @@ fn Aegis256_(comptime tag_bits: u9) type {
                 @memcpy(pad[0 .. data.len % 16], data[i..]);
                 aegis.absorb(&pad);
             }
-            return aegis.finalize(data.len, 0);
+            return aegis.finalize(data.len, tag_length);
         }
     };
 }
