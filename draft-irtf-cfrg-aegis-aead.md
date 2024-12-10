@@ -1630,7 +1630,7 @@ For all the variants, the `Mac` function takes a key, a nonce, and data as input
 
 This is the only function that allows the reuse of `(key, nonce)` pairs with different inputs.
 
-AEGIS-based MAC functions MUST NOT be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
+However, AEGIS-based MAC functions MUST NOT be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
 Likewise, unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee that they are uniformly random.
 
 ~~~
@@ -1640,7 +1640,7 @@ Mac(data, key, nonce)
 Inputs:
 
 - `data`: the input data to authenticate (length MUST be less than or equal to `A_MAX`).
-- `key`: the encryption key.
+- `key`: the secret key.
 - `nonce`: the public nonce.
 
 Outputs:
@@ -1664,7 +1664,7 @@ return tag
 
 ## AEGISMAC-256
 
-Similarly, AEGISMAC-256 refers to the `Mac` function based on the building blocks of AEGIS-256.
+AEGISMAC-256 refers to the `Mac` function based on the building blocks of AEGIS-256.
 
 Steps:
 
@@ -1700,7 +1700,7 @@ return tag
 FinalizeMac(data_len_bits)
 ~~~
 
-The `FinalizeMac` function computes a 128- or 256-bit tag.
+The `FinalizeMac` function computes a 128- or 256-bit tag that authenticates the input data.
 
 It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-128L.
 
@@ -1846,12 +1846,6 @@ Alternatively, the associated data can be fed into a collision-resistant KDF, su
 AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
 
 In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
-
-### Other Uses of AEGIS
-
-All variants can be used solely for authentication by calling the `Encrypt()` function with the message as the `ad` and leaving `msg` empty, resulting in just a tag. However, they MUST NOT be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags MUST NOT be used for key derivation as there is no proof they are uniformly random.
-
-Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces MUST NOT be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.
 
 ## Implementation Security
 
