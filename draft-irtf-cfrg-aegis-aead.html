@@ -536,7 +536,11 @@ figcaption, caption {
   }
   pre, svg {
     display: inline-block;
-    overflow-x: auto;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
   }
   pre {
     max-width: 100%;
@@ -1046,7 +1050,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 12 June 2025</td>
+<td class="center">Expires 13 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1059,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-09" class="published">9 December 2024</time>
+<time datetime="2024-12-10" class="published">10 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-12">12 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-13">13 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1111,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1286,189 +1290,242 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-aegis-as-a-stream-cipher" class="internal xref">AEGIS as a Stream Cipher</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-aegis-as-a-message-authenti" class="internal xref">AEGIS as a Message Authentication Code</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-aegismac-128l" class="internal xref">AEGISMAC-128L</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-aegismac-256" class="internal xref">AEGISMAC-256</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-aegismac-128x" class="internal xref">AEGISMAC-128X</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.1">
+                    <p id="section-toc.1-1.8.2.3.2.1.1"><a href="#section-8.3.1" class="auto internal xref">8.3.1</a>.  <a href="#name-the-mac-function" class="internal xref">The Mac Function</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.2">
+                    <p id="section-toc.1-1.8.2.3.2.2.1"><a href="#section-8.3.2" class="auto internal xref">8.3.2</a>.  <a href="#name-the-finalizemac-function" class="internal xref">The FinalizeMac Function</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-aegismac-256x" class="internal xref">AEGISMAC-256X</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.1">
+                    <p id="section-toc.1-1.8.2.4.2.1.1"><a href="#section-8.4.1" class="auto internal xref">8.4.1</a>.  <a href="#name-the-mac-function-2" class="internal xref">The Mac Function</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.2">
+                    <p id="section-toc.1-1.8.2.4.2.2.1"><a href="#section-8.4.2" class="auto internal xref">8.4.2</a>.  <a href="#name-the-finalizemac-function-2" class="internal xref">The FinalizeMac Function</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-usage-guidelines" class="internal xref">Usage Guidelines</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.1">
-                    <p id="section-toc.1-1.9.2.1.2.1.1"><a href="#section-9.1.1" class="auto internal xref">9.1.1</a>.  <a href="#name-key-and-nonce-selection" class="internal xref">Key and Nonce Selection</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.2">
-                    <p id="section-toc.1-1.9.2.1.2.2.1"><a href="#section-9.1.2" class="auto internal xref">9.1.2</a>.  <a href="#name-key-commitment" class="internal xref">Key Commitment</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.3">
-                    <p id="section-toc.1-1.9.2.1.2.3.1"><a href="#section-9.1.3" class="auto internal xref">9.1.3</a>.  <a href="#name-multi-user-security" class="internal xref">Multi-User Security</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1.2.4">
-                    <p id="section-toc.1-1.9.2.1.2.4.1"><a href="#section-9.1.4" class="auto internal xref">9.1.4</a>.  <a href="#name-other-uses-of-aegis" class="internal xref">Other Uses of AEGIS</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-implementation-security" class="internal xref">Implementation Security</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
-                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-security-guarantees" class="internal xref">Security Guarantees</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-usage-guidelines" class="internal xref">Usage Guidelines</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.1">
+                    <p id="section-toc.1-1.10.2.1.2.1.1"><a href="#section-10.1.1" class="auto internal xref">10.1.1</a>.  <a href="#name-key-and-nonce-selection" class="internal xref">Key and Nonce Selection</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.2">
+                    <p id="section-toc.1-1.10.2.1.2.2.1"><a href="#section-10.1.2" class="auto internal xref">10.1.2</a>.  <a href="#name-key-commitment" class="internal xref">Key Commitment</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.3">
+                    <p id="section-toc.1-1.10.2.1.2.3.1"><a href="#section-10.1.3" class="auto internal xref">10.1.3</a>.  <a href="#name-multi-user-security" class="internal xref">Multi-User Security</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-implementation-security" class="internal xref">Implementation Security</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.3">
+                <p id="section-toc.1-1.10.2.3.1"><a href="#section-10.3" class="auto internal xref">10.3</a>.  <a href="#name-security-guarantees" class="internal xref">Security Guarantees</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-aesround-test-vector" class="internal xref">AESRound Test Vector</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="auto internal xref">12.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-aegis-128l-test-vectors" class="internal xref">AEGIS-128L Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.1">
-                    <p id="section-toc.1-1.12.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-update-test-vector" class="internal xref">Update Test Vector</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.2">
-                    <p id="section-toc.1-1.12.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-test-vector-1" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.3">
-                    <p id="section-toc.1-1.12.2.2.2.3.1"><a href="#appendix-A.2.3" class="auto internal xref">A.2.3</a>.  <a href="#name-test-vector-2" class="internal xref">Test Vector 2</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.4">
-                    <p id="section-toc.1-1.12.2.2.2.4.1"><a href="#appendix-A.2.4" class="auto internal xref">A.2.4</a>.  <a href="#name-test-vector-3" class="internal xref">Test Vector 3</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.5">
-                    <p id="section-toc.1-1.12.2.2.2.5.1"><a href="#appendix-A.2.5" class="auto internal xref">A.2.5</a>.  <a href="#name-test-vector-4" class="internal xref">Test Vector 4</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.6">
-                    <p id="section-toc.1-1.12.2.2.2.6.1"><a href="#appendix-A.2.6" class="auto internal xref">A.2.6</a>.  <a href="#name-test-vector-5" class="internal xref">Test Vector 5</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.7">
-                    <p id="section-toc.1-1.12.2.2.2.7.1"><a href="#appendix-A.2.7" class="auto internal xref">A.2.7</a>.  <a href="#name-test-vector-6" class="internal xref">Test Vector 6</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.8">
-                    <p id="section-toc.1-1.12.2.2.2.8.1"><a href="#appendix-A.2.8" class="auto internal xref">A.2.8</a>.  <a href="#name-test-vector-7" class="internal xref">Test Vector 7</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.9">
-                    <p id="section-toc.1-1.12.2.2.2.9.1"><a href="#appendix-A.2.9" class="auto internal xref">A.2.9</a>.  <a href="#name-test-vector-8" class="internal xref">Test Vector 8</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.10">
-                    <p id="section-toc.1-1.12.2.2.2.10.1"><a href="#appendix-A.2.10" class="auto internal xref">A.2.10</a>. <a href="#name-test-vector-9" class="internal xref">Test Vector 9</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-aegis-256-test-vectors" class="internal xref">AEGIS-256 Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.1">
-                    <p id="section-toc.1-1.12.2.3.2.1.1"><a href="#appendix-A.3.1" class="auto internal xref">A.3.1</a>.  <a href="#name-update-test-vector-2" class="internal xref">Update Test Vector</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.2">
-                    <p id="section-toc.1-1.12.2.3.2.2.1"><a href="#appendix-A.3.2" class="auto internal xref">A.3.2</a>.  <a href="#name-test-vector-1-2" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.3">
-                    <p id="section-toc.1-1.12.2.3.2.3.1"><a href="#appendix-A.3.3" class="auto internal xref">A.3.3</a>.  <a href="#name-test-vector-2-2" class="internal xref">Test Vector 2</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.4">
-                    <p id="section-toc.1-1.12.2.3.2.4.1"><a href="#appendix-A.3.4" class="auto internal xref">A.3.4</a>.  <a href="#name-test-vector-3-2" class="internal xref">Test Vector 3</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.5">
-                    <p id="section-toc.1-1.12.2.3.2.5.1"><a href="#appendix-A.3.5" class="auto internal xref">A.3.5</a>.  <a href="#name-test-vector-4-2" class="internal xref">Test Vector 4</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.6">
-                    <p id="section-toc.1-1.12.2.3.2.6.1"><a href="#appendix-A.3.6" class="auto internal xref">A.3.6</a>.  <a href="#name-test-vector-5-2" class="internal xref">Test Vector 5</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.7">
-                    <p id="section-toc.1-1.12.2.3.2.7.1"><a href="#appendix-A.3.7" class="auto internal xref">A.3.7</a>.  <a href="#name-test-vector-6-2" class="internal xref">Test Vector 6</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.8">
-                    <p id="section-toc.1-1.12.2.3.2.8.1"><a href="#appendix-A.3.8" class="auto internal xref">A.3.8</a>.  <a href="#name-test-vector-7-2" class="internal xref">Test Vector 7</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.9">
-                    <p id="section-toc.1-1.12.2.3.2.9.1"><a href="#appendix-A.3.9" class="auto internal xref">A.3.9</a>.  <a href="#name-test-vector-8-2" class="internal xref">Test Vector 8</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3.2.10">
-                    <p id="section-toc.1-1.12.2.3.2.10.1"><a href="#appendix-A.3.10" class="auto internal xref">A.3.10</a>. <a href="#name-test-vector-9-2" class="internal xref">Test Vector 9</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
-                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-aegis-128x2-test-vectors" class="internal xref">AEGIS-128X2 Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4.2.1">
-                    <p id="section-toc.1-1.12.2.4.2.1.1"><a href="#appendix-A.4.1" class="auto internal xref">A.4.1</a>.  <a href="#name-initial-state" class="internal xref">Initial State</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4.2.2">
-                    <p id="section-toc.1-1.12.2.4.2.2.1"><a href="#appendix-A.4.2" class="auto internal xref">A.4.2</a>.  <a href="#name-test-vector-1-3" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4.2.3">
-                    <p id="section-toc.1-1.12.2.4.2.3.1"><a href="#appendix-A.4.3" class="auto internal xref">A.4.3</a>.  <a href="#name-test-vector-2-3" class="internal xref">Test Vector 2</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5">
-                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-aegis-128x4-test-vectors" class="internal xref">AEGIS-128X4 Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5.2.1">
-                    <p id="section-toc.1-1.12.2.5.2.1.1"><a href="#appendix-A.5.1" class="auto internal xref">A.5.1</a>.  <a href="#name-initial-state-2" class="internal xref">Initial State</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5.2.2">
-                    <p id="section-toc.1-1.12.2.5.2.2.1"><a href="#appendix-A.5.2" class="auto internal xref">A.5.2</a>.  <a href="#name-test-vector-1-4" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5.2.3">
-                    <p id="section-toc.1-1.12.2.5.2.3.1"><a href="#appendix-A.5.3" class="auto internal xref">A.5.3</a>.  <a href="#name-test-vector-2-4" class="internal xref">Test Vector 2</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6">
-                <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-A.6" class="auto internal xref">A.6</a>.  <a href="#name-aegis-256x2-test-vectors" class="internal xref">AEGIS-256X2 Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6.2.1">
-                    <p id="section-toc.1-1.12.2.6.2.1.1"><a href="#appendix-A.6.1" class="auto internal xref">A.6.1</a>.  <a href="#name-initial-state-3" class="internal xref">Initial State</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6.2.2">
-                    <p id="section-toc.1-1.12.2.6.2.2.1"><a href="#appendix-A.6.2" class="auto internal xref">A.6.2</a>.  <a href="#name-test-vector-1-5" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6.2.3">
-                    <p id="section-toc.1-1.12.2.6.2.3.1"><a href="#appendix-A.6.3" class="auto internal xref">A.6.3</a>.  <a href="#name-test-vector-2-5" class="internal xref">Test Vector 2</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7">
-                <p id="section-toc.1-1.12.2.7.1"><a href="#appendix-A.7" class="auto internal xref">A.7</a>.  <a href="#name-aegis-256x4-test-vectors" class="internal xref">AEGIS-256X4 Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7.2.1">
-                    <p id="section-toc.1-1.12.2.7.2.1.1"><a href="#appendix-A.7.1" class="auto internal xref">A.7.1</a>.  <a href="#name-initial-state-4" class="internal xref">Initial State</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7.2.2">
-                    <p id="section-toc.1-1.12.2.7.2.2.1"><a href="#appendix-A.7.2" class="auto internal xref">A.7.2</a>.  <a href="#name-test-vector-1-6" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7.2.3">
-                    <p id="section-toc.1-1.12.2.7.2.3.1"><a href="#appendix-A.7.3" class="auto internal xref">A.7.3</a>.  <a href="#name-test-vector-2-6" class="internal xref">Test Vector 2</a></p>
-</li>
-                </ul>
+                <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="auto internal xref">12.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
+                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-aesround-test-vector" class="internal xref">AESRound Test Vector</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
+                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-aegis-128l-test-vectors" class="internal xref">AEGIS-128L Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.1">
+                    <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-update-test-vector" class="internal xref">Update Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.2">
+                    <p id="section-toc.1-1.13.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-test-vector-1" class="internal xref">Test Vector 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.3">
+                    <p id="section-toc.1-1.13.2.2.2.3.1"><a href="#appendix-A.2.3" class="auto internal xref">A.2.3</a>.  <a href="#name-test-vector-2" class="internal xref">Test Vector 2</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.4">
+                    <p id="section-toc.1-1.13.2.2.2.4.1"><a href="#appendix-A.2.4" class="auto internal xref">A.2.4</a>.  <a href="#name-test-vector-3" class="internal xref">Test Vector 3</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.5">
+                    <p id="section-toc.1-1.13.2.2.2.5.1"><a href="#appendix-A.2.5" class="auto internal xref">A.2.5</a>.  <a href="#name-test-vector-4" class="internal xref">Test Vector 4</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.6">
+                    <p id="section-toc.1-1.13.2.2.2.6.1"><a href="#appendix-A.2.6" class="auto internal xref">A.2.6</a>.  <a href="#name-test-vector-5" class="internal xref">Test Vector 5</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.7">
+                    <p id="section-toc.1-1.13.2.2.2.7.1"><a href="#appendix-A.2.7" class="auto internal xref">A.2.7</a>.  <a href="#name-test-vector-6" class="internal xref">Test Vector 6</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.8">
+                    <p id="section-toc.1-1.13.2.2.2.8.1"><a href="#appendix-A.2.8" class="auto internal xref">A.2.8</a>.  <a href="#name-test-vector-7" class="internal xref">Test Vector 7</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.9">
+                    <p id="section-toc.1-1.13.2.2.2.9.1"><a href="#appendix-A.2.9" class="auto internal xref">A.2.9</a>.  <a href="#name-test-vector-8" class="internal xref">Test Vector 8</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.10">
+                    <p id="section-toc.1-1.13.2.2.2.10.1"><a href="#appendix-A.2.10" class="auto internal xref">A.2.10</a>. <a href="#name-test-vector-9" class="internal xref">Test Vector 9</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3">
+                <p id="section-toc.1-1.13.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-aegis-256-test-vectors" class="internal xref">AEGIS-256 Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.1">
+                    <p id="section-toc.1-1.13.2.3.2.1.1"><a href="#appendix-A.3.1" class="auto internal xref">A.3.1</a>.  <a href="#name-update-test-vector-2" class="internal xref">Update Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.2">
+                    <p id="section-toc.1-1.13.2.3.2.2.1"><a href="#appendix-A.3.2" class="auto internal xref">A.3.2</a>.  <a href="#name-test-vector-1-2" class="internal xref">Test Vector 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.3">
+                    <p id="section-toc.1-1.13.2.3.2.3.1"><a href="#appendix-A.3.3" class="auto internal xref">A.3.3</a>.  <a href="#name-test-vector-2-2" class="internal xref">Test Vector 2</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.4">
+                    <p id="section-toc.1-1.13.2.3.2.4.1"><a href="#appendix-A.3.4" class="auto internal xref">A.3.4</a>.  <a href="#name-test-vector-3-2" class="internal xref">Test Vector 3</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.5">
+                    <p id="section-toc.1-1.13.2.3.2.5.1"><a href="#appendix-A.3.5" class="auto internal xref">A.3.5</a>.  <a href="#name-test-vector-4-2" class="internal xref">Test Vector 4</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.6">
+                    <p id="section-toc.1-1.13.2.3.2.6.1"><a href="#appendix-A.3.6" class="auto internal xref">A.3.6</a>.  <a href="#name-test-vector-5-2" class="internal xref">Test Vector 5</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.7">
+                    <p id="section-toc.1-1.13.2.3.2.7.1"><a href="#appendix-A.3.7" class="auto internal xref">A.3.7</a>.  <a href="#name-test-vector-6-2" class="internal xref">Test Vector 6</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.8">
+                    <p id="section-toc.1-1.13.2.3.2.8.1"><a href="#appendix-A.3.8" class="auto internal xref">A.3.8</a>.  <a href="#name-test-vector-7-2" class="internal xref">Test Vector 7</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.9">
+                    <p id="section-toc.1-1.13.2.3.2.9.1"><a href="#appendix-A.3.9" class="auto internal xref">A.3.9</a>.  <a href="#name-test-vector-8-2" class="internal xref">Test Vector 8</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3.2.10">
+                    <p id="section-toc.1-1.13.2.3.2.10.1"><a href="#appendix-A.3.10" class="auto internal xref">A.3.10</a>. <a href="#name-test-vector-9-2" class="internal xref">Test Vector 9</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4">
+                <p id="section-toc.1-1.13.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-aegis-128x2-test-vectors" class="internal xref">AEGIS-128X2 Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4.2.1">
+                    <p id="section-toc.1-1.13.2.4.2.1.1"><a href="#appendix-A.4.1" class="auto internal xref">A.4.1</a>.  <a href="#name-initial-state" class="internal xref">Initial State</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4.2.2">
+                    <p id="section-toc.1-1.13.2.4.2.2.1"><a href="#appendix-A.4.2" class="auto internal xref">A.4.2</a>.  <a href="#name-test-vector-1-3" class="internal xref">Test Vector 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4.2.3">
+                    <p id="section-toc.1-1.13.2.4.2.3.1"><a href="#appendix-A.4.3" class="auto internal xref">A.4.3</a>.  <a href="#name-test-vector-2-3" class="internal xref">Test Vector 2</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.5">
+                <p id="section-toc.1-1.13.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-aegis-128x4-test-vectors" class="internal xref">AEGIS-128X4 Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.5.2.1">
+                    <p id="section-toc.1-1.13.2.5.2.1.1"><a href="#appendix-A.5.1" class="auto internal xref">A.5.1</a>.  <a href="#name-initial-state-2" class="internal xref">Initial State</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.5.2.2">
+                    <p id="section-toc.1-1.13.2.5.2.2.1"><a href="#appendix-A.5.2" class="auto internal xref">A.5.2</a>.  <a href="#name-test-vector-1-4" class="internal xref">Test Vector 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.5.2.3">
+                    <p id="section-toc.1-1.13.2.5.2.3.1"><a href="#appendix-A.5.3" class="auto internal xref">A.5.3</a>.  <a href="#name-test-vector-2-4" class="internal xref">Test Vector 2</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.6">
+                <p id="section-toc.1-1.13.2.6.1"><a href="#appendix-A.6" class="auto internal xref">A.6</a>.  <a href="#name-aegis-256x2-test-vectors" class="internal xref">AEGIS-256X2 Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.6.2.1">
+                    <p id="section-toc.1-1.13.2.6.2.1.1"><a href="#appendix-A.6.1" class="auto internal xref">A.6.1</a>.  <a href="#name-initial-state-3" class="internal xref">Initial State</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.6.2.2">
+                    <p id="section-toc.1-1.13.2.6.2.2.1"><a href="#appendix-A.6.2" class="auto internal xref">A.6.2</a>.  <a href="#name-test-vector-1-5" class="internal xref">Test Vector 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.6.2.3">
+                    <p id="section-toc.1-1.13.2.6.2.3.1"><a href="#appendix-A.6.3" class="auto internal xref">A.6.3</a>.  <a href="#name-test-vector-2-5" class="internal xref">Test Vector 2</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7">
+                <p id="section-toc.1-1.13.2.7.1"><a href="#appendix-A.7" class="auto internal xref">A.7</a>.  <a href="#name-aegis-256x4-test-vectors" class="internal xref">AEGIS-256X4 Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.1">
+                    <p id="section-toc.1-1.13.2.7.2.1.1"><a href="#appendix-A.7.1" class="auto internal xref">A.7.1</a>.  <a href="#name-initial-state-4" class="internal xref">Initial State</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.2">
+                    <p id="section-toc.1-1.13.2.7.2.2.1"><a href="#appendix-A.7.2" class="auto internal xref">A.7.2</a>.  <a href="#name-test-vector-1-6" class="internal xref">Test Vector 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.7.2.3">
+                    <p id="section-toc.1-1.13.2.7.2.3.1"><a href="#appendix-A.7.3" class="auto internal xref">A.7.3</a>.  <a href="#name-test-vector-2-6" class="internal xref">Test Vector 2</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8">
+                <p id="section-toc.1-1.13.2.8.1"><a href="#appendix-A.8" class="auto internal xref">A.8</a>.  <a href="#name-aegismac-test-vectors" class="internal xref">AEGISMAC Test Vectors</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8.2.1">
+                    <p id="section-toc.1-1.13.2.8.2.1.1"><a href="#appendix-A.8.1" class="auto internal xref">A.8.1</a>.  <a href="#name-aegismac-128l-test-vector" class="internal xref">AEGISMAC-128L Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8.2.2">
+                    <p id="section-toc.1-1.13.2.8.2.2.1"><a href="#appendix-A.8.2" class="auto internal xref">A.8.2</a>.  <a href="#name-aegismac-128x2-test-vector" class="internal xref">AEGISMAC-128X2 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8.2.3">
+                    <p id="section-toc.1-1.13.2.8.2.3.1"><a href="#appendix-A.8.3" class="auto internal xref">A.8.3</a>.  <a href="#name-aegismac-128x4-test-vector" class="internal xref">AEGISMAC-128X4 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8.2.4">
+                    <p id="section-toc.1-1.13.2.8.2.4.1"><a href="#appendix-A.8.4" class="auto internal xref">A.8.4</a>.  <a href="#name-aegismac-256-test-vector" class="internal xref">AEGISMAC-256 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8.2.5">
+                    <p id="section-toc.1-1.13.2.8.2.5.1"><a href="#appendix-A.8.5" class="auto internal xref">A.8.5</a>.  <a href="#name-aegismac-256x2-test-vector" class="internal xref">AEGISMAC-256X2 Test Vector</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.8.2.6">
+                    <p id="section-toc.1-1.13.2.8.2.6.1"><a href="#appendix-A.8.6" class="auto internal xref">A.8.6</a>.  <a href="#name-aegismac-256x4-test-vector" class="internal xref">AEGISMAC-256X4 Test Vector</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -2876,15 +2933,16 @@ Repeat(7, Update(t, t))
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
     for i in 0..D:
-        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        tag = tag ^ ti
 
 else:                # 256 bits
-    tag0 = ZeroPad({}, 128)
-    tag1 = ZeroPad({}, 128)
+    ti0 = ZeroPad({}, 128)
+    ti1 = ZeroPad({}, 128)
     for i in 0..D:
-        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
-        tag1 = tag1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
-    tag = tag0 || tag1
+        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+    tag = ti0 || ti1
 
 return tag
 </pre><a href="#section-5.4.7-4" class="pilcrow">¶</a>
@@ -3122,15 +3180,16 @@ Repeat(7, Update(t))
 if tag_length == 16: # 128 bits
     tag = ZeroPad({}, 128)
     for i in 0..D:
-        tag = tag ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        tag = tag ^ ti
 
 else:                # 256 bits
-    tag0 = ZeroPad({}, 128)
-    tag1 = ZeroPad({}, 128)
+    ti0 = ZeroPad({}, 128)
+    ti1 = ZeroPad({}, 128)
     for i in 0..D:
-        tag0 = tag0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
-        tag1 = tag1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
-    tag = tag0 || tag1
+        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
+        ti1 = ti1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
+    tag = ti0 || ti1
 
 return tag
 </pre><a href="#section-5.5.7-4" class="pilcrow">¶</a>
@@ -3269,105 +3328,326 @@ return stream
 <p id="section-7-12">After initialization, the <code>Update</code> function is called with constant parameters, allowing further optimizations.<a href="#section-7-12" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="implementation-status">
+<div id="aegis-as-a-message-authentication-code">
 <section id="section-8">
-      <h2 id="name-implementation-status">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+      <h2 id="name-aegis-as-a-message-authenti">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-aegis-as-a-message-authenti" class="section-name selfRef">AEGIS as a Message Authentication Code</a>
       </h2>
-<p id="section-8-1"><em>This note is to be removed before publishing as an RFC.</em><a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">Multiple implementations of the schemes described in this document have been developed and verified for interoperability.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">A comprehensive list of known implementations and integrations can be found at <span><a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead</a></span>, which includes reference implementations closely aligned with the pseudocode provided in this document.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-1">All AEGIS variants can be used to construct a MAC.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">For all the variants, the <code>Mac</code> function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">This is the only function that allows the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">However, AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
+Likewise, unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee that they are uniformly random.<a href="#section-8-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8-5">
+<pre>
+Mac(data, key, nonce)
+</pre><a href="#section-8-5" class="pilcrow">¶</a>
+</div>
+<p id="section-8-6">Inputs:<a href="#section-8-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8-7.1">
+          <p id="section-8-7.1.1"><code>data</code>: the input data to authenticate (length <span class="bcp14">MUST</span> be less than or equal to <code>A_MAX</code>).<a href="#section-8-7.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-7.2">
+          <p id="section-8-7.2.1"><code>key</code>: the secret key.<a href="#section-8-7.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-7.3">
+          <p id="section-8-7.3.1"><code>nonce</code>: the public nonce.<a href="#section-8-7.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-8-8">Outputs:<a href="#section-8-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8-9.1">
+          <p id="section-8-9.1.1"><code>tag</code>: the authentication tag.<a href="#section-8-9.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="aegismac-128l">
+<section id="section-8.1">
+        <h3 id="name-aegismac-128l">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-aegismac-128l" class="section-name selfRef">AEGISMAC-128L</a>
+        </h3>
+<p id="section-8.1-1">AEGISMAC-128L refers to the <code>Mac</code> function based on the building blocks of AEGIS-128L.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-2">Steps:<a href="#section-8.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.1-3">
+<pre>
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, 256), 256)
+for di in data_blocks:
+    Absorb(di)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+return tag
+</pre><a href="#section-8.1-3" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256">
+<section id="section-8.2">
+        <h3 id="name-aegismac-256">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-aegismac-256" class="section-name selfRef">AEGISMAC-256</a>
+        </h3>
+<p id="section-8.2-1">AEGISMAC-256 refers to the <code>Mac</code> function based on the building blocks of AEGIS-256.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-2">Steps:<a href="#section-8.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.2-3">
+<pre>
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, 128), 128)
+for di in data_blocks:
+    Absorb(di)
+tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+return tag
+</pre><a href="#section-8.2-3" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-128x">
+<section id="section-8.3">
+        <h3 id="name-aegismac-128x">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-aegismac-128x" class="section-name selfRef">AEGISMAC-128X</a>
+        </h3>
+<p id="section-8.3-1">The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X but replaces the <code>Finalize</code> function with a dedicated <code>FinalizeMac</code> function.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<div id="the-mac-function">
+<section id="section-8.3.1">
+          <h4 id="name-the-mac-function">
+<a href="#section-8.3.1" class="section-number selfRef">8.3.1. </a><a href="#name-the-mac-function" class="section-name selfRef">The Mac Function</a>
+          </h4>
+<p id="section-8.3.1-1">Steps:<a href="#section-8.3.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.3.1-2">
+<pre>
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, R), R)
+for di in data_blocks:
+    Absorb(di)
+tag = FinalizeMac(|data|)
+return tag
+</pre><a href="#section-8.3.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-finalizemac-function">
+<section id="section-8.3.2">
+          <h4 id="name-the-finalizemac-function">
+<a href="#section-8.3.2" class="section-number selfRef">8.3.2. </a><a href="#name-the-finalizemac-function" class="section-name selfRef">The FinalizeMac Function</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-8.3.2-1">
+<pre>
+FinalizeMac(data_len_bits)
+</pre><a href="#section-8.3.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-8.3.2-2">The <code>FinalizeMac</code> function computes a 128- or 256-bit tag that authenticates the input data.<a href="#section-8.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.3.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-128L.<a href="#section-8.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-8.3.2-4">Steps:<a href="#section-8.3.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.3.2-5">
+<pre>
+t = {}
+u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
+for i in 0..D:
+    t = t || (V[2,i] ^ u)
+
+Repeat(7, Update(t, t))
+
+tags = {}
+if tag_length == 16: # 128 bits
+    for i in 0..D:   # tag from state 0 is included
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
+        tags = tags || ti
+
+else:                # 256 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+        ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+        tags = tags || (ti0 || ti1)
+
+if D &gt; 1:
+    # Absorb tags into state 0; other states are not used anymore
+    for v in Split(tags, 256):
+        Absorb(ZeroPad(v, R))
+
+    u = LE64(D) || LE64(tag_length)
+    t = ZeroPad(V[2,0] ^ u, R)
+    Repeat(7, Update(t, t))
+
+if tag_length == 16: # 128 bits
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+else:                # 256 bits
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = t0 || t1
+</pre><a href="#section-8.3.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="aegismac-256x">
+<section id="section-8.4">
+        <h3 id="name-aegismac-256x">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-aegismac-256x" class="section-name selfRef">AEGISMAC-256X</a>
+        </h3>
+<p id="section-8.4-1">The AEGISMAC-256X MAC is based on the building blocks of AEGIS-256X but replaces the <code>Finalize</code> function with a dedicated <code>FinalizeMac</code> function.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<div id="the-mac-function-1">
+<section id="section-8.4.1">
+          <h4 id="name-the-mac-function-2">
+<a href="#section-8.4.1" class="section-number selfRef">8.4.1. </a><a href="#name-the-mac-function-2" class="section-name selfRef">The Mac Function</a>
+          </h4>
+<p id="section-8.4.1-1">Steps:<a href="#section-8.4.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.4.1-2">
+<pre>
+Init(key, nonce)
+data_blocks = Split(ZeroPad(data, R), R)
+for di in data_blocks:
+    Absorb(di)
+tag = FinalizeMac(|data|)
+return tag
+</pre><a href="#section-8.4.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-finalizemac-function-1">
+<section id="section-8.4.2">
+          <h4 id="name-the-finalizemac-function-2">
+<a href="#section-8.4.2" class="section-number selfRef">8.4.2. </a><a href="#name-the-finalizemac-function-2" class="section-name selfRef">The FinalizeMac Function</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-8.4.2-1">
+<pre>
+FinalizeMac(data_len_bits)
+</pre><a href="#section-8.4.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-8.4.2-2">The <code>FinalizeMac</code> function computes a 128- or 256-bit tag that authenticates the input data.<a href="#section-8.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.4.2-3">It finalizes all the instances, absorbs the resulting tags into the first state, and computes the final tag using that single state, as done in AEGIS-256.<a href="#section-8.4.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.4.2-4">
+<pre>
+t = {}
+u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
+for i in 0..D:
+    t = t || (V[3,i] ^ u)
+
+Repeat(7, Update(t))
+
+tags = {}
+if tag_length == 16: # 128 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || ti
+
+else:                # 256 bits
+    for i in 1..D:   # tag from state 0 is skipped
+        ti0 = V[0,i] ^ V[1,i] ^ V[2,i]
+        ti1 = V[3,i] ^ V[4,i] ^ V[5,i]
+        tags = tags || (ti0 || ti1)
+
+if D &gt; 1:
+    # Absorb tags into state 0; other states are not used anymore
+    for v in Split(tags, 128):
+        Absorb(ZeroPad(v, R))
+
+    u = LE64(D) || LE64(tag_length)
+    t = ZeroPad(V[3,0] ^ u, R)
+    Repeat(7, Update(t))
+
+if tag_length == 16: # 128 bits
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+else:                # 256 bits
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    tag = t0 || t1
+</pre><a href="#section-8.4.2-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="implementation-status">
+<section id="section-9">
+      <h2 id="name-implementation-status">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+      </h2>
+<p id="section-9-1"><em>This note is to be removed before publishing as an RFC.</em><a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">Multiple implementations of the schemes described in this document have been developed and verified for interoperability.<a href="#section-9-2" class="pilcrow">¶</a></p>
+<p id="section-9-3">A comprehensive list of known implementations and integrations can be found at <span><a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead</a></span>, which includes reference implementations closely aligned with the pseudocode provided in this document.<a href="#section-9-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-9">
+<section id="section-10">
       <h2 id="name-security-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <div id="usage-guidelines">
-<section id="section-9.1">
+<section id="section-10.1">
         <h3 id="name-usage-guidelines">
-<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-usage-guidelines" class="section-name selfRef">Usage Guidelines</a>
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-usage-guidelines" class="section-name selfRef">Usage Guidelines</a>
         </h3>
 <div id="key-and-nonce-selection">
-<section id="section-9.1.1">
+<section id="section-10.1.1">
           <h4 id="name-key-and-nonce-selection">
-<a href="#section-9.1.1" class="section-number selfRef">9.1.1. </a><a href="#name-key-and-nonce-selection" class="section-name selfRef">Key and Nonce Selection</a>
+<a href="#section-10.1.1" class="section-number selfRef">10.1.1. </a><a href="#name-key-and-nonce-selection" class="section-name selfRef">Key and Nonce Selection</a>
           </h4>
-<p id="section-9.1.1-1">All AEGIS variants <span class="bcp14">MUST</span> be used in a nonce-respecting setting: for a given <code>key</code>, a <code>nonce</code> <span class="bcp14">MUST</span> only be used once, even with different <code>tag</code> lengths. Failure to do so would immediately reveal the bitwise difference between two messages.<a href="#section-9.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-9.1.1-2">Every key <span class="bcp14">MUST</span> be randomly chosen from a uniform distribution.<a href="#section-9.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-9.1.1-3">The nonce <span class="bcp14">MAY</span> be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.<a href="#section-9.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-9.1.1-4">With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.<a href="#section-9.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-9.1.1-5">With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.<a href="#section-9.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-1">All AEGIS variants <span class="bcp14">MUST</span> be used in a nonce-respecting setting: for a given <code>key</code>, a <code>nonce</code> <span class="bcp14">MUST</span> only be used once, even with different <code>tag</code> lengths. Failure to do so would immediately reveal the bitwise difference between two messages.<a href="#section-10.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-2">Every key <span class="bcp14">MUST</span> be randomly chosen from a uniform distribution.<a href="#section-10.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-3">The nonce <span class="bcp14">MAY</span> be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.<a href="#section-10.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-4">With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.<a href="#section-10.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-5">With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.<a href="#section-10.1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-commitment">
-<section id="section-9.1.2">
+<section id="section-10.1.2">
           <h4 id="name-key-commitment">
-<a href="#section-9.1.2" class="section-number selfRef">9.1.2. </a><a href="#name-key-commitment" class="section-name selfRef">Key Commitment</a>
+<a href="#section-10.1.2" class="section-number selfRef">10.1.2. </a><a href="#name-key-commitment" class="section-name selfRef">Key Commitment</a>
           </h4>
-<p id="section-9.1.2-1">An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same <code>(ad, ct, tag)</code> tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.<a href="#section-9.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-9.1.2-2">AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.<a href="#section-9.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-9.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-9.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-9.1.2-4">Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span>, via the <code>info</code> input to derive the <code>key</code> parameter. The <code>ad</code> parameter can then be left empty. Note that the <code>salt</code> input <span class="bcp14">MUST NOT</span> be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the <code>info</code> input to be unambiguously encoded, like by appending their lengths.<a href="#section-9.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-1">An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same <code>(ad, ct, tag)</code> tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.<a href="#section-10.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-2">AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.<a href="#section-10.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-10.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-4">Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span>, via the <code>info</code> input to derive the <code>key</code> parameter. The <code>ad</code> parameter can then be left empty. Note that the <code>salt</code> input <span class="bcp14">MUST NOT</span> be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the <code>info</code> input to be unambiguously encoded, like by appending their lengths.<a href="#section-10.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="multi-user-security">
-<section id="section-9.1.3">
+<section id="section-10.1.3">
           <h4 id="name-multi-user-security">
-<a href="#section-9.1.3" class="section-number selfRef">9.1.3. </a><a href="#name-multi-user-security" class="section-name selfRef">Multi-User Security</a>
+<a href="#section-10.1.3" class="section-number selfRef">10.1.3. </a><a href="#name-multi-user-security" class="section-name selfRef">Multi-User Security</a>
           </h4>
-<p id="section-9.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-9.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-9.1.3-2">In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don’t provide any advantage over single-target attacks.<a href="#section-9.1.3-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="other-uses-of-aegis">
-<section id="section-9.1.4">
-          <h4 id="name-other-uses-of-aegis">
-<a href="#section-9.1.4" class="section-number selfRef">9.1.4. </a><a href="#name-other-uses-of-aegis" class="section-name selfRef">Other Uses of AEGIS</a>
-          </h4>
-<p id="section-9.1.4-1">All variants can be used solely for authentication by calling the <code>Encrypt()</code> function with the message as the <code>ad</code> and leaving <code>msg</code> empty, resulting in just a tag. However, they <span class="bcp14">MUST NOT</span> be used as a hash function; if the key is known, inputs generating state collisions can easily be crafted. Similarly, as opposed to hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no proof they are uniformly random.<a href="#section-9.1.4-1" class="pilcrow">¶</a></p>
-<p id="section-9.1.4-2">Reusing a nonce is acceptable with the AEGIS-128L and AEGIS-256 variants when used exclusively for authentication. However, nonces <span class="bcp14">MUST NOT</span> be reused with the parallel variants (AEGIS-128X and AEGIS-256X) to ensure security against forgery.<a href="#section-9.1.4-2" class="pilcrow">¶</a></p>
+<p id="section-10.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-10.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.3-2">In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don’t provide any advantage over single-target attacks.<a href="#section-10.1.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="implementation-security">
-<section id="section-9.2">
+<section id="section-10.2">
         <h3 id="name-implementation-security">
-<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-implementation-security" class="section-name selfRef">Implementation Security</a>
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-implementation-security" class="section-name selfRef">Implementation Security</a>
         </h3>
-<p id="section-9.2-1">If tag verification fails, the unverified plaintext and the computed message authentication tag <span class="bcp14">MUST NOT</span> be released. As shown in <span>[<a href="#VV18" class="cite xref">VV18</a>]</span>, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
-<p id="section-9.2-2">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound()</code> function. Failure to implement <code>AESRound()</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.<a href="#section-9.2-2" class="pilcrow">¶</a></p>
-<p id="section-9.2-3">Regardless of the variant, the <code>key</code> and <code>nonce</code> are only required by the <code>Init</code> function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last <code>Update</code> call of the initialization function.<a href="#section-9.2-3" class="pilcrow">¶</a></p>
+<p id="section-10.2-1">If tag verification fails, the unverified plaintext and the computed message authentication tag <span class="bcp14">MUST NOT</span> be released. As shown in <span>[<a href="#VV18" class="cite xref">VV18</a>]</span>, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
+<p id="section-10.2-2">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound()</code> function. Failure to implement <code>AESRound()</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
+<p id="section-10.2-3">Regardless of the variant, the <code>key</code> and <code>nonce</code> are only required by the <code>Init</code> function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last <code>Update</code> call of the initialization function.<a href="#section-10.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-guarantees">
-<section id="section-9.3">
+<section id="section-10.3">
         <h3 id="name-security-guarantees">
-<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-security-guarantees" class="section-name selfRef">Security Guarantees</a>
+<a href="#section-10.3" class="section-number selfRef">10.3. </a><a href="#name-security-guarantees" class="section-name selfRef">Security Guarantees</a>
         </h3>
-<p id="section-9.3-1">AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
-<p id="section-9.3-2">Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.<a href="#section-9.3-2" class="pilcrow">¶</a></p>
-<p id="section-9.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
-However, <code>(key, nonce)</code> pairs <span class="bcp14">MUST NOT</span> be reused, even if the associated data differs.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
-<p id="section-9.3-4">AEGIS has been shown to have reforgeability resilience in <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.<a href="#section-9.3-4" class="pilcrow">¶</a></p>
-<p id="section-9.3-5">AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same <span>[<a href="#D23" class="cite xref">D23</a>]</span>.<a href="#section-9.3-5" class="pilcrow">¶</a></p>
-<p id="section-9.3-6">AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.<a href="#section-9.3-6" class="pilcrow">¶</a></p>
-<p id="section-9.3-7">This resilience extends to quantum adversaries operating within the Q1 model, where the attacker has access to a quantum computer but is restricted to classical (non-quantum) communications with the systems under attack. In this model, quantum attacks offer no practical advantage in decrypting previously recorded ciphertexts or in recovering the encryption key.<a href="#section-9.3-7" class="pilcrow">¶</a></p>
-<p id="section-9.3-8">This document extends the original specification by introducing optional support for 256-bit authentication tags, which are constructed similarly to the 128-bit tags.
-As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 256-bit tags, all AEGIS variants achieve more than 128-bit security against forgery by differential attacks.<a href="#section-9.3-8" class="pilcrow">¶</a></p>
-<p id="section-9.3-9">Security analyses of AEGIS can be found in <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, <span>[<a href="#M14" class="cite xref">M14</a>]</span>, <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>, <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span>, <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span>, <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span>, <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>, <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, <span>[<a href="#BS23" class="cite xref">BS23</a>]</span>, <span>[<a href="#AIKRS24" class="cite xref">AIKRS24</a>]</span>, and <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>.<a href="#section-9.3-9" class="pilcrow">¶</a></p>
+<p id="section-10.3-1">AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.<a href="#section-10.3-1" class="pilcrow">¶</a></p>
+<p id="section-10.3-2">Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.<a href="#section-10.3-2" class="pilcrow">¶</a></p>
+<p id="section-10.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
+However, <code>(key, nonce)</code> pairs <span class="bcp14">MUST NOT</span> be reused, even if the associated data differs.<a href="#section-10.3-3" class="pilcrow">¶</a></p>
+<p id="section-10.3-4">AEGIS has been shown to have reforgeability resilience in <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.<a href="#section-10.3-4" class="pilcrow">¶</a></p>
+<p id="section-10.3-5">AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same <span>[<a href="#D23" class="cite xref">D23</a>]</span>.<a href="#section-10.3-5" class="pilcrow">¶</a></p>
+<p id="section-10.3-6">AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.<a href="#section-10.3-6" class="pilcrow">¶</a></p>
+<p id="section-10.3-7">This resilience extends to quantum adversaries operating within the Q1 model, where the attacker has access to a quantum computer but is restricted to classical (non-quantum) communications with the systems under attack. In this model, quantum attacks offer no practical advantage in decrypting previously recorded ciphertexts or in recovering the encryption key.<a href="#section-10.3-7" class="pilcrow">¶</a></p>
+<p id="section-10.3-8">This document extends the original specification by introducing optional support for 256-bit authentication tags, which are constructed similarly to the 128-bit tags.
+As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 256-bit tags, all AEGIS variants achieve more than 128-bit security against forgery by differential attacks.<a href="#section-10.3-8" class="pilcrow">¶</a></p>
+<p id="section-10.3-9">Security analyses of AEGIS can be found in <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, <span>[<a href="#M14" class="cite xref">M14</a>]</span>, <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>, <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span>, <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span>, <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span>, <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>, <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, <span>[<a href="#BS23" class="cite xref">BS23</a>]</span>, <span>[<a href="#AIKRS24" class="cite xref">AIKRS24</a>]</span>, and <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>.<a href="#section-10.3-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-10">
+<section id="section-11">
       <h2 id="name-iana-considerations">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-10-1">IANA has assigned the following identifiers in the AEAD Algorithms Registry:<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-11-1">IANA has assigned the following identifiers in the AEAD Algorithms Registry:<a href="#section-11-1" class="pilcrow">¶</a></p>
 <span id="name-aegis-entries-in-the-aead-a"></span><table class="center" id="table-2">
         <caption>
 <a href="#table-2" class="selfRef">Table 2</a>:
@@ -3398,33 +3678,33 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
           </tr>
         </tbody>
       </table>
-<p id="section-10-3">IANA is requested to update the references of these entries to refer to the final version of this document.<a href="#section-10-3" class="pilcrow">¶</a></p>
-<p id="section-10-4">IANA is also requested to register the following identifiers in the AEAD Algorithms Registry:<a href="#section-10-4" class="pilcrow">¶</a></p>
+<p id="section-11-3">IANA is requested to update the references of these entries to refer to the final version of this document.<a href="#section-11-3" class="pilcrow">¶</a></p>
+<p id="section-11-4">IANA is also requested to register the following identifiers in the AEAD Algorithms Registry:<a href="#section-11-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-10-5.1">
-          <p id="section-10-5.1.1"><code>AEAD_AEGIS128X2</code><a href="#section-10-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-11-5.1">
+          <p id="section-11-5.1.1"><code>AEAD_AEGIS128X2</code><a href="#section-11-5.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-10-5.2">
-          <p id="section-10-5.2.1"><code>AEAD_AEGIS128X4</code><a href="#section-10-5.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-11-5.2">
+          <p id="section-11-5.2.1"><code>AEAD_AEGIS128X4</code><a href="#section-11-5.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-10-5.3">
-          <p id="section-10-5.3.1"><code>AEAD_AEGIS256X2</code><a href="#section-10-5.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-11-5.3">
+          <p id="section-11-5.3.1"><code>AEAD_AEGIS256X2</code><a href="#section-11-5.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-10-5.4">
-          <p id="section-10-5.4.1"><code>AEAD_AEGIS256X4</code><a href="#section-10-5.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-11-5.4">
+          <p id="section-11-5.4.1"><code>AEAD_AEGIS256X4</code><a href="#section-11-5.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
 </div>
 <div id="sec-combined-references">
-<section id="section-11">
+<section id="section-12">
       <h2 id="name-references">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-11.1">
+<section id="section-12.1">
         <h3 id="name-normative-references">
-<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-12.1" class="section-number selfRef">12.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="FIPS-AES">[FIPS-AES]</dt>
@@ -3455,9 +3735,9 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-11.2">
+<section id="section-12.2">
         <h3 id="name-informative-references">
-<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-12.2" class="section-number selfRef">12.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="AEGIS">[AEGIS]</dt>
@@ -4587,6 +4867,191 @@ tag128: ec44b512d713f745547be345bcc66b6c
 tag256: ba3168ecd7f7120c5e204a7e0d616e39
         5675ddfe00e4e5490a5ba93bb1a70555
 </pre><a href="#appendix-A.7.3-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="aegismac-test-vectors">
+<section id="appendix-A.8">
+        <h3 id="name-aegismac-test-vectors">
+<a href="#appendix-A.8" class="section-number selfRef">A.8. </a><a href="#name-aegismac-test-vectors" class="section-name selfRef">AEGISMAC Test Vectors</a>
+        </h3>
+<div id="aegismac-128l-test-vector">
+<section id="appendix-A.8.1">
+          <h4 id="name-aegismac-128l-test-vector">
+<a href="#appendix-A.8.1" class="section-number selfRef">A.8.1. </a><a href="#name-aegismac-128l-test-vector" class="section-name selfRef">AEGISMAC-128L Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.8.1-1">
+<pre>
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tag128 : d3f09b2842ad301687d6902c921d7818
+
+tag256 : 9490e7c89d420c9f37417fa625eb38e8
+         cad53c5cbec55285e8499ea48377f2a3
+</pre><a href="#appendix-A.8.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-128x2-test-vector">
+<section id="appendix-A.8.2">
+          <h4 id="name-aegismac-128x2-test-vector">
+<a href="#appendix-A.8.2" class="section-number selfRef">A.8.2. </a><a href="#name-aegismac-128x2-test-vector" class="section-name selfRef">AEGISMAC-128X2 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.8.2-1">
+<pre>
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 4ee9988a70c8a864a11b97e4b47e7fdf
+         aa50e513525dc88346c094a7490a48cb
+
+tag128 : 21c6922d3ad6522ac57369600314c912
+
+tags256: e5475e88338c2859ab367ce0aa34deb0
+         2fd7293564f8fdbf3074a9335242b9f4
+
+tag256 : 83dd64b45d75ef3537f45f0ec5b27518
+         9b98fb241fed02672122c73f5ce8ac07
+</pre><a href="#appendix-A.8.2-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-128x4-test-vector">
+<section id="appendix-A.8.3">
+          <h4 id="name-aegismac-128x4-test-vector">
+<a href="#appendix-A.8.3" class="section-number selfRef">A.8.3. </a><a href="#name-aegismac-128x4-test-vector" class="section-name selfRef">AEGISMAC-128X4 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.8.3-1">
+<pre>
+key    : 10010000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 74e53f1ba0468d0202cec23d0b15c6a5
+         111e366ba0019a58364e9dab9c63dde2
+         671e3da717004bea7ee3325e98db6438
+         d3d32a38d2cbd76beb67be75dc6ebd05
+
+tag128 : 90b56cd04f89737f558e7add279bcfa6
+
+tags256: 4954de13381d142f623f778665416950
+         1204963db07974c21ee2f55b9c3415b5
+         22084db5d2f9801c541c86738c501318
+         2d15844ef3c5ffbbbbdfc16abc2939d0
+         23f6cddb8b055a15ed393028891ab87a
+         de44d86c69bb0efcfbb8888ea77c98f9
+
+tag256 : 2b6e56d61a23e15ab84967fe936f7a68
+         ae32b666412ed0504c57fff2cdb744a4
+</pre><a href="#appendix-A.8.3-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256-test-vector">
+<section id="appendix-A.8.4">
+          <h4 id="name-aegismac-256-test-vector">
+<a href="#appendix-A.8.4" class="section-number selfRef">A.8.4. </a><a href="#name-aegismac-256-test-vector" class="section-name selfRef">AEGISMAC-256 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.8.4-1">
+<pre>
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tag128 : c08e20cfc56f27195a46c9cef5c162d4
+
+tag256 : a5c906ede3d69545c11e20afa360b221
+         f936e946ed2dba3d7c75ad6dc2784126
+</pre><a href="#appendix-A.8.4-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256x2-test-vector">
+<section id="appendix-A.8.5">
+          <h4 id="name-aegismac-256x2-test-vector">
+<a href="#appendix-A.8.5" class="section-number selfRef">A.8.5. </a><a href="#name-aegismac-256x2-test-vector" class="section-name selfRef">AEGISMAC-256X2 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.8.5-1">
+<pre>
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 631331cfc9b058661c7e58dff104431a
+
+tag128 : 47fb35135afe3520cf0b47458024eca8
+
+tags256: 9e2fa48b9070ce8279e706dccd586d91
+         42c8d9e5e54cfb18406a1e2ccfa9095e
+
+tag256 : 894989e7d22b766fdb108374dabdb055
+         b0eda8776a27ae052f6ed36c25bf9a7a
+</pre><a href="#appendix-A.8.5-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="aegismac-256x4-test-vector">
+<section id="appendix-A.8.6">
+          <h4 id="name-aegismac-256x4-test-vector">
+<a href="#appendix-A.8.6" class="section-number selfRef">A.8.6. </a><a href="#name-aegismac-256x4-test-vector" class="section-name selfRef">AEGISMAC-256X4 Test Vector</a>
+          </h4>
+<div class="lang-test-vectors sourcecode" id="appendix-A.8.6-1">
+<pre>
+key    : 10010000000000000000000000000000
+         00000000000000000000000000000000
+
+nonce  : 10000200000000000000000000000000
+         00000000000000000000000000000000
+
+data   : 000102030405060708090a0b0c0d0e0f
+         101112131415161718191a1b1c1d1e1f
+         202122
+
+tags128: 14496e590661feefa8380fbd65ac2b3e
+         8fd3530c100b5cf5fc01e074bf08c6b2
+         28424fd58d93c2ed54063475f99a721c
+
+tag128 : 46478aec625986ecfed99348a7c2f13c
+
+tags256: dff8d1d3c5ac0c57cee27360c846e1e3
+         ef0495f572374f4010e5409f4f648456
+         769589e5a907a5963dc09b3985b38e21
+         69008a3fd2303c831e284cf313f5e429
+         d3c9bc2bf6375b57281d0cb5a43345c6
+         85ef8674e90d79e2d303080c549e91d6
+
+tag256 : d45ab883ba0917faa248e33a07d36699
+         bab4dc9cd0253c48e6dd7a8dcf5ce1b2
+</pre><a href="#appendix-A.8.6-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
