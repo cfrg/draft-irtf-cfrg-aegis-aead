@@ -3335,14 +3335,23 @@ return stream
       </h2>
 <p id="section-8-1">All AEGIS variants can be used to construct a MAC.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">For all the variants, the <code>Mac</code> function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">This is the only function that allows the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">However, AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
-Likewise, unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee that they are uniformly random.<a href="#section-8-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8-5">
+<div class="alignLeft art-text artwork" id="section-8-3">
 <pre>
 Mac(data, key, nonce)
-</pre><a href="#section-8-5" class="pilcrow">¶</a>
+</pre><a href="#section-8-3" class="pilcrow">¶</a>
 </div>
+<p id="section-8-4">Security:<a href="#section-8-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8-5.1">
+          <p id="section-8-5.1.1">This is the only function that allows the reuse of <code>(key, nonce)</code> pairs with different inputs.<a href="#section-8-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-5.2">
+          <p id="section-8-5.2.1">AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions: if the key is known, inputs causing state collisions can easily be crafted.<a href="#section-8-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-5.3">
+          <p id="section-8-5.3.1">Unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee that they are uniformly random.<a href="#section-8-5.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 <p id="section-8-6">Inputs:<a href="#section-8-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8-7.1">
