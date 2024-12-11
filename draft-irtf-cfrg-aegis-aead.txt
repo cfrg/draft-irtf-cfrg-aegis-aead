@@ -1685,9 +1685,8 @@ return tag
 
 8.3.  AEGISMAC-128X
 
-   The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X
-   but replaces the Finalize function with a dedicated FinalizeMac
-   function.
+   AEGISMAC-128X is based on the building blocks of AEGIS-128X but
+   replaces the Finalize function with a dedicated FinalizeMac function.
 
 8.3.1.  The Mac Function
 
@@ -1750,9 +1749,8 @@ else:                # 256 bits
 
 8.4.  AEGISMAC-256X
 
-   The AEGISMAC-256X MAC is based on the building blocks of AEGIS-256X
-   but replaces the Finalize function with a dedicated FinalizeMac
-   function.
+   AEGISMAC-256X is based on the building blocks of AEGIS-256X but
+   replaces the Finalize function with a dedicated FinalizeMac function.
 
 8.4.1.  The Mac Function
 
