@@ -2091,9 +2091,9 @@ else:                # 256 bits
               <https://doi.org/10.1049/ise2.12109>.
 
    [TEST-VECTORS]
-              "AEGIS Test Vectors", commit f8d7981e, 2024,
+              "AEGIS Test Vectors", commit 398299b8, 2024,
               <https://github.com/cfrg/draft-irtf-cfrg-aegis-
-              aead/tree/f8d7981e/test-vectors>.
+              aead/tree/398299b8/test-vectors>.
 
    [VV18]     Vaudenay, S. and D. Vizár, "Can Caesar Beat Galois?",
               Applied Cryptography and Network Security. ACNS 2018.
