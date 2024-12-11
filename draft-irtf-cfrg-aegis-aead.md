@@ -713,7 +713,7 @@ t = S2 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t, t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
 else:                # 256 bits
     tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
@@ -1039,7 +1039,7 @@ t = S3 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 else:                # 256 bits
     tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
@@ -1325,7 +1325,7 @@ for i in 0..D:
 
 Repeat(7, Update(t, t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
@@ -1532,7 +1532,7 @@ for i in 0..D:
 
 Repeat(7, Update(t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
@@ -1658,7 +1658,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+tag = Finalize(|data|, tag_length_bits)
 return tag
 ~~~
 
@@ -1673,7 +1673,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+tag = Finalize(|data|, tag_length_bits)
 return tag
 ~~~
 
@@ -1708,14 +1708,14 @@ Steps:
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length * 8) # tag_length is 16 or 32
+u = LE64(data_len_bits) || LE64(tag_length_bits)
 for i in 0..D:
     t = t || (V[2,i] ^ u)
 
 Repeat(7, Update(t, t))
 
 tags = {}
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     for i in 0..D:   # tag from state 0 is included
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tags = tags || ti
@@ -1731,11 +1731,11 @@ if D > 1:
     for v in Split(tags, 256):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length * 8)
+    u = LE64(D) || LE64(tag_length_bits)
     t = ZeroPad(V[2,0] ^ u, R)
     Repeat(7, Update(t, t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
 else:                # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
@@ -1772,14 +1772,14 @@ It finalizes all the instances, absorbs the resulting tags into the first state,
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length * 8) # tag_length is 16 or 32
+u = LE64(data_len_bits) || LE64(tag_length_bits)
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
 Repeat(7, Update(t))
 
 tags = {}
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     for i in 1..D:   # tag from state 0 is skipped
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || ti
@@ -1795,11 +1795,11 @@ if D > 1:
     for v in Split(tags, 128):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length * 8)
+    u = LE64(D) || LE64(tag_length_bits)
     t = ZeroPad(V[3,0] ^ u, R)
     Repeat(7, Update(t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
 else:                # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
