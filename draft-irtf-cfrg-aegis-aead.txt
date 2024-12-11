@@ -793,7 +793,7 @@ Table of Contents
 
    *  If tag verification fails, the decrypted message and wrong message
       authentication tag MUST NOT be given as output.  The decrypted
-      message MUST be overwritten with zeros.
+      message MUST be overwritten with zeros before being returned.
 
    *  The comparison of the input tag with the expected_tag MUST be done
       in constant time.

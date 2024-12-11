@@ -2251,7 +2251,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-4.2-3">Security:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-4.1">
-            <p id="section-4.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros.<a href="#section-4.2-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before being returned.<a href="#section-4.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.2-4.2">
             <p id="section-4.2-4.2.1">The comparison of the input <code>tag</code> with the <code>expected_tag</code> <span class="bcp14">MUST</span> be done in constant time.<a href="#section-4.2-4.2.1" class="pilcrow">¶</a></p>
