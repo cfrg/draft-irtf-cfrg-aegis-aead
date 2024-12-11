@@ -1628,14 +1628,15 @@ All AEGIS variants can be used to construct a MAC.
 
 For all the variants, the `Mac` function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.
 
-This is the only function that allows the reuse of `(key, nonce)` pairs with different inputs.
-
-However, AEGIS-based MAC functions MUST NOT be used as hash functions. If the key is known, inputs causing state collisions can easily be crafted.
-Likewise, unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee that they are uniformly random.
-
 ~~~
 Mac(data, key, nonce)
 ~~~
+
+Security:
+
+- This is the only function that allows the reuse of `(key, nonce)` pairs with different inputs.
+- AEGIS-based MAC functions MUST NOT be used as hash functions: if the key is known, inputs causing state collisions can easily be crafted.
+- Unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee that they are uniformly random.
 
 Inputs:
 
