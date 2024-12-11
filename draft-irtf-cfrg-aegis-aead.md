@@ -272,8 +272,8 @@ informative:
 
   TEST-VECTORS:
     title: "AEGIS Test Vectors"
-    refcontent: commit f8d7981e
-    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/f8d7981e/test-vectors
+    refcontent: commit 398299b8
+    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/398299b8/test-vectors
     date: 2024
 
   VV18:
