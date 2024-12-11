@@ -792,7 +792,7 @@ The `Decrypt` function decrypts a ciphertext, verifies that the authentication t
 
 Security:
 
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros.
+- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before being returned.
 - The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
@@ -1680,7 +1680,7 @@ return tag
 
 ## AEGISMAC-128X
 
-The AEGISMAC-128X MAC is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+AEGISMAC-128X is based on the building blocks of AEGIS-128X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
 
 ### The Mac Function
 
@@ -1746,7 +1746,7 @@ else:                # 256 bits
 
 ## AEGISMAC-256X
 
-The AEGISMAC-256X MAC is based on the building blocks of AEGIS-256X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+AEGISMAC-256X is based on the building blocks of AEGIS-256X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
 
 ### The Mac Function
 
