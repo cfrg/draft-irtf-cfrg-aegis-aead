@@ -1648,7 +1648,6 @@ Outputs:
 
 - `tag`: the authentication tag.
 
-
 ## AEGISMAC-128L
 
 AEGISMAC-128L refers to the `Mac` function based on the building blocks of AEGIS-128L.
