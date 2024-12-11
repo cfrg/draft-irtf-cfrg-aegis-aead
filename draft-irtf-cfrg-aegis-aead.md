@@ -272,8 +272,8 @@ informative:
 
   TEST-VECTORS:
     title: "AEGIS Test Vectors"
-    refcontent: commit f8d7981e
-    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/f8d7981e/test-vectors
+    refcontent: commit 398299b8
+    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/398299b8/test-vectors
     date: 2024
 
   VV18:
@@ -713,7 +713,7 @@ t = S2 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t, t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
 else:                # 256 bits
     tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
@@ -1039,7 +1039,7 @@ t = S3 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
 else:                # 256 bits
     tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
@@ -1325,7 +1325,7 @@ for i in 0..D:
 
 Repeat(7, Update(t, t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
@@ -1532,7 +1532,7 @@ for i in 0..D:
 
 Repeat(7, Update(t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
@@ -1658,7 +1658,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+tag = Finalize(|data|, tag_length_bits)
 return tag
 ~~~
 
@@ -1673,7 +1673,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length) # tag_length is 16 or 32
+tag = Finalize(|data|, tag_length_bits)
 return tag
 ~~~
 
@@ -1708,14 +1708,14 @@ Steps:
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
+u = LE64(data_len_bits) || LE64(tag_length_bits)
 for i in 0..D:
     t = t || (V[2,i] ^ u)
 
 Repeat(7, Update(t, t))
 
 tags = {}
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     for i in 0..D:   # tag from state 0 is included
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tags = tags || ti
@@ -1731,11 +1731,11 @@ if D > 1:
     for v in Split(tags, 256):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length)
+    u = LE64(D) || LE64(tag_length_bits)
     t = ZeroPad(V[2,0] ^ u, R)
     Repeat(7, Update(t, t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
 else:                # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
@@ -1772,14 +1772,14 @@ It finalizes all the instances, absorbs the resulting tags into the first state,
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length) # tag_length is 16 or 32
+u = LE64(data_len_bits) || LE64(tag_length_bits)
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
 Repeat(7, Update(t))
 
 tags = {}
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     for i in 1..D:   # tag from state 0 is skipped
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || ti
@@ -1795,11 +1795,11 @@ if D > 1:
     for v in Split(tags, 128):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length)
+    u = LE64(D) || LE64(tag_length_bits)
     t = ZeroPad(V[3,0] ^ u, R)
     Repeat(7, Update(t))
 
-if tag_length == 16: # 128 bits
+if tag_length_bits == 128:
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
 else:                # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
@@ -2773,16 +2773,16 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: 4ee9988a70c8a864a11b97e4b47e7fdf
-         aa50e513525dc88346c094a7490a48cb
+tags128: 9f5f69928fa481fa86e8a51e072a9b29
+         eeaa77a356f796b427f6a54f52ae0e20
 
-tag128 : 21c6922d3ad6522ac57369600314c912
+tag128 : 7aa41edfd57a95c1108d83c63b8d4d01
 
-tags256: e5475e88338c2859ab367ce0aa34deb0
-         2fd7293564f8fdbf3074a9335242b9f4
+tags256: 22cdcf558d0338b6ad8fbba4da7307d3
+         0bd685fff23dc9d41f598c2a7ea44055
 
-tag256 : 83dd64b45d75ef3537f45f0ec5b27518
-         9b98fb241fed02672122c73f5ce8ac07
+tag256 : 55b6449929cd2b01d04786e57698b3dd
+         fb5cbf6e421bbd022637a33d60f40294
 ~~~
 
 ### AEGISMAC-128X4 Test Vector
@@ -2796,22 +2796,22 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: 74e53f1ba0468d0202cec23d0b15c6a5
-         111e366ba0019a58364e9dab9c63dde2
-         671e3da717004bea7ee3325e98db6438
-         d3d32a38d2cbd76beb67be75dc6ebd05
+tags128: 7fecd913a7cb0011b6c4c88e0c6f8578
+         19a98fbeaf21d1092c32953fff82c8a9
+         c7b5e6625a5765d04af26cf22adc1282
+         4c8cf3b4dbb85f379e13b04a8d06bca7
 
-tag128 : 90b56cd04f89737f558e7add279bcfa6
+tag128 : 46a194ea4337bb32c2186a99e312f3a7
 
-tags256: 4954de13381d142f623f778665416950
-         1204963db07974c21ee2f55b9c3415b5
-         22084db5d2f9801c541c86738c501318
-         2d15844ef3c5ffbbbbdfc16abc2939d0
-         23f6cddb8b055a15ed393028891ab87a
-         de44d86c69bb0efcfbb8888ea77c98f9
+tags256: d595732bdf230a1441978414cd8cfa39
+         ecef6ad0ee1e65ae530006ca5d5f4481
+         f9ec5edfa64e9c3d76d3a5eda9fe5bd1
+         fb9d842373f7c90bedb8bfe383740b23
+         1264a15143eb8c3d9f17754099f147e3
+         401c83c0d5afc70fd0d68bfd17f9280f
 
-tag256 : 2b6e56d61a23e15ab84967fe936f7a68
-         ae32b666412ed0504c57fff2cdb744a4
+tag256 : ea884072699569532fb68ae9fb2653c9
+         ffef3e974333d3a17d77be02453cc12f
 ~~~
 
 ### AEGISMAC-256 Test Vector
@@ -2846,15 +2846,15 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: 631331cfc9b058661c7e58dff104431a
+tags128: db8852ea2c03f22b0d0694ea4e88e4b1
 
-tag128 : 47fb35135afe3520cf0b47458024eca8
+tag128 : fb319cb6dd728a764606fb14d37f2a5e
 
-tags256: 9e2fa48b9070ce8279e706dccd586d91
-         42c8d9e5e54cfb18406a1e2ccfa9095e
+tags256: b4d124976b34b2aa8bc3fa0b55396cf7
+         fb83f4ef5ba607681cddf5ba3e925727
 
-tag256 : 894989e7d22b766fdb108374dabdb055
-         b0eda8776a27ae052f6ed36c25bf9a7a
+tag256 : 0844b20ed5147ceae89c7a160263afd4
+         b1382d6b154ecf560ce8a342cb6a8fd1
 ~~~
 
 ### AEGISMAC-256X4 Test Vector
@@ -2870,21 +2870,21 @@ data   : 000102030405060708090a0b0c0d0e0f
          101112131415161718191a1b1c1d1e1f
          202122
 
-tags128: 14496e590661feefa8380fbd65ac2b3e
-         8fd3530c100b5cf5fc01e074bf08c6b2
-         28424fd58d93c2ed54063475f99a721c
+tags128: 702d595e74962d073a0d68c883d80deb
+         41ab207e43b16659d556d7467218a9ec
+         113406e7cb56e0f6b63c95c88421dfee
 
-tag128 : 46478aec625986ecfed99348a7c2f13c
+tag128 : a51f9bc5beae60cce77f0dbc60761edd
 
-tags256: dff8d1d3c5ac0c57cee27360c846e1e3
-         ef0495f572374f4010e5409f4f648456
-         769589e5a907a5963dc09b3985b38e21
-         69008a3fd2303c831e284cf313f5e429
-         d3c9bc2bf6375b57281d0cb5a43345c6
-         85ef8674e90d79e2d303080c549e91d6
+tags256: a46ebcd10939b42012a3f9b6147172af
+         3b74aec5d0070e8d6a81498ccbcdb41a
+         d57cd7a50fa8621dfea2e81cd941def5
+         57094251a24527a4d97fc4c825368180
+         3973129d07cc20811a8b3c34574f6ce0
+         10165dd0e856e797f70731e78e32f764
 
-tag256 : d45ab883ba0917faa248e33a07d36699
-         bab4dc9cd0253c48e6dd7a8dcf5ce1b2
+tag256 : b36a16ef07c36d75a91f437502f24f54
+         5b8dfa88648ed116943c29fead3bf10c
 ~~~
 
 # Acknowledgments

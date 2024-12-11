@@ -178,7 +178,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             var s = &self.s;
             var b: [blockx_length]u8 = undefined;
             mem.writeInt(u64, b[0..8], @as(u64, data_len) * 8, .little);
-            mem.writeInt(u64, b[8..16], tag_length, .little);
+            mem.writeInt(u64, b[8..16], tag_bits, .little);
             for (1..degree) |i| {
                 b[i * 16 ..][0..16].* = b[0..16].*;
             }
@@ -205,7 +205,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
             }
             if (degree > 1) {
                 mem.writeInt(u64, b[0..8], degree, .little);
-                mem.writeInt(u64, b[8..16], tag_length, .little);
+                mem.writeInt(u64, b[8..16], tag_bits, .little);
                 t = s[3].xorBlocks(AesBlockX.fromBytes(&b));
                 for (0..7) |_| {
                     self.update(t);
