@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-10T00:49:05.693219+00:00",
+  "timestamp": "2024-12-12T00:47:16.636621+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -660,15 +660,15 @@
       "id": "I_kwDOKeDGj86iVrRz",
       "title": "Addressing Gilles feedback",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/59",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Quoting Gilles VAN ASSCHE:\r\n\r\n> I have one comment on the parallel instances AEGIS-{128,256}X. These instances internally call AEGIS-128L and AEGIS-256, respectively, with parts of the plaintext and associated data (AD), so that they can be computed in parallel branches. The resulting tag is obtained simply by XORing the tags coming from the different branches. Although the draft clearly mandates a nonce-respecting setting, when AEGIS-{128,256}X is used solely to compute a MAC, the user may be tempted to ignore this and fix the nonce. In a nonce-less MAC setting, this leads to a forgery attack: one obtains the tags for XY, ZY and XT (with X, Z being plaintext or AD in one branch, and Y, T in another branch) and then computes the tag for ZT as tag(ZT)=tag(XY)^tag(ZY)^tag(XT).\r\n>\r\n> Section 9 warns about the consequences of nonce reuse for encryption, but not for authentication. Also, the third paragraph of Section 9.3 suggests that one can trade nonce uniqueness for AD uniqueness, but that does not work for authentication with AEGIS-{128,256}X.\r\n> \r\n> So, this probably deserves some warnings or clarifications in the text before the draft is published.\r\n\r\nWe indeed need to emphasize the importance of the nonce for authentication.\r\n\r\nSection 9.3 contains:\r\n\"Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.\"\r\n\r\nThis is true and nice, but the practical importance of this is limited. And as Gilles pointed out, it may suggest that one can trade nonce uniqueness for AD uniqueness. Maybe we should remove that sentence?\r\n\r\nRegarding usage as a MAC. Section 9.1.4 is currently very sparse and misleading. We can remove it, and emphasize that AEGIS must not be used as a hash function elsewhere.\r\n\r\nHowever, usage with a fixed nonce is legitimate, and there are already applications doing this in the wild.\r\n\r\nSo, another thing we could do is expand section 9.1.4.\r\n\r\nFirst, we can introduce the AEGIS128L-MAC, AEGIS128X-MAC, AEGIS256L-MAC, AEGIS256X-MAC names, so that applications can refer to AEGIS being used in that context consistently.\r\n\r\nAEGIS128L-MAC and AEGIS256-MAC are exactly AEGIS128L and AEGIS256 with an empty input message.\r\n\r\nFor the parallel variants, there are simple ways to safely support nonce reuse (for the MAC use case only):\r\n\r\n> the value (tag[0] || tag[1] || ... || tag[D-1]) can be used as input to a non-parallel variant to compute the final MAC.\r\n>\r\n> Or equivalently:\r\n>\r\n> ```sh\r\n> # compute tags { tag[0], tag[1], ... tag[D-1] } as usual, then:\r\n> Absorb(Pad(tag[1], R) || ... || Pad(tag[D-1], R)) # absorb tags from states 1..D-1 into state 0\r\n> t = ZeroPad(LE64(tag_length) || LE64(D), R) # context separation is free\r\n> Repeat(7, Update(t, t))\r\n> # compute final tag from V[0] blocks as usual\r\n> ```\r\n\r\nI implemented this, and the changes were trivial.\r\n\r\nBut that requires defining alternative Finalization functions in section 9.1.4. Although it can be concise, and would not touch any other sections in the document, it can clearly feel a bit like a last-minute addition.\r\n\r\nThe easiest thing to do would be to only emphasize the importance of nonces, and not deal at all with nonce-less authentication. However, defining proper MAC functions would better deserve the users. But the draft may be too far in the process to make non-editorial changes. OTOH, the 256-bit versions of TurboSHAKE and KT were also added at the last minute, so this is doable.\r\n\r\nWhat do you think @samuel-lucas6 ?",
       "createdAt": "2024-12-06T17:36:19Z",
-      "updatedAt": "2024-12-08T22:15:57Z",
-      "closedAt": null,
+      "updatedAt": "2024-12-10T23:59:13Z",
+      "closedAt": "2024-12-10T23:59:13Z",
       "comments": [
         {
           "author": "jedisct1",
@@ -6389,24 +6389,26 @@
       "id": "PR_kwDOKeDGj86Ea7oq",
       "title": "Document AEGISMAC",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/66",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Part of #59",
       "createdAt": "2024-12-07T23:05:47Z",
-      "updatedAt": "2024-12-09T23:36:09Z",
+      "updatedAt": "2024-12-10T22:19:35Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "fa468f5021d00b175a545e4edeeaa0739cf3ca9f",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "macs",
-      "headRefOid": "6eaa4e5ab0668ed77819fe3664937ecd984a52a9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "5c9dd650342e3c87cd4ea03ff8a0028f704ddf18",
+      "closedAt": "2024-12-10T22:19:30Z",
+      "mergedAt": "2024-12-10T22:19:30Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "f8d7981e769483a649a1db138983c2ec285f7976"
+      },
       "comments": [
         {
           "author": "jedisct1",
@@ -6414,6 +6416,13 @@
           "body": "Test vectors have been added. This is not too invasive.",
           "createdAt": "2024-12-08T22:07:18Z",
           "updatedAt": "2024-12-08T22:07:18Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Samuel! I made the changes you suggested.",
+          "createdAt": "2024-12-10T20:33:06Z",
+          "updatedAt": "2024-12-10T20:33:06Z"
         }
       ],
       "reviews": [
@@ -6796,6 +6805,132 @@
               "updatedAt": "2024-12-08T22:08:06Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UnPGY",
+          "commit": {
+            "abbreviatedOid": "498f445"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T18:58:18Z",
+          "updatedAt": "2024-12-10T18:58:18Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "Makes sense. Now that the tag computation has been changed, I think we should stick with what you've put.",
+              "createdAt": "2024-12-10T18:58:18Z",
+              "updatedAt": "2024-12-10T18:58:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UnXxB",
+          "commit": {
+            "abbreviatedOid": "7a08021"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T19:13:29Z",
+          "updatedAt": "2024-12-10T19:13:29Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "I think a `However, AEGIS-based MAC...` should be added here.",
+              "createdAt": "2024-12-10T19:13:29Z",
+              "updatedAt": "2024-12-10T19:13:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UnYHs",
+          "commit": {
+            "abbreviatedOid": "7a08021"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T19:14:18Z",
+          "updatedAt": "2024-12-10T19:14:18Z",
+          "comments": [
+            {
+              "originalPosition": 68,
+              "body": "Do we still want to call this an encryption key?",
+              "createdAt": "2024-12-10T19:14:18Z",
+              "updatedAt": "2024-12-10T19:14:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UnZZ2",
+          "commit": {
+            "abbreviatedOid": "7a08021"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T19:16:55Z",
+          "updatedAt": "2024-12-10T19:16:56Z",
+          "comments": [
+            {
+              "originalPosition": 92,
+              "body": "I wonder if we should remove the `Similarly` since we're not doing it between AEGISMAC-128X and -256X.",
+              "createdAt": "2024-12-10T19:16:55Z",
+              "updatedAt": "2024-12-10T19:16:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UnZ8x",
+          "commit": {
+            "abbreviatedOid": "7a08021"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T19:18:11Z",
+          "updatedAt": "2024-12-10T19:18:11Z",
+          "comments": [
+            {
+              "originalPosition": 128,
+              "body": "This description is shorter than the other, lower down `FinalizeMac` description. We should be consistent.",
+              "createdAt": "2024-12-10T19:18:11Z",
+              "updatedAt": "2024-12-10T19:18:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86Unawo",
+          "commit": {
+            "abbreviatedOid": "7a08021"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "A few final comments. The `Other Uses of AEGIS` section also needs to be removed. Looking good though.",
+          "createdAt": "2024-12-10T19:19:57Z",
+          "updatedAt": "2024-12-10T19:19:57Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKeDGj86UpE2l",
+          "commit": {
+            "abbreviatedOid": "5c9dd65"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Nice work Frank :)",
+          "createdAt": "2024-12-10T22:16:32Z",
+          "updatedAt": "2024-12-10T22:16:32Z",
+          "comments": []
         }
       ]
     },
@@ -6848,6 +6983,210 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 68,
+      "id": "PR_kwDOKeDGj86EyFr8",
+      "title": "Avoid repeating \"MAC\"",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/68",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Avoid \"AEGISMAC MAC\".",
+      "createdAt": "2024-12-11T00:41:10Z",
+      "updatedAt": "2024-12-11T21:31:32Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "71f77944aaf0dca350d10e64c59f5240e6b12b87",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "macmac",
+      "headRefOid": "760d8e7b2b9ab24793a62dc82a97c335d3417e91",
+      "closedAt": "2024-12-11T21:31:28Z",
+      "mergedAt": "2024-12-11T21:31:28Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "9f5e6f1e0845ceb3bce95dbb6b8a24f22b27cd82"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> This is a good point. Do you think we should explicitly mention `the Mac function` like in the AEGISMAC-128L/-256 descriptions? That would require rewording the Finalize function part though, which might make it more confusing.\r\n\r\nI think it would make more harm than good.",
+          "createdAt": "2024-12-11T21:23:53Z",
+          "updatedAt": "2024-12-11T21:23:53Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86U1XSW",
+          "commit": {
+            "abbreviatedOid": "760d8e7"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "This is a good point. Do you think we should explicitly mention `the Mac function` like in the AEGISMAC-128L/-256 descriptions? That would require rewording the Finalize function part though, which might make it more confusing.",
+          "createdAt": "2024-12-11T21:12:45Z",
+          "updatedAt": "2024-12-11T21:12:45Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKeDGj86U1gIV",
+          "commit": {
+            "abbreviatedOid": "760d8e7"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Ok let's go with this then.",
+          "createdAt": "2024-12-11T21:31:10Z",
+          "updatedAt": "2024-12-11T21:31:10Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 69,
+      "id": "PR_kwDOKeDGj86EyHQs",
+      "title": "Keep the function definition closer to its short introduction",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/69",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Move the paragraph about properties down, so that the definition of the function immediately follows its introduction.",
+      "createdAt": "2024-12-11T00:47:56Z",
+      "updatedAt": "2024-12-11T21:34:21Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "9f5e6f1e0845ceb3bce95dbb6b8a24f22b27cd82",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "move-intro-paragraph",
+      "headRefOid": "ca9dd7803943b8dc23e7cf65fe8c9b8c5c5b3e81",
+      "closedAt": "2024-12-11T21:34:18Z",
+      "mergedAt": "2024-12-11T21:34:18Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "f9f50ea683fad4c89fd9148736c6986d17e2259b"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I agree this is better.\r\n> \r\n> What do you think about adding this as a `Security:` section with bullets like in the Authenticated Encryption/Decryption sections?\r\n\r\nThis is a good idea!\r\n\r\nDone.",
+          "createdAt": "2024-12-11T21:29:30Z",
+          "updatedAt": "2024-12-11T21:29:30Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86U1agw",
+          "commit": {
+            "abbreviatedOid": "10a3abf"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I agree this is better.\r\n\r\nWhat do you think about adding this as a `Security:` section with bullets like in the Authenticated Encryption/Decryption sections?",
+          "createdAt": "2024-12-11T21:18:04Z",
+          "updatedAt": "2024-12-11T21:18:04Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKeDGj86U1g3n",
+          "commit": {
+            "abbreviatedOid": "29a8c9d"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-11T21:32:59Z",
+          "updatedAt": "2024-12-11T21:32:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 70,
+      "id": "PR_kwDOKeDGj86E2sKc",
+      "title": "Define the tag length in bits, like all other sizes",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/70",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Replace `tag_length` with `tag_length_bits` for clarity and consistency.",
+      "createdAt": "2024-12-11T12:43:39Z",
+      "updatedAt": "2024-12-11T21:22:05Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "990466f9ca60bb2d18aaa9d1926ef772e607f3c0",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "tag_length_bits",
+      "headRefOid": "884df115865f029efc0a2f5e83b63f034487176a",
+      "closedAt": "2024-12-11T21:21:55Z",
+      "mergedAt": "2024-12-11T21:21:55Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "3a1dfaa0ca1f68724fa7fb615ac9d4f43b0cc8b5"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86U1b8E",
+          "commit": {
+            "abbreviatedOid": "884df11"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Good idea.",
+          "createdAt": "2024-12-11T21:21:41Z",
+          "updatedAt": "2024-12-11T21:21:41Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 71,
+      "id": "PR_kwDOKeDGj86E6zFZ",
+      "title": "Update missed overwritten with zeros",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/71",
+      "state": "MERGED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Part of #60.",
+      "createdAt": "2024-12-11T21:26:49Z",
+      "updatedAt": "2024-12-11T21:30:44Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "3a1dfaa0ca1f68724fa7fb615ac9d4f43b0cc8b5",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "76bdb8ae086e2b4d0d68b738e354c80918855d34",
+      "closedAt": "2024-12-11T21:30:31Z",
+      "mergedAt": "2024-12-11T21:30:31Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "aa674387a668aecdb1d201209f15b2f81dcd3ff8"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Oops. Not sure why that disappeared. Thanks!",
+          "createdAt": "2024-12-11T21:30:43Z",
+          "updatedAt": "2024-12-11T21:30:43Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
