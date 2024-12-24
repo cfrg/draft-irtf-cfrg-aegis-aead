@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-22T00:47:32.533874+00:00",
+  "timestamp": "2024-12-24T00:43:03.708334+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -402,7 +402,7 @@
       "labels": [],
       "body": "Before it gets published as an RFC, we should run the document through some spelling/grammar checkers and have a final read to check we haven't missed anything. It'll be quite a big job.",
       "createdAt": "2024-01-16T18:25:51Z",
-      "updatedAt": "2024-01-16T19:52:14Z",
+      "updatedAt": "2024-12-23T17:25:00Z",
       "closedAt": null,
       "comments": [
         {
@@ -411,6 +411,13 @@
           "body": "After the RGLC, if there are enough votes, the chairs are going to review the document.\r\n\r\nThen, no major changes to the content nor the structure can be made.\r\n\r\nHowever, the document will be reviewed by the IRTF and then by the RFC editor with an emphasis on conformance/spelling/grammar. \r\n\r\nIt doesn't mean that we shouldn't proactively proofread everything (even though you did a stellar job in all your contributions and reviews), just that this is not required for the RGLC.",
           "createdAt": "2024-01-16T19:52:13Z",
           "updatedAt": "2024-01-16T19:52:13Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've started doing a final review of the document. Not sure when I'll be done/post my comments due to Christmas, but I've already found various potential changes. I think I'll either do an issue or PR per section so it doesn't get confusing. Some things are corrections, whereas others need discussion.\r\n\r\nAside from that, thanks for looking at the patent (that was a surprise), and I hope you have a nice Christmas Frank \ud83c\udf85",
+          "createdAt": "2024-12-23T17:24:59Z",
+          "updatedAt": "2024-12-23T17:24:59Z"
         }
       ]
     },
