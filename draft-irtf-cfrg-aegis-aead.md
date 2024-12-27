@@ -1890,12 +1890,17 @@ IANA has assigned the following identifiers in the AEAD Algorithms Registry:
 
 IANA is requested to update the references of these entries to refer to the final version of this document.
 
-IANA is also requested to register the following identifiers in the AEAD Algorithms Registry:
+IANA is also requested to register the following entries in the AEAD Algorithms Registry:
 
-- `AEAD_AEGIS128X2`
-- `AEAD_AEGIS128X4`
-- `AEAD_AEGIS256X2`
-- `AEAD_AEGIS256X4`
+| Algorithm Name    | ID  |
+| ----------------- | --- |
+| `AEAD_AEGIS128X2` |     |
+| `AEAD_AEGIS128X4` |     |
+| `AEAD_AEGIS256X2` |     |
+| `AEAD_AEGIS256X4` |     |
+{: title="Missing AEGIS entries in the AEAD Algorithms Registry"}
+
+The identifier is left to be assigned by the IANA expert.
 
 --- back
 
