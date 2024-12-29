@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-26T00:42:43.667839+00:00",
+  "timestamp": "2024-12-29T00:48:22.226095+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -402,7 +402,7 @@
       "labels": [],
       "body": "Before it gets published as an RFC, we should run the document through some spelling/grammar checkers and have a final read to check we haven't missed anything. It'll be quite a big job.",
       "createdAt": "2024-01-16T18:25:51Z",
-      "updatedAt": "2024-12-23T17:25:00Z",
+      "updatedAt": "2024-12-26T21:01:04Z",
       "closedAt": null,
       "comments": [
         {
@@ -418,6 +418,13 @@
           "body": "I've started doing a final review of the document. Not sure when I'll be done/post my comments due to Christmas, but I've already found various potential changes. I think I'll either do an issue or PR per section so it doesn't get confusing. Some things are corrections, whereas others need discussion.\r\n\r\nAside from that, thanks for looking at the patent (that was a surprise), and I hope you have a nice Christmas Frank \ud83c\udf85",
           "createdAt": "2024-12-23T17:24:59Z",
           "updatedAt": "2024-12-23T17:24:59Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi Samuel!\r\n\r\n\r\nAnd thank you for proofreading the document. It shouldn't be too late for minor editorial changes.\r\n\r\nMerry Christmas and a happy new year!\r\n",
+          "createdAt": "2024-12-26T21:01:03Z",
+          "updatedAt": "2024-12-26T21:01:03Z"
         }
       ]
     },
@@ -7193,6 +7200,32 @@
           "updatedAt": "2024-12-11T21:30:43Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 72,
+      "id": "PR_kwDOKeDGj86GVg7D",
+      "title": "Slightly improve the IANA considerations section",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/72",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-12-27T22:29:37Z",
+      "updatedAt": "2024-12-27T22:29:37Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "1b76fa484d21178f342a9c39a7044372fc1ff96c",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "iana-nits",
+      "headRefOid": "3741dea362a03a80d33b9f9bee5aee25c60eb16f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
