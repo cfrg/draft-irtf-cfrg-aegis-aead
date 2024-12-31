@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-29T00:48:22.226095+00:00",
+  "timestamp": "2024-12-31T00:42:50.864162+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -402,7 +402,7 @@
       "labels": [],
       "body": "Before it gets published as an RFC, we should run the document through some spelling/grammar checkers and have a final read to check we haven't missed anything. It'll be quite a big job.",
       "createdAt": "2024-01-16T18:25:51Z",
-      "updatedAt": "2024-12-26T21:01:04Z",
+      "updatedAt": "2024-12-29T17:50:49Z",
       "closedAt": null,
       "comments": [
         {
@@ -425,6 +425,13 @@
           "body": "Hi Samuel!\r\n\r\n\r\nAnd thank you for proofreading the document. It shouldn't be too late for minor editorial changes.\r\n\r\nMerry Christmas and a happy new year!\r\n",
           "createdAt": "2024-12-26T21:01:03Z",
           "updatedAt": "2024-12-26T21:01:03Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks! Happy new year to you too.\r\n\r\nHere are the feedback issues so far:\r\n\r\n#73\r\n#74 \r\n#75 \r\n#76 \r\n#77 \r\n#78 \r\n#79 \r\n#80\r\n#82 \r\n#83 \r\n\r\nAs I said in the first one, there are still a few sections I need to review. How would you like to go about addressing these? I'm happy to do some PRs.",
+          "createdAt": "2024-12-29T10:24:24Z",
+          "updatedAt": "2024-12-29T17:50:49Z"
         }
       ]
     },
@@ -758,6 +765,205 @@
           "updatedAt": "2024-12-07T12:46:45Z"
         }
       ]
+    },
+    {
+      "number": 73,
+      "id": "I_kwDOKeDGj86ko4oI",
+      "title": "Final Proofreading: Introduction",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/73",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I've been reading through [v14](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14) of the draft on the Datatracker. As of this morning, I still have Section 5, 8.3, 8.4, 12, and Appendix A to go through. I need to reread the AEGIS-X paper. I'll open a separate issue for each section with feedback. Everything is linked to a line/paragraph; if there's no link directly above the text, the comment refers to the same link.\r\n\r\nHere's the feedback for the Introduction:\r\n\r\n### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-1-9\r\n`In AEGIS` => `For AEGIS` or `With AEGIS`?\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-1-12\r\n`sporting differences with regards to the computation of the authentication tag and the number of state updates in the\u00a0Finalize()\u00a0function` => `with a different Finalize() function`?\r\n\r\n`References section of this document` => Link References section or remove this because already linked (at least in HTML)?\r\n\r\n### Grammarly\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-1-6\r\n`that of AES-GCM` => `AES-GCM`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-1-12\r\n`with regards to` => `regarding`\r\n\r\nOther hits are Pro only and look pointless.",
+      "createdAt": "2024-12-29T09:51:43Z",
+      "updatedAt": "2024-12-29T09:58:28Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 74,
+      "id": "I_kwDOKeDGj86ko5F6",
+      "title": "Final Proofreading: Conventions and Definitions",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/74",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-3\r\n`Primitives:` => Rename to `Operations`? Or split up the first/second parts, like in the AEGIS paper.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.6.1\r\n`the remainder of the Euclidean division between\u00a0a\u00a0as the dividend and\u00a0b\u00a0as the divisor` => Could be more developer friendly but not wrong.\r\n\r\n`mod` => could be changed to `%` operator to match the others.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.8.1\r\n`padding operation. Trailing zeros are concatenated to\u00a0x\u00a0until the total length is a multiple of\u00a0n\u00a0bits` => `Returns x padded with zeros until the total length is a multiple of n bits` or `The result of padding x with zeros`...\r\n\r\n**Also, it should be clear that no padding should happen if x is empty (e.g., empty ad or msg doesn't get padded/absorbed into the state)**.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.9.1\r\n`truncation operation. The first\u00a0n\u00a0bits of\u00a0x\u00a0are kept.` => `Returns the first n bits of x`.\r\n\r\nMy point with these is that I think they should be written in a consistent style.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.10.1\r\n`splitting operation.\u00a0x\u00a0is split into\u00a0n-bit blocks, ignoring partial blocks.` => `Returns x split into n-bit blocks, ignoring partial blocks`. Could maybe reword 'partial blocks' part.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.12.1\r\n`ShiftRows,\u00a0MixColums\u00a0and\u00a0AddRoundKey` => Add a final comma.\r\n\r\n`section 5` => `Section 5`?\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.14.1\r\n`CtEq()` => The other function names aren't abbreviated, although this is tricky due to the lengthy names.\r\n\r\n`an exact match,\u00a0False\u00a0otherwise` => `and False otherwise`.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-5\r\n`ai, xi, ci, cn` vs `key, nonce, ad_len_bits, msg_len_bits` naming => `ad_block`, `msg_block`, `enc_block` or similar? However, the shortened does distinguish internal from external parameters.\r\n\r\nCould reorder `Update()` to be after `Init()` to match the sections later on.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-7 and https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-12.1.1\r\nDo we want to mention AEGIS-128X/256X in these places?\r\n\r\n### Grammarly\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-4.12.1\r\nAgrees with me about the comma.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-2-9.1.1\r\nComplains about `i-th/j-th`. This is fine.",
+      "createdAt": "2024-12-29T09:58:16Z",
+      "updatedAt": "2024-12-29T09:58:16Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 75,
+      "id": "I_kwDOKeDGj86ko5b8",
+      "title": "Final Proofreading: The AEGIS-128L Algorithm",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/75",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3-4\r\n`shall be` => `SHALL` or `MUST`\r\n\r\nShould we add something about this in the Security Considerations?\r\n\r\nFrom https://www.rfc-editor.org/rfc/rfc5116#section-4:\r\n```\r\n   Each AEAD algorithm MUST provide a description relating the length of\r\n   the plaintext to that of the ciphertext.  This relation MUST NOT\r\n   depend on external parameters, such as an authentication strength\r\n   parameter (e.g., authentication tag length).  That sort of dependence\r\n   would complicate the use of the algorithm by creating a situation in\r\n   which the information from the AEAD registry was not sufficient to\r\n   ensure interoperability.\r\n```\r\nWe seem to be breaking this.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.1-3\r\nDo we want to add to these `Security:` sections? They don't cover everything. They're more useful in the Decrypt() functions.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.1-10\r\nCould change `for` to `foreach`.\r\n\r\n`ai` could be `ad_block` and `xi` could be `msg_block`, but that's more verbose and overlaps with `ad_blocks`/`msg_blocks`.\r\n\r\n`return ct and tag` is presumably so they can put the tag wherever. Otherwise, I'd do `ct || tag`.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.2-4.1.1\r\n`message authentication tag` => `authentication tag`\r\nand\r\n`before being returned` => `before the function returns`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.2-6.2.1\r\nWe could mention the length of the authentication tag, key, and nonce in these sections using the constants.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.2-10\r\nI think it's also worth erasing the tag in all of these Decrypt() sections. The AEGIS paper says to do this, and we say to do this in the `Security:` subsection.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.6-8\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.7-8\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.8-8\r\n`S6 ^ S1` could be swapped around to match the paper.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.9-8\r\n`# 256 bits` => alignment might want to be changed.\r\n\r\n### Grammarly\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3-2\r\n`Section 4 are` => `Section 4, are`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-3.2-6.1.1\r\n`to be decrypted` => `to decrypt`\r\n\r\nOtherwise, false positives or Pro suggestions that are unnecessary.",
+      "createdAt": "2024-12-29T10:02:35Z",
+      "updatedAt": "2024-12-29T10:02:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 76,
+      "id": "I_kwDOKeDGj86ko5kV",
+      "title": "Final Proofreading: The AEGIS-256 Algorithm",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/76",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4-2\r\n`Section 4 are` => `Section 4, are`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4-3.3.1\r\n`2^61 bytes` => `2^61 - 1 bytes`\r\nand\r\n`2^64 bits` => `2^64 - 8 bits`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4-4\r\n`shall be` => `SHALL` or `MUST`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.2-4.1.1\r\n`message authentication tag` => `authentication tag`\r\nand\r\n`before being returned` => `before the function returns`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.2-6.2.1\r\nCould specify the lengths of the tag, key, and nonce here with MUST.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.3-8\r\nThis `Repeat()` call uses several functions, but I think we can get away with this.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.6-4.1.1\r\nIn the AEGIS-128L section, the length of the block is specified in `Inputs:`/`Outputs:`. This should be consistent one way or another. Slightly different wording as well.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.7-4.1.1\r\nIn the AEGIS-128L section, the length of the block is specified in `Inputs:`/`Outputs:`. This should be consistent one way or another. Slightly different wording as well.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.9-8\r\nMay want to change alignment of `# 256 bits`.\r\n\r\n### Grammarly\r\nAgrees with my comma change.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-4.2-6.1.1\r\n`ciphertext to be decrypted` => `ciphertext to decrypt`\r\n\r\nOther Pro suggestions are unnecessary.",
+      "createdAt": "2024-12-29T10:04:13Z",
+      "updatedAt": "2024-12-29T10:04:13Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 77,
+      "id": "I_kwDOKeDGj86ko5qt",
+      "title": "Final Proofreading: Encoding (ct, tag) Tuples",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/77",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-6-1\r\n`the ciphertext and the authentication tag` => Could change to `the ciphertext and authentication tag`. Doesn't matter.\r\n\r\n`or encode both as a single string` => Could put `or concatenate them together`/`or concatenate the two together`. However, it's fine as is.\r\n\r\n### Grammarly\r\nNothing found.",
+      "createdAt": "2024-12-29T10:05:19Z",
+      "updatedAt": "2024-12-29T10:05:20Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 78,
+      "id": "I_kwDOKeDGj86ko50n",
+      "title": "Final Proofreading: AEGIS as a Stream Cipher",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/78",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-3\r\n`variable-length, secure keystream` => `variable-length keystream`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-5.2.1\r\nCould specify the size, although this obviously depends on the variant, but we say N_MAX below.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-5.3.1\r\n`the nonce` => `the AEGIS nonce`. To match the key part, or these could be changed to 'the secret key'.\r\n\r\nAlso, this feels like it encourages nonce reuse.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-9\r\nIf the definition of `ZeroPad()` is changed to reflect empty AD/msg not being padded (see #74), that messes up this pseudocode.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-10\r\n`associated data, and discarding` => `associated data and discarding`/`associated data before discarding`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-11\r\n`implementations can skip the finalization step` => `implementations can omit the Finalize() function`.\r\n\r\nWe need to be consistent throughout the document with/without brackets for function names. I think brackets help distinguish it from the text.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-7-12\r\n`allowing further optimizations` is quite vague.\r\n\r\n### Grammarly\r\nAgrees with my comma change. Other suggestions are Pro only and seem unnecessary.",
+      "createdAt": "2024-12-29T10:07:12Z",
+      "updatedAt": "2024-12-29T10:07:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 79,
+      "id": "I_kwDOKeDGj86ko6I-",
+      "title": "Final Proofreading: Security Considerations",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/79",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.1-4\r\n~ 2^-33 => Remove space.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#name-key-commitment\r\nKey Commitment => Committing Security section? We discuss more than just key commitment, and this is more consistent with the other naming.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.2-1\r\nNot sure about the first sentence. Sounds a bit contradictory and is very long.\r\n\r\nassumed to be => is\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.2-2\r\nin the restricted setting where an adversary cannot control the associated data => when an adversary cannot control the associated data\r\n\r\nAs shown in IR23, with the ability to alter the associated data, it is possible => Otherwise, it is possible\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.2-3\r\ncryptographic hash function => collision-resistant hash function. Should be about collision resistance, not preimage resistance so also reword the rest.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.2-4\r\nappending their lengths => their little-endian encoded lengths\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.3-1\r\ncommonly used AEADs in IETF protocols => current IETF protocols\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#name-multi-user-security\r\nI mentioned this before I think, but we could say something like 'Using the 256-bit key variants provides better multi-user security than the 128-bit key variants'.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.1.3-2\r\ndon't => do not\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.2-1\r\nand the computed message authentication tag => and computed authentication tag\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.2-1\r\nPerhaps get rid of would?\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.2-2\r\nalso depend on => depend on?\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.2-3\r\nInit function => Init() function. Brackets are used elsewhere. Or say initialization function\r\nUpdate call => Update() call?\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.3-1\r\n256-bit message security => 256-bit security\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.3-2\r\nWorth citing the relevant paper here? Maybe not as repetitive of the below.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.3-7\r\nor in => in (or replace with when)\r\n\r\n### Grammarly\r\n\r\nAgrees with splitting up the first Key Commitment sentence.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-10.3-5\r\nRecommends , respectively.\r\n\r\nThe other Pro recommendations seem unnecessary.",
+      "createdAt": "2024-12-29T10:11:25Z",
+      "updatedAt": "2024-12-31T00:17:33Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> `in the restricted setting ...  => when an adversary cannot control the associated data`\r\n\r\nThe current wording was chosen to align with the draft on AEAD properties. Does it need to be changed?",
+          "createdAt": "2024-12-31T00:16:37Z",
+          "updatedAt": "2024-12-31T00:16:37Z"
+        }
+      ]
+    },
+    {
+      "number": 80,
+      "id": "I_kwDOKeDGj86ko6UR",
+      "title": "Final Proofreading: Acknowledgments",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/80",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#appendix-B-1\r\n`AEGIS authenticated encryption algorithm` => There are multiple algorithms, although their CAESAR submission writes it this way.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#appendix-B-2\r\n`the Pelican MAC` => MAC function? Not necessary though, and this is the name, just feels a bit weird to me.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#appendix-B-4.1.1\r\n`vector and Daniel Bleichenbacher` => `, and Daniel`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#appendix-B-4.2.1\r\nRemove the comma.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#appendix-B-4.3.1\r\n`as well as Takanori Isobe and Mostafizar Rahman for` => `, as well as ... Rahman, for`\r\n\r\n`commitment security` => `committing security`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#appendix-B-4.4.1\r\n`Crypto Panel` => `Crypto Review Panel`\r\n\r\nMerge with the bullet below? Doesn't really matter.\r\n\r\n### Grammarly\r\nGrammarly agrees with these grammatical changes.",
+      "createdAt": "2024-12-29T10:13:50Z",
+      "updatedAt": "2024-12-29T10:13:50Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 81,
+      "id": "I_kwDOKeDGj86ko6g0",
+      "title": "Sections to remove before publication",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/81",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#name-discussion-venues\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-9",
+      "createdAt": "2024-12-29T10:16:19Z",
+      "updatedAt": "2024-12-30T23:36:15Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-11\r\nwill also need to be updated before publication.",
+          "createdAt": "2024-12-29T10:17:32Z",
+          "updatedAt": "2024-12-29T10:17:32Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think this is the responsibility of the RFC editor.",
+          "createdAt": "2024-12-30T23:36:13Z",
+          "updatedAt": "2024-12-30T23:36:13Z"
+        }
+      ]
+    },
+    {
+      "number": 82,
+      "id": "I_kwDOKeDGj86kpd8A",
+      "title": "Final Proofreading: Parallel Modes",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/82",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.1-1.3.1\r\n`while for AEGIS-256,` => `while for AEGIS-256X`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.1-1.5.1\r\n`This is a 128-bit mask, made of` => `This is a 128-bit mask made of`\r\n\r\nI think `highest index` is more confusing than in the paper.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.2-2\r\nCould be reworded to something like this:\r\n`The Encrypt function of AEGIS-128X and AEGIS-256X resembles that of AEGIS-128L and AEGIS-256, respectively, but processes\u00a0R-bit input blocks per update.`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.3-2\r\nCould be reworded to something like this:\r\n`The\u00a0Decrypt\u00a0function of AEGIS-128X and AEGIS-256X resembles that of AEGIS-128L and AEGIS-256, respectively, but processes\u00a0R-bit input blocks per update.`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.3-4\r\nAdd in `erase expected_tag`, as discussed for AEGIS-128L/-256.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.4.2-2\r\n`Update\u00a0function, but absorbs` => `Update\u00a0function but absorbs`\r\n\r\n`M0\u00a0and\u00a0M1\u00a0are\u00a0128 * D\u00a0bits` => `M0\u00a0and\u00a0M1\u00a0are both\u00a0128 * D\u00a0bits`?\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.4.3-2\r\n`Absorb\u00a0function, but` => `Absorb\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.4.4-2\r\n`Enc\u00a0function, but` => `Enc\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.4.5-2\r\n`Dec\u00a0function, but` => `Dec\u00a0function but`\r\n\r\nAll of these functions are missing the `Inputs:`/`Outputs:` present in the non-parallel sections.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.4.6-2\r\n`DecPartial\u00a0function, but` => `DecPartial\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.4.7-4\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.7-4\r\nSpace before `else:` doesn't match the non-parallel sections, although I think you did this for extra readability.\r\n\r\nCould reposition the `# 256 bits`.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.1-4\r\nCould remove the blank lines before `Update()` as this is done in other places, but this is clearly for readability.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.2-2\r\n`Update\u00a0function, but` => `Update\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.3-2\r\n`Absorb\u00a0function, but` => `Absorb\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.4-2\r\n`Enc\u00a0function, but` => `Enc\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.5-2\r\n`Dec\u00a0function, but` => `Dec\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.5.6-2\r\n`DecPartial\u00a0function, but` => `DecPartial\u00a0function but`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.6-1\r\nCould do `to AEGIS-128L and AEGIS-256` => `to AEGIS-128L and AEGIS-256, respectively`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5.7-3\r\n`register sizes` => `register size`?\r\n\r\n### Grammarly\r\nAgrees with my `, but` comma removals.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-5-3\r\n`instances respectively, with` => `instances, respectively, with` or reword\r\n\r\nThe other detections are false positives.",
+      "createdAt": "2024-12-29T17:10:58Z",
+      "updatedAt": "2024-12-29T17:41:37Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 83,
+      "id": "I_kwDOKeDGj86kphQO",
+      "title": "Final Proofreading: AEGIS as a Message Authentication Code",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/83",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "### Manual Review\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-8-1\r\nWe haven't defined MAC in brackets.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-8-2\r\nCould do `, a nonce` => `, nonce`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-8-5.3.1\r\n`derivation, as there` => `derivation as there`/`derivation because there`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-8.1-3\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-8.2-3\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-8.3.2-5\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-8.4.2-4\r\n`tag_length_ bits` doesn't align with `ad_len_bits`/`msg_len_bits` naming and is arguably undefined. This applies outside the MAC sections as well.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-8.3.2-5\r\nMissing `return tag` at the end.\r\n\r\nCould remove blank line before `else:`\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-8.4.2-4\r\n```\r\nif tag_length_bits == 128:\r\n    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]\r\nelse:                # 256 bits\r\n    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]\r\n    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]\r\n```\r\nCorresponds to AEGIS-128X, not AEGIS-256X.\r\n\r\nMissing `return tag` at the end.\r\n\r\n### Grammarly\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#section-8-2\r\n`data as input, and` => `data as input and`\r\n\r\nEverything else appears to be a false positive.",
+      "createdAt": "2024-12-29T17:50:29Z",
+      "updatedAt": "2024-12-29T17:50:29Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -7207,20 +7413,62 @@
       "id": "PR_kwDOKeDGj86GVg7D",
       "title": "Slightly improve the IANA considerations section",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/72",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-12-27T22:29:37Z",
-      "updatedAt": "2024-12-27T22:29:37Z",
+      "updatedAt": "2024-12-29T09:37:16Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "1b76fa484d21178f342a9c39a7044372fc1ff96c",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "iana-nits",
       "headRefOid": "3741dea362a03a80d33b9f9bee5aee25c60eb16f",
+      "closedAt": "2024-12-29T09:37:11Z",
+      "mergedAt": "2024-12-29T09:37:11Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "bd12caf8d173f089833a1336f1c37cb7b0ddee99"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86WfxmG",
+          "commit": {
+            "abbreviatedOid": "3741dea"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM.",
+          "createdAt": "2024-12-29T09:37:02Z",
+          "updatedAt": "2024-12-29T09:37:02Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 84,
+      "id": "PR_kwDOKeDGj86Gd1r9",
+      "title": "Address suggestions from Samuel's final proofreading",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/84",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Apply pretty much all the suggestions from #73 #74 #75 #76 #77 #78 #79 #81 #82 and #83\r\n\r\nSince the RGLC is technically over, we're not supposed to make significant changes. Grammar fixes and stylistic adjustments are fine, but deeper changes might indicate that the draft requires more time and a new RGLC. For this reason, the few instances where an alternative was proposed but you explicitly stated that you were also fine with the status quo have not been included here.\r\n\r\nA few other changes were not included because they require further discussion.",
+      "createdAt": "2024-12-31T00:10:35Z",
+      "updatedAt": "2024-12-31T00:10:36Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "bd12caf8d173f089833a1336f1c37cb7b0ddee99",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "proofreading",
+      "headRefOid": "d14c15669338e4b3db259bf696f7b6c7e1e46584",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
