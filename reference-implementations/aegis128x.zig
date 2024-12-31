@@ -102,7 +102,7 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
 
         fn enc(self: *Self, xi: *const [rate]u8) [rate]u8 {
             const s = self.s;
-            const z0 = s[6].xorBlocks(s[1]).xorBlocks(s[2].andBlocks(s[3]));
+            const z0 = s[1].xorBlocks(s[6]).xorBlocks(s[2].andBlocks(s[3]));
             const z1 = s[2].xorBlocks(s[5]).xorBlocks(s[6].andBlocks(s[7]));
             const t0 = AesBlockX.fromBytes(xi[0..blockx_length]);
             const t1 = AesBlockX.fromBytes(xi[blockx_length..rate]);
@@ -117,7 +117,7 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
 
         fn dec(self: *Self, ci: *const [rate]u8) [rate]u8 {
             const s = self.s;
-            const z0 = s[6].xorBlocks(s[1]).xorBlocks(s[2].andBlocks(s[3]));
+            const z0 = s[1].xorBlocks(s[6]).xorBlocks(s[2].andBlocks(s[3]));
             const z1 = s[2].xorBlocks(s[5]).xorBlocks(s[6].andBlocks(s[7]));
             const t0 = AesBlockX.fromBytes(ci[0..blockx_length]);
             const t1 = AesBlockX.fromBytes(ci[blockx_length..rate]);
@@ -132,7 +132,7 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
 
         fn decLast(self: *Self, xn: []u8, cn: []const u8) void {
             const s = self.s;
-            const z0 = s[6].xorBlocks(s[1]).xorBlocks(s[2].andBlocks(s[3]));
+            const z0 = s[1].xorBlocks(s[6]).xorBlocks(s[2].andBlocks(s[3]));
             const z1 = s[2].xorBlocks(s[5]).xorBlocks(s[6].andBlocks(s[7]));
             var pad = [_]u8{0} ** rate;
             @memcpy(pad[0..cn.len], cn);
