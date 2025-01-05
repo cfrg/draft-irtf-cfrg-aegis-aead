@@ -1598,7 +1598,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.7.1"><code>LE64(x)</code>: the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.8">
-          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: padding operation. Trailing zeros are concatenated to <code>x</code> until the total length is a multiple of <code>n</code> bits.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: padding operation. Trailing zeros are appended to <code>x</code> until its length is a multiple of <code>n</code> bits, with no padding added if <code>x</code> is already a multiple of <code>n</code> bits (including when <code>x</code> is empty).<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.9">
           <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: truncation operation. Returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
@@ -3318,9 +3318,11 @@ Stream(len, key, nonce)
 <p id="section-7-8">Steps:<a href="#section-7-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7-9">
 <pre>
-stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
-
-return stream
+if len = 0:
+    return {}
+else:
+    stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+    return stream
 </pre><a href="#section-7-9" class="pilcrow">¶</a>
 </div>
 <p id="section-7-10">This is equivalent to encrypting a <code>len</code> all-zero bits message without associated data and discarding the authentication tag.<a href="#section-7-10" class="pilcrow">¶</a></p>
