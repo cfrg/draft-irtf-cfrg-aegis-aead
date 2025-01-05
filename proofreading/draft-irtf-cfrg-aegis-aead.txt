@@ -283,7 +283,8 @@ Table of Contents
 
    *  Truncate(x, n): returns the first n bits of x.
 
-   *  Split(x, n): splits x into n-bit blocks, ignoring partial blocks.
+   *  Split(x, n): returnsx split into n-bit blocks, ignoring partial
+      blocks.
 
    *  Tail(x, n): returns the last n bits of x.
 
@@ -493,6 +494,7 @@ Table of Contents
 
    if CtEq(tag, expected_tag) is False:
        erase msg
+       erase expected_tag
        return "verification failed" error
    else:
        return msg
@@ -839,6 +841,7 @@ Table of Contents
 
    if CtEq(tag, expected_tag) is False:
        erase msg
+       erase expected_tag
        return "verification failed" error
    else:
        return msg
@@ -1137,6 +1140,7 @@ Table of Contents
 
    if CtEq(tag, expected_tag) is False:
        erase msg
+       erase expected_tag
        return "verification failed" error
    else:
        return msg

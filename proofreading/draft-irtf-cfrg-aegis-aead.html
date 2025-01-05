@@ -1604,7 +1604,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
-          <p id="section-2-4.10.1"><code>Split(x, n)</code>: splits <code>x</code> into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.10.1"><code>Split(x, n)</code>: returns<code> x</code> split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.11">
           <p id="section-2-4.11.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
@@ -1847,6 +1847,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -2305,6 +2306,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -2696,6 +2698,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
