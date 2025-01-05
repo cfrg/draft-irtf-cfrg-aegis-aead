@@ -1813,6 +1813,8 @@ else:            # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0]
     t1 = V[3,0] ^ V[4,0] ^ V[5,0]
     tag = t0 || t1
+
+return tag
 ~~~
 
 # Implementation Status
