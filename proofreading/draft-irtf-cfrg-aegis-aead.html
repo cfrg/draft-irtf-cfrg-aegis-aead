@@ -1598,13 +1598,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.7.1"><code>LE64(x)</code>: the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.8">
-          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: padding operation. Trailing zeros are appended to <code>x</code> until its length is a multiple of <code>n</code> bits, with no padding added if <code>x</code> is already a multiple of <code>n</code> bits (including when <code>x</code> is empty).<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: appends zeros to <code>x</code> until its length is a multiple of <code>n</code> bits. No padding is added if <code>x</code> is already a multiple of <code>n</code> bits, including when <code>x</code> is empty.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.9">
-          <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: truncation operation. Returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
-          <p id="section-2-4.10.1"><code>Split(x, n)</code>: splitting operation. <code>x</code> is split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.10.1"><code>Split(x, n)</code>: splits <code>x</code> into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.11">
           <p id="section-2-4.11.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
@@ -3558,10 +3558,10 @@ if D &gt; 1:
     Repeat(7, Update(t))
 
 if tag_len_bits == 128:
-    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0]
 else:            # 256 bits
-    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
-    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0]
+    t1 = V[3,0] ^ V[4,0] ^ V[5,0]
     tag = t0 || t1
 </pre><a href="#section-8.4.2-4" class="pilcrow">¶</a>
 </div>
@@ -3610,7 +3610,7 @@ else:            # 256 bits
           </h4>
 <p id="section-10.1.2-1">An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game. This mitigates common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same <code>(ad, ct, tag)</code> tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.<a href="#section-10.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-10.1.2-2">AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.<a href="#section-10.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-10.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-10.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. For AEGIS-128L and AEGIS-128X, the selected hash function must ensure a minimum of 128-bit collision and preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-10.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-10.1.2-4">Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span>, via the <code>info</code> input to derive the <code>key</code> parameter. The <code>ad</code> parameter can then be left empty. Note that the <code>salt</code> input <span class="bcp14">MUST NOT</span> be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the <code>info</code> input to be unambiguously encoded, like by appending their lengths.<a href="#section-10.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3619,7 +3619,7 @@ else:            # 256 bits
           <h4 id="name-multi-user-security">
 <a href="#section-10.1.3" class="section-number selfRef">10.1.3. </a><a href="#name-multi-user-security" class="section-name selfRef">Multi-User Security</a>
           </h4>
-<p id="section-10.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-10.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols at the time of writing. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-10.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-10.1.3-2">In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks do not provide any advantage over single-target attacks.<a href="#section-10.1.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3631,7 +3631,7 @@ else:            # 256 bits
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-implementation-security" class="section-name selfRef">Implementation Security</a>
         </h3>
 <p id="section-10.2-1">If tag verification fails, the unverified plaintext and computed authentication tag <span class="bcp14">MUST NOT</span> be released. As shown in <span>[<a href="#VV18" class="cite xref">VV18</a>]</span>, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
-<p id="section-10.2-2">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound</code> function. Failure to implement <code>AESRound</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
+<p id="section-10.2-2">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound</code> function. Failure to implement <code>AESRound</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks depend on the threat model in question.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
 <p id="section-10.2-3">Regardless of the variant, the <code>key</code> and <code>nonce</code> are only required by the <code>Init</code> function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last <code>Update</code> call of the initialization function.<a href="#section-10.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -5115,7 +5115,7 @@ tag256 : b36a16ef07c36d75a91f437502f24f54
           <p id="appendix-B-4.2.1">John Preuß Mattsson for his review of the draft and for suggesting how AEGIS should be used in the context of DTLS and QUIC.<a href="#appendix-B-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.3">
-          <p id="appendix-B-4.3.1">Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and Mostafizar Rahman for investigating the committing security of the schemes specified in this document.<a href="#appendix-B-4.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.3.1">Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and Mostafizar Rahman, for investigating the committing security of the schemes specified in this document.<a href="#appendix-B-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.4">
           <p id="appendix-B-4.4.1">Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Review Panel.<a href="#appendix-B-4.4.1" class="pilcrow">¶</a></p>
