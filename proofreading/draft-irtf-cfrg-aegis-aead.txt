@@ -185,7 +185,7 @@ Table of Contents
 
    Among the finalists, AEGIS-128 was chosen as the winner for this
    category.  However, AEGIS-128L, another finalist, offers enhanced
-   performance and a stronger security margin [ENP20] [JLD21] [LIMS21]
+   performance and a stronger security margin [ENP20] [JLD22] [LIMS21]
    [STSI23].  Additionally, AEGIS-256, which also reached the final
    round, provides 256-bit security and supports higher usage limits.
 
@@ -1954,7 +1954,7 @@ return tag
    against forgery by differential attacks.
 
    Security analyses of AEGIS can be found in [AEGIS], [M14], [FLLW17],
-   [ENP20], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], [AIKRS24], and
+   [ENP20], [LIMS21], [JLD22], [STSI23], [IR23], [BS23], [AIKRS24], and
    [SSI24].
 
 11.  IANA Considerations
@@ -2068,7 +2068,7 @@ return tag
               of AEGIS", Cryptology ePrint Archive, Paper 2023/1495,
               2023, <https://eprint.iacr.org/2023/1495>.
 
-   [JLD21]    Jiao, L., Li, Y., and S. Du, "Guess-and-Determine Attacks
+   [JLD22]    Jiao, L., Li, Y., and S. Du, "Guess-and-Determine Attacks
               on AEGIS", The Computer Journal, vol 65, 2022(8), pp.
               2221–2230, DOI 10.1093/comjnl/bxab059, 2021,
               <https://doi.org/10.1093/comjnl/bxab059>.
