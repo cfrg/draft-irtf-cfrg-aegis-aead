@@ -350,9 +350,9 @@ Primitives:
 - `Truncate(x, n)`: truncation operation. Returns the first `n` bits of `x`.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
-- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums`, and `AddRoundKey` transformations, as defined in section 5 of {{FIPS-AES}}. Here, `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
+- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums`, and `AddRoundKey` transformations, as defined in Section 5 of {{FIPS-AES}}. Here, `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`.
-- `CtEq(a, b)`: compares `a` and `b` in constant-time, returning `True` for an exact match, and `False` otherwise.
+- `CtEq(a, b)`: compares `a` and `b` in constant-time, returning `True` for an exact match and `False` otherwise.
 
 AEGIS internal functions:
 
