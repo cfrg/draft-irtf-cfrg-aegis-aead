@@ -1849,8 +1849,8 @@ return tag
    output of a permutation, or a generator with a long period.
 
    With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up
-   to 2^48 messages using the same key with negligible (~ 2^-33, to
-   align with NIST guidelines) collision probability.
+   to 2^48 messages using the same key with negligible (~2^-33, to align
+   with NIST guidelines) collision probability.
 
    With AEGIS-256 and AEGIS-256X, random nonces can be used with no
    practical limits.

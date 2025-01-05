@@ -3602,7 +3602,7 @@ else:            # 256 bits
 <p id="section-10.1.1-1">All AEGIS variants <span class="bcp14">MUST</span> be used in a nonce-respecting setting: for a given <code>key</code>, a <code>nonce</code> <span class="bcp14">MUST</span> only be used once, even with different <code>tag</code> lengths. Failure to do so would immediately reveal the bitwise difference between two messages.<a href="#section-10.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-10.1.1-2">Every key <span class="bcp14">MUST</span> be randomly chosen from a uniform distribution.<a href="#section-10.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-10.1.1-3">The nonce <span class="bcp14">MAY</span> be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.<a href="#section-10.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-10.1.1-4">With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.<a href="#section-10.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-4">With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~2<sup>-33</sup>, to align with NIST guidelines) collision probability.<a href="#section-10.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-10.1.1-5">With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.<a href="#section-10.1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
