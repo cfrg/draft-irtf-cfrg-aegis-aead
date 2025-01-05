@@ -397,7 +397,7 @@ The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Secti
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 bytes (128 bits).
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).
 
-Distinct associated data inputs, as described in {{!RFC5116, Section 3}} MUST be unambiguously encoded as a single input.
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}}, MUST be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
@@ -734,7 +734,7 @@ The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Secti
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 bytes (256 bits).
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).
 
-Distinct associated data inputs, as described in {{!RFC5116, Section 3}} MUST be unambiguously encoded as a single input.
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}}, MUST be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
@@ -921,7 +921,7 @@ The `Absorb` function absorbs a 128-bit input block `ai` into the state `{S0, ..
 
 Inputs:
 
-- `ai`: the input block.
+- `ai`: the 128-bit input block.
 
 Steps:
 
@@ -967,11 +967,11 @@ The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the encrypted input block.
+- `ci`: the 128-bit encrypted input block.
 
 Outputs:
 
-- `xi`: the decrypted block.
+- `xi`: the 128-bit decrypted block.
 
 Steps:
 
