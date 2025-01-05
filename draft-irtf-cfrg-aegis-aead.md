@@ -1857,7 +1857,7 @@ In all these variants, unused nonce bits can encode a key identifier, enhancing 
 
 ## Implementation Security
 
-If tag verification fails, the unverified plaintext and computed authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+If tag verification fails, the unverified plaintext and computed authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification facilitates chosen ciphertext attacks.
 
 The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound` function. Failure to implement `AESRound` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks depend on the threat model in question.
 
