@@ -1820,6 +1820,8 @@ return tag
        t1 = V[3,0] ^ V[4,0] ^ V[5,0]
        tag = t0 || t1
 
+   return tag
+
 9.  Implementation Status
 
    _This note is to be removed before publishing as an RFC._
