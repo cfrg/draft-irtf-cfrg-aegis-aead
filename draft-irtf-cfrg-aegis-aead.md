@@ -2910,7 +2910,7 @@ We would like to thank the following individuals for their contributions:
 
 - Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector, and Daniel Bleichenbacher for many helpful suggestions.
 - John Preuß Mattsson for his review of the draft and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
-- Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and Mostafizar Rahman for investigating the committing security of the schemes specified in this document.
+- Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and Mostafizar Rahman, for investigating the committing security of the schemes specified in this document.
 - Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Review Panel.
 - Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.
 - Gilles Van Assche for reviewing the draft and providing insightful comments on the implications of nonce reuse in AEGIS-128X and AEGIS-256X.
