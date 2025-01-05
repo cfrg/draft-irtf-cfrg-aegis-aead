@@ -151,7 +151,7 @@ informative:
         org: University of Hyogo
     date: 2023
 
-  JLD21:
+  JLD22:
     title: "Guess-and-Determine Attacks on AEGIS"
     rc: "The Computer Journal, vol 65, 2022(8), pp. 2221–2230"
     seriesinfo:
@@ -305,7 +305,7 @@ The document is a product of the Crypto Forum Research Group (CFRG). It is not a
 
 This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.
 
-Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP20}} {{JLD21}} {{LIMS21}} {{STSI23}}.
+Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP20}} {{JLD22}} {{LIMS21}} {{STSI23}}.
 Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.
 
 Therefore, this document specifies the following variants:
@@ -1878,7 +1878,7 @@ This resilience extends to quantum adversaries operating within the Q1 model, wh
 This document extends the original specification by introducing optional support for 256-bit authentication tags, which are constructed similarly to the 128-bit tags.
 As shown in {{SSI24}}, with 256-bit tags, all AEGIS variants achieve more than 128-bit security against forgery by differential attacks.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP20}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP20}}, {{LIMS21}}, {{JLD22}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
 
 # IANA Considerations
 
