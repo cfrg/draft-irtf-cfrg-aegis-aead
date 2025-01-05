@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-02T00:42:41.995372+00:00",
+  "timestamp": "2025-01-05T00:47:46.013790+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -402,7 +402,7 @@
       "labels": [],
       "body": "Before it gets published as an RFC, we should run the document through some spelling/grammar checkers and have a final read to check we haven't missed anything. It'll be quite a big job.",
       "createdAt": "2024-01-16T18:25:51Z",
-      "updatedAt": "2025-01-01T12:06:38Z",
+      "updatedAt": "2025-01-02T19:13:39Z",
       "closedAt": null,
       "comments": [
         {
@@ -429,9 +429,9 @@
         {
           "author": "samuel-lucas6",
           "authorAssociation": "COLLABORATOR",
-          "body": "Thanks! Happy new year to you too.\r\n\r\nHere are the feedback issues so far:\r\n\r\n#73\r\n#74 \r\n#75 \r\n#76 \r\n#77 \r\n#78 \r\n#79 \r\n#80\r\n#82 \r\n#83 \r\n#85 \r\n\r\nAs I said in the first one, there are still a few sections I need to review. How would you like to go about addressing these? I'm happy to do some PRs.",
+          "body": "Thanks! Happy new year to you too.\r\n\r\nHere are the feedback issues so far:\r\n\r\n#73\r\n#74 \r\n#75 \r\n#76 \r\n#77 \r\n#78 \r\n#79 \r\n#80\r\n#82 \r\n#83 \r\n#85 \r\n#86\r\n\r\nAs I said in the first one, there are still a few sections I need to review. How would you like to go about addressing these? I'm happy to do some PRs.",
           "createdAt": "2024-12-29T10:24:24Z",
-          "updatedAt": "2025-01-01T12:06:38Z"
+          "updatedAt": "2025-01-02T19:13:39Z"
         }
       ]
     },
@@ -1000,6 +1000,22 @@
       "body": "https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#appendix-A.2.1\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#appendix-A.3.1\r\nNo space after `After Update:`, whereas there's a space after `After initialization:` later on.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#appendix-A.4.1\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#appendix-A.5.1\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#appendix-A.6.1\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead#appendix-A.7.1\r\nIs it worth rephrasing `After initialization:` to the name of the function like above? Maybe not.\r\n\r\nOtherwise, the titles, alignment, and parameter naming looks ok. The only test vectors I've verified are for AEGIS-128L/AEGIS-256 (non-MAC) at the moment.",
       "createdAt": "2025-01-01T12:06:19Z",
       "updatedAt": "2025-01-01T12:06:19Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 86,
+      "id": "I_kwDOKeDGj86k5asE",
+      "title": "Final Proofreading: References",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/86",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is the last section of the document.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-12.1\r\nSkipping as these are auto-generated.\r\n\r\nhttps://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead-14#section-12.2\r\nShould the first initial of the last author be before the surname? That happens in all cases where there are multiple authors.\r\n\r\n`[AIKRS24]`\r\nWe have the year twice.\r\nMissing `vol\u00a014,\u00a0pp. 595\u2013607`.\r\nCould remove the DOI due to the link. However, the Normative References use DOI due to the non-DOI links, so these could be kept.\r\n\r\n`[D23]`\r\nSee first point. Might want to be `F. Denis,`.\r\n\r\n`[ENP19]`\r\nArguably `ENP20` (website/citation says 2020, even though the volume is 2019).\r\nCould remove the DOI due to the link.\r\n\r\n`[JLD21]`\r\nArguably `JLD22` (journal year).\r\nCould remove the DOI due to the link.\r\n\r\n`[LIMS21]`\r\nCould remove the DOI due to the link.\r\n\r\n`[M14]`\r\nCould remove the DOI due to the link.\r\nSee first point. Might want to be `B. Minaud,`.\r\n\r\n`[SSI24]`\r\nCould remove the DOI due to the link.\r\n\r\n`[STSI23]`\r\nCould remove the DOI due to the link.\r\nCould change `2023(3)` => `17(3)` like the website citation, which avoids repeating the year.\r\n\r\n`[VV18]`\r\nCould remove the DOI due to the link.",
+      "createdAt": "2025-01-02T19:13:24Z",
+      "updatedAt": "2025-01-02T19:13:25Z",
       "closedAt": null,
       "comments": []
     }
