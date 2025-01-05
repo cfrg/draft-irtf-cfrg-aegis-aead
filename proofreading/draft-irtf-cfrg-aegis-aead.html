@@ -1710,7 +1710,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-3-3.5.1"><code>C_MAX</code> (maximum ciphertext length) = <code>P_MAX</code> + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).<a href="#section-3-3.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span> <span class="bcp14">MUST</span> be unambiguously encoded as a single input.
+<p id="section-3-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span>, <span class="bcp14">MUST</span> be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <div id="authenticated-encryption">
 <section id="section-3.1">
@@ -2169,7 +2169,7 @@ return tag
           <p id="section-4-3.5.1"><code>C_MAX</code> (maximum ciphertext length) = <code>P_MAX</code> + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).<a href="#section-4-3.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-4-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span> <span class="bcp14">MUST</span> be unambiguously encoded as a single input.
+<p id="section-4-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span>, <span class="bcp14">MUST</span> be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <div id="authenticated-encryption-1">
 <section id="section-4.1">
@@ -2421,7 +2421,7 @@ Absorb(ai)
 <p id="section-4.5-3">Inputs:<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.5-4.1">
-            <p id="section-4.5-4.1.1"><code>ai</code>: the input block.<a href="#section-4.5-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-4.1.1"><code>ai</code>: the 128-bit input block.<a href="#section-4.5-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.5-5">Steps:<a href="#section-4.5-5" class="pilcrow">¶</a></p>
@@ -2483,13 +2483,13 @@ Dec(ci)
 <p id="section-4.7-3">Inputs:<a href="#section-4.7-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.7-4.1">
-            <p id="section-4.7-4.1.1"><code>ci</code>: the encrypted input block.<a href="#section-4.7-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.7-4.1.1"><code>ci</code>: the 128-bit encrypted input block.<a href="#section-4.7-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.7-5">Outputs:<a href="#section-4.7-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.7-6.1">
-            <p id="section-4.7-6.1.1"><code>xi</code>: the decrypted block.<a href="#section-4.7-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.7-6.1.1"><code>xi</code>: the 128-bit decrypted block.<a href="#section-4.7-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.7-7">Steps:<a href="#section-4.7-7" class="pilcrow">¶</a></p>

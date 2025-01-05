@@ -376,10 +376,10 @@ Table of Contents
    *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
       1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
-   Distinct associated data inputs, as described in [RFC5116], Section 3
-   MUST be unambiguously encoded as a single input.  It is up to the
-   application to create a structure in the associated data input if
-   needed.
+   Distinct associated data inputs, as described in [RFC5116],
+   Section 3, MUST be unambiguously encoded as a single input.  It is up
+   to the application to create a structure in the associated data input
+   if needed.
 
 3.1.  Authenticated Encryption
 
@@ -723,10 +723,10 @@ Table of Contents
    *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
       1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
-   Distinct associated data inputs, as described in [RFC5116], Section 3
-   MUST be unambiguously encoded as a single input.  It is up to the
-   application to create a structure in the associated data input if
-   needed.
+   Distinct associated data inputs, as described in [RFC5116],
+   Section 3, MUST be unambiguously encoded as a single input.  It is up
+   to the application to create a structure in the associated data input
+   if needed.
 
 4.1.  Authenticated Encryption
 
@@ -922,7 +922,7 @@ Table of Contents
 
    Inputs:
 
-   *  ai: the input block.
+   *  ai: the 128-bit input block.
 
    Steps:
 
@@ -962,11 +962,11 @@ Table of Contents
 
    Inputs:
 
-   *  ci: the encrypted input block.
+   *  ci: the 128-bit encrypted input block.
 
    Outputs:
 
-   *  xi: the decrypted block.
+   *  xi: the 128-bit decrypted block.
 
    Steps:
 
