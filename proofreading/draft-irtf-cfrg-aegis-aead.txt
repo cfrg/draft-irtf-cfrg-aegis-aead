@@ -185,7 +185,7 @@ Table of Contents
 
    Among the finalists, AEGIS-128 was chosen as the winner for this
    category.  However, AEGIS-128L, another finalist, offers enhanced
-   performance and a stronger security margin [ENP19] [JLD21] [LIMS21]
+   performance and a stronger security margin [ENP20] [JLD21] [LIMS21]
    [STSI23].  Additionally, AEGIS-256, which also reached the final
    round, provides 256-bit security and supports higher usage limits.
 
@@ -1954,7 +1954,7 @@ return tag
    against forgery by differential attacks.
 
    Security analyses of AEGIS can be found in [AEGIS], [M14], [FLLW17],
-   [ENP19], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], [AIKRS24], and
+   [ENP20], [LIMS21], [JLD21], [STSI23], [IR23], [BS23], [AIKRS24], and
    [SSI24].
 
 11.  IANA Considerations
@@ -2053,7 +2053,7 @@ return tag
               Archive, Paper 2023/523, 2023,
               <https://eprint.iacr.org/2023/523>.
 
-   [ENP19]    Eichlseder, M., Nageler, M., and R. Primas, "Analyzing the
+   [ENP20]    Eichlseder, M., Nageler, M., and R. Primas, "Analyzing the
               Linear Keystream Biases in AEGIS", IACR Transactions on
               Symmetric Cryptology, 2019(4), pp. 348–368,
               DOI 10.13154/tosc.v2019.i4.348-368, 2020,
