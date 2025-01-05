@@ -346,7 +346,7 @@ Primitives:
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
 - `LE64(x)`: the little-endian encoding of unsigned 64-bit integer `x`.
-- `ZeroPad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
+- `ZeroPad(x, n)`: padding operation. Trailing zeros are appended to `x` until its length is a multiple of `n` bits, with no padding added if `x` is already a multiple of `n` bits (including when `x` is empty).
 - `Truncate(x, n)`: truncation operation. Returns the first `n` bits of `x`.
 - `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
@@ -1611,9 +1611,11 @@ Outputs:
 Steps:
 
 ~~~
-stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
-
-return stream
+if len = 0:
+    return {}
+else:
+    stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+    return stream
 ~~~
 
 This is equivalent to encrypting a `len` all-zero bits message without associated data and discarding the authentication tag.
