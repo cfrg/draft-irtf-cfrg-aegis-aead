@@ -1722,7 +1722,7 @@ Repeat(7, Update(t, t))
 
 tags = {}
 if tag_len_bits == 128:
-    for i in 0..D:  # tag from state 0 is included
+    for i in 0..D: # tag from state 0 is included
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tags = tags || ti
 
@@ -1788,7 +1788,7 @@ Repeat(7, Update(t))
 
 tags = {}
 if tag_len_bits == 128:
-    for i in 1..D:   # tag from state 0 is skipped
+    for i in 1..D: # tag from state 0 is skipped
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || ti
 
