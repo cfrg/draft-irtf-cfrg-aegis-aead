@@ -1905,8 +1905,8 @@ return tag
 
    If tag verification fails, the unverified plaintext and computed
    authentication tag MUST NOT be released.  As shown in [VV18], even a
-   partial leak of the plaintext without verification would facilitate
-   chosen ciphertext attacks.
+   partial leak of the plaintext without verification facilitates chosen
+   ciphertext attacks.
 
    The security of AEGIS against timing and physical attacks is limited
    by the implementation of the underlying AESRound function.  Failure
