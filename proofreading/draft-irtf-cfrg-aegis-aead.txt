@@ -3048,6 +3048,9 @@ Acknowledgments
       test vector, and Daniel Bleichenbacher for many helpful
       suggestions.
 
+   *  Soatok Dreamseeker for his early review of the draft and for
+      suggesting the addition of negative test vectors.
+
    *  John Preuß Mattsson for his review of the draft and for suggesting
       how AEGIS should be used in the context of DTLS and QUIC.
 
