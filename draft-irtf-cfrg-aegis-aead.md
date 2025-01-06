@@ -1629,7 +1629,7 @@ After initialization, the `Update` function is called with constant parameters, 
 
 # AEGIS as a Message Authentication Code
 
-All AEGIS variants can be used to construct a MAC.
+All AEGIS variants can be used to construct a Message Authentication Code (MAC).
 
 For all the variants, the `Mac` function takes a key, a nonce, and data as input and produces a 128- or 256-bit tag as output.
 
