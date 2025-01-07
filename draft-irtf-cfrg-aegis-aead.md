@@ -345,7 +345,7 @@ Primitives:
 - `a & b`: the bitwise AND operation between `a` and `b`.
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
-- `LE64(x)`: the little-endian encoding of unsigned 64-bit integer `x`.
+- `LE64(x)`: returns the little-endian encoding of unsigned 64-bit integer `x`.
 - `ZeroPad(x, n)`: appends zeros to `x` until its length is a multiple of `n` bits. No padding is added if `x` is already a multiple of `n` bits, including when `x` is empty.
 - `Truncate(x, n)`: returns the first `n` bits of `x`.
 - `Split(x, n)`: returns` x` split into `n`-bit blocks, ignoring partial blocks.
@@ -602,7 +602,7 @@ The `Enc` function encrypts a 256-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the 256-bit input block.
+- `xi`: the 256-bit inpur block.
 
 Outputs:
 
@@ -967,7 +967,7 @@ The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the 128-bit encrypted input block.
+- `ci`: the 128-bit encrypted block.
 
 Outputs:
 
