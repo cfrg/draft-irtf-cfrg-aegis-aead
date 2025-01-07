@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 10 July 2025                             Individual Contributor
-                                                          6 January 2025
+Expires: 11 July 2025                             Individual Contributor
+                                                          7 January 2025
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 July 2025.
+   This Internet-Draft will expire on 11 July 2025.
 
 Copyright Notice
 
@@ -2080,7 +2080,7 @@ return tag
 
    [JLD22]    Jiao, L., Li, Y., and S. Du, "Guess-and-Determine Attacks
               on AEGIS", The Computer Journal, vol 65, 2022(8), pp.
-              2221–2230, DOI 10.1093/comjnl/bxab059, 2021,
+              2221–2230, DOI 10.1093/comjnl/bxab059, 2022,
               <https://doi.org/10.1093/comjnl/bxab059>.
 
    [LGR21]    Len, J., Grubbs, P., and T. Ristenpart, "Partitioning
