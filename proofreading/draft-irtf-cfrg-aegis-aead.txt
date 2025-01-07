@@ -284,7 +284,7 @@ Table of Contents
 
    *  Truncate(x, n): returns the first n bits of x.
 
-   *  Split(x, n): returnsx split into n-bit blocks, ignoring partial
+   *  Split(x, n): returns x split into n-bit blocks, ignoring partial
       blocks.
 
    *  Tail(x, n): returns the last n bits of x.
