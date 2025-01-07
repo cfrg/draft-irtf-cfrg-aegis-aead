@@ -275,7 +275,8 @@ Table of Contents
    *  a mod b: the remainder of the Euclidean division between a as the
       dividend and b as the divisor.
 
-   *  LE64(x): the little-endian encoding of unsigned 64-bit integer x.
+   *  LE64(x): returns the little-endian encoding of unsigned 64-bit
+      integer x.
 
    *  ZeroPad(x, n): appends zeros to x until its length is a multiple
       of n bits.  No padding is added if x is already a multiple of n
@@ -591,7 +592,7 @@ Table of Contents
 
    Inputs:
 
-   *  xi: the 256-bit input block.
+   *  xi: the 256-bit inpur block.
 
    Outputs:
 
@@ -962,7 +963,7 @@ Table of Contents
 
    Inputs:
 
-   *  ci: the 128-bit encrypted input block.
+   *  ci: the 128-bit encrypted block.
 
    Outputs:
 
