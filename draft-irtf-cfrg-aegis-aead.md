@@ -1847,7 +1847,7 @@ An authentication tag may verify under multiple keys, nonces, or associated data
 
 AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in {{IR23}}, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
 
-Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. For AEGIS-128L and AEGIS-128X, the selected hash function must ensure a minimum of 128-bit collision and preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
+Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit collision and preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
 
 Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF {{!RFC5869}}, via the `info` input to derive the `key` parameter. The `ad` parameter can then be left empty. Note that the `salt` input MUST NOT be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the `info` input to be unambiguously encoded, like by appending their lengths.
 
