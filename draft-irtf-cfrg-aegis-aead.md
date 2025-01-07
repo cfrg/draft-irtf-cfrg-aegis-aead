@@ -93,7 +93,7 @@ informative:
         org: Fastly Inc.
     date: 2023
 
-  ENP19:
+  ENP20:
     title: "Analyzing the Linear Keystream Biases in AEGIS"
     rc: "IACR Transactions on Symmetric Cryptology, 2019(4), pp. 348–368"
     seriesinfo:
@@ -151,7 +151,7 @@ informative:
         org: University of Hyogo
     date: 2023
 
-  JLD21:
+  JLD22:
     title: "Guess-and-Determine Attacks on AEGIS"
     rc: "The Computer Journal, vol 65, 2022(8), pp. 2221–2230"
     seriesinfo:
@@ -169,7 +169,7 @@ informative:
         ins: S. Du
         name: Shaoyu Du
         org: State Key Laboratory of Cryptology
-    date: 2021
+    date: 2022
 
   LGR21:
     title: "Partitioning Oracle Attacks"
@@ -303,9 +303,9 @@ The document is a product of the Crypto Forum Research Group (CFRG). It is not a
 
 # Introduction
 
-This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.
+This document describes the AEGIS family of Authenticated Encryption with Associated Data (AEAD) algorithms {{AEGIS}}, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.
 
-Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP19}} {{JLD21}} {{LIMS21}} {{STSI23}}.
+Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP20}} {{JLD22}} {{LIMS21}} {{STSI23}}.
 Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.
 
 Therefore, this document specifies the following variants:
@@ -317,19 +317,19 @@ Therefore, this document specifies the following variants:
 
 All variants are inverse-free and constructed from the AES encryption round function {{!FIPS-AES=FIPS.197.2001}}.
 
-The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM on CPUs with AES instructions. Similarly, software implementations not using AES instructions can also be faster, although to a lesser extent.
+The AEGIS cipher family offers performance that significantly exceeds AES-GCM on CPUs with AES instructions. Similarly, software implementations not using AES instructions can also be faster, although to a lesser extent.
 
 Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256 and AEGIS-256X. AEGIS-128L and AEGIS-128X also allow for more messages to be safely encrypted when using random nonces.
 
 With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) {{LGR21}}. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.
 
-In AEGIS, finding distinct (key, nonce) pairs that successfully decrypt a given (associated data, ciphertext, authentication tag) tuple is believed to have a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical.
+With AEGIS, finding distinct (key, nonce) pairs that successfully decrypt a given (associated data, ciphertext, authentication tag) tuple is believed to have a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical.
 
 Unlike most other AES-based AEAD constructions, leaking a state does not leak the key or previous states.
 
 Finally, an AEGIS key is not required after the initialization function, and there is no key schedule. Thus, ephemeral keys can be erased from memory before any data has been encrypted or decrypted, mitigating cold boot attacks.
 
-Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of state updates in the `Finalize()` function. We follow the specification of {{AEGIS}}, which can be found in the References section of this document.
+Note that an earlier version of Hongjun Wu and Bart Preneel's paper introducing AEGIS specified AEGIS-128L and AEGIS-256 with a different `Finalize` function. We follow the specification of {{AEGIS}}, which can be found in the References section of this document.
 
 # Conventions and Definitions
 
@@ -345,19 +345,19 @@ Primitives:
 - `a & b`: the bitwise AND operation between `a` and `b`.
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
-- `LE64(x)`: the little-endian encoding of unsigned 64-bit integer `x`.
-- `ZeroPad(x, n)`: padding operation. Trailing zeros are concatenated to `x` until the total length is a multiple of `n` bits.
-- `Truncate(x, n)`: truncation operation. The first `n` bits of `x` are kept.
-- `Split(x, n)`: splitting operation. `x` is split into `n`-bit blocks, ignoring partial blocks.
+- `LE64(x)`: returns the little-endian encoding of unsigned 64-bit integer `x`.
+- `ZeroPad(x, n)`: returns `x` after appending zeros until its length is a multiple of `n` bits. No padding is added if the length of `x` is already a multiple of `n`, including when `x` is empty.
+- `Truncate(x, n)`: returns the first `n` bits of `x`.
+- `Split(x, n)`: returns `x` split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
-- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums` and `AddRoundKey` transformations, as defined in section 5 of {{FIPS-AES}}. Here, `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
+- `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums`, and `AddRoundKey` transformations, as defined in Section 5 of {{FIPS-AES}}. Here, `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`.
-- `CtEq(a, b)`: compares `a` and `b` in constant-time, returning `True` for an exact match, `False` otherwise.
+- `CtEq(a, b)`: compares `a` and `b` in constant-time, returning `True` for an exact match and `False` otherwise.
 
 AEGIS internal functions:
 
-- `Update(M0, M1)` or `Update(M)`: the state update function.
 - `Init(key, nonce)`: the initialization function.
+- `Update(M0, M1)` or `Update(M)`: the state update function.
 - `Absorb(ai)`: the input block absorption function.
 - `Enc(xi)`: the input block encryption function.
 - `Dec(ci)`: the input block decryption function.
@@ -389,7 +389,7 @@ Input and output values:
 
 AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks `{S0, ...S7}`.
 
-The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
+The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}}, are:
 
 - `K_LEN` (key length) is 16 bytes (128 bits).
 - `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).
@@ -397,7 +397,7 @@ The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Secti
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 16 bytes (128 bits).
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).
 
-Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}}, MUST be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
@@ -456,12 +456,12 @@ The `Decrypt` function decrypts a ciphertext, verifies that the authentication t
 
 Security:
 
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before being returned.
+- If tag verification fails, the decrypted message and wrong authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before the function returns.
 - The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted (length MUST be less than or equal to `C_MAX`).
+- `ct`: the ciphertext to decrypt (length MUST be less than or equal to `C_MAX`).
 - `tag`: the authentication tag.
 - `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
@@ -495,6 +495,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -610,7 +611,7 @@ Outputs:
 Steps:
 
 ~~~
-z0 = S6 ^ S1 ^ (S2 & S3)
+z0 = S1 ^ S6 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
 
 t0, t1 = Split(xi, 128)
@@ -642,7 +643,7 @@ Outputs:
 Steps:
 
 ~~~
-z0 = S6 ^ S1 ^ (S2 & S3)
+z0 = S1 ^ S6 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
 
 t0, t1 = Split(ci, 128)
@@ -674,7 +675,7 @@ Outputs:
 Steps:
 
 ~~~
-z0 = S6 ^ S1 ^ (S2 & S3)
+z0 = S1 ^ S6 ^ (S2 & S3)
 z1 = S2 ^ S5 ^ (S6 & S7)
 
 t0, t1 = Split(ZeroPad(cn, 256), 128)
@@ -713,9 +714,9 @@ t = S2 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t, t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
-else:                # 256 bits
+else:            # 256 bits
     tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
 
 return tag
@@ -725,15 +726,15 @@ return tag
 
 AEGIS-256 has a 768-bit state, made of six 128-bit blocks `{S0, ...S5}`.
 
-The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}} are:
+The parameters for this algorithm, whose meaning is defined in {{!RFC5116, Section 4}}, are:
 
 - `K_LEN` (key length) is 32 bytes (256 bits).
 - `P_MAX` (maximum length of the plaintext) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).
-- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> bytes (2<sup>64</sup> bits).
+- `A_MAX` (maximum length of the associated data) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).
 - `N_MIN` (minimum nonce length) = `N_MAX` (maximum nonce length) = 32 bytes (256 bits).
 - `C_MAX` (maximum ciphertext length) = `P_MAX` + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).
 
-Distinct associated data inputs, as described in {{!RFC5116, Section 3}} shall be unambiguously encoded as a single input.
+Distinct associated data inputs, as described in {{!RFC5116, Section 3}}, MUST be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.
 
 ## Authenticated Encryption
@@ -792,12 +793,12 @@ The `Decrypt` function decrypts a ciphertext, verifies that the authentication t
 
 Security:
 
-- If tag verification fails, the decrypted message and wrong message authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before being returned.
+- If tag verification fails, the decrypted message and wrong authentication tag MUST NOT be given as output. The decrypted message MUST be overwritten with zeros before the function returns.
 - The comparison of the input `tag` with the `expected_tag` MUST be done in constant time.
 
 Inputs:
 
-- `ct`: the ciphertext to be decrypted (length MUST be less than or equal to `C_MAX`).
+- `ct`: the ciphertext to decrypt (length MUST be less than or equal to `C_MAX`).
 - `tag`: the authentication tag.
 - `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
@@ -831,6 +832,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -885,7 +887,7 @@ It updates the state `{S0, ...S5}` using a 128-bit value.
 
 Inputs:
 
-- `msg`: the block to be absorbed.
+- `msg`: the 128-bit block to be absorbed.
 
 Modifies:
 
@@ -919,7 +921,7 @@ The `Absorb` function absorbs a 128-bit input block `ai` into the state `{S0, ..
 
 Inputs:
 
-- `ai`: the input block.
+- `ai`: the 128-bit input block.
 
 Steps:
 
@@ -937,11 +939,11 @@ The `Enc` function encrypts a 128-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the input block.
+- `xi`: the 128-bit input block.
 
 Outputs:
 
-- `ci`: the encrypted input block.
+- `ci`: the 128-bit encrypted block.
 
 Steps:
 
@@ -965,11 +967,11 @@ The `Dec` function decrypts a 128-bit input block `ci` using the state `{S0, ...
 
 Inputs:
 
-- `ci`: the encrypted input block.
+- `ci`: the 128-bit encrypted block.
 
 Outputs:
 
-- `xi`: the decrypted block.
+- `xi`: the 128-bit decrypted block.
 
 Steps:
 
@@ -1039,9 +1041,9 @@ t = S3 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
-else:                # 256 bits
+else:            # 256 bits
     tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
 
 return tag
@@ -1053,7 +1055,7 @@ Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, inc
 
 AEGIS-128X and AEGIS-256X are optional, specialized modes designed to take advantage of these instructions. They share the same properties as the ciphers they are based on but can be significantly faster on these platforms, even for short messages.
 
-AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.
+AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances, respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.
 
 The modes are parameterized by the parallelism degree. With 256-bit registers, 2 parallel operations can be applied to 128-bit AES blocks. With 512-bit registers, the number of instances can be raised to 4.
 
@@ -1063,9 +1065,9 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 
 - `D`: the degree of parallelism.
 - `R`: the absorption and output rate of the mode. With AEGIS-128X, the rate is `256 * D` bits. With AEGIS-256X, the rate is `128 * D` bits.
-- `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256, `j` is in the `[0..6)` range.
+- `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256X, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
-- `ctx[i]`: the `i`-th context separator. This is a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
+- `ctx[i]`: the `i`-th context separator. This is a 128-bit mask made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
 - `Byte(x)`: the value `x` encoded as 8 bits.
 
 ## Authenticated Encryption
@@ -1129,6 +1131,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -1181,7 +1184,7 @@ Repeat(10,
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1215,7 +1218,7 @@ for i in 0..D:
 Absorb(ai)
 ~~~
 
-The `Absorb` function is similar to the AEGIS-128L `Absorb` function, but absorbs `R` bits instead of 256 bits.
+The `Absorb` function is similar to the AEGIS-128L `Absorb` function but absorbs `R` bits instead of 256 bits.
 
 Steps:
 
@@ -1230,7 +1233,7 @@ Update(t0, t1)
 Enc(xi)
 ~~~
 
-The `Enc` function is similar to the AEGIS-128L `Enc` function, but encrypts `R` bits instead of 256 bits.
+The `Enc` function is similar to the AEGIS-128L `Enc` function but encrypts `R` bits instead of 256 bits.
 
 Steps:
 
@@ -1257,7 +1260,7 @@ return ci
 Dec(ci)
 ~~~
 
-The `Dec` function is similar to the AEGIS-128L `Dec` function, but decrypts `R` bits instead of 256 bits.
+The `Dec` function is similar to the AEGIS-128L `Dec` function but decrypts `R` bits instead of 256 bits.
 
 Steps:
 
@@ -1284,7 +1287,7 @@ return xi
 DecPartial(cn)
 ~~~
 
-The `DecPartial` function is similar to the AEGIS-128L `DecPartial` function, but decrypts up to `R` bits instead of 256 bits.
+The `DecPartial` function is similar to the AEGIS-128L `DecPartial` function but decrypts up to `R` bits instead of 256 bits.
 
 Steps:
 
@@ -1325,13 +1328,13 @@ for i in 0..D:
 
 Repeat(7, Update(t, t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tag = tag ^ ti
 
-else:                # 256 bits
+else:            # 256 bits
     ti0 = ZeroPad({}, 128)
     ti1 = ZeroPad({}, 128)
     for i in 0..D:
@@ -1407,7 +1410,7 @@ Repeat(4,
 Update(M)
 ~~~
 
-The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function, but absorbs `R` (`128 * D`) bits at once. `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
+The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function but absorbs `R` (`128 * D`) bits at once. `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
 
 Steps:
 
@@ -1436,7 +1439,7 @@ for i in 0..D:
 Absorb(ai)
 ~~~
 
-The `Absorb` function is similar to the AEGIS-256 `Absorb` function, but absorbs `R` bits instead of 128 bits.
+The `Absorb` function is similar to the AEGIS-256 `Absorb` function but absorbs `R` bits instead of 128 bits.
 
 Steps:
 
@@ -1450,7 +1453,7 @@ Update(ai)
 Enc(xi)
 ~~~
 
-The `Enc` function is similar to the AEGIS-256 `Enc` function, but encrypts `R` bits instead of 128 bits.
+The `Enc` function is similar to the AEGIS-256 `Enc` function but encrypts `R` bits instead of 128 bits.
 
 Steps:
 
@@ -1472,7 +1475,7 @@ return ci
 Dec(ci)
 ~~~
 
-The `Dec` function is similar to the AEGIS-256 `Dec` function, but decrypts `R` bits instead of 128 bits.
+The `Dec` function is similar to the AEGIS-256 `Dec` function but decrypts `R` bits instead of 128 bits.
 
 Steps:
 
@@ -1494,7 +1497,7 @@ return xi
 DecPartial(cn)
 ~~~
 
-The `DecPartial` function is similar to the AEGIS-256 `DecPartial` function, but decrypts up to `R` bits instead of 128 bits.
+The `DecPartial` function is similar to the AEGIS-256 `DecPartial` function but decrypts up to `R` bits instead of 128 bits.
 
 Steps:
 
@@ -1532,13 +1535,13 @@ for i in 0..D:
 
 Repeat(7, Update(t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tag = tag ^ ti
 
-else:                # 256 bits
+else:            # 256 bits
     ti0 = ZeroPad({}, 128)
     ti1 = ZeroPad({}, 128)
     for i in 0..D:
@@ -1551,7 +1554,7 @@ return tag
 
 ## Implementation Considerations
 
-AEGIS-128X and AEGIS-256X with a degree of `1` are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the size of a generic implementation.
+AEGIS-128X and AEGIS-256X with a degree of `1` are identical to AEGIS-128L and AEGIS-256, respectively. This property can be used to reduce the size of a generic implementation.
 
 In AEGIS-128X, `V` can be represented as eight 256-bit registers (when `D = 2`) or eight 512-bit registers (when `D = 4`). In AEGIS-256X, `V` can be represented as six 256-bit registers (when `D = 2`) or six 512-bit registers (when `D = 4`). With this representation, loops over `0..D` in the above pseudocode can be replaced by vector instructions.
 
@@ -1561,7 +1564,7 @@ The AEGIS parallel modes are specialized and can only improve performance on spe
 
 The degrees of parallelism implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
 
-The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the minimum vector register sizes a CPU should support for optimal performance.
+The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the minimum vector register size a CPU should support for optimal performance.
 
 | Algorithm   | Rate (bits) | Optimal Register Size | State Size (bits) |
 | ----------- | ----------: | :-------------------: | ----------------: |
@@ -1596,13 +1599,13 @@ All AEGIS variants can also be used as stream ciphers.
 Stream(len, key, nonce)
 ~~~
 
-The `Stream` function expands a key and an optional nonce into a variable-length, secure keystream.
+The `Stream` function expands a key and an optional nonce into a variable-length keystream.
 
 Inputs:
 
 - `len`: the length of the keystream to generate in bits.
 - `key`: the AEGIS key.
-- `nonce`: the nonce. If unspecified, it is set to `N_MAX` zero bytes.
+- `nonce`: the AEGIS nonce. If unspecified, it is set to `N_MAX` zero bytes.
 
 Outputs:
 
@@ -1611,22 +1614,24 @@ Outputs:
 Steps:
 
 ~~~
-stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
-
-return stream
+if len == 0:
+    return {}
+else:
+    stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+    return stream
 ~~~
 
-This is equivalent to encrypting a `len` all-zero bits message without associated data, and discarding the authentication tag.
+This is equivalent to encrypting a `len` all-zero bits message without associated data and discarding the authentication tag.
 
-Instead of relying on the generic `Encrypt` function, implementations can skip the finalization step.
+Instead of relying on the generic `Encrypt` function, implementations can omit the `Finalize` function.
 
 After initialization, the `Update` function is called with constant parameters, allowing further optimizations.
 
 # AEGIS as a Message Authentication Code
 
-All AEGIS variants can be used to construct a MAC.
+All AEGIS variants can be used to construct a Message Authentication Code (MAC).
 
-For all the variants, the `Mac` function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.
+For all the variants, the `Mac` function takes a key, a nonce, and data as input and produces a 128- or 256-bit tag as output.
 
 ~~~
 Mac(data, key, nonce)
@@ -1636,7 +1641,7 @@ Security:
 
 - This is the only function that allows the reuse of `(key, nonce)` pairs with different inputs.
 - AEGIS-based MAC functions MUST NOT be used as hash functions: if the key is known, inputs causing state collisions can easily be crafted.
-- Unlike hash-based MACs, tags MUST NOT be used for key derivation, as there is no guarantee that they are uniformly random.
+- Unlike hash-based MACs, tags MUST NOT be used for key derivation as there is no guarantee that they are uniformly random.
 
 Inputs:
 
@@ -1659,7 +1664,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length_bits)
+tag = Finalize(|data|, tag_len_bits)
 return tag
 ~~~
 
@@ -1674,7 +1679,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length_bits)
+tag = Finalize(|data|, tag_len_bits)
 return tag
 ~~~
 
@@ -1709,20 +1714,20 @@ Steps:
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length_bits)
+u = LE64(data_len_bits) || LE64(tag_len_bits)
 for i in 0..D:
     t = t || (V[2,i] ^ u)
 
 Repeat(7, Update(t, t))
 
 tags = {}
-if tag_length_bits == 128:
-    for i in 0..D:   # tag from state 0 is included
+if tag_len_bits == 128:
+    for i in 0..D: # tag from state 0 is included
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tags = tags || ti
 
-else:                # 256 bits
-    for i in 1..D:   # tag from state 0 is skipped
+else:              # 256 bits
+    for i in 1..D: # tag from state 0 is skipped
         ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
         ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
         tags = tags || (ti0 || ti1)
@@ -1732,16 +1737,18 @@ if D > 1:
     for v in Split(tags, 256):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length_bits)
+    u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[2,0] ^ u, R)
     Repeat(7, Update(t, t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
-else:                # 256 bits
+else:            # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
     t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
     tag = t0 || t1
+
+return tag
 ~~~
 
 ## AEGISMAC-256X
@@ -1773,20 +1780,20 @@ It finalizes all the instances, absorbs the resulting tags into the first state,
 
 ~~~
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length_bits)
+u = LE64(data_len_bits) || LE64(tag_len_bits)
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
 Repeat(7, Update(t))
 
 tags = {}
-if tag_length_bits == 128:
-    for i in 1..D:   # tag from state 0 is skipped
+if tag_len_bits == 128:
+    for i in 1..D: # tag from state 0 is skipped
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || ti
 
-else:                # 256 bits
-    for i in 1..D:   # tag from state 0 is skipped
+else:              # 256 bits
+    for i in 1..D: # tag from state 0 is skipped
         ti0 = V[0,i] ^ V[1,i] ^ V[2,i]
         ti1 = V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || (ti0 || ti1)
@@ -1796,16 +1803,18 @@ if D > 1:
     for v in Split(tags, 128):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length_bits)
+    u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[3,0] ^ u, R)
     Repeat(7, Update(t))
 
-if tag_length_bits == 128:
-    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
-else:                # 256 bits
-    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
-    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+if tag_len_bits == 128:
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0]
+else:            # 256 bits
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0]
+    t1 = V[3,0] ^ V[4,0] ^ V[5,0]
     tag = t0 || t1
+
+return tag
 ~~~
 
 # Implementation Status
@@ -1828,37 +1837,37 @@ Every key MUST be randomly chosen from a uniform distribution.
 
 The nonce MAY be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.
 
-With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.
+With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~2<sup>-33</sup>, to align with NIST guidelines) collision probability.
 
 With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.
 
-### Key Commitment
+### Committing Security
 
-An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same `(ad, ct, tag)` tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
+An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game. This mitigates common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same `(ad, ct, tag)` tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.
 
 AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in {{IR23}}, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.
 
-Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
+Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the `ad` parameter of the `Encrypt` and `Decrypt` functions. The selected hash function must ensure a minimum of 128-bit collision and preimage resistance. An instance of such a function is SHA-256 {{!RFC6234}}.
 
 Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF {{!RFC5869}}, via the `info` input to derive the `key` parameter. The `ad` parameter can then be left empty. Note that the `salt` input MUST NOT be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the `info` input to be unambiguously encoded, like by appending their lengths.
 
 ### Multi-User Security
 
-AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
+AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols at the time of writing. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.
 
-In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don't provide any advantage over single-target attacks.
+In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks do not provide any advantage over single-target attacks.
 
 ## Implementation Security
 
-If tag verification fails, the unverified plaintext and the computed message authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.
+If tag verification fails, the unverified plaintext and computed authentication tag MUST NOT be released. As shown in {{VV18}}, even a partial leak of the plaintext without verification facilitates chosen ciphertext attacks.
 
-The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound()` function. Failure to implement `AESRound()` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.
+The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying `AESRound` function. Failure to implement `AESRound` in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks depend on the threat model in question.
 
 Regardless of the variant, the `key` and `nonce` are only required by the `Init` function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last `Update` call of the initialization function.
 
 ## Security Guarantees
 
-AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
+AEGIS-256 offers 256-bit security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
 
 Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.
 
@@ -1867,7 +1876,7 @@ However, `(key, nonce)` pairs MUST NOT be reused, even if the associated data di
 
 AEGIS has been shown to have reforgeability resilience in {{FLLW17}}. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.
 
-AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same {{D23}}.
+AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256, respectively. In particular, the security level and usage limits remain the same {{D23}}.
 
 AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.
 
@@ -1876,7 +1885,7 @@ This resilience extends to quantum adversaries operating within the Q1 model, wh
 This document extends the original specification by introducing optional support for 256-bit authentication tags, which are constructed similarly to the 128-bit tags.
 As shown in {{SSI24}}, with 256-bit tags, all AEGIS variants achieve more than 128-bit security against forgery by differential attacks.
 
-Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP19}}, {{LIMS21}}, {{JLD21}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
+Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP20}}, {{LIMS21}}, {{JLD22}}, {{STSI23}}, {{IR23}}, {{BS23}}, {{AIKRS24}}, and {{SSI24}}.
 
 # IANA Considerations
 
@@ -1936,6 +1945,7 @@ M0   : 033e6975b94816879e42917650955aa0
 M1   : fcc1968a46b7e97861bd6e89af6aa55f
 
 After Update:
+
 S0   : 596ab773e4433ca0127c73f60536769d
 S1   : 790394041a3d26ab697bde865014652d
 S2   : 38cf49e4b65248acd533041b64dd0611
@@ -2140,6 +2150,7 @@ S5   : a828a18d6a964497ac6e7e53c5f55c73
 M    : b165617ed04ab738afb2612c6d18a1ec
 
 After Update:
+
 S0   : e6bc643bae82dfa3d991b1b323839dcd
 S1   : 648578232ba0f2f0a3677f617dc052c3
 S2   : ea788e0e572044a46059212dd007a789
@@ -2896,15 +2907,16 @@ tag256 : b36a16ef07c36d75a91f437502f24f54
 # Acknowledgments
 {:numbered="false"}
 
-The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart Preneel.
+The AEGIS family of authenticated encryption algorithms was invented by Hongjun Wu and Bart Preneel.
 
 The state update function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC, which partly motivated the design of the AEGIS MAC.
 
 We would like to thank the following individuals for their contributions:
 
-- Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector and Daniel Bleichenbacher for many helpful suggestions.
-- John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
-- Bart Mennink and Charlotte Lefevre as well as Takanori Isobe and Mostafizar Rahman for investigating the commitment security of the schemes specified in this document.
-- Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Panel.
+- Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector, and Daniel Bleichenbacher for many helpful suggestions.
+- Soatok Dreamseeker for his early review of the draft and for suggesting the addition of negative test vectors.
+- John Preuß Mattsson for his review of the draft and for suggesting how AEGIS should be used in the context of DTLS and QUIC.
+- Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and Mostafizar Rahman, for investigating the committing security of the schemes specified in this document.
+- Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Review Panel.
 - Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.
 - Gilles Van Assche for reviewing the draft and providing insightful comments on the implications of nonce reuse in AEGIS-128X and AEGIS-256X.
