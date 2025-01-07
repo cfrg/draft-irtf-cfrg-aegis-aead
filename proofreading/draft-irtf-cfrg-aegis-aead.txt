@@ -1877,10 +1877,9 @@ return tag
    Protocols mandating a fully committing scheme without that
    restriction can provide the associated data as input to a
    cryptographic hash function and use the output as the ad parameter of
-   the Encrypt and Decrypt functions.  For AEGIS-128L and AEGIS-128X,
-   the selected hash function must ensure a minimum of 128-bit collision
-   and preimage resistance.  An instance of such a function is SHA-256
-   [RFC6234].
+   the Encrypt and Decrypt functions.  The selected hash function must
+   ensure a minimum of 128-bit collision and preimage resistance.  An
+   instance of such a function is SHA-256 [RFC6234].
 
    Alternatively, the associated data can be fed into a collision-
    resistant KDF, such as HKDF [RFC5869], via the info input to derive
