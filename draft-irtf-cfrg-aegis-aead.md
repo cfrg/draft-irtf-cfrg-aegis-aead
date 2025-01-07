@@ -1614,7 +1614,7 @@ Outputs:
 Steps:
 
 ~~~
-if len = 0:
+if len == 0:
     return {}
 else:
     stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
