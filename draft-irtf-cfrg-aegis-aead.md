@@ -169,7 +169,7 @@ informative:
         ins: S. Du
         name: Shaoyu Du
         org: State Key Laboratory of Cryptology
-    date: 2021
+    date: 2022
 
   LGR21:
     title: "Partitioning Oracle Attacks"
