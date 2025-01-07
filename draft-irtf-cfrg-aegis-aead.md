@@ -602,7 +602,7 @@ The `Enc` function encrypts a 256-bit input block `xi` using the state `{S0, ...
 
 Inputs:
 
-- `xi`: the 256-bit inpur block.
+- `xi`: the 256-bit input block.
 
 Outputs:
 
