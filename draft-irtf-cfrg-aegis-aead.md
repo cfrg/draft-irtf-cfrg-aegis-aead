@@ -348,7 +348,7 @@ Primitives:
 - `LE64(x)`: returns the little-endian encoding of unsigned 64-bit integer `x`.
 - `ZeroPad(x, n)`: returns `x` after appending zeros until its length is a multiple of `n` bits. No padding is added if the length of `x` is already a multiple of `n`, including when `x` is empty.
 - `Truncate(x, n)`: returns the first `n` bits of `x`.
-- `Split(x, n)`: returns` x` split into `n`-bit blocks, ignoring partial blocks.
+- `Split(x, n)`: returns `x` split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
 - `AESRound(in, rk)`: a single round of the AES encryption round function, which is the composition of the `SubBytes`, `ShiftRows`, `MixColums`, and `AddRoundKey` transformations, as defined in Section 5 of {{FIPS-AES}}. Here, `in` is the 128-bit AES input state, and `rk` is the 128-bit round key.
 - `Repeat(n, F)`: `n` sequential evaluations of the function `F`.
