@@ -887,7 +887,7 @@ It updates the state `{S0, ...S5}` using a 128-bit value.
 
 Inputs:
 
-- `msg`: the block to be absorbed.
+- `msg`: the 128-bit block to be absorbed.
 
 Modifies:
 
