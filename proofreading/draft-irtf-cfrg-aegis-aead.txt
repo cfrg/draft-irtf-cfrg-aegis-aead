@@ -592,7 +592,7 @@ Table of Contents
 
    Inputs:
 
-   *  xi: the 256-bit inpur block.
+   *  xi: the 256-bit input block.
 
    Outputs:
 
