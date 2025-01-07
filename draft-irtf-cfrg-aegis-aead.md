@@ -272,9 +272,9 @@ informative:
 
   TEST-VECTORS:
     title: "AEGIS Test Vectors"
-    refcontent: commit f9f50ea6
-    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/f9f50ea6/test-vectors
-    date: 2024
+    refcontent: commit 55f92c37
+    target: https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors
+    date: 2025
 
   VV18:
     title: "Can Caesar Beat Galois?"
