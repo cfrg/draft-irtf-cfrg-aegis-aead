@@ -303,7 +303,7 @@ The document is a product of the Crypto Forum Research Group (CFRG). It is not a
 
 # Introduction
 
-This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms {{AEGIS}}, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.
+This document describes the AEGIS family of Authenticated Encryption with Associated Data (AEAD) algorithms {{AEGIS}}, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.
 
 Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP20}} {{JLD22}} {{LIMS21}} {{STSI23}}.
 Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.
