@@ -346,7 +346,7 @@ Primitives:
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
 - `LE64(x)`: returns the little-endian encoding of unsigned 64-bit integer `x`.
-- `ZeroPad(x, n)`: appends zeros to `x` until its length is a multiple of `n` bits. No padding is added if `x` is already a multiple of `n` bits, including when `x` is empty.
+- `ZeroPad(x, n)`: returns `x` after appending zeros until its length is a multiple of `n` bits. No padding is added if the length of `x` is already a multiple of `n`, including when `x` is empty.
 - `Truncate(x, n)`: returns the first `n` bits of `x`.
 - `Split(x, n)`: returns` x` split into `n`-bit blocks, ignoring partial blocks.
 - `Tail(x, n)`: returns the last `n` bits of `x`.
