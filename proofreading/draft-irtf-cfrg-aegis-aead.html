@@ -3321,7 +3321,7 @@ Stream(len, key, nonce)
 <p id="section-7-8">Steps:<a href="#section-7-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7-9">
 <pre>
-if len = 0:
+if len == 0:
     return {}
 else:
     stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
