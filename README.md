@@ -28,6 +28,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                                   | Python            |
 | [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                       | Go                |
 | [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                               | C#                |
+| [arc.crypto](https://github.com/archi-Doc/Arc.Crypto/tree/main/Arc.Crypto/Encryption/Aegis)                                         | C#                |
 | [aegis-128L](https://github.com/Sayem98/aegis-128L)                                                                                 | JavaScript        |
 | [aegis-js](https://github.com/psve/aegis-js)                                                                                        | JavaScript        |
 | [aegis-kotlin](https://github.com/psve/aegis-kotlin)                                                                                | Kotlin            |
