@@ -63,6 +63,8 @@ Project Wycheproof includes additional test vectors:
 * [for AEGIS-128L](https://github.com/C2SP/wycheproof/blob/master/testvectors/aegis128L_test.json)
 * [for AEGIS-256](https://github.com/C2SP/wycheproof/blob/master/testvectors/aegis256_test.json)
 
+Project Rooterberg also includes an extensive set of [test vectors for AEGIS variants](https://github.com/bleichenbacher-daniel/Rooterberg/tree/main/test_vectors/aead).
+
 ## Contributing
 
 See the
