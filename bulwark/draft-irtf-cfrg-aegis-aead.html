@@ -11,20 +11,20 @@
        This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications. 
        The document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.26.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-irtf-cfrg-aegis-aead-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
-    Python 3.12.7
+  xml2rfc 3.26.0
+    Python 3.12.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.4
+    Jinja2 3.1.5
     lxml 5.3.0
     platformdirs 4.3.6
-    pycountry 22.3.5
-    PyYAML 6.0.1
+    pycountry 24.6.1
+    PyYAML 6.0.2
     requests 2.32.3
     setuptools 70.3.0
     wcwidth 0.2.13
@@ -1046,11 +1046,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The AEGIS Family of Authenticated Encryp</td>
-<td class="right">December 2024</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 15 June 2025</td>
+<td class="center">Expires 8 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-12" class="published">12 December 2024</time>
+<time datetime="2025-02-04" class="published">4 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-15">15 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-08">8 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1124,7 +1124,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2024 IETF Trust and the persons identified as the
+            Copyright (c) 2025 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1335,7 +1335,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                     <p id="section-toc.1-1.10.2.1.2.1.1"><a href="#section-10.1.1" class="auto internal xref">10.1.1</a>.  <a href="#name-key-and-nonce-selection" class="internal xref">Key and Nonce Selection</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.2">
-                    <p id="section-toc.1-1.10.2.1.2.2.1"><a href="#section-10.1.2" class="auto internal xref">10.1.2</a>.  <a href="#name-key-commitment" class="internal xref">Key Commitment</a></p>
+                    <p id="section-toc.1-1.10.2.1.2.2.1"><a href="#section-10.1.2" class="auto internal xref">10.1.2</a>.  <a href="#name-committing-security" class="internal xref">Committing Security</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.3">
                     <p id="section-toc.1-1.10.2.1.2.3.1"><a href="#section-10.1.3" class="auto internal xref">10.1.3</a>.  <a href="#name-multi-user-security" class="internal xref">Multi-User Security</a></p>
@@ -1536,8 +1536,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document describes the AEGIS family of authenticated encryption with associated data (AEAD) algorithms <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span> <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span> <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span> <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>.
+<p id="section-1-1">This document describes the AEGIS family of Authenticated Encryption with Associated Data (AEAD) algorithms <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin <span>[<a href="#ENP20" class="cite xref">ENP20</a>]</span> <span>[<a href="#JLD22" class="cite xref">JLD22</a>]</span> <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span> <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>.
 Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">Therefore, this document specifies the following variants:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1555,13 +1555,13 @@ Additionally, AEGIS-256, which also reached the final round, provides 256-bit se
 </li>
       </ul>
 <p id="section-1-5">All variants are inverse-free and constructed from the AES encryption round function <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">The AEGIS cipher family offers performance that significantly exceeds that of AES-GCM on CPUs with AES instructions. Similarly, software implementations not using AES instructions can also be faster, although to a lesser extent.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6">The AEGIS cipher family offers performance that significantly exceeds AES-GCM on CPUs with AES instructions. Similarly, software implementations not using AES instructions can also be faster, although to a lesser extent.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <p id="section-1-7">Unlike with AES-GCM, nonces can be safely chosen at random with no practical limit when using AEGIS-256 and AEGIS-256X. AEGIS-128L and AEGIS-128X also allow for more messages to be safely encrypted when using random nonces.<a href="#section-1-7" class="pilcrow">¶</a></p>
 <p id="section-1-8">With some existing AEAD schemes, such as AES-GCM, an attacker can generate a ciphertext that successfully decrypts under multiple different keys (a partitioning oracle attack) <span>[<a href="#LGR21" class="cite xref">LGR21</a>]</span>. This ability to craft a (ciphertext, authentication tag) pair that verifies under multiple keys significantly reduces the number of required interactions with the oracle to perform an exhaustive search, making it practical if the key space is small. For example, with password-based encryption, an attacker can guess a large number of passwords at a time by recursively submitting such a ciphertext to an oracle, which speeds up a password search by reducing it to a binary search.<a href="#section-1-8" class="pilcrow">¶</a></p>
-<p id="section-1-9">In AEGIS, finding distinct (key, nonce) pairs that successfully decrypt a given (associated data, ciphertext, authentication tag) tuple is believed to have a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical.<a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-9">With AEGIS, finding distinct (key, nonce) pairs that successfully decrypt a given (associated data, ciphertext, authentication tag) tuple is believed to have a complexity that depends on the tag size. A 128-bit tag provides 64-bit committing security, which is generally acceptable for interactive protocols. With a 256-bit tag, finding a collision becomes impractical.<a href="#section-1-9" class="pilcrow">¶</a></p>
 <p id="section-1-10">Unlike most other AES-based AEAD constructions, leaking a state does not leak the key or previous states.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <p id="section-1-11">Finally, an AEGIS key is not required after the initialization function, and there is no key schedule. Thus, ephemeral keys can be erased from memory before any data has been encrypted or decrypted, mitigating cold boot attacks.<a href="#section-1-11" class="pilcrow">¶</a></p>
-<p id="section-1-12">Note that an earlier version of Hongjun Wu and Bart Preneel’s paper introducing AEGIS specified AEGIS-128L and AEGIS-256 sporting differences with regards to the computation of the authentication tag and the number of state updates in the <code>Finalize()</code> function. We follow the specification of <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which can be found in the References section of this document.<a href="#section-1-12" class="pilcrow">¶</a></p>
+<p id="section-1-12">Note that an earlier version of Hongjun Wu and Bart Preneel’s paper introducing AEGIS specified AEGIS-128L and AEGIS-256 with a different <code>Finalize</code> function. We follow the specification of <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, which can be found in the References section of this document.<a href="#section-1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1595,37 +1595,37 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.6.1"><code>a mod b</code>: the remainder of the Euclidean division between <code>a</code> as the dividend and <code>b</code> as the divisor.<a href="#section-2-4.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.7">
-          <p id="section-2-4.7.1"><code>LE64(x)</code>: the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.7.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.7.1"><code>LE64(x)</code>: returns the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.8">
-          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: padding operation. Trailing zeros are concatenated to <code>x</code> until the total length is a multiple of <code>n</code> bits.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: returns <code>x</code> after appending zeros until its length is a multiple of <code>n</code> bits. No padding is added if the length of <code>x</code> is already a multiple of <code>n</code>, including when <code>x</code> is empty.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.9">
-          <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: truncation operation. The first <code>n</code> bits of <code>x</code> are kept.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
-          <p id="section-2-4.10.1"><code>Split(x, n)</code>: splitting operation. <code>x</code> is split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.10.1"><code>Split(x, n)</code>: returns <code>x</code> split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.11">
           <p id="section-2-4.11.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.12">
-          <p id="section-2-4.12.1"><code>AESRound(in, rk)</code>: a single round of the AES encryption round function, which is the composition of the <code>SubBytes</code>, <code>ShiftRows</code>, <code>MixColums</code> and <code>AddRoundKey</code> transformations, as defined in section 5 of <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>. Here, <code>in</code> is the 128-bit AES input state, and <code>rk</code> is the 128-bit round key.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.12.1"><code>AESRound(in, rk)</code>: a single round of the AES encryption round function, which is the composition of the <code>SubBytes</code>, <code>ShiftRows</code>, <code>MixColums</code>, and <code>AddRoundKey</code> transformations, as defined in Section 5 of <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>. Here, <code>in</code> is the 128-bit AES input state, and <code>rk</code> is the 128-bit round key.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.13">
           <p id="section-2-4.13.1"><code>Repeat(n, F)</code>: <code>n</code> sequential evaluations of the function <code>F</code>.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.14">
-          <p id="section-2-4.14.1"><code>CtEq(a, b)</code>: compares <code>a</code> and <code>b</code> in constant-time, returning <code>True</code> for an exact match, <code>False</code> otherwise.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.14.1"><code>CtEq(a, b)</code>: compares <code>a</code> and <code>b</code> in constant-time, returning <code>True</code> for an exact match and <code>False</code> otherwise.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-5">AEGIS internal functions:<a href="#section-2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-6.1">
-          <p id="section-2-6.1.1"><code>Update(M0, M1)</code> or <code>Update(M)</code>: the state update function.<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.1.1"><code>Init(key, nonce)</code>: the initialization function.<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.2">
-          <p id="section-2-6.2.1"><code>Init(key, nonce)</code>: the initialization function.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.2.1"><code>Update(M0, M1)</code> or <code>Update(M)</code>: the state update function.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.3">
           <p id="section-2-6.3.1"><code>Absorb(ai)</code>: the input block absorption function.<a href="#section-2-6.3.1" class="pilcrow">¶</a></p>
@@ -1692,7 +1692,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-aegis-128l-algorithm" class="section-name selfRef">The AEGIS-128L Algorithm</a>
       </h2>
 <p id="section-3-1">AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks <code>{S0, ...S7}</code>.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The parameters for this algorithm, whose meaning is defined in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-4" class="relref">Section 4</a></span> are:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">The parameters for this algorithm, whose meaning is defined in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-4" class="relref">Section 4</a></span>, are:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-3.1">
           <p id="section-3-3.1.1"><code>K_LEN</code> (key length) is 16 bytes (128 bits).<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
@@ -1710,7 +1710,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-3-3.5.1"><code>C_MAX</code> (maximum ciphertext length) = <code>P_MAX</code> + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).<a href="#section-3-3.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span> shall be unambiguously encoded as a single input.
+<p id="section-3-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span>, <span class="bcp14">MUST</span> be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <div id="authenticated-encryption">
 <section id="section-3.1">
@@ -1793,7 +1793,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-3.2-3">Security:<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-4.1">
-            <p id="section-3.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before being returned.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-4.1.1">If tag verification fails, the decrypted message and wrong authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before the function returns.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-4.2">
             <p id="section-3.2-4.2.1">The comparison of the input <code>tag</code> with the <code>expected_tag</code> <span class="bcp14">MUST</span> be done in constant time.<a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
@@ -1802,7 +1802,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-3.2-5">Inputs:<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-6.1">
-            <p id="section-3.2-6.1.1"><code>ct</code>: the ciphertext to be decrypted (length <span class="bcp14">MUST</span> be less than or equal to <code>C_MAX</code>).<a href="#section-3.2-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-6.1.1"><code>ct</code>: the ciphertext to decrypt (length <span class="bcp14">MUST</span> be less than or equal to <code>C_MAX</code>).<a href="#section-3.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-6.2">
             <p id="section-3.2-6.2.1"><code>tag</code>: the authentication tag.<a href="#section-3.2-6.2.1" class="pilcrow">¶</a></p>
@@ -1847,6 +1847,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -2000,7 +2001,7 @@ Enc(xi)
 <p id="section-3.6-7">Steps:<a href="#section-3.6-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.6-8">
 <pre>
-z0 = S6 ^ S1 ^ (S2 &amp; S3)
+z0 = S1 ^ S6 ^ (S2 &amp; S3)
 z1 = S2 ^ S5 ^ (S6 &amp; S7)
 
 t0, t1 = Split(xi, 128)
@@ -2041,7 +2042,7 @@ Dec(ci)
 <p id="section-3.7-7">Steps:<a href="#section-3.7-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.7-8">
 <pre>
-z0 = S6 ^ S1 ^ (S2 &amp; S3)
+z0 = S1 ^ S6 ^ (S2 &amp; S3)
 z1 = S2 ^ S5 ^ (S6 &amp; S7)
 
 t0, t1 = Split(ci, 128)
@@ -2082,7 +2083,7 @@ DecPartial(cn)
 <p id="section-3.8-7">Steps:<a href="#section-3.8-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.8-8">
 <pre>
-z0 = S6 ^ S1 ^ (S2 &amp; S3)
+z0 = S1 ^ S6 ^ (S2 &amp; S3)
 z1 = S2 ^ S5 ^ (S6 &amp; S7)
 
 t0, t1 = Split(ZeroPad(cn, 256), 128)
@@ -2132,9 +2133,9 @@ t = S2 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t, t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5 ^ S6
-else:                # 256 bits
+else:            # 256 bits
     tag = (S0 ^ S1 ^ S2 ^ S3) || (S4 ^ S5 ^ S6 ^ S7)
 
 return tag
@@ -2150,7 +2151,7 @@ return tag
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-aegis-256-algorithm" class="section-name selfRef">The AEGIS-256 Algorithm</a>
       </h2>
 <p id="section-4-1">AEGIS-256 has a 768-bit state, made of six 128-bit blocks <code>{S0, ...S5}</code>.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The parameters for this algorithm, whose meaning is defined in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-4" class="relref">Section 4</a></span> are:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">The parameters for this algorithm, whose meaning is defined in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-4" class="relref">Section 4</a></span>, are:<a href="#section-4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-3.1">
           <p id="section-4-3.1.1"><code>K_LEN</code> (key length) is 32 bytes (256 bits).<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
@@ -2159,7 +2160,7 @@ return tag
           <p id="section-4-3.2.1"><code>P_MAX</code> (maximum length of the plaintext) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.3">
-          <p id="section-4-3.3.1"><code>A_MAX</code> (maximum length of the associated data) is 2<sup>61</sup> bytes (2<sup>64</sup> bits).<a href="#section-4-3.3.1" class="pilcrow">¶</a></p>
+          <p id="section-4-3.3.1"><code>A_MAX</code> (maximum length of the associated data) is 2<sup>61</sup> - 1 bytes (2<sup>64</sup> - 8 bits).<a href="#section-4-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-3.4">
           <p id="section-4-3.4.1"><code>N_MIN</code> (minimum nonce length) = <code>N_MAX</code> (maximum nonce length) = 32 bytes (256 bits).<a href="#section-4-3.4.1" class="pilcrow">¶</a></p>
@@ -2168,7 +2169,7 @@ return tag
           <p id="section-4-3.5.1"><code>C_MAX</code> (maximum ciphertext length) = <code>P_MAX</code> + tag length = (2<sup>61</sup> - 1) + 16 or 32 bytes (in bits: (2<sup>64</sup> - 8) + 128 or 256 bits).<a href="#section-4-3.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-4-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span> shall be unambiguously encoded as a single input.
+<p id="section-4-4">Distinct associated data inputs, as described in <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>], <a href="https://rfc-editor.org/rfc/rfc5116#section-3" class="relref">Section 3</a></span>, <span class="bcp14">MUST</span> be unambiguously encoded as a single input.
 It is up to the application to create a structure in the associated data input if needed.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <div id="authenticated-encryption-1">
 <section id="section-4.1">
@@ -2251,7 +2252,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-4.2-3">Security:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-4.1">
-            <p id="section-4.2-4.1.1">If tag verification fails, the decrypted message and wrong message authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before being returned.<a href="#section-4.2-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-4.1.1">If tag verification fails, the decrypted message and wrong authentication tag <span class="bcp14">MUST NOT</span> be given as output. The decrypted message <span class="bcp14">MUST</span> be overwritten with zeros before the function returns.<a href="#section-4.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.2-4.2">
             <p id="section-4.2-4.2.1">The comparison of the input <code>tag</code> with the <code>expected_tag</code> <span class="bcp14">MUST</span> be done in constant time.<a href="#section-4.2-4.2.1" class="pilcrow">¶</a></p>
@@ -2260,7 +2261,7 @@ Decrypt(ct, tag, ad, key, nonce)
 <p id="section-4.2-5">Inputs:<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-6.1">
-            <p id="section-4.2-6.1.1"><code>ct</code>: the ciphertext to be decrypted (length <span class="bcp14">MUST</span> be less than or equal to <code>C_MAX</code>).<a href="#section-4.2-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-6.1.1"><code>ct</code>: the ciphertext to decrypt (length <span class="bcp14">MUST</span> be less than or equal to <code>C_MAX</code>).<a href="#section-4.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.2-6.2">
             <p id="section-4.2-6.2.1"><code>tag</code>: the authentication tag.<a href="#section-4.2-6.2.1" class="pilcrow">¶</a></p>
@@ -2305,6 +2306,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -2376,7 +2378,7 @@ It updates the state <code>{S0, ...S5}</code> using a 128-bit value.<a href="#se
 <p id="section-4.4-3">Inputs:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-4.1">
-            <p id="section-4.4-4.1.1"><code>msg</code>: the block to be absorbed.<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-4.1.1"><code>msg</code>: the 128-bit block to be absorbed.<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.4-5">Modifies:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
@@ -2419,7 +2421,7 @@ Absorb(ai)
 <p id="section-4.5-3">Inputs:<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.5-4.1">
-            <p id="section-4.5-4.1.1"><code>ai</code>: the input block.<a href="#section-4.5-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-4.1.1"><code>ai</code>: the 128-bit input block.<a href="#section-4.5-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.5-5">Steps:<a href="#section-4.5-5" class="pilcrow">¶</a></p>
@@ -2444,13 +2446,13 @@ Enc(xi)
 <p id="section-4.6-3">Inputs:<a href="#section-4.6-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.6-4.1">
-            <p id="section-4.6-4.1.1"><code>xi</code>: the input block.<a href="#section-4.6-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.6-4.1.1"><code>xi</code>: the 128-bit input block.<a href="#section-4.6-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.6-5">Outputs:<a href="#section-4.6-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.6-6.1">
-            <p id="section-4.6-6.1.1"><code>ci</code>: the encrypted input block.<a href="#section-4.6-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.6-6.1.1"><code>ci</code>: the 128-bit encrypted block.<a href="#section-4.6-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.6-7">Steps:<a href="#section-4.6-7" class="pilcrow">¶</a></p>
@@ -2481,13 +2483,13 @@ Dec(ci)
 <p id="section-4.7-3">Inputs:<a href="#section-4.7-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.7-4.1">
-            <p id="section-4.7-4.1.1"><code>ci</code>: the encrypted input block.<a href="#section-4.7-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.7-4.1.1"><code>ci</code>: the 128-bit encrypted block.<a href="#section-4.7-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.7-5">Outputs:<a href="#section-4.7-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.7-6.1">
-            <p id="section-4.7-6.1.1"><code>xi</code>: the decrypted block.<a href="#section-4.7-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.7-6.1.1"><code>xi</code>: the 128-bit decrypted block.<a href="#section-4.7-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.7-7">Steps:<a href="#section-4.7-7" class="pilcrow">¶</a></p>
@@ -2578,9 +2580,9 @@ t = S3 ^ (LE64(ad_len_bits) || LE64(msg_len_bits))
 
 Repeat(7, Update(t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = S0 ^ S1 ^ S2 ^ S3 ^ S4 ^ S5
-else:                # 256 bits
+else:            # 256 bits
     tag = (S0 ^ S1 ^ S2) || (S3 ^ S4 ^ S5)
 
 return tag
@@ -2597,7 +2599,7 @@ return tag
       </h2>
 <p id="section-5-1">Some CPUs, such as Intel and Intel-compatible CPUs with the VAES extensions, include instructions to efficiently apply the AES round function to a vector of AES blocks.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">AEGIS-128X and AEGIS-256X are optional, specialized modes designed to take advantage of these instructions. They share the same properties as the ciphers they are based on but can be significantly faster on these platforms, even for short messages.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-3">AEGIS-128X and AEGIS-256X are parallel evaluations of multiple AEGIS-128L and AEGIS-256 instances, respectively, with distinct initial states. On CPUs with wide vector registers, different states can be stored in different 128-bit lanes of the same vector register, allowing parallel updates using vector instructions.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">The modes are parameterized by the parallelism degree. With 256-bit registers, 2 parallel operations can be applied to 128-bit AES blocks. With 512-bit registers, the number of instances can be raised to 4.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-256 states.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <div id="additional-conventions-and-definitions">
@@ -2613,13 +2615,13 @@ return tag
             <p id="section-5.1-1.2.1"><code>R</code>: the absorption and output rate of the mode. With AEGIS-128X, the rate is <code>256 * D</code> bits. With AEGIS-256X, the rate is <code>128 * D</code> bits.<a href="#section-5.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.3">
-            <p id="section-5.1-1.3.1"><code>V[j,i]</code>: the <code>j</code>-th AES block of the <code>i</code>-th state. <code>i</code> is in the <code>[0..D)</code> range. For AEGIS-128X, <code>j</code> is in the <code>[0..8)</code> range, while for AEGIS-256, <code>j</code> is in the <code>[0..6)</code> range.<a href="#section-5.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-1.3.1"><code>V[j,i]</code>: the <code>j</code>-th AES block of the <code>i</code>-th state. <code>i</code> is in the <code>[0..D)</code> range. For AEGIS-128X, <code>j</code> is in the <code>[0..8)</code> range, while for AEGIS-256X, <code>j</code> is in the <code>[0..6)</code> range.<a href="#section-5.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.4">
             <p id="section-5.1-1.4.1"><code>V'[j,i]</code>: the <code>j</code>-th AES block of the next <code>i</code>-th state.<a href="#section-5.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.5">
-            <p id="section-5.1-1.5.1"><code>ctx[i]</code>: the <code>i</code>-th context separator. This is a 128-bit mask, made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.<a href="#section-5.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-1.5.1"><code>ctx[i]</code>: the <code>i</code>-th context separator. This is a 128-bit mask made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.<a href="#section-5.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-1.6">
             <p id="section-5.1-1.6.1"><code>Byte(x)</code>: the value <code>x</code> encoded as 8 bits.<a href="#section-5.1-1.6.1" class="pilcrow">¶</a></p>
@@ -2696,6 +2698,7 @@ expected_tag = Finalize(|ad|, |msg|)
 
 if CtEq(tag, expected_tag) is False:
     erase msg
+    erase expected_tag
     return "verification failed" error
 else:
     return msg
@@ -2762,7 +2765,7 @@ Repeat(10,
 Update(M0, M1)
 </pre><a href="#section-5.4.2-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function, but absorbs <code>R</code> (= <code>256 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function but absorbs <code>R</code> (= <code>256 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.2-3">Steps:<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.2-4">
 <pre>
@@ -2801,7 +2804,7 @@ for i in 0..D:
 Absorb(ai)
 </pre><a href="#section-5.4.3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.3-2">The <code>Absorb</code> function is similar to the AEGIS-128L <code>Absorb</code> function, but absorbs <code>R</code> bits instead of 256 bits.<a href="#section-5.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.3-2">The <code>Absorb</code> function is similar to the AEGIS-128L <code>Absorb</code> function but absorbs <code>R</code> bits instead of 256 bits.<a href="#section-5.4.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.3-3">Steps:<a href="#section-5.4.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.3-4">
 <pre>
@@ -2821,7 +2824,7 @@ Update(t0, t1)
 Enc(xi)
 </pre><a href="#section-5.4.4-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.4-2">The <code>Enc</code> function is similar to the AEGIS-128L <code>Enc</code> function, but encrypts <code>R</code> bits instead of 256 bits.<a href="#section-5.4.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.4-2">The <code>Enc</code> function is similar to the AEGIS-128L <code>Enc</code> function but encrypts <code>R</code> bits instead of 256 bits.<a href="#section-5.4.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.4-3">Steps:<a href="#section-5.4.4-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.4-4">
 <pre>
@@ -2853,7 +2856,7 @@ return ci
 Dec(ci)
 </pre><a href="#section-5.4.5-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.5-2">The <code>Dec</code> function is similar to the AEGIS-128L <code>Dec</code> function, but decrypts <code>R</code> bits instead of 256 bits.<a href="#section-5.4.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.5-2">The <code>Dec</code> function is similar to the AEGIS-128L <code>Dec</code> function but decrypts <code>R</code> bits instead of 256 bits.<a href="#section-5.4.5-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.5-3">Steps:<a href="#section-5.4.5-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.5-4">
 <pre>
@@ -2885,7 +2888,7 @@ return xi
 DecPartial(cn)
 </pre><a href="#section-5.4.6-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.6-2">The <code>DecPartial</code> function is similar to the AEGIS-128L <code>DecPartial</code> function, but decrypts up to <code>R</code> bits instead of 256 bits.<a href="#section-5.4.6-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.6-2">The <code>DecPartial</code> function is similar to the AEGIS-128L <code>DecPartial</code> function but decrypts up to <code>R</code> bits instead of 256 bits.<a href="#section-5.4.6-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.6-3">Steps:<a href="#section-5.4.6-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.6-4">
 <pre>
@@ -2930,13 +2933,13 @@ for i in 0..D:
 
 Repeat(7, Update(t, t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tag = tag ^ ti
 
-else:                # 256 bits
+else:            # 256 bits
     ti0 = ZeroPad({}, 128)
     ti1 = ZeroPad({}, 128)
     for i in 0..D:
@@ -3028,7 +3031,7 @@ Repeat(4,
 Update(M)
 </pre><a href="#section-5.5.2-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.2-2">The AEGIS-256X <code>Update</code> function is similar to the AEGIS-256 <code>Update</code> function, but absorbs <code>R</code> (<code>128 * D</code>) bits at once. <code>M</code> is <code>128 * D</code> bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.2-2">The AEGIS-256X <code>Update</code> function is similar to the AEGIS-256 <code>Update</code> function but absorbs <code>R</code> (<code>128 * D</code>) bits at once. <code>M</code> is <code>128 * D</code> bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.2-3">Steps:<a href="#section-5.5.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.2-4">
 <pre>
@@ -3062,7 +3065,7 @@ for i in 0..D:
 Absorb(ai)
 </pre><a href="#section-5.5.3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.3-2">The <code>Absorb</code> function is similar to the AEGIS-256 <code>Absorb</code> function, but absorbs <code>R</code> bits instead of 128 bits.<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-2">The <code>Absorb</code> function is similar to the AEGIS-256 <code>Absorb</code> function but absorbs <code>R</code> bits instead of 128 bits.<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.3-3">Steps:<a href="#section-5.5.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.3-4">
 <pre>
@@ -3081,7 +3084,7 @@ Update(ai)
 Enc(xi)
 </pre><a href="#section-5.5.4-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.4-2">The <code>Enc</code> function is similar to the AEGIS-256 <code>Enc</code> function, but encrypts <code>R</code> bits instead of 128 bits.<a href="#section-5.5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.4-2">The <code>Enc</code> function is similar to the AEGIS-256 <code>Enc</code> function but encrypts <code>R</code> bits instead of 128 bits.<a href="#section-5.5.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.4-3">Steps:<a href="#section-5.5.4-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.4-4">
 <pre>
@@ -3108,7 +3111,7 @@ return ci
 Dec(ci)
 </pre><a href="#section-5.5.5-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.5-2">The <code>Dec</code> function is similar to the AEGIS-256 <code>Dec</code> function, but decrypts <code>R</code> bits instead of 128 bits.<a href="#section-5.5.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.5-2">The <code>Dec</code> function is similar to the AEGIS-256 <code>Dec</code> function but decrypts <code>R</code> bits instead of 128 bits.<a href="#section-5.5.5-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.5-3">Steps:<a href="#section-5.5.5-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.5-4">
 <pre>
@@ -3135,7 +3138,7 @@ return xi
 DecPartial(cn)
 </pre><a href="#section-5.5.6-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.6-2">The <code>DecPartial</code> function is similar to the AEGIS-256 <code>DecPartial</code> function, but decrypts up to <code>R</code> bits instead of 128 bits.<a href="#section-5.5.6-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.6-2">The <code>DecPartial</code> function is similar to the AEGIS-256 <code>DecPartial</code> function but decrypts up to <code>R</code> bits instead of 128 bits.<a href="#section-5.5.6-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.6-3">Steps:<a href="#section-5.5.6-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.6-4">
 <pre>
@@ -3177,13 +3180,13 @@ for i in 0..D:
 
 Repeat(7, Update(t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = ZeroPad({}, 128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tag = tag ^ ti
 
-else:                # 256 bits
+else:            # 256 bits
     ti0 = ZeroPad({}, 128)
     ti1 = ZeroPad({}, 128)
     for i in 0..D:
@@ -3203,7 +3206,7 @@ return tag
         <h3 id="name-implementation-consideratio">
 <a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
         </h3>
-<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256. This property can be used to reduce the size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-1">AEGIS-128X and AEGIS-256X with a degree of <code>1</code> are identical to AEGIS-128L and AEGIS-256, respectively. This property can be used to reduce the size of a generic implementation.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.6-2">In AEGIS-128X, <code>V</code> can be represented as eight 256-bit registers (when <code>D = 2</code>) or eight 512-bit registers (when <code>D = 4</code>). In AEGIS-256X, <code>V</code> can be represented as six 256-bit registers (when <code>D = 2</code>) or six 512-bit registers (when <code>D = 4</code>). With this representation, loops over <code>0..D</code> in the above pseudocode can be replaced by vector instructions.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3214,7 +3217,7 @@ return tag
         </h3>
 <p id="section-5.7-1">The AEGIS parallel modes are specialized and can only improve performance on specific CPUs.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
 <p id="section-5.7-2">The degrees of parallelism implementations are encouraged to support are <code>2</code> (for CPUs with 256-bit registers) and <code>4</code> (for CPUs with 512-bit registers). The resulting algorithms are called <code>AEGIS-128X2</code>, <code>AEGIS-128X4</code>, <code>AEGIS-256X2</code>, and <code>AEGIS-256X4</code>.<a href="#section-5.7-2" class="pilcrow">¶</a></p>
-<p id="section-5.7-3">The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the minimum vector register sizes a CPU should support for optimal performance.<a href="#section-5.7-3" class="pilcrow">¶</a></p>
+<p id="section-5.7-3">The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the minimum vector register size a CPU should support for optimal performance.<a href="#section-5.7-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
           <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
@@ -3296,7 +3299,7 @@ combined_ct = ct || tag
 Stream(len, key, nonce)
 </pre><a href="#section-7-2" class="pilcrow">¶</a>
 </div>
-<p id="section-7-3">The <code>Stream</code> function expands a key and an optional nonce into a variable-length, secure keystream.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-3">The <code>Stream</code> function expands a key and an optional nonce into a variable-length keystream.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">Inputs:<a href="#section-7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7-5.1">
@@ -3306,7 +3309,7 @@ Stream(len, key, nonce)
           <p id="section-7-5.2.1"><code>key</code>: the AEGIS key.<a href="#section-7-5.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-7-5.3">
-          <p id="section-7-5.3.1"><code>nonce</code>: the nonce. If unspecified, it is set to <code>N_MAX</code> zero bytes.<a href="#section-7-5.3.1" class="pilcrow">¶</a></p>
+          <p id="section-7-5.3.1"><code>nonce</code>: the AEGIS nonce. If unspecified, it is set to <code>N_MAX</code> zero bytes.<a href="#section-7-5.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-7-6">Outputs:<a href="#section-7-6" class="pilcrow">¶</a></p>
@@ -3318,13 +3321,15 @@ Stream(len, key, nonce)
 <p id="section-7-8">Steps:<a href="#section-7-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7-9">
 <pre>
-stream, tag = Encrypt(ZeroPad({}, len), {}, key, nonce)
-
-return stream
+if len == 0:
+    return {}
+else:
+    stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+    return stream
 </pre><a href="#section-7-9" class="pilcrow">¶</a>
 </div>
-<p id="section-7-10">This is equivalent to encrypting a <code>len</code> all-zero bits message without associated data, and discarding the authentication tag.<a href="#section-7-10" class="pilcrow">¶</a></p>
-<p id="section-7-11">Instead of relying on the generic <code>Encrypt</code> function, implementations can skip the finalization step.<a href="#section-7-11" class="pilcrow">¶</a></p>
+<p id="section-7-10">This is equivalent to encrypting a <code>len</code> all-zero bits message without associated data and discarding the authentication tag.<a href="#section-7-10" class="pilcrow">¶</a></p>
+<p id="section-7-11">Instead of relying on the generic <code>Encrypt</code> function, implementations can omit the <code>Finalize</code> function.<a href="#section-7-11" class="pilcrow">¶</a></p>
 <p id="section-7-12">After initialization, the <code>Update</code> function is called with constant parameters, allowing further optimizations.<a href="#section-7-12" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3333,8 +3338,8 @@ return stream
       <h2 id="name-aegis-as-a-message-authenti">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-aegis-as-a-message-authenti" class="section-name selfRef">AEGIS as a Message Authentication Code</a>
       </h2>
-<p id="section-8-1">All AEGIS variants can be used to construct a MAC.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">For all the variants, the <code>Mac</code> function takes a key, a nonce, and data as input, and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-1">All AEGIS variants can be used to construct a Message Authentication Code (MAC).<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">For all the variants, the <code>Mac</code> function takes a key, a nonce, and data as input and produces a 128- or 256-bit tag as output.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-3">
 <pre>
 Mac(data, key, nonce)
@@ -3349,7 +3354,7 @@ Mac(data, key, nonce)
           <p id="section-8-5.2.1">AEGIS-based MAC functions <span class="bcp14">MUST NOT</span> be used as hash functions: if the key is known, inputs causing state collisions can easily be crafted.<a href="#section-8-5.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-5.3">
-          <p id="section-8-5.3.1">Unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation, as there is no guarantee that they are uniformly random.<a href="#section-8-5.3.1" class="pilcrow">¶</a></p>
+          <p id="section-8-5.3.1">Unlike hash-based MACs, tags <span class="bcp14">MUST NOT</span> be used for key derivation as there is no guarantee that they are uniformly random.<a href="#section-8-5.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-8-6">Inputs:<a href="#section-8-6" class="pilcrow">¶</a></p>
@@ -3383,7 +3388,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 256), 256)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length_bits)
+tag = Finalize(|data|, tag_len_bits)
 return tag
 </pre><a href="#section-8.1-3" class="pilcrow">¶</a>
 </div>
@@ -3402,7 +3407,7 @@ Init(key, nonce)
 data_blocks = Split(ZeroPad(data, 128), 128)
 for di in data_blocks:
     Absorb(di)
-tag = Finalize(|data|, tag_length_bits)
+tag = Finalize(|data|, tag_len_bits)
 return tag
 </pre><a href="#section-8.2-3" class="pilcrow">¶</a>
 </div>
@@ -3448,20 +3453,20 @@ FinalizeMac(data_len_bits)
 <div class="alignLeft art-text artwork" id="section-8.3.2-5">
 <pre>
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length_bits)
+u = LE64(data_len_bits) || LE64(tag_len_bits)
 for i in 0..D:
     t = t || (V[2,i] ^ u)
 
 Repeat(7, Update(t, t))
 
 tags = {}
-if tag_length_bits == 128:
-    for i in 0..D:   # tag from state 0 is included
+if tag_len_bits == 128:
+    for i in 0..D: # tag from state 0 is included
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
         tags = tags || ti
 
-else:                # 256 bits
-    for i in 1..D:   # tag from state 0 is skipped
+else:              # 256 bits
+    for i in 1..D: # tag from state 0 is skipped
         ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
         ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
         tags = tags || (ti0 || ti1)
@@ -3471,16 +3476,18 @@ if D &gt; 1:
     for v in Split(tags, 256):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length_bits)
+    u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[2,0] ^ u, R)
     Repeat(7, Update(t, t))
 
-if tag_length_bits == 128:
+if tag_len_bits == 128:
     tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
-else:                # 256 bits
+else:            # 256 bits
     t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
     t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
     tag = t0 || t1
+
+return tag
 </pre><a href="#section-8.3.2-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3526,20 +3533,20 @@ FinalizeMac(data_len_bits)
 <div class="alignLeft art-text artwork" id="section-8.4.2-4">
 <pre>
 t = {}
-u = LE64(data_len_bits) || LE64(tag_length_bits)
+u = LE64(data_len_bits) || LE64(tag_len_bits)
 for i in 0..D:
     t = t || (V[3,i] ^ u)
 
 Repeat(7, Update(t))
 
 tags = {}
-if tag_length_bits == 128:
-    for i in 1..D:   # tag from state 0 is skipped
+if tag_len_bits == 128:
+    for i in 1..D: # tag from state 0 is skipped
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || ti
 
-else:                # 256 bits
-    for i in 1..D:   # tag from state 0 is skipped
+else:              # 256 bits
+    for i in 1..D: # tag from state 0 is skipped
         ti0 = V[0,i] ^ V[1,i] ^ V[2,i]
         ti1 = V[3,i] ^ V[4,i] ^ V[5,i]
         tags = tags || (ti0 || ti1)
@@ -3549,16 +3556,18 @@ if D &gt; 1:
     for v in Split(tags, 128):
         Absorb(ZeroPad(v, R))
 
-    u = LE64(D) || LE64(tag_length_bits)
+    u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[3,0] ^ u, R)
     Repeat(7, Update(t))
 
-if tag_length_bits == 128:
-    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
-else:                # 256 bits
-    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
-    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+if tag_len_bits == 128:
+    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0]
+else:            # 256 bits
+    t0 = V[0,0] ^ V[1,0] ^ V[2,0]
+    t1 = V[3,0] ^ V[4,0] ^ V[5,0]
     tag = t0 || t1
+
+return tag
 </pre><a href="#section-8.4.2-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3595,18 +3604,18 @@ else:                # 256 bits
 <p id="section-10.1.1-1">All AEGIS variants <span class="bcp14">MUST</span> be used in a nonce-respecting setting: for a given <code>key</code>, a <code>nonce</code> <span class="bcp14">MUST</span> only be used once, even with different <code>tag</code> lengths. Failure to do so would immediately reveal the bitwise difference between two messages.<a href="#section-10.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-10.1.1-2">Every key <span class="bcp14">MUST</span> be randomly chosen from a uniform distribution.<a href="#section-10.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-10.1.1-3">The nonce <span class="bcp14">MAY</span> be public or predictable. It can be a counter, the output of a permutation, or a generator with a long period.<a href="#section-10.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-10.1.1-4">With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~ 2<sup>-33</sup>, to align with NIST guidelines) collision probability.<a href="#section-10.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-10.1.1-4">With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up to 2<sup>48</sup> messages using the same key with negligible (~2<sup>-33</sup>, to align with NIST guidelines) collision probability.<a href="#section-10.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-10.1.1-5">With AEGIS-256 and AEGIS-256X, random nonces can be used with no practical limits.<a href="#section-10.1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="key-commitment">
+<div id="committing-security">
 <section id="section-10.1.2">
-          <h4 id="name-key-commitment">
-<a href="#section-10.1.2" class="section-number selfRef">10.1.2. </a><a href="#name-key-commitment" class="section-name selfRef">Key Commitment</a>
+          <h4 id="name-committing-security">
+<a href="#section-10.1.2" class="section-number selfRef">10.1.2. </a><a href="#name-committing-security" class="section-name selfRef">Committing Security</a>
           </h4>
-<p id="section-10.1.2-1">An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game, preventing common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same <code>(ad, ct, tag)</code> tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.<a href="#section-10.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-1">An authentication tag may verify under multiple keys, nonces, or associated data, but AEGIS is assumed to be key committing in the receiver-binding game. This mitigates common attacks when used with low-entropy keys such as passwords. Finding distinct keys and/or nonces that successfully verify the same <code>(ad, ct, tag)</code> tuple is expected to require ~2<sup>64</sup> attempts with a 128-bit authentication tag and ~2<sup>128</sup> attempts with a 256-bit tag.<a href="#section-10.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-10.1.2-2">AEGIS is fully committing in the restricted setting where an adversary cannot control the associated data. As shown in <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, with the ability to alter the associated data, it is possible to efficiently find multiple keys that will verify the same authenticated ciphertext.<a href="#section-10.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-10.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. The selected hash function must ensure a minimum of 128-bit preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-10.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-10.1.2-3">Protocols mandating a fully committing scheme without that restriction can provide the associated data as input to a cryptographic hash function and use the output as the <code>ad</code> parameter of the <code>Encrypt</code> and <code>Decrypt</code> functions. The selected hash function must ensure a minimum of 128-bit collision and preimage resistance. An instance of such a function is SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-10.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-10.1.2-4">Alternatively, the associated data can be fed into a collision-resistant KDF, such as HKDF <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span>, via the <code>info</code> input to derive the <code>key</code> parameter. The <code>ad</code> parameter can then be left empty. Note that the <code>salt</code> input <span class="bcp14">MUST NOT</span> be used since large salts get hashed, which affects commitment. Furthermore, this requires values concatenated to form the <code>info</code> input to be unambiguously encoded, like by appending their lengths.<a href="#section-10.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3615,8 +3624,8 @@ else:                # 256 bits
           <h4 id="name-multi-user-security">
 <a href="#section-10.1.3" class="section-number selfRef">10.1.3. </a><a href="#name-multi-user-security" class="section-name selfRef">Multi-User Security</a>
           </h4>
-<p id="section-10.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-10.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-10.1.3-2">In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks don’t provide any advantage over single-target attacks.<a href="#section-10.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-10.1.3-1">AEGIS nonces match the size of the key. AEGIS-128L and AEGIS-128X feature 128-bit nonces, offering an extra 32 bits compared to the commonly used AEADs in IETF protocols at the time of writing. The AEGIS-256 and AEGIS-256X variants provide even larger nonces. With 192 random bits, 64 bits remain available to optionally encode additional information.<a href="#section-10.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-10.1.3-2">In all these variants, unused nonce bits can encode a key identifier, enhancing multi-user security. If every key has a unique identifier, multi-target attacks do not provide any advantage over single-target attacks.<a href="#section-10.1.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3626,8 +3635,8 @@ else:                # 256 bits
         <h3 id="name-implementation-security">
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-implementation-security" class="section-name selfRef">Implementation Security</a>
         </h3>
-<p id="section-10.2-1">If tag verification fails, the unverified plaintext and the computed message authentication tag <span class="bcp14">MUST NOT</span> be released. As shown in <span>[<a href="#VV18" class="cite xref">VV18</a>]</span>, even a partial leak of the plaintext without verification would facilitate chosen ciphertext attacks.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
-<p id="section-10.2-2">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound()</code> function. Failure to implement <code>AESRound()</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks also depend on the threat model in question.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
+<p id="section-10.2-1">If tag verification fails, the unverified plaintext and computed authentication tag <span class="bcp14">MUST NOT</span> be released. As shown in <span>[<a href="#VV18" class="cite xref">VV18</a>]</span>, even a partial leak of the plaintext without verification facilitates chosen ciphertext attacks.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
+<p id="section-10.2-2">The security of AEGIS against timing and physical attacks is limited by the implementation of the underlying <code>AESRound</code> function. Failure to implement <code>AESRound</code> in a fashion safe against timing and physical attacks, such as differential power analysis, timing analysis, or fault injection attacks, may lead to leakage of secret key material or state information. The exact mitigations required for timing and physical attacks depend on the threat model in question.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
 <p id="section-10.2-3">Regardless of the variant, the <code>key</code> and <code>nonce</code> are only required by the <code>Init</code> function; other functions only depend on the resulting state. Therefore, implementations can overwrite ephemeral keys with zeros right after the last <code>Update</code> call of the initialization function.<a href="#section-10.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3636,17 +3645,17 @@ else:                # 256 bits
         <h3 id="name-security-guarantees">
 <a href="#section-10.3" class="section-number selfRef">10.3. </a><a href="#name-security-guarantees" class="section-name selfRef">Security Guarantees</a>
         </h3>
-<p id="section-10.3-1">AEGIS-256 offers 256-bit message security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.<a href="#section-10.3-1" class="pilcrow">¶</a></p>
+<p id="section-10.3-1">AEGIS-256 offers 256-bit security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.<a href="#section-10.3-1" class="pilcrow">¶</a></p>
 <p id="section-10.3-2">Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.<a href="#section-10.3-2" class="pilcrow">¶</a></p>
 <p id="section-10.3-3">Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
 However, <code>(key, nonce)</code> pairs <span class="bcp14">MUST NOT</span> be reused, even if the associated data differs.<a href="#section-10.3-3" class="pilcrow">¶</a></p>
 <p id="section-10.3-4">AEGIS has been shown to have reforgeability resilience in <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>. Without the ability to set the associated data, a successful forgery does not increase the probability of subsequent forgeries.<a href="#section-10.3-4" class="pilcrow">¶</a></p>
-<p id="section-10.3-5">AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256 respectively. In particular, the security level and usage limits remain the same <span>[<a href="#D23" class="cite xref">D23</a>]</span>.<a href="#section-10.3-5" class="pilcrow">¶</a></p>
+<p id="section-10.3-5">AEGIS-128X and AEGIS-256X share the same security properties and requirements as AEGIS-128L and AEGIS-256, respectively. In particular, the security level and usage limits remain the same <span>[<a href="#D23" class="cite xref">D23</a>]</span>.<a href="#section-10.3-5" class="pilcrow">¶</a></p>
 <p id="section-10.3-6">AEGIS is considered secure against guess-and-determine attacks aimed at recovering the state from observed ciphertexts.<a href="#section-10.3-6" class="pilcrow">¶</a></p>
 <p id="section-10.3-7">This resilience extends to quantum adversaries operating within the Q1 model, where the attacker has access to a quantum computer but is restricted to classical (non-quantum) communications with the systems under attack. In this model, quantum attacks offer no practical advantage in decrypting previously recorded ciphertexts or in recovering the encryption key.<a href="#section-10.3-7" class="pilcrow">¶</a></p>
 <p id="section-10.3-8">This document extends the original specification by introducing optional support for 256-bit authentication tags, which are constructed similarly to the 128-bit tags.
 As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 256-bit tags, all AEGIS variants achieve more than 128-bit security against forgery by differential attacks.<a href="#section-10.3-8" class="pilcrow">¶</a></p>
-<p id="section-10.3-9">Security analyses of AEGIS can be found in <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, <span>[<a href="#M14" class="cite xref">M14</a>]</span>, <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>, <span>[<a href="#ENP19" class="cite xref">ENP19</a>]</span>, <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span>, <span>[<a href="#JLD21" class="cite xref">JLD21</a>]</span>, <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>, <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, <span>[<a href="#BS23" class="cite xref">BS23</a>]</span>, <span>[<a href="#AIKRS24" class="cite xref">AIKRS24</a>]</span>, and <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>.<a href="#section-10.3-9" class="pilcrow">¶</a></p>
+<p id="section-10.3-9">Security analyses of AEGIS can be found in <span>[<a href="#AEGIS" class="cite xref">AEGIS</a>]</span>, <span>[<a href="#M14" class="cite xref">M14</a>]</span>, <span>[<a href="#FLLW17" class="cite xref">FLLW17</a>]</span>, <span>[<a href="#ENP20" class="cite xref">ENP20</a>]</span>, <span>[<a href="#LIMS21" class="cite xref">LIMS21</a>]</span>, <span>[<a href="#JLD22" class="cite xref">JLD22</a>]</span>, <span>[<a href="#STSI23" class="cite xref">STSI23</a>]</span>, <span>[<a href="#IR23" class="cite xref">IR23</a>]</span>, <span>[<a href="#BS23" class="cite xref">BS23</a>]</span>, <span>[<a href="#AIKRS24" class="cite xref">AIKRS24</a>]</span>, and <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>.<a href="#section-10.3-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3688,21 +3697,46 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
         </tbody>
       </table>
 <p id="section-11-3">IANA is requested to update the references of these entries to refer to the final version of this document.<a href="#section-11-3" class="pilcrow">¶</a></p>
-<p id="section-11-4">IANA is also requested to register the following identifiers in the AEAD Algorithms Registry:<a href="#section-11-4" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-11-5.1">
-          <p id="section-11-5.1.1"><code>AEAD_AEGIS128X2</code><a href="#section-11-5.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-11-5.2">
-          <p id="section-11-5.2.1"><code>AEAD_AEGIS128X4</code><a href="#section-11-5.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-11-5.3">
-          <p id="section-11-5.3.1"><code>AEAD_AEGIS256X2</code><a href="#section-11-5.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-11-5.4">
-          <p id="section-11-5.4.1"><code>AEAD_AEGIS256X4</code><a href="#section-11-5.4.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
+<p id="section-11-4">IANA is also requested to register the following entries in the AEAD Algorithms Registry:<a href="#section-11-4" class="pilcrow">¶</a></p>
+<span id="name-missing-aegis-entries-in-th"></span><table class="center" id="table-3">
+        <caption>
+<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#name-missing-aegis-entries-in-th" class="selfRef">Missing AEGIS entries in the AEAD Algorithms Registry</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Algorithm Name</th>
+            <th class="text-left" rowspan="1" colspan="1">ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>AEAD_AEGIS128X2</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>AEAD_AEGIS128X4</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>AEAD_AEGIS256X2</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>AEAD_AEGIS256X4</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+          </tr>
+        </tbody>
+      </table>
+<p id="section-11-6">The identifier is left to be assigned by the IANA expert.<a href="#section-11-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-combined-references">
@@ -3765,7 +3799,7 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
         <dd>
 <span class="refAuthor">Denis, F.</span>, <span class="refTitle">"Adding more parallelism to the AEGIS authenticated encryption algorithms"</span>, <span class="refContent">Cryptology ePrint Archive, Paper 2023/523</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/523">https://eprint.iacr.org/2023/523</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="ENP19">[ENP19]</dt>
+<dt id="ENP20">[ENP20]</dt>
         <dd>
 <span class="refAuthor">Eichlseder, M.</span>, <span class="refAuthor">Nageler, M.</span>, and <span class="refAuthor">R. Primas</span>, <span class="refTitle">"Analyzing the Linear Keystream Biases in AEGIS"</span>, <span class="refContent">IACR Transactions on Symmetric Cryptology, 2019(4), pp. 348–368</span>, <span class="seriesInfo">DOI 10.13154/tosc.v2019.i4.348-368</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://doi.org/10.13154/tosc.v2019.i4.348-368">https://doi.org/10.13154/tosc.v2019.i4.348-368</a>&gt;</span>. </dd>
 <dd class="break"></dd>
@@ -3777,9 +3811,9 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
         <dd>
 <span class="refAuthor">Isobe, T.</span> and <span class="refAuthor">M. Rahman</span>, <span class="refTitle">"Key Committing Security Analysis of AEGIS"</span>, <span class="refContent">Cryptology ePrint Archive, Paper 2023/1495</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/1495">https://eprint.iacr.org/2023/1495</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="JLD21">[JLD21]</dt>
+<dt id="JLD22">[JLD22]</dt>
         <dd>
-<span class="refAuthor">Jiao, L.</span>, <span class="refAuthor">Li, Y.</span>, and <span class="refAuthor">S. Du</span>, <span class="refTitle">"Guess-and-Determine Attacks on AEGIS"</span>, <span class="refContent">The Computer Journal, vol 65, 2022(8), pp. 2221–2230</span>, <span class="seriesInfo">DOI 10.1093/comjnl/bxab059</span>, <time datetime="2021" class="refDate">2021</time>, <span>&lt;<a href="https://doi.org/10.1093/comjnl/bxab059">https://doi.org/10.1093/comjnl/bxab059</a>&gt;</span>. </dd>
+<span class="refAuthor">Jiao, L.</span>, <span class="refAuthor">Li, Y.</span>, and <span class="refAuthor">S. Du</span>, <span class="refTitle">"Guess-and-Determine Attacks on AEGIS"</span>, <span class="refContent">The Computer Journal, vol 65, 2022(8), pp. 2221–2230</span>, <span class="seriesInfo">DOI 10.1093/comjnl/bxab059</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://doi.org/10.1093/comjnl/bxab059">https://doi.org/10.1093/comjnl/bxab059</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="LGR21">[LGR21]</dt>
         <dd>
@@ -3803,7 +3837,7 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
 <dd class="break"></dd>
 <dt id="TEST-VECTORS">[TEST-VECTORS]</dt>
         <dd>
-<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 398299b8</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/398299b8/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/398299b8/test-vectors</a>&gt;</span>. </dd>
+<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 55f92c37</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="VV18">[VV18]</dt>
       <dd>
@@ -3861,6 +3895,7 @@ M0   : 033e6975b94816879e42917650955aa0
 M1   : fcc1968a46b7e97861bd6e89af6aa55f
 
 After Update:
+
 S0   : 596ab773e4433ca0127c73f60536769d
 S1   : 790394041a3d26ab697bde865014652d
 S2   : 38cf49e4b65248acd533041b64dd0611
@@ -4126,6 +4161,7 @@ S5   : a828a18d6a964497ac6e7e53c5f55c73
 M    : b165617ed04ab738afb2612c6d18a1ec
 
 After Update:
+
 S0   : e6bc643bae82dfa3d991b1b323839dcd
 S1   : 648578232ba0f2f0a3677f617dc052c3
 S2   : ea788e0e572044a46059212dd007a789
@@ -5073,27 +5109,30 @@ tag256 : b36a16ef07c36d75a91f437502f24f54
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-B-1">The AEGIS authenticated encryption algorithm was invented by Hongjun Wu and Bart Preneel.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">The AEGIS family of authenticated encryption algorithms was invented by Hongjun Wu and Bart Preneel.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <p id="appendix-B-2">The state update function leverages the AES permutation invented by Joan Daemen and Vincent Rijmen. They also authored the Pelican MAC, which partly motivated the design of the AEGIS MAC.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <p id="appendix-B-3">We would like to thank the following individuals for their contributions:<a href="#appendix-B-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-4.1">
-          <p id="appendix-B-4.1.1">Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector and Daniel Bleichenbacher for many helpful suggestions.<a href="#appendix-B-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.1.1">Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector, and Daniel Bleichenbacher for many helpful suggestions.<a href="#appendix-B-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.2">
-          <p id="appendix-B-4.2.1">John Preuß Mattsson for his review of the draft, and for suggesting how AEGIS should be used in the context of DTLS and QUIC.<a href="#appendix-B-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.2.1">Soatok Dreamseeker for his early review of the draft and for suggesting the addition of negative test vectors.<a href="#appendix-B-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.3">
-          <p id="appendix-B-4.3.1">Bart Mennink and Charlotte Lefevre as well as Takanori Isobe and Mostafizar Rahman for investigating the commitment security of the schemes specified in this document.<a href="#appendix-B-4.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.3.1">John Preuß Mattsson for his review of the draft and for suggesting how AEGIS should be used in the context of DTLS and QUIC.<a href="#appendix-B-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.4">
-          <p id="appendix-B-4.4.1">Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Panel.<a href="#appendix-B-4.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.4.1">Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and Mostafizar Rahman, for investigating the committing security of the schemes specified in this document.<a href="#appendix-B-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.5">
-          <p id="appendix-B-4.5.1">Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.<a href="#appendix-B-4.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.5.1">Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Review Panel.<a href="#appendix-B-4.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.6">
-          <p id="appendix-B-4.6.1">Gilles Van Assche for reviewing the draft and providing insightful comments on the implications of nonce reuse in AEGIS-128X and AEGIS-256X.<a href="#appendix-B-4.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.6.1">Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.<a href="#appendix-B-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-4.7">
+          <p id="appendix-B-4.7.1">Gilles Van Assche for reviewing the draft and providing insightful comments on the implications of nonce reuse in AEGIS-128X and AEGIS-256X.<a href="#appendix-B-4.7.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
