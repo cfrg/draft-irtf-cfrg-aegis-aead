@@ -11,11 +11,11 @@
        This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications. 
        The document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.26.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-irtf-cfrg-aegis-aead-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
+  xml2rfc 3.26.0
     Python 3.12.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -437,7 +437,7 @@ dl {
     margin-bottom: 0;
   }
 }
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
@@ -1046,11 +1046,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The AEGIS Family of Authenticated Encryp</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 11 July 2025</td>
+<td class="center">Expires 21 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-07" class="published">7 January 2025</time>
+<time datetime="2025-02-17" class="published">17 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-11">11 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-21">21 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3474,7 +3474,8 @@ else:              # 256 bits
 if D &gt; 1:
     # Absorb tags into state 0; other states are not used anymore
     for v in Split(tags, 256):
-        Absorb(ZeroPad(v, R))
+        x = Split(v, 128)
+        Absorb(ZeroPad(x[0], R / 2) || ZeroPad(x[1], R / 2))
 
     u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[2,0] ^ u, R)
@@ -3837,7 +3838,7 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
 <dd class="break"></dd>
 <dt id="TEST-VECTORS">[TEST-VECTORS]</dt>
         <dd>
-<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit f9f50ea6</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/f9f50ea6/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/f9f50ea6/test-vectors</a>&gt;</span>. </dd>
+<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 55f92c37</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="VV18">[VV18]</dt>
       <dd>
@@ -4963,13 +4964,13 @@ data   : 000102030405060708090a0b0c0d0e0f
 tags128: 9f5f69928fa481fa86e8a51e072a9b29
          eeaa77a356f796b427f6a54f52ae0e20
 
-tag128 : 7aa41edfd57a95c1108d83c63b8d4d01
+tag128 : 6873ee34e6b5c59143b6d35c5e4f2c6e
 
 tags256: 22cdcf558d0338b6ad8fbba4da7307d3
          0bd685fff23dc9d41f598c2a7ea44055
 
-tag256 : 55b6449929cd2b01d04786e57698b3dd
-         fb5cbf6e421bbd022637a33d60f40294
+tag256 : afcba3fc2d63c8d6c7f2d63f3ec8fbbb
+         af022e15ac120e78ffa7755abccd959c
 </pre><a href="#appendix-A.8.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4994,7 +4995,7 @@ tags128: 7fecd913a7cb0011b6c4c88e0c6f8578
          c7b5e6625a5765d04af26cf22adc1282
          4c8cf3b4dbb85f379e13b04a8d06bca7
 
-tag128 : 46a194ea4337bb32c2186a99e312f3a7
+tag128 : c45a98fd9ab8956ce616eb008cfe4e53
 
 tags256: d595732bdf230a1441978414cd8cfa39
          ecef6ad0ee1e65ae530006ca5d5f4481
@@ -5003,8 +5004,8 @@ tags256: d595732bdf230a1441978414cd8cfa39
          1264a15143eb8c3d9f17754099f147e3
          401c83c0d5afc70fd0d68bfd17f9280f
 
-tag256 : ea884072699569532fb68ae9fb2653c9
-         ffef3e974333d3a17d77be02453cc12f
+tag256 : 26fdc76f41b1da7aec7779f6e964beae
+         8904e662f05aca8345ae3befb357412a
 </pre><a href="#appendix-A.8.3-1" class="pilcrow">¶</a>
 </div>
 </section>
