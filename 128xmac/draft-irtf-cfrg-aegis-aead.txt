@@ -1745,8 +1745,8 @@ else:              # 256 bits
 if D > 1:
     # Absorb tags into state 0; other states are not used anymore
     for v in Split(tags, 256):
-        x = Split(v, 128)
-        Absorb(ZeroPad(x[0], R / 2) || ZeroPad(x[1], R / 2))
+        x0, x1 = Split(v, 128)
+        Absorb(ZeroPad(x0, R / 2) || ZeroPad(x1, R / 2))
 
     u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[2,0] ^ u, R)
