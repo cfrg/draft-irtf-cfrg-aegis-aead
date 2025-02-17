@@ -356,8 +356,8 @@ Primitives:
 
 AEGIS internal functions:
 
-- `Init(key, nonce)`: the initialization function.
 - `Update(M0, M1)` or `Update(M)`: the state update function.
+- `Init(key, nonce)`: the initialization function.
 - `Absorb(ai)`: the input block absorption function.
 - `Enc(xi)`: the input block encryption function.
 - `Dec(ci)`: the input block decryption function.
@@ -501,38 +501,6 @@ else:
     return msg
 ~~~
 
-## The Init Function
-
-~~~
-Init(key, nonce)
-~~~
-
-The `Init` function constructs the initial state `{S0, ...S7}` using the given `key` and `nonce`.
-
-Inputs:
-
-- `key`: the encryption key.
-- `nonce`: the public nonce.
-
-Defines:
-
-- `{S0, ...S7}`: the initial state.
-
-Steps:
-
-~~~
-S0 = key ^ nonce
-S1 = C1
-S2 = C0
-S3 = C1
-S4 = key ^ nonce
-S5 = key ^ C0
-S6 = key ^ C1
-S7 = key ^ C0
-
-Repeat(10, Update(nonce, key))
-~~~
-
 ## The Update Function
 
 ~~~
@@ -571,6 +539,38 @@ S4  = S'4
 S5  = S'5
 S6  = S'6
 S7  = S'7
+~~~
+
+## The Init Function
+
+~~~
+Init(key, nonce)
+~~~
+
+The `Init` function constructs the initial state `{S0, ...S7}` using the given `key` and `nonce`.
+
+Inputs:
+
+- `key`: the encryption key.
+- `nonce`: the public nonce.
+
+Defines:
+
+- `{S0, ...S7}`: the initial state.
+
+Steps:
+
+~~~
+S0 = key ^ nonce
+S1 = C1
+S2 = C0
+S3 = C1
+S4 = key ^ nonce
+S5 = key ^ C0
+S6 = key ^ C1
+S7 = key ^ C0
+
+Repeat(10, Update(nonce, key))
 ~~~
 
 ## The Absorb Function
@@ -838,6 +838,42 @@ else:
     return msg
 ~~~
 
+
+## The Update Function
+
+~~~
+Update(M)
+~~~
+
+The `Update` function is the core of the AEGIS-256 algorithm.
+It updates the state `{S0, ...S5}` using a 128-bit value.
+
+Inputs:
+
+- `msg`: the 128-bit block to be absorbed.
+
+Modifies:
+
+- `{S0, ...S5}`: the state.
+
+Steps:
+
+~~~
+S'0 = AESRound(S5, S0 ^ M)
+S'1 = AESRound(S0, S1)
+S'2 = AESRound(S1, S2)
+S'3 = AESRound(S2, S3)
+S'4 = AESRound(S3, S4)
+S'5 = AESRound(S4, S5)
+
+S0  = S'0
+S1  = S'1
+S2  = S'2
+S3  = S'3
+S4  = S'4
+S5  = S'5
+~~~
+
 ## The Init Function
 
 ~~~
@@ -874,41 +910,6 @@ Repeat(4,
   Update(k0 ^ n0)
   Update(k1 ^ n1)
 )
-~~~
-
-## The Update Function
-
-~~~
-Update(M)
-~~~
-
-The `Update` function is the core of the AEGIS-256 algorithm.
-It updates the state `{S0, ...S5}` using a 128-bit value.
-
-Inputs:
-
-- `msg`: the 128-bit block to be absorbed.
-
-Modifies:
-
-- `{S0, ...S5}`: the state.
-
-Steps:
-
-~~~
-S'0 = AESRound(S5, S0 ^ M)
-S'1 = AESRound(S0, S1)
-S'2 = AESRound(S1, S2)
-S'3 = AESRound(S2, S3)
-S'4 = AESRound(S3, S4)
-S'5 = AESRound(S4, S5)
-
-S0  = S'0
-S1  = S'1
-S2  = S'2
-S3  = S'3
-S4  = S'4
-S5  = S'5
 ~~~
 
 ## The Absorb Function
@@ -1139,6 +1140,40 @@ else:
 
 ## AEGIS-128X
 
+### The Update Function
+
+~~~
+Update(M0, M1)
+~~~
+
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+
+Steps:
+
+~~~
+m0 = Split(M0, 128)
+m1 = Split(M1, 128)
+
+for i in 0..D:
+    V'[0,i] = AESRound(V[7,i], V[0,i] ^ m0[i])
+    V'[1,i] = AESRound(V[0,i], V[1,i])
+    V'[2,i] = AESRound(V[1,i], V[2,i])
+    V'[3,i] = AESRound(V[2,i], V[3,i])
+    V'[4,i] = AESRound(V[3,i], V[4,i] ^ m1[i])
+    V'[5,i] = AESRound(V[4,i], V[5,i])
+    V'[6,i] = AESRound(V[5,i], V[6,i])
+    V'[7,i] = AESRound(V[6,i], V[7,i])
+
+    V[0,i]  = V'[0,i]
+    V[1,i]  = V'[1,i]
+    V[2,i]  = V'[2,i]
+    V[3,i]  = V'[3,i]
+    V[4,i]  = V'[4,i]
+    V[5,i]  = V'[5,i]
+    V[6,i]  = V'[6,i]
+    V[7,i]  = V'[7,i]
+~~~
+
 ### The Init Function
 
 ~~~
@@ -1176,40 +1211,6 @@ Repeat(10,
 
     Update(nonce_v, key_v)
 )
-~~~
-
-### The Update Function
-
-~~~
-Update(M0, M1)
-~~~
-
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
-
-Steps:
-
-~~~
-m0 = Split(M0, 128)
-m1 = Split(M1, 128)
-
-for i in 0..D:
-    V'[0,i] = AESRound(V[7,i], V[0,i] ^ m0[i])
-    V'[1,i] = AESRound(V[0,i], V[1,i])
-    V'[2,i] = AESRound(V[1,i], V[2,i])
-    V'[3,i] = AESRound(V[2,i], V[3,i])
-    V'[4,i] = AESRound(V[3,i], V[4,i] ^ m1[i])
-    V'[5,i] = AESRound(V[4,i], V[5,i])
-    V'[6,i] = AESRound(V[5,i], V[6,i])
-    V'[7,i] = AESRound(V[6,i], V[7,i])
-
-    V[0,i]  = V'[0,i]
-    V[1,i]  = V'[1,i]
-    V[2,i]  = V'[2,i]
-    V[3,i]  = V'[3,i]
-    V[4,i]  = V'[4,i]
-    V[5,i]  = V'[5,i]
-    V[6,i]  = V'[6,i]
-    V[7,i]  = V'[7,i]
 ~~~
 
 ### The Absorb Function
@@ -1347,6 +1348,35 @@ return tag
 
 ## AEGIS-256X
 
+### The Update Function
+
+~~~
+Update(M)
+~~~
+
+The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function but absorbs `R` (`128 * D`) bits at once. `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
+
+Steps:
+
+~~~
+m = Split(M, 128)
+
+for i in 0..D:
+    V'[0,i] = AESRound(V[5,i], V[0,i] ^ m[i])
+    V'[1,i] = AESRound(V[0,i], V[1,i])
+    V'[2,i] = AESRound(V[1,i], V[2,i])
+    V'[3,i] = AESRound(V[2,i], V[3,i])
+    V'[4,i] = AESRound(V[3,i], V[4,i])
+    V'[5,i] = AESRound(V[4,i], V[5,i])
+
+    V[0,i]  = V'[0,i]
+    V[1,i]  = V'[1,i]
+    V[2,i]  = V'[2,i]
+    V[3,i]  = V'[3,i]
+    V[4,i]  = V'[4,i]
+    V[5,i]  = V'[5,i]
+~~~
+
 ### The Init Function
 
 ~~~
@@ -1402,35 +1432,6 @@ Repeat(4,
 
     Update(k1n1_v)
 )
-~~~
-
-### The Update Function
-
-~~~
-Update(M)
-~~~
-
-The AEGIS-256X `Update` function is similar to the AEGIS-256 `Update` function but absorbs `R` (`128 * D`) bits at once. `M` is `128 * D` bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.
-
-Steps:
-
-~~~
-m = Split(M, 128)
-
-for i in 0..D:
-    V'[0,i] = AESRound(V[5,i], V[0,i] ^ m[i])
-    V'[1,i] = AESRound(V[0,i], V[1,i])
-    V'[2,i] = AESRound(V[1,i], V[2,i])
-    V'[3,i] = AESRound(V[2,i], V[3,i])
-    V'[4,i] = AESRound(V[3,i], V[4,i])
-    V'[5,i] = AESRound(V[4,i], V[5,i])
-
-    V[0,i]  = V'[0,i]
-    V[1,i]  = V'[1,i]
-    V[2,i]  = V'[2,i]
-    V[3,i]  = V'[3,i]
-    V[4,i]  = V'[4,i]
-    V[5,i]  = V'[5,i]
 ~~~
 
 ### The Absorb Function
