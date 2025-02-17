@@ -201,14 +201,16 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
             if (tag_length == 16) {
                 const tags = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[6]).toBytes();
                 for (0..degree / 2) |d| {
-                    v[0..32].* = tags[d * 32 ..][0..32].*;
+                    v[0..16].* = tags[d * 32 ..][0..16].*;
+                    v[rate / 2..][0..16].* = tags[d * 32 ..][16..32].*;
                     self.absorb(&v);
                 }
             } else {
                 const tags_0 = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).toBytes();
                 const tags_1 = s[4].xorBlocks(s[5]).xorBlocks(s[6]).xorBlocks(s[7]).toBytes();
                 for (1..degree) |d| {
-                    v[0..32].* = tags_0[d * 16 ..][0..16].* ++ tags_1[d * 16 ..][0..16].*;
+                    v[0..16].* = tags_0[d * 16 ..][0..16].*;
+                    v[rate / 2..][0..16].* = tags_1[d * 16 ..][0..16].*;
                     self.absorb(&v);
                 }
             }
