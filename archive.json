@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-16T00:47:43.879403+00:00",
+  "timestamp": "2025-02-18T00:42:56.075216+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -8755,6 +8755,138 @@
           "body": "I believe that's everything. Job well done.",
           "createdAt": "2025-01-07T18:49:32Z",
           "updatedAt": "2025-01-07T18:49:32Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 87,
+      "id": "PR_kwDOKeDGj86LdPnG",
+      "title": "128X-MAC: properly absorb all concatenated tags into the first lane",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/87",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The `FinalizeMac` function concatenates the tags from all AEGIS instances and absorbs them into the first state, following the behavior of AEGIS-128L.\r\n\r\nHowever, the `Update` function referenced here belongs to AEGIS-128X.\r\n\r\nWhen the degree is greater than 1, bytes [16..32] correspond to the second AEGIS instance (or, in implementations, the second half of a 256-bit register), rather than the first instance.\r\n\r\nAdjust the padding to ensure all bytes are correctly loaded into the first instance.",
+      "createdAt": "2025-02-17T13:00:18Z",
+      "updatedAt": "2025-02-17T20:50:28Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "c0f67c9bc9402bfdca5a10b795cab7d8e22b8775",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "128xmac",
+      "headRefOid": "dd8d0a4039a6870ae5779ca054c2f6f98909fd8e",
+      "closedAt": "2025-02-17T20:50:20Z",
+      "mergedAt": "2025-02-17T20:50:20Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "a59dfc4e14b2256d49fdfd994a7cd09f19cddfca"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Known implementations have been updated to reflect this, but we should publish a new revision quickly.",
+          "createdAt": "2025-02-17T13:25:11Z",
+          "updatedAt": "2025-02-17T13:25:11Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86cR2q3",
+          "commit": {
+            "abbreviatedOid": "dd8d0a4"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-17T20:48:48Z",
+          "updatedAt": "2025-02-17T20:48:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 88,
+      "id": "PR_kwDOKeDGj86LdZtz",
+      "title": "Move the Update function before Init",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/88",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As previously discussed, since `Update` is a dependency for `Init`.",
+      "createdAt": "2025-02-17T13:15:19Z",
+      "updatedAt": "2025-02-17T20:49:51Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "c0f67c9bc9402bfdca5a10b795cab7d8e22b8775",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "update-before-init",
+      "headRefOid": "5048d0b69d5e1f1d9ca3e75703c5508fe9ef9c6d",
+      "closedAt": "2025-02-17T20:49:51Z",
+      "mergedAt": "2025-02-17T20:49:51Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "1bad8bfc3b39f3f0c7c7b05bd7cbf09be534c0de"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86cR0NW",
+          "commit": {
+            "abbreviatedOid": "fd57361"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Minor tweak then good to go.",
+          "createdAt": "2025-02-17T20:39:23Z",
+          "updatedAt": "2025-02-17T20:42:39Z",
+          "comments": [
+            {
+              "originalPosition": 92,
+              "body": "Believe this is an extra space.",
+              "createdAt": "2025-02-17T20:39:23Z",
+              "updatedAt": "2025-02-17T20:42:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86cR1jC",
+          "commit": {
+            "abbreviatedOid": "fd57361"
+          },
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-17T20:44:38Z",
+          "updatedAt": "2025-02-17T20:44:38Z",
+          "comments": [
+            {
+              "originalPosition": 92,
+              "body": "Done :)",
+              "createdAt": "2025-02-17T20:44:38Z",
+              "updatedAt": "2025-02-17T20:44:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKeDGj86cR25d",
+          "commit": {
+            "abbreviatedOid": "5048d0b"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-17T20:49:39Z",
+          "updatedAt": "2025-02-17T20:49:39Z",
           "comments": []
         }
       ]
