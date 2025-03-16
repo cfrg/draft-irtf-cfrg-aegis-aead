@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-13T00:45:45.325983+00:00",
+  "timestamp": "2025-03-16T00:50:45.930327+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -8890,6 +8890,61 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 89,
+      "id": "PR_kwDOKeDGj86Ow_8L",
+      "title": "Fix collision probability typo",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/89",
+      "state": "CLOSED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I believe the 2<sup>-33</sup> is a [typo](https://csrc.nist.gov/pubs/sp/800/38/d/final). I think I left it before because the `~` made it look intentional.",
+      "createdAt": "2025-03-15T10:00:07Z",
+      "updatedAt": "2025-03-15T14:27:56Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "04976b4ab145eb921ef14214f1a30eb2581a47e2",
+      "headRepository": "samuel-lucas6/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "main",
+      "headRefOid": "4afdb71cf4dc6a8af6117f00b83d78a1f0d93a15",
+      "closedAt": "2025-03-15T14:27:56Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is not a typo.\r\n\r\nThe collision probability is ~ 1-e^(-N(N-1) /  (2^(L+1))) \u2248 2^96 / 2^129 \u2248 2^-33",
+          "createdAt": "2025-03-15T10:18:06Z",
+          "updatedAt": "2025-03-15T10:18:06Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "With N = 2^49, the probability would be ~ 2^-31, which would be below the recommendations.",
+          "createdAt": "2025-03-15T10:21:16Z",
+          "updatedAt": "2025-03-15T10:21:16Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Or would you suggest allowing 2^48.5 messages (for a collision probability of 2^-32)? 2^48 seems simpler, and the difference between 2^48 and 2^48.5 is negligible in practice.",
+          "createdAt": "2025-03-15T10:32:39Z",
+          "updatedAt": "2025-03-15T10:32:39Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Alright, happy to leave this. I just noticed the discrepancy between NIST's 2<sup>-32</sup> and our 2<sup>-33</sup>. I've never seen 2<sup>-33</sup> written anywhere, so I do think other people will also notice this, but that doesn't matter as long as it's correct.",
+          "createdAt": "2025-03-15T14:27:56Z",
+          "updatedAt": "2025-03-15T14:27:56Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
