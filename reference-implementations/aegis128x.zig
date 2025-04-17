@@ -2,7 +2,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const crypto = std.crypto;
 const mem = std.mem;
-const AesBlockVec = @import("aes_block_multi.zig").BlockVec;
+const AesBlockVec = crypto.core.aes.BlockVec;
 const AuthenticationError = std.crypto.errors.AuthenticationError;
 
 pub const Aegis128X2 = Aegis128X_(2, 128);
@@ -202,7 +202,7 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
                 const tags = s[0].xorBlocks(s[1]).xorBlocks(s[2]).xorBlocks(s[3]).xorBlocks(s[4]).xorBlocks(s[5]).xorBlocks(s[6]).toBytes();
                 for (0..degree / 2) |d| {
                     v[0..16].* = tags[d * 32 ..][0..16].*;
-                    v[rate / 2..][0..16].* = tags[d * 32 ..][16..32].*;
+                    v[rate / 2 ..][0..16].* = tags[d * 32 ..][16..32].*;
                     self.absorb(&v);
                 }
             } else {
@@ -210,7 +210,7 @@ fn Aegis128X_(comptime degree: u7, comptime tag_bits: u9) type {
                 const tags_1 = s[4].xorBlocks(s[5]).xorBlocks(s[6]).xorBlocks(s[7]).toBytes();
                 for (1..degree) |d| {
                     v[0..16].* = tags_0[d * 16 ..][0..16].*;
-                    v[rate / 2..][0..16].* = tags_1[d * 16 ..][0..16].*;
+                    v[rate / 2 ..][0..16].* = tags_1[d * 16 ..][0..16].*;
                     self.absorb(&v);
                 }
             }

@@ -2,7 +2,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const crypto = std.crypto;
 const mem = std.mem;
-const AesBlockVec = @import("aes_block_multi.zig").BlockVec;
+const AesBlockVec = crypto.core.aes.BlockVec;
 const AuthenticationError = std.crypto.errors.AuthenticationError;
 
 pub const Aegis256X2 = Aegis256_(2, 128);
