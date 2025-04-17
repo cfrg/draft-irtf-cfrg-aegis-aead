@@ -11,18 +11,18 @@
        This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AES-based authenticated encryption algorithms designed for high-performance applications. 
        The document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard. 
     " name="description">
-<meta content="xml2rfc 3.26.0" name="generator">
+<meta content="xml2rfc 3.28.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-irtf-cfrg-aegis-aead-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.26.0
-    Python 3.12.8
+  xml2rfc 3.28.1
+    Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
+    Jinja2 3.1.6
     lxml 5.3.0
-    platformdirs 4.3.6
+    platformdirs 4.3.7
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
@@ -1046,11 +1046,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The AEGIS Family of Authenticated Encryp</td>
-<td class="right">February 2025</td>
+<td class="right">April 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Denis &amp; Lucas</td>
-<td class="center">Expires 21 August 2025</td>
+<td class="center">Expires 19 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-aegis-aead-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-17" class="published">17 February 2025</time>
+<time datetime="2025-04-17" class="published">17 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-21">21 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-19">19 October 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1157,10 +1157,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-authenticated-decryption" class="internal xref">Authenticated Decryption</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-the-init-function" class="internal xref">The Init Function</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-the-update-function" class="internal xref">The Update Function</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-the-update-function" class="internal xref">The Update Function</a></p>
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-the-init-function" class="internal xref">The Init Function</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-the-absorb-function" class="internal xref">The Absorb Function</a></p>
@@ -1189,10 +1189,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-authenticated-decryption-2" class="internal xref">Authenticated Decryption</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-the-init-function-2" class="internal xref">The Init Function</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-the-update-function-2" class="internal xref">The Update Function</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-the-update-function-2" class="internal xref">The Update Function</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-the-init-function-2" class="internal xref">The Init Function</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-the-absorb-function-2" class="internal xref">The Absorb Function</a></p>
@@ -1227,10 +1227,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-aegis-128x" class="internal xref">AEGIS-128X</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.1">
-                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-the-init-function-3" class="internal xref">The Init Function</a></p>
+                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-the-update-function-3" class="internal xref">The Update Function</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.2">
-                    <p id="section-toc.1-1.5.2.4.2.2.1"><a href="#section-5.4.2" class="auto internal xref">5.4.2</a>.  <a href="#name-the-update-function-3" class="internal xref">The Update Function</a></p>
+                    <p id="section-toc.1-1.5.2.4.2.2.1"><a href="#section-5.4.2" class="auto internal xref">5.4.2</a>.  <a href="#name-the-init-function-3" class="internal xref">The Init Function</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.3">
                     <p id="section-toc.1-1.5.2.4.2.3.1"><a href="#section-5.4.3" class="auto internal xref">5.4.3</a>.  <a href="#name-the-absorb-function-3" class="internal xref">The Absorb Function</a></p>
@@ -1253,10 +1253,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-aegis-256x" class="internal xref">AEGIS-256X</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.1">
-                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-the-init-function-4" class="internal xref">The Init Function</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-the-update-function-4" class="internal xref">The Update Function</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.2">
-                    <p id="section-toc.1-1.5.2.5.2.2.1"><a href="#section-5.5.2" class="auto internal xref">5.5.2</a>.  <a href="#name-the-update-function-4" class="internal xref">The Update Function</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.2.1"><a href="#section-5.5.2" class="auto internal xref">5.5.2</a>.  <a href="#name-the-init-function-4" class="internal xref">The Init Function</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.3">
                     <p id="section-toc.1-1.5.2.5.2.3.1"><a href="#section-5.5.3" class="auto internal xref">5.5.3</a>.  <a href="#name-the-absorb-function-4" class="internal xref">The Absorb Function</a></p>
@@ -1622,10 +1622,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-2-5">AEGIS internal functions:<a href="#section-2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-6.1">
-          <p id="section-2-6.1.1"><code>Init(key, nonce)</code>: the initialization function.<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.1.1"><code>Update(M0, M1)</code> or <code>Update(M)</code>: the state update function.<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.2">
-          <p id="section-2-6.2.1"><code>Update(M0, M1)</code> or <code>Update(M)</code>: the state update function.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.2.1"><code>Init(key, nonce)</code>: the initialization function.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.3">
           <p id="section-2-6.3.1"><code>Absorb(ai)</code>: the input block absorption function.<a href="#section-2-6.3.1" class="pilcrow">¶</a></p>
@@ -1855,78 +1855,35 @@ else:
 </div>
 </section>
 </div>
-<div id="the-init-function">
+<div id="the-update-function">
 <section id="section-3.3">
-        <h3 id="name-the-init-function">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-the-init-function" class="section-name selfRef">The Init Function</a>
+        <h3 id="name-the-update-function">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-the-update-function" class="section-name selfRef">The Update Function</a>
         </h3>
 <div class="alignLeft art-text artwork" id="section-3.3-1">
 <pre>
-Init(key, nonce)
+Update(M0, M1)
 </pre><a href="#section-3.3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-3.3-2">The <code>Init</code> function constructs the initial state <code>{S0, ...S7}</code> using the given <code>key</code> and <code>nonce</code>.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">The <code>Update</code> function is the core of the AEGIS-128L algorithm.
+It updates the state <code>{S0, ...S7}</code> using two 128-bit values.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.3-3">Inputs:<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-4.1">
-            <p id="section-3.3-4.1.1"><code>key</code>: the encryption key.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-4.1.1"><code>M0</code>: the first 128-bit block to be absorbed.<a href="#section-3.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-4.2">
-            <p id="section-3.3-4.2.1"><code>nonce</code>: the public nonce.<a href="#section-3.3-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-4.2.1"><code>M1</code>: the second 128-bit block to be absorbed.<a href="#section-3.3-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.3-5">Defines:<a href="#section-3.3-5" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">Modifies:<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-6.1">
-            <p id="section-3.3-6.1.1"><code>{S0, ...S7}</code>: the initial state.<a href="#section-3.3-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-6.1.1"><code>{S0, ...S7}</code>: the state.<a href="#section-3.3-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.3-7">Steps:<a href="#section-3.3-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.3-8">
-<pre>
-S0 = key ^ nonce
-S1 = C1
-S2 = C0
-S3 = C1
-S4 = key ^ nonce
-S5 = key ^ C0
-S6 = key ^ C1
-S7 = key ^ C0
-
-Repeat(10, Update(nonce, key))
-</pre><a href="#section-3.3-8" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="the-update-function">
-<section id="section-3.4">
-        <h3 id="name-the-update-function">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-the-update-function" class="section-name selfRef">The Update Function</a>
-        </h3>
-<div class="alignLeft art-text artwork" id="section-3.4-1">
-<pre>
-Update(M0, M1)
-</pre><a href="#section-3.4-1" class="pilcrow">¶</a>
-</div>
-<p id="section-3.4-2">The <code>Update</code> function is the core of the AEGIS-128L algorithm.
-It updates the state <code>{S0, ...S7}</code> using two 128-bit values.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">Inputs:<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.4-4.1">
-            <p id="section-3.4-4.1.1"><code>M0</code>: the first 128-bit block to be absorbed.<a href="#section-3.4-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.4-4.2">
-            <p id="section-3.4-4.2.1"><code>M1</code>: the second 128-bit block to be absorbed.<a href="#section-3.4-4.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-3.4-5">Modifies:<a href="#section-3.4-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.4-6.1">
-            <p id="section-3.4-6.1.1"><code>{S0, ...S7}</code>: the state.<a href="#section-3.4-6.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-3.4-7">Steps:<a href="#section-3.4-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4-8">
 <pre>
 S'0 = AESRound(S7, S0 ^ M0)
 S'1 = AESRound(S0, S1)
@@ -1945,6 +1902,49 @@ S4  = S'4
 S5  = S'5
 S6  = S'6
 S7  = S'7
+</pre><a href="#section-3.3-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-init-function">
+<section id="section-3.4">
+        <h3 id="name-the-init-function">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-the-init-function" class="section-name selfRef">The Init Function</a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-3.4-1">
+<pre>
+Init(key, nonce)
+</pre><a href="#section-3.4-1" class="pilcrow">¶</a>
+</div>
+<p id="section-3.4-2">The <code>Init</code> function constructs the initial state <code>{S0, ...S7}</code> using the given <code>key</code> and <code>nonce</code>.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">Inputs:<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.4-4.1">
+            <p id="section-3.4-4.1.1"><code>key</code>: the encryption key.<a href="#section-3.4-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-4.2">
+            <p id="section-3.4-4.2.1"><code>nonce</code>: the public nonce.<a href="#section-3.4-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.4-5">Defines:<a href="#section-3.4-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.4-6.1">
+            <p id="section-3.4-6.1.1"><code>{S0, ...S7}</code>: the initial state.<a href="#section-3.4-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.4-7">Steps:<a href="#section-3.4-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.4-8">
+<pre>
+S0 = key ^ nonce
+S1 = C1
+S2 = C0
+S3 = C1
+S4 = key ^ nonce
+S5 = key ^ C0
+S6 = key ^ C1
+S7 = key ^ C0
+
+Repeat(10, Update(nonce, key))
 </pre><a href="#section-3.4-8" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2314,34 +2314,78 @@ else:
 </div>
 </section>
 </div>
-<div id="the-init-function-1">
+<div id="the-update-function-1">
 <section id="section-4.3">
-        <h3 id="name-the-init-function-2">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-the-init-function-2" class="section-name selfRef">The Init Function</a>
+        <h3 id="name-the-update-function-2">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-the-update-function-2" class="section-name selfRef">The Update Function</a>
         </h3>
 <div class="alignLeft art-text artwork" id="section-4.3-1">
 <pre>
-Init(key, nonce)
+Update(M)
 </pre><a href="#section-4.3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-4.3-2">The <code>Init</code> function constructs the initial state <code>{S0, ...S5}</code> using the given <code>key</code> and <code>nonce</code>.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">The <code>Update</code> function is the core of the AEGIS-256 algorithm.
+It updates the state <code>{S0, ...S5}</code> using a 128-bit value.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <p id="section-4.3-3">Inputs:<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3-4.1">
-            <p id="section-4.3-4.1.1"><code>key</code>: the encryption key.<a href="#section-4.3-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.3-4.2">
-            <p id="section-4.3-4.2.1"><code>nonce</code>: the public nonce.<a href="#section-4.3-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.3-4.1.1"><code>msg</code>: the 128-bit block to be absorbed.<a href="#section-4.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.3-5">Defines:<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.3-5">Modifies:<a href="#section-4.3-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3-6.1">
-            <p id="section-4.3-6.1.1"><code>{S0, ...S5}</code>: the initial state.<a href="#section-4.3-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.3-6.1.1"><code>{S0, ...S5}</code>: the state.<a href="#section-4.3-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.3-7">Steps:<a href="#section-4.3-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3-8">
+<pre>
+S'0 = AESRound(S5, S0 ^ M)
+S'1 = AESRound(S0, S1)
+S'2 = AESRound(S1, S2)
+S'3 = AESRound(S2, S3)
+S'4 = AESRound(S3, S4)
+S'5 = AESRound(S4, S5)
+
+S0  = S'0
+S1  = S'1
+S2  = S'2
+S3  = S'3
+S4  = S'4
+S5  = S'5
+</pre><a href="#section-4.3-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-init-function-1">
+<section id="section-4.4">
+        <h3 id="name-the-init-function-2">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-the-init-function-2" class="section-name selfRef">The Init Function</a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-4.4-1">
+<pre>
+Init(key, nonce)
+</pre><a href="#section-4.4-1" class="pilcrow">¶</a>
+</div>
+<p id="section-4.4-2">The <code>Init</code> function constructs the initial state <code>{S0, ...S5}</code> using the given <code>key</code> and <code>nonce</code>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">Inputs:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.4-4.1">
+            <p id="section-4.4-4.1.1"><code>key</code>: the encryption key.<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.4-4.2">
+            <p id="section-4.4-4.2.1"><code>nonce</code>: the public nonce.<a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.4-5">Defines:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.4-6.1">
+            <p id="section-4.4-6.1.1"><code>{S0, ...S5}</code>: the initial state.<a href="#section-4.4-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.4-7">Steps:<a href="#section-4.4-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.4-8">
 <pre>
 k0, k1 = Split(key, 128)
 n0, n1 = Split(nonce, 128)
@@ -2359,50 +2403,6 @@ Repeat(4,
   Update(k0 ^ n0)
   Update(k1 ^ n1)
 )
-</pre><a href="#section-4.3-8" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="the-update-function-1">
-<section id="section-4.4">
-        <h3 id="name-the-update-function-2">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-the-update-function-2" class="section-name selfRef">The Update Function</a>
-        </h3>
-<div class="alignLeft art-text artwork" id="section-4.4-1">
-<pre>
-Update(M)
-</pre><a href="#section-4.4-1" class="pilcrow">¶</a>
-</div>
-<p id="section-4.4-2">The <code>Update</code> function is the core of the AEGIS-256 algorithm.
-It updates the state <code>{S0, ...S5}</code> using a 128-bit value.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">Inputs:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.4-4.1">
-            <p id="section-4.4-4.1.1"><code>msg</code>: the 128-bit block to be absorbed.<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-4.4-5">Modifies:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.4-6.1">
-            <p id="section-4.4-6.1.1"><code>{S0, ...S5}</code>: the state.<a href="#section-4.4-6.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-4.4-7">Steps:<a href="#section-4.4-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.4-8">
-<pre>
-S'0 = AESRound(S5, S0 ^ M)
-S'1 = AESRound(S0, S1)
-S'2 = AESRound(S1, S2)
-S'3 = AESRound(S2, S3)
-S'4 = AESRound(S3, S4)
-S'5 = AESRound(S4, S5)
-
-S0  = S'0
-S1  = S'1
-S2  = S'2
-S3  = S'3
-S4  = S'4
-S5  = S'5
 </pre><a href="#section-4.4-8" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2711,19 +2711,58 @@ else:
         <h3 id="name-aegis-128x">
 <a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-aegis-128x" class="section-name selfRef">AEGIS-128X</a>
         </h3>
-<div id="the-init-function-2">
+<div id="the-update-function-2">
 <section id="section-5.4.1">
-          <h4 id="name-the-init-function-3">
-<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-the-init-function-3" class="section-name selfRef">The Init Function</a>
+          <h4 id="name-the-update-function-3">
+<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-the-update-function-3" class="section-name selfRef">The Update Function</a>
           </h4>
 <div class="alignLeft art-text artwork" id="section-5.4.1-1">
 <pre>
-Init(key, nonce)
+Update(M0, M1)
 </pre><a href="#section-5.4.1-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.1-2">The <code>Init</code> function initializes a vector of <code>D</code> AEGIS-128L states with the same <code>key</code> and <code>nonce</code> but a different context <code>ctx[i]</code>. The context is added to the state before every update.<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function but absorbs <code>R</code> (= <code>256 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.1-3">Steps:<a href="#section-5.4.1-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4.1-4">
+<pre>
+m0 = Split(M0, 128)
+m1 = Split(M1, 128)
+
+for i in 0..D:
+    V'[0,i] = AESRound(V[7,i], V[0,i] ^ m0[i])
+    V'[1,i] = AESRound(V[0,i], V[1,i])
+    V'[2,i] = AESRound(V[1,i], V[2,i])
+    V'[3,i] = AESRound(V[2,i], V[3,i])
+    V'[4,i] = AESRound(V[3,i], V[4,i] ^ m1[i])
+    V'[5,i] = AESRound(V[4,i], V[5,i])
+    V'[6,i] = AESRound(V[5,i], V[6,i])
+    V'[7,i] = AESRound(V[6,i], V[7,i])
+
+    V[0,i]  = V'[0,i]
+    V[1,i]  = V'[1,i]
+    V[2,i]  = V'[2,i]
+    V[3,i]  = V'[3,i]
+    V[4,i]  = V'[4,i]
+    V[5,i]  = V'[5,i]
+    V[6,i]  = V'[6,i]
+    V[7,i]  = V'[7,i]
+</pre><a href="#section-5.4.1-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-init-function-2">
+<section id="section-5.4.2">
+          <h4 id="name-the-init-function-3">
+<a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-the-init-function-3" class="section-name selfRef">The Init Function</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-5.4.2-1">
+<pre>
+Init(key, nonce)
+</pre><a href="#section-5.4.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-5.4.2-2">The <code>Init</code> function initializes a vector of <code>D</code> AEGIS-128L states with the same <code>key</code> and <code>nonce</code> but a different context <code>ctx[i]</code>. The context is added to the state before every update.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-3">Steps:<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4.2-4">
 <pre>
 for i in 0..D:
     V[0,i] = key ^ nonce
@@ -2751,45 +2790,6 @@ Repeat(10,
 
     Update(nonce_v, key_v)
 )
-</pre><a href="#section-5.4.1-4" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="the-update-function-2">
-<section id="section-5.4.2">
-          <h4 id="name-the-update-function-3">
-<a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-the-update-function-3" class="section-name selfRef">The Update Function</a>
-          </h4>
-<div class="alignLeft art-text artwork" id="section-5.4.2-1">
-<pre>
-Update(M0, M1)
-</pre><a href="#section-5.4.2-1" class="pilcrow">¶</a>
-</div>
-<p id="section-5.4.2-2">The AEGIS-128X <code>Update</code> function is similar to the AEGIS-128L <code>Update</code> function but absorbs <code>R</code> (= <code>256 * D</code>) bits at once. <code>M0</code> and <code>M1</code> are <code>128 * D</code> bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.4.2-3">Steps:<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-4">
-<pre>
-m0 = Split(M0, 128)
-m1 = Split(M1, 128)
-
-for i in 0..D:
-    V'[0,i] = AESRound(V[7,i], V[0,i] ^ m0[i])
-    V'[1,i] = AESRound(V[0,i], V[1,i])
-    V'[2,i] = AESRound(V[1,i], V[2,i])
-    V'[3,i] = AESRound(V[2,i], V[3,i])
-    V'[4,i] = AESRound(V[3,i], V[4,i] ^ m1[i])
-    V'[5,i] = AESRound(V[4,i], V[5,i])
-    V'[6,i] = AESRound(V[5,i], V[6,i])
-    V'[7,i] = AESRound(V[6,i], V[7,i])
-
-    V[0,i]  = V'[0,i]
-    V[1,i]  = V'[1,i]
-    V[2,i]  = V'[2,i]
-    V[3,i]  = V'[3,i]
-    V[4,i]  = V'[4,i]
-    V[5,i]  = V'[5,i]
-    V[6,i]  = V'[6,i]
-    V[7,i]  = V'[7,i]
 </pre><a href="#section-5.4.2-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2959,19 +2959,53 @@ return tag
         <h3 id="name-aegis-256x">
 <a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-aegis-256x" class="section-name selfRef">AEGIS-256X</a>
         </h3>
-<div id="the-init-function-3">
+<div id="the-update-function-3">
 <section id="section-5.5.1">
-          <h4 id="name-the-init-function-4">
-<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-the-init-function-4" class="section-name selfRef">The Init Function</a>
+          <h4 id="name-the-update-function-4">
+<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-the-update-function-4" class="section-name selfRef">The Update Function</a>
           </h4>
 <div class="alignLeft art-text artwork" id="section-5.5.1-1">
 <pre>
-Init(key, nonce)
+Update(M)
 </pre><a href="#section-5.5.1-1" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.1-2">The <code>Init</code> function initializes a vector of <code>D</code> AEGIS-256 states with the same <code>key</code> and <code>nonce</code> but a different context <code>ctx[i]</code>. The context is added to the state before every update.<a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-2">The AEGIS-256X <code>Update</code> function is similar to the AEGIS-256 <code>Update</code> function but absorbs <code>R</code> (<code>128 * D</code>) bits at once. <code>M</code> is <code>128 * D</code> bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.<a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.1-3">Steps:<a href="#section-5.5.1-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.1-4">
+<pre>
+m = Split(M, 128)
+
+for i in 0..D:
+    V'[0,i] = AESRound(V[5,i], V[0,i] ^ m[i])
+    V'[1,i] = AESRound(V[0,i], V[1,i])
+    V'[2,i] = AESRound(V[1,i], V[2,i])
+    V'[3,i] = AESRound(V[2,i], V[3,i])
+    V'[4,i] = AESRound(V[3,i], V[4,i])
+    V'[5,i] = AESRound(V[4,i], V[5,i])
+
+    V[0,i]  = V'[0,i]
+    V[1,i]  = V'[1,i]
+    V[2,i]  = V'[2,i]
+    V[3,i]  = V'[3,i]
+    V[4,i]  = V'[4,i]
+    V[5,i]  = V'[5,i]
+</pre><a href="#section-5.5.1-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-init-function-3">
+<section id="section-5.5.2">
+          <h4 id="name-the-init-function-4">
+<a href="#section-5.5.2" class="section-number selfRef">5.5.2. </a><a href="#name-the-init-function-4" class="section-name selfRef">The Init Function</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-5.5.2-1">
+<pre>
+Init(key, nonce)
+</pre><a href="#section-5.5.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-5.5.2-2">The <code>Init</code> function initializes a vector of <code>D</code> AEGIS-256 states with the same <code>key</code> and <code>nonce</code> but a different context <code>ctx[i]</code>. The context is added to the state before every update.<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.2-3">Steps:<a href="#section-5.5.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.2-4">
 <pre>
 k0, k1 = Split(key, 128)
 n0, n1 = Split(nonce, 128)
@@ -3017,40 +3051,6 @@ Repeat(4,
 
     Update(k1n1_v)
 )
-</pre><a href="#section-5.5.1-4" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="the-update-function-3">
-<section id="section-5.5.2">
-          <h4 id="name-the-update-function-4">
-<a href="#section-5.5.2" class="section-number selfRef">5.5.2. </a><a href="#name-the-update-function-4" class="section-name selfRef">The Update Function</a>
-          </h4>
-<div class="alignLeft art-text artwork" id="section-5.5.2-1">
-<pre>
-Update(M)
-</pre><a href="#section-5.5.2-1" class="pilcrow">¶</a>
-</div>
-<p id="section-5.5.2-2">The AEGIS-256X <code>Update</code> function is similar to the AEGIS-256 <code>Update</code> function but absorbs <code>R</code> (<code>128 * D</code>) bits at once. <code>M</code> is <code>128 * D</code> bits instead of 128 bits and is split into 128-bit blocks, each of them updating a different AEGIS-256 state.<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.2-3">Steps:<a href="#section-5.5.2-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5.2-4">
-<pre>
-m = Split(M, 128)
-
-for i in 0..D:
-    V'[0,i] = AESRound(V[5,i], V[0,i] ^ m[i])
-    V'[1,i] = AESRound(V[0,i], V[1,i])
-    V'[2,i] = AESRound(V[1,i], V[2,i])
-    V'[3,i] = AESRound(V[2,i], V[3,i])
-    V'[4,i] = AESRound(V[3,i], V[4,i])
-    V'[5,i] = AESRound(V[4,i], V[5,i])
-
-    V[0,i]  = V'[0,i]
-    V[1,i]  = V'[1,i]
-    V[2,i]  = V'[2,i]
-    V[3,i]  = V'[3,i]
-    V[4,i]  = V'[4,i]
-    V[5,i]  = V'[5,i]
 </pre><a href="#section-5.5.2-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3838,7 +3838,7 @@ As shown in <span>[<a href="#SSI24" class="cite xref">SSI24</a>]</span>, with 25
 <dd class="break"></dd>
 <dt id="TEST-VECTORS">[TEST-VECTORS]</dt>
         <dd>
-<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 55f92c37</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/55f92c37/test-vectors</a>&gt;</span>. </dd>
+<span class="refTitle">"AEGIS Test Vectors"</span>, <span class="refContent">commit 8e289c40</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/8e289c40/test-vectors">https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/8e289c40/test-vectors</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="VV18">[VV18]</dt>
       <dd>
@@ -4760,14 +4760,14 @@ nonce : 101112131415161718191a1b1c1d1e1f
 
 ad    : 0102030401020304
 
-msg   : 04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        0405060704050607
+msg   : 05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        0506070805060708
 
 ct    : 73110d21a920608fd77b580f1e442808
         7a7365cb153b4eeca6b62e1a70f7f9a8
@@ -4890,14 +4890,14 @@ nonce : 101112131415161718191a1b1c1d1e1f
 
 ad    : 0102030401020304
 
-msg   : 04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        04050607040506070405060704050607
-        0405060704050607
+msg   : 05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        05060708050607080506070805060708
+        0506070805060708
 
 ct    : bec109547f8316d598b3b7d947ad4c0e
         f5b98e217cffa0d858ad49ae34109a95
@@ -5115,7 +5115,7 @@ tag256 : b36a16ef07c36d75a91f437502f24f54
 <p id="appendix-B-3">We would like to thank the following individuals for their contributions:<a href="#appendix-B-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-4.1">
-          <p id="appendix-B-4.1.1">Eric Lagergren and Daniel Bleichenbacher for catching a broken test vector, and Daniel Bleichenbacher for many helpful suggestions.<a href="#appendix-B-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-4.1.1">Eric Lagergren, Daniel Bleichenbacher, and Conrad Ludgate for catching invalid test vectors, and Daniel Bleichenbacher for many helpful suggestions.<a href="#appendix-B-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-4.2">
           <p id="appendix-B-4.2.1">Soatok Dreamseeker for his early review of the draft and for suggesting the addition of negative test vectors.<a href="#appendix-B-4.2.1" class="pilcrow">¶</a></p>

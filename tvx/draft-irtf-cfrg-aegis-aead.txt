@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 21 August 2025                           Individual Contributor
-                                                        17 February 2025
+Expires: 19 October 2025                          Individual Contributor
+                                                           17 April 2025
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 August 2025.
+   This Internet-Draft will expire on 19 October 2025.
 
 Copyright Notice
 
@@ -1745,7 +1745,8 @@ else:              # 256 bits
 if D > 1:
     # Absorb tags into state 0; other states are not used anymore
     for v in Split(tags, 256):
-        Absorb(ZeroPad(v, R))
+        x0, x1 = Split(v, 128)
+        Absorb(ZeroPad(x0, R / 2) || ZeroPad(x1, R / 2))
 
     u = LE64(D) || LE64(tag_len_bits)
     t = ZeroPad(V[2,0] ^ u, R)
@@ -2115,9 +2116,9 @@ return tag
               <https://doi.org/10.1049/ise2.12109>.
 
    [TEST-VECTORS]
-              "AEGIS Test Vectors", commit 55f92c37, 2025,
+              "AEGIS Test Vectors", commit 8e289c40, 2025,
               <https://github.com/cfrg/draft-irtf-cfrg-aegis-
-              aead/tree/55f92c37/test-vectors>.
+              aead/tree/8e289c40/test-vectors>.
 
    [VV18]     Vaudenay, S. and D. Vizár, "Can Caesar Beat Galois?",
               Applied Cryptography and Network Security. ACNS 2018.
@@ -2778,14 +2779,14 @@ A.6.3.  Test Vector 2
 
    ad    : 0102030401020304
 
-   msg   : 04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           0405060704050607
+   msg   : 05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           0506070805060708
 
    ct    : 73110d21a920608fd77b580f1e442808
            7a7365cb153b4eeca6b62e1a70f7f9a8
@@ -2877,14 +2878,14 @@ A.7.3.  Test Vector 2
 
    ad    : 0102030401020304
 
-   msg   : 04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           04050607040506070405060704050607
-           0405060704050607
+   msg   : 05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           05060708050607080506070805060708
+           0506070805060708
 
    ct    : bec109547f8316d598b3b7d947ad4c0e
            f5b98e217cffa0d858ad49ae34109a95
@@ -2930,13 +2931,13 @@ A.8.2.  AEGISMAC-128X2 Test Vector
    tags128: 9f5f69928fa481fa86e8a51e072a9b29
             eeaa77a356f796b427f6a54f52ae0e20
 
-   tag128 : 7aa41edfd57a95c1108d83c63b8d4d01
+   tag128 : 6873ee34e6b5c59143b6d35c5e4f2c6e
 
    tags256: 22cdcf558d0338b6ad8fbba4da7307d3
             0bd685fff23dc9d41f598c2a7ea44055
 
-   tag256 : 55b6449929cd2b01d04786e57698b3dd
-            fb5cbf6e421bbd022637a33d60f40294
+   tag256 : afcba3fc2d63c8d6c7f2d63f3ec8fbbb
+            af022e15ac120e78ffa7755abccd959c
 
 A.8.3.  AEGISMAC-128X4 Test Vector
 
@@ -2953,7 +2954,7 @@ A.8.3.  AEGISMAC-128X4 Test Vector
             c7b5e6625a5765d04af26cf22adc1282
             4c8cf3b4dbb85f379e13b04a8d06bca7
 
-   tag128 : 46a194ea4337bb32c2186a99e312f3a7
+   tag128 : c45a98fd9ab8956ce616eb008cfe4e53
 
    tags256: d595732bdf230a1441978414cd8cfa39
             ecef6ad0ee1e65ae530006ca5d5f4481
@@ -2962,8 +2963,8 @@ A.8.3.  AEGISMAC-128X4 Test Vector
             1264a15143eb8c3d9f17754099f147e3
             401c83c0d5afc70fd0d68bfd17f9280f
 
-   tag256 : ea884072699569532fb68ae9fb2653c9
-            ffef3e974333d3a17d77be02453cc12f
+   tag256 : 26fdc76f41b1da7aec7779f6e964beae
+            8904e662f05aca8345ae3befb357412a
 
 A.8.4.  AEGISMAC-256 Test Vector
 
@@ -3044,9 +3045,9 @@ Acknowledgments
    We would like to thank the following individuals for their
    contributions:
 
-   *  Eric Lagergren and Daniel Bleichenbacher for catching a broken
-      test vector, and Daniel Bleichenbacher for many helpful
-      suggestions.
+   *  Eric Lagergren, Daniel Bleichenbacher, and Conrad Ludgate for
+      catching invalid test vectors, and Daniel Bleichenbacher for many
+      helpful suggestions.
 
    *  Soatok Dreamseeker for his early review of the draft and for
       suggesting the addition of negative test vectors.
