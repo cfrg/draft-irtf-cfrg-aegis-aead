@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-01T00:54:23.956144+00:00",
+  "timestamp": "2025-04-20T00:52:55.922356+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -8945,6 +8945,90 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 90,
+      "id": "PR_kwDOKeDGj86S-3w4",
+      "title": "Use the correct input message in two test vectors",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/90",
+      "state": "MERGED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reported by @conradludgate, thanks!",
+      "createdAt": "2025-04-17T12:22:02Z",
+      "updatedAt": "2025-04-17T19:44:34Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "14c6430088491d728a750a2a8b58a2175bc4e89b",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "tvx",
+      "headRefOid": "36cbb11cd439dbe0085780d421477ac388bff01f",
+      "closedAt": "2025-04-17T19:44:30Z",
+      "mergedAt": "2025-04-17T19:44:30Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "1e08d00d31bfaeb63ac004d926790f0666446655"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@conradludgate Could you confirm that all the test vectors appear correct to you after this update?",
+          "createdAt": "2025-04-17T12:23:08Z",
+          "updatedAt": "2025-04-17T12:23:08Z"
+        },
+        {
+          "author": "conradludgate",
+          "authorAssociation": "NONE",
+          "body": "Is it worth considering an alternative patch where the msg remains the same (consistent with all other test vectors), and the ciphertext/tags are updated?",
+          "createdAt": "2025-04-17T12:43:44Z",
+          "updatedAt": "2025-04-17T12:43:44Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Either approach works!\r\n\r\nI\u2019ve applied your suggestion. Do the new outputs align correctly with your implementation?",
+          "createdAt": "2025-04-17T13:06:00Z",
+          "updatedAt": "2025-04-17T13:06:00Z"
+        },
+        {
+          "author": "conradludgate",
+          "authorAssociation": "NONE",
+          "body": "> Do the new outputs align correctly with your implementation?\r\n\r\nYes, they do",
+          "createdAt": "2025-04-17T13:38:17Z",
+          "updatedAt": "2025-04-17T13:38:17Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj86lb8CW",
+          "commit": {
+            "abbreviatedOid": "efd7feb"
+          },
+          "author": "conradludgate",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "This looks correct to me. It passes on my implementation. Thanks!",
+          "createdAt": "2025-04-17T12:29:02Z",
+          "updatedAt": "2025-04-17T12:29:02Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKeDGj86lgbpA",
+          "commit": {
+            "abbreviatedOid": "36cbb11"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks Conrad!",
+          "createdAt": "2025-04-17T19:42:46Z",
+          "updatedAt": "2025-04-17T19:42:46Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
