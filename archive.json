@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-20T00:52:55.922356+00:00",
+  "timestamp": "2025-04-24T00:49:25.450211+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -1197,6 +1197,30 @@
           "body": "We can leave it as is. If that kind of change is necessary, the RFC editor will tell us.",
           "createdAt": "2025-01-06T21:44:44Z",
           "updatedAt": "2025-01-06T21:44:44Z"
+        }
+      ]
+    },
+    {
+      "number": 91,
+      "id": "I_kwDOKeDGj86zaz7B",
+      "title": "Shepherd review",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/91",
+      "state": "CLOSED",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Hi @samuel-lucas6,\n\nIn case you missed it because the email address used in the document gets a ton of spam, check your inbox. Stanislav has written the shepherd review and is waiting for your response.\n\n",
+      "createdAt": "2025-04-22T07:18:28Z",
+      "updatedAt": "2025-04-22T16:43:57Z",
+      "closedAt": "2025-04-22T16:43:57Z",
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for letting me know, I haven't been checking that email lately. I'll take a look now so going to close this.",
+          "createdAt": "2025-04-22T16:43:56Z",
+          "updatedAt": "2025-04-22T16:43:56Z"
         }
       ]
     }
