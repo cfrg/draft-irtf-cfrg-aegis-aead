@@ -1892,25 +1892,17 @@ Security analyses of AEGIS can be found in {{AEGIS}}, {{M14}}, {{FLLW17}}, {{ENP
 
 IANA has assigned the following identifiers in the AEAD Algorithms Registry:
 
-| Algorithm Name   | ID   |
-| ---------------- | ---- |
-| `AEAD_AEGIS128L` | `32` |
-| `AEAD_AEGIS256`  | `33` |
+| Algorithm Name    | ID   |
+| ----------------- | ---- |
+| `AEAD_AEGIS128L`  | `32` |
+| `AEAD_AEGIS256`   | `33` |
+| `AEAD_AEGIS128X2` | `34` |
+| `AEAD_AEGIS128X4` | `35` |
+| `AEAD_AEGIS256X2` | `36` |
+| `AEAD_AEGIS256X4` | `37` |
 {: title="AEGIS entries in the AEAD Algorithms Registry"}
 
 IANA is requested to update the references of these entries to refer to the final version of this document.
-
-IANA is also requested to register the following entries in the AEAD Algorithms Registry:
-
-| Algorithm Name    | ID  |
-| ----------------- | --- |
-| `AEAD_AEGIS128X2` |     |
-| `AEAD_AEGIS128X4` |     |
-| `AEAD_AEGIS256X2` |     |
-| `AEAD_AEGIS256X4` |     |
-{: title="Missing AEGIS entries in the AEAD Algorithms Registry"}
-
-The identifier is left to be assigned by the IANA expert.
 
 --- back
 
