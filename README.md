@@ -66,6 +66,18 @@ Project Wycheproof includes additional test vectors:
 
 Project Rooterberg also includes an extensive set of [test vectors for AEGIS variants](https://github.com/bleichenbacher-daniel/Rooterberg/tree/main/test_vectors/aead).
 
+## Approvals and Certifications
+
+The AEGIS authenticated encryption algorithms have received recognition and approval from several authoritative organizations in the field of cryptography and information security.
+
+### OWASP Application Security Verification Standard
+
+**AEGIS-128L and AEGIS-256** are both approved authenticated encryption algorithms in the [OWASP Application Security Verification Standard](https://owasp.org/www-project-application-security-verification-standard/).
+
+### Belgian National Data Protection Authority
+
+**AEGIS-256** has received approval from the [Belgian National Data Protection Authority](https://www.autoriteprotectiondonnees.be/publications/avis-n-49-2023.pdf).
+
 ## Contributing
 
 See the
