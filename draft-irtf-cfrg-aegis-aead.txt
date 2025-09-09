@@ -856,7 +856,7 @@ Table of Contents
 
    Inputs:
 
-   *  msg: the 128-bit block to be absorbed.
+   *  M: the 128-bit block to be absorbed.
 
    Modifies:
 
