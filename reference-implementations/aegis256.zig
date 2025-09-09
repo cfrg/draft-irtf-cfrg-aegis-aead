@@ -188,8 +188,8 @@ fn Aegis256_(comptime tag_bits: u9) type {
             }
 
             const expected_tag = aegis.finalize(ad.len, msg.len);
-            if (!crypto.utils.timingSafeEql([expected_tag.len]u8, expected_tag, tag)) {
-                crypto.utils.secureZero(u8, msg);
+            if (!crypto.timing_safe.eql([expected_tag.len]u8, expected_tag, tag)) {
+                @memset(msg, 0);
                 return error.AuthenticationFailed;
             }
         }
