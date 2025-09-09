@@ -291,7 +291,7 @@ Table of Contents
 
    *  AESRound(in, rk): a single round of the AES encryption round
       function, which is the composition of the SubBytes, ShiftRows,
-      MixColums, and AddRoundKey transformations, as defined in
+      MixColumns, and AddRoundKey transformations, as defined in
       Section 5 of [FIPS-AES].  Here, in is the 128-bit AES input state,
       and rk is the 128-bit round key.
 
