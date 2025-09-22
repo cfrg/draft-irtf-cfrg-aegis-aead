@@ -1068,8 +1068,6 @@ def aegis128x2_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> 
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
     result = state.finalize_mac(len(data) * 8, tag_bits)
-    if isinstance(result, tuple):
-        result = result[0]
     return result[:tag_len]
 
 
@@ -1090,8 +1088,6 @@ def aegis128x4_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> 
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
     result = state.finalize_mac(len(data) * 8, tag_bits)
-    if isinstance(result, tuple):
-        result = result[0]
     return result[:tag_len]
 
 
@@ -1112,8 +1108,6 @@ def aegis256x2_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> 
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
     result = state.finalize_mac(len(data) * 8, tag_bits)
-    if isinstance(result, tuple):
-        result = result[0]
     return result[:tag_len]
 
 
@@ -1134,8 +1128,6 @@ def aegis256x4_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> 
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
     result = state.finalize_mac(len(data) * 8, tag_bits)
-    if isinstance(result, tuple):
-        result = result[0]
     return result[:tag_len]
 
 
