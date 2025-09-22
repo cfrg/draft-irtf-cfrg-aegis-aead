@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable
+from collections.abc import Iterable
 
 # AES S-box, copied from FIPS-197.
 SBOX: tuple[int, ...] = (
@@ -266,7 +266,14 @@ SBOX: tuple[int, ...] = (
 
 
 def _xtime(byte: int) -> int:
-    """Multiply by 0x02 in GF(2^8)."""
+    """Multiply by 0x02 in GF(2^8).
+
+    Args:
+        byte: Byte value to multiply.
+
+    Returns:
+        Result of multiplication by 0x02 in GF(2^8).
+    """
     byte <<= 1
     if byte & 0x100:
         byte ^= 0x11B
@@ -274,6 +281,14 @@ def _xtime(byte: int) -> int:
 
 
 def _precompute(table: Iterable[int]) -> tuple[int, ...]:
+    """Pre-compute lookup table values.
+
+    Args:
+        table: Iterable of integer values.
+
+    Returns:
+        Tuple of pre-computed values.
+    """
     return tuple(table)
 
 
@@ -282,11 +297,21 @@ GMUL3: tuple[int, ...] = _precompute(GMUL2[i] ^ i for i in range(256))
 
 
 def _sub_bytes(state: bytearray) -> None:
+    """Apply AES SubBytes transformation.
+
+    Args:
+        state: 16-byte state array (modified in place).
+    """
     for i, b in enumerate(state):
         state[i] = SBOX[b]
 
 
 def _shift_rows(state: bytearray) -> None:
+    """Apply AES ShiftRows transformation.
+
+    Args:
+        state: 16-byte state array (modified in place).
+    """
     # State is stored in AES column-major order.
     state[1], state[5], state[9], state[13] = state[5], state[9], state[13], state[1]
     state[2], state[6], state[10], state[14] = state[10], state[14], state[2], state[6]
@@ -294,6 +319,12 @@ def _shift_rows(state: bytearray) -> None:
 
 
 def _mix_single_column(s: bytearray, idx: int) -> None:
+    """Mix a single column in AES MixColumns.
+
+    Args:
+        s: State array.
+        idx: Column starting index.
+    """
     a0, a1, a2, a3 = s[idx], s[idx + 1], s[idx + 2], s[idx + 3]
     s[idx] = GMUL2[a0] ^ GMUL3[a1] ^ a2 ^ a3
     s[idx + 1] = a0 ^ GMUL2[a1] ^ GMUL3[a2] ^ a3
@@ -302,11 +333,22 @@ def _mix_single_column(s: bytearray, idx: int) -> None:
 
 
 def _mix_columns(state: bytearray) -> None:
+    """Apply AES MixColumns transformation.
+
+    Args:
+        state: 16-byte state array (modified in place).
+    """
     for col in range(0, 16, 4):
         _mix_single_column(state, col)
 
 
 def _add_round_key(state: bytearray, round_key: bytes) -> None:
+    """Apply AES AddRoundKey transformation.
+
+    Args:
+        state: 16-byte state array (modified in place).
+        round_key: 16-byte round key.
+    """
     for i, k in enumerate(round_key):
         state[i] ^= k
 
@@ -332,4 +374,4 @@ def aes_round(block: bytes, round_key: bytes) -> bytes:
     return bytes(state)
 
 
-__all__ = ["aes_round", "GMUL2", "GMUL3", "SBOX"]
+__all__ = ["aes_round"]

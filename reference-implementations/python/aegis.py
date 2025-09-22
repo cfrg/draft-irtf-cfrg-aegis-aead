@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
-from typing import Iterator, List, Sequence, Tuple
 
 from .aes import aes_round
 
@@ -29,7 +29,7 @@ C0 = bytes(
         0xE9,
         0x79,
         0x62,
-    ]
+    ],
 )
 C1 = bytes(
     [
@@ -49,13 +49,24 @@ C1 = bytes(
         0xB5,
         0x28,
         0xDD,
-    ]
+    ],
 )
 
 VALID_TAG_BYTES = (16, 32)
 
 
 def xor_bytes(*blocks: bytes) -> bytes:
+    """XOR multiple byte strings together.
+
+    Args:
+        *blocks: Variable number of byte strings to XOR.
+
+    Returns:
+        XORed result as bytes.
+
+    Raises:
+        ValueError: If blocks have different lengths.
+    """
     if not blocks:
         return b""
     result = bytearray(blocks[0])
@@ -68,12 +79,36 @@ def xor_bytes(*blocks: bytes) -> bytes:
 
 
 def and_bytes(a: bytes, b: bytes) -> bytes:
+    """Perform bitwise AND on two byte strings.
+
+    Args:
+        a: First byte string.
+        b: Second byte string.
+
+    Returns:
+        Bitwise AND result as bytes.
+
+    Raises:
+        ValueError: If byte strings have different lengths.
+    """
     if len(a) != len(b):
         raise ValueError("Both blocks must have the same length")
     return bytes(x & y for x, y in zip(a, b))
 
 
 def zero_pad(data: bytes, block_size: int) -> bytes:
+    """Pad data with zeros to make it a multiple of block_size.
+
+    Args:
+        data: Input data to pad.
+        block_size: Target block size.
+
+    Returns:
+        Padded data as bytes.
+
+    Raises:
+        ValueError: If block_size is not positive.
+    """
     if block_size <= 0:
         raise ValueError("block_size must be positive")
     remainder = len(data) % block_size
@@ -83,6 +118,18 @@ def zero_pad(data: bytes, block_size: int) -> bytes:
 
 
 def iter_blocks(data: bytes, block_size: int) -> Iterator[bytes]:
+    """Iterate over data in fixed-size blocks.
+
+    Args:
+        data: Input data (must be multiple of block_size).
+        block_size: Size of each block.
+
+    Yields:
+        Fixed-size blocks of data.
+
+    Raises:
+        ValueError: If block_size is not positive or data length is not a multiple.
+    """
     if block_size <= 0:
         raise ValueError("block_size must be positive")
     if len(data) % block_size != 0:
@@ -92,7 +139,20 @@ def iter_blocks(data: bytes, block_size: int) -> Iterator[bytes]:
         yield data[offset : offset + block_size]
 
 
-def split(data: bytes, block_size: int, count: int) -> List[bytes]:
+def split(data: bytes, block_size: int, count: int) -> list[bytes]:
+    """Split data into a specific number of equal-sized blocks.
+
+    Args:
+        data: Input data to split.
+        block_size: Size of each block.
+        count: Number of blocks expected.
+
+    Returns:
+        List of blocks.
+
+    Raises:
+        ValueError: If data length doesn't match expected size.
+    """
     expected = block_size * count
     if len(data) != expected:
         raise ValueError("data length does not match expected block count")
@@ -100,16 +160,45 @@ def split(data: bytes, block_size: int, count: int) -> List[bytes]:
 
 
 def le64(value: int) -> bytes:
+    """Convert integer to 8-byte little-endian representation.
+
+    Args:
+        value: Integer value to convert.
+
+    Returns:
+        8-byte little-endian representation.
+    """
     return value.to_bytes(8, "little")
 
 
 def validate_tag_length(tag_len: int) -> int:
+    """Validate and convert tag length from bytes to bits.
+
+    Args:
+        tag_len: Tag length in bytes (must be 16 or 32).
+
+    Returns:
+        Tag length in bits.
+
+    Raises:
+        ValueError: If tag_len is not 16 or 32.
+    """
     if tag_len not in VALID_TAG_BYTES:
         raise ValueError("tag_len must be 16 or 32 bytes")
     return tag_len * 8
 
 
-def update_128l(state: Sequence[bytes], m0: bytes, m1: bytes) -> List[bytes]:
+def update_128l(state: Sequence[bytes], m0: bytes, m1: bytes) -> list[bytes]:
+    """Update AEGIS-128L state with two message blocks.
+
+    Args:
+        state: Current 8-element state.
+        m0: First message block (16 bytes).
+        m1: Second message block (16 bytes).
+
+    Returns:
+        Updated state as list of 8 blocks.
+    """
     s0, s1, s2, s3, s4, s5, s6, s7 = state
     new0 = aes_round(s7, xor_bytes(s0, m0))
     new1 = aes_round(s0, s1)
@@ -122,7 +211,16 @@ def update_128l(state: Sequence[bytes], m0: bytes, m1: bytes) -> List[bytes]:
     return [new0, new1, new2, new3, new4, new5, new6, new7]
 
 
-def update_256(state: Sequence[bytes], m: bytes) -> List[bytes]:
+def update_256(state: Sequence[bytes], m: bytes) -> list[bytes]:
+    """Update AEGIS-256 state with one message block.
+
+    Args:
+        state: Current 6-element state.
+        m: Message block (16 bytes).
+
+    Returns:
+        Updated state as list of 6 blocks.
+    """
     s0, s1, s2, s3, s4, s5 = state
     new0 = aes_round(s5, xor_bytes(s0, m))
     new1 = aes_round(s0, s1)
@@ -135,6 +233,14 @@ def update_256(state: Sequence[bytes], m: bytes) -> List[bytes]:
 
 @dataclass
 class AEGIS128LState:
+    """AEGIS-128L state for encryption/decryption operations.
+
+    Attributes:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        state: Internal 8-element state (initialized after construction).
+    """
+
     key: bytes
     nonce: bytes
 
@@ -144,7 +250,7 @@ class AEGIS128LState:
         k = self.key
         n = self.nonce
         # Initial state before the 10 update rounds.
-        self.state: List[bytes] = [
+        self.state: list[bytes] = [
             xor_bytes(k, n),
             C1,
             C0,
@@ -164,7 +270,7 @@ class AEGIS128LState:
         m0, m1 = block[:BLOCK_BYTES], block[BLOCK_BYTES:]
         self.update(m0, m1)
 
-    def _keystream_parts(self) -> Tuple[bytes, bytes]:
+    def _keystream_parts(self) -> tuple[bytes, bytes]:
         s0, s1, s2, s3, s4, s5, s6, s7 = self.state
         z0 = xor_bytes(s1, s6, and_bytes(s2, s3))
         z1 = xor_bytes(s2, s5, and_bytes(s6, s7))
@@ -222,6 +328,14 @@ class AEGIS128LState:
 
 @dataclass
 class AEGIS256State:
+    """AEGIS-256 state for encryption/decryption operations.
+
+    Attributes:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        state: Internal 6-element state (initialized after construction).
+    """
+
     key: bytes
     nonce: bytes
 
@@ -231,7 +345,7 @@ class AEGIS256State:
         k0, k1 = self.key[:BLOCK_BYTES], self.key[BLOCK_BYTES:]
         n0, n1 = self.nonce[:BLOCK_BYTES], self.nonce[BLOCK_BYTES:]
         # Init procedure before the 4 round schedule.
-        self.state: List[bytes] = [
+        self.state: list[bytes] = [
             xor_bytes(k0, n0),
             xor_bytes(k1, n1),
             C1,
@@ -299,6 +413,17 @@ class AEGIS256State:
 
 @dataclass
 class AEGIS128XState:
+    """AEGIS-128X state for parallel encryption/decryption operations.
+
+    Attributes:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        degree: Parallelization degree (1, 2, or 4).
+        state: Internal 8xD-element state where D is the degree.
+        ctx: Per-lane context values.
+        rate: Number of bytes processed per update.
+    """
+
     key: bytes
     nonce: bytes
     degree: int
@@ -310,7 +435,7 @@ class AEGIS128XState:
             raise ValueError("degree must be 1, 2, or 4")
         self.half_rate = BLOCK_BYTES * self.degree
         self.rate = self.half_rate * 2
-        self.state: List[List[bytes]] = [[b""] * self.degree for _ in range(8)]
+        self.state: list[list[bytes]] = [[b""] * self.degree for _ in range(8)]
         base = xor_bytes(self.key, self.nonce)
         for idx in range(self.degree):
             # Each lane starts identically; contexts differentiate them later.
@@ -344,7 +469,7 @@ class AEGIS128XState:
     def update(self, m0: bytes, m1: bytes) -> None:
         blocks0 = split(m0, BLOCK_BYTES, self.degree)
         blocks1 = split(m1, BLOCK_BYTES, self.degree)
-        new_state: List[List[bytes]] = [[] for _ in range(8)]
+        new_state: list[list[bytes]] = [[] for _ in range(8)]
         for values in zip(*self.state, blocks0, blocks1):
             s0, s1, s2, s3, s4, s5, s6, s7, block0, block1 = values
             new_state[0].append(aes_round(s7, xor_bytes(s0, block0)))
@@ -360,9 +485,9 @@ class AEGIS128XState:
     def absorb_block(self, block: bytes) -> None:
         self.update(block[: self.half_rate], block[self.half_rate :])
 
-    def _keystream_blocks(self) -> Tuple[List[bytes], List[bytes]]:
-        z0_parts: List[bytes] = []
-        z1_parts: List[bytes] = []
+    def _keystream_blocks(self) -> tuple[list[bytes], list[bytes]]:
+        z0_parts: list[bytes] = []
+        z1_parts: list[bytes] = []
         for s0, s1, s2, s3, s4, s5, s6, s7 in zip(*self.state):
             # Keystream word per lane.
             z0_parts.append(xor_bytes(s1, s6, and_bytes(s2, s3)))
@@ -438,8 +563,8 @@ class AEGIS128XState:
         raise ValueError("tag_bits must be 128 or 256")
 
     def finalize_mac(
-        self, data_bits: int, tag_bits: int, *, return_intermediate: bool = False
-    ):
+        self, data_bits: int, tag_bits: int, *, return_intermediate: bool = False,
+    ) -> bytes | tuple[bytes, bytes]:
         u = le64(data_bits) + le64(tag_bits)
         lane_values = [xor_bytes(s2, u) for s2 in self.state[2]]
         t = b"".join(lane_values)
@@ -452,7 +577,7 @@ class AEGIS128XState:
                 tags.extend(xor_bytes(*lane_blocks))
         elif tag_bits == 256:
             for lane_index, (head, tail) in enumerate(
-                zip(zip(*self.state[:4]), zip(*self.state[4:]))
+                zip(zip(*self.state[:4]), zip(*self.state[4:])),
             ):
                 if lane_index == 0:
                     continue
@@ -507,6 +632,17 @@ class AEGIS128XState:
 
 @dataclass
 class AEGIS256XState:
+    """AEGIS-256X state for parallel encryption/decryption operations.
+
+    Attributes:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        degree: Parallelization degree (1, 2, or 4).
+        state: Internal 6xD-element state where D is the degree.
+        ctx: Per-lane context values.
+        rate: Number of bytes processed per update.
+    """
+
     key: bytes
     nonce: bytes
     degree: int
@@ -517,7 +653,7 @@ class AEGIS256XState:
         if self.degree not in (1, 2, 4):
             raise ValueError("degree must be 1, 2, or 4")
         self.rate = BLOCK_BYTES * self.degree
-        self.state: List[List[bytes]] = [[b""] * self.degree for _ in range(6)]
+        self.state: list[list[bytes]] = [[b""] * self.degree for _ in range(6)]
         k0, k1 = self.key[:BLOCK_BYTES], self.key[BLOCK_BYTES:]
         n0, n1 = self.nonce[:BLOCK_BYTES], self.nonce[BLOCK_BYTES:]
         for lane in range(self.degree):
@@ -556,7 +692,7 @@ class AEGIS256XState:
 
     def update(self, block: bytes) -> None:
         lanes = split(block, BLOCK_BYTES, self.degree)
-        new_state: List[List[bytes]] = [[] for _ in range(6)]
+        new_state: list[list[bytes]] = [[] for _ in range(6)]
         for lane in range(self.degree):
             s0, s1, s2, s3, s4, s5 = (self.state[i][lane] for i in range(6))
             new_state[0].append(aes_round(s5, xor_bytes(s0, lanes[lane])))
@@ -620,8 +756,8 @@ class AEGIS256XState:
         raise ValueError("tag_bits must be 128 or 256")
 
     def finalize_mac(
-        self, data_bits: int, tag_bits: int, *, return_intermediate: bool = False
-    ):
+        self, data_bits: int, tag_bits: int, *, return_intermediate: bool = False,
+    ) -> bytes | tuple[bytes, bytes]:
         u = le64(data_bits) + le64(tag_bits)
         t = b"".join([xor_bytes(s3, u) for s3 in self.state[3]])
         for _ in range(7):
@@ -636,7 +772,7 @@ class AEGIS256XState:
                 tags.extend(xor_bytes(*lane_blocks))
         elif tag_bits == 256:
             for lane_index, (head, tail) in enumerate(
-                zip(zip(*self.state[:3]), zip(*self.state[3:]))
+                zip(zip(*self.state[:3]), zip(*self.state[3:])),
             ):
                 if lane_index == 0:
                     continue
@@ -684,8 +820,8 @@ class AEGIS256XState:
 
 
 def _encrypt_aegis128x(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes, tag_len: int, degree: int
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes, tag_len: int, degree: int,
+) -> tuple[bytes, bytes]:
     tag_bits = validate_tag_length(tag_len)
     state = AEGIS128XState(key, nonce, degree)
     for block in iter_blocks(zero_pad(ad, state.rate), state.rate):
@@ -694,13 +830,13 @@ def _encrypt_aegis128x(
     ciphertext = bytearray()
     for block in iter_blocks(padded_msg, state.rate):
         ciphertext.extend(state.enc_block(block))
-    ciphertext = bytes(ciphertext)[: len(msg)]
+    ciphertext_bytes = bytes(ciphertext)[: len(msg)]
     tag = state.finalize(len(ad) * 8, len(msg) * 8, tag_bits)[:tag_len]
-    return ciphertext, tag
+    return ciphertext_bytes, tag
 
 
 def _decrypt_aegis128x(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes, degree: int
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes, degree: int,
 ) -> bytes:
     tag_bits = validate_tag_length(len(tag))
     state = AEGIS128XState(key, nonce, degree)
@@ -722,8 +858,8 @@ def _decrypt_aegis128x(
 
 
 def _encrypt_aegis256x(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes, tag_len: int, degree: int
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes, tag_len: int, degree: int,
+) -> tuple[bytes, bytes]:
     tag_bits = validate_tag_length(tag_len)
     state = AEGIS256XState(key, nonce, degree)
     for block in iter_blocks(zero_pad(ad, state.rate), state.rate):
@@ -732,13 +868,13 @@ def _encrypt_aegis256x(
     ciphertext = bytearray()
     for block in iter_blocks(padded_msg, state.rate):
         ciphertext.extend(state.enc_block(block))
-    ciphertext = bytes(ciphertext)[: len(msg)]
+    ciphertext_bytes = bytes(ciphertext)[: len(msg)]
     tag = state.finalize(len(ad) * 8, len(msg) * 8, tag_bits)[:tag_len]
-    return ciphertext, tag
+    return ciphertext_bytes, tag
 
 
 def _decrypt_aegis256x(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes, degree: int
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes, degree: int,
 ) -> bytes:
     tag_bits = validate_tag_length(len(tag))
     state = AEGIS256XState(key, nonce, degree)
@@ -760,88 +896,264 @@ def _decrypt_aegis256x(
 
 
 def encrypt_aegis128x2(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16,
+) -> tuple[bytes, bytes]:
+    """Encrypt with AEGIS-128X2 (2-way parallel).
+
+    Args:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        msg: Plaintext message.
+        ad: Associated data (optional).
+        tag_len: Authentication tag length in bytes (16 or 32).
+
+    Returns:
+        Tuple of (ciphertext, authentication_tag).
+    """
     return _encrypt_aegis128x(key, nonce, msg, ad, tag_len, degree=2)
 
 
 def decrypt_aegis128x2(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b""
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b"",
 ) -> bytes:
+    """Decrypt with AEGIS-128X2 (2-way parallel).
+
+    Args:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        ct: Ciphertext to decrypt.
+        tag: Authentication tag.
+        ad: Associated data (optional).
+
+    Returns:
+        Plaintext message.
+
+    Raises:
+        ValueError: If authentication fails.
+    """
     return _decrypt_aegis128x(key, nonce, ct, tag, ad, degree=2)
 
 
 def encrypt_aegis128x4(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16,
+) -> tuple[bytes, bytes]:
+    """Encrypt with AEGIS-128X4 (4-way parallel).
+
+    Args:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        msg: Plaintext message.
+        ad: Associated data (optional).
+        tag_len: Authentication tag length in bytes (16 or 32).
+
+    Returns:
+        Tuple of (ciphertext, authentication_tag).
+    """
     return _encrypt_aegis128x(key, nonce, msg, ad, tag_len, degree=4)
 
 
 def decrypt_aegis128x4(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b""
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b"",
 ) -> bytes:
+    """Decrypt with AEGIS-128X4 (4-way parallel).
+
+    Args:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        ct: Ciphertext to decrypt.
+        tag: Authentication tag.
+        ad: Associated data (optional).
+
+    Returns:
+        Plaintext message.
+
+    Raises:
+        ValueError: If authentication fails.
+    """
     return _decrypt_aegis128x(key, nonce, ct, tag, ad, degree=4)
 
 
 def encrypt_aegis256x2(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16,
+) -> tuple[bytes, bytes]:
+    """Encrypt with AEGIS-256X2 (2-way parallel).
+
+    Args:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        msg: Plaintext message.
+        ad: Associated data (optional).
+        tag_len: Authentication tag length in bytes (16 or 32).
+
+    Returns:
+        Tuple of (ciphertext, authentication_tag).
+    """
     return _encrypt_aegis256x(key, nonce, msg, ad, tag_len, degree=2)
 
 
 def decrypt_aegis256x2(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b""
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b"",
 ) -> bytes:
+    """Decrypt with AEGIS-256X2 (2-way parallel).
+
+    Args:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        ct: Ciphertext to decrypt.
+        tag: Authentication tag.
+        ad: Associated data (optional).
+
+    Returns:
+        Plaintext message.
+
+    Raises:
+        ValueError: If authentication fails.
+    """
     return _decrypt_aegis256x(key, nonce, ct, tag, ad, degree=2)
 
 
 def encrypt_aegis256x4(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16,
+) -> tuple[bytes, bytes]:
+    """Encrypt with AEGIS-256X4 (4-way parallel).
+
+    Args:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        msg: Plaintext message.
+        ad: Associated data (optional).
+        tag_len: Authentication tag length in bytes (16 or 32).
+
+    Returns:
+        Tuple of (ciphertext, authentication_tag).
+    """
     return _encrypt_aegis256x(key, nonce, msg, ad, tag_len, degree=4)
 
 
 def decrypt_aegis256x4(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b""
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b"",
 ) -> bytes:
+    """Decrypt with AEGIS-256X4 (4-way parallel).
+
+    Args:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        ct: Ciphertext to decrypt.
+        tag: Authentication tag.
+        ad: Associated data (optional).
+
+    Returns:
+        Plaintext message.
+
+    Raises:
+        ValueError: If authentication fails.
+    """
     return _decrypt_aegis256x(key, nonce, ct, tag, ad, degree=4)
 
 
 def aegis128x2_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> bytes:
+    """Compute AEGIS-128X2 MAC (2-way parallel).
+
+    Args:
+        key: 16-byte key.
+        nonce: 16-byte nonce.
+        data: Data to authenticate.
+        tag_len: MAC tag length in bytes (16 or 32).
+
+    Returns:
+        MAC tag.
+    """
     tag_bits = validate_tag_length(tag_len)
     state = AEGIS128XState(key, nonce, 2)
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
-    return state.finalize_mac(len(data) * 8, tag_bits)[:tag_len]
+    result = state.finalize_mac(len(data) * 8, tag_bits)
+    if isinstance(result, tuple):
+        result = result[0]
+    return result[:tag_len]
 
 
 def aegis128x4_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> bytes:
+    """Compute AEGIS-128X4 MAC (4-way parallel).
+
+    Args:
+        key: 16-byte key.
+        nonce: 16-byte nonce.
+        data: Data to authenticate.
+        tag_len: MAC tag length in bytes (16 or 32).
+
+    Returns:
+        MAC tag.
+    """
     tag_bits = validate_tag_length(tag_len)
     state = AEGIS128XState(key, nonce, 4)
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
-    return state.finalize_mac(len(data) * 8, tag_bits)[:tag_len]
+    result = state.finalize_mac(len(data) * 8, tag_bits)
+    if isinstance(result, tuple):
+        result = result[0]
+    return result[:tag_len]
 
 
 def aegis256x2_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> bytes:
+    """Compute AEGIS-256X2 MAC (2-way parallel).
+
+    Args:
+        key: 32-byte key.
+        nonce: 32-byte nonce.
+        data: Data to authenticate.
+        tag_len: MAC tag length in bytes (16 or 32).
+
+    Returns:
+        MAC tag.
+    """
     tag_bits = validate_tag_length(tag_len)
     state = AEGIS256XState(key, nonce, 2)
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
-    return state.finalize_mac(len(data) * 8, tag_bits)[:tag_len]
+    result = state.finalize_mac(len(data) * 8, tag_bits)
+    if isinstance(result, tuple):
+        result = result[0]
+    return result[:tag_len]
 
 
 def aegis256x4_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> bytes:
+    """Compute AEGIS-256X4 MAC (4-way parallel).
+
+    Args:
+        key: 32-byte key.
+        nonce: 32-byte nonce.
+        data: Data to authenticate.
+        tag_len: MAC tag length in bytes (16 or 32).
+
+    Returns:
+        MAC tag.
+    """
     tag_bits = validate_tag_length(tag_len)
     state = AEGIS256XState(key, nonce, 4)
     for block in iter_blocks(zero_pad(data, state.rate), state.rate):
         state.absorb_block(block)
-    return state.finalize_mac(len(data) * 8, tag_bits)[:tag_len]
+    result = state.finalize_mac(len(data) * 8, tag_bits)
+    if isinstance(result, tuple):
+        result = result[0]
+    return result[:tag_len]
 
 
 def encrypt_aegis128l(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16,
+) -> tuple[bytes, bytes]:
+    """Encrypt with AEGIS-128L.
+
+    Args:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        msg: Plaintext message.
+        ad: Associated data (optional).
+        tag_len: Authentication tag length in bytes (16 or 32).
+
+    Returns:
+        Tuple of (ciphertext, authentication_tag).
+    """
     tag_bits = validate_tag_length(tag_len)
     s = AEGIS128LState(key, nonce)
     for block in iter_blocks(zero_pad(ad, RATE_128L), RATE_128L):
@@ -850,14 +1162,29 @@ def encrypt_aegis128l(
     ciphertext = bytearray()
     for block in iter_blocks(padded_msg, RATE_128L):
         ciphertext.extend(s.enc_block(block))
-    ciphertext = bytes(ciphertext)[: len(msg)]
+    ciphertext_bytes = bytes(ciphertext)[: len(msg)]
     tag = s.finalize(len(ad) * 8, len(msg) * 8, tag_bits)[:tag_len]
-    return ciphertext, tag
+    return ciphertext_bytes, tag
 
 
 def decrypt_aegis128l(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b""
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b"",
 ) -> bytes:
+    """Decrypt with AEGIS-128L.
+
+    Args:
+        key: 16-byte encryption key.
+        nonce: 16-byte nonce.
+        ct: Ciphertext to decrypt.
+        tag: Authentication tag.
+        ad: Associated data (optional).
+
+    Returns:
+        Plaintext message.
+
+    Raises:
+        ValueError: If authentication fails.
+    """
     tag_bits = validate_tag_length(len(tag))
     s = AEGIS128LState(key, nonce)
     for block in iter_blocks(zero_pad(ad, RATE_128L), RATE_128L):
@@ -878,8 +1205,20 @@ def decrypt_aegis128l(
 
 
 def encrypt_aegis256(
-    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16
-) -> Tuple[bytes, bytes]:
+    key: bytes, nonce: bytes, msg: bytes, ad: bytes = b"", tag_len: int = 16,
+) -> tuple[bytes, bytes]:
+    """Encrypt with AEGIS-256.
+
+    Args:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        msg: Plaintext message.
+        ad: Associated data (optional).
+        tag_len: Authentication tag length in bytes (16 or 32).
+
+    Returns:
+        Tuple of (ciphertext, authentication_tag).
+    """
     tag_bits = validate_tag_length(tag_len)
     s = AEGIS256State(key, nonce)
     for block in iter_blocks(zero_pad(ad, RATE_256), RATE_256):
@@ -888,14 +1227,29 @@ def encrypt_aegis256(
     ciphertext = bytearray()
     for block in iter_blocks(padded_msg, RATE_256):
         ciphertext.extend(s.enc_block(block))
-    ciphertext = bytes(ciphertext)[: len(msg)]
+    ciphertext_bytes = bytes(ciphertext)[: len(msg)]
     tag = s.finalize(len(ad) * 8, len(msg) * 8, tag_bits)[:tag_len]
-    return ciphertext, tag
+    return ciphertext_bytes, tag
 
 
 def decrypt_aegis256(
-    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b""
+    key: bytes, nonce: bytes, ct: bytes, tag: bytes, ad: bytes = b"",
 ) -> bytes:
+    """Decrypt with AEGIS-256.
+
+    Args:
+        key: 32-byte encryption key.
+        nonce: 32-byte nonce.
+        ct: Ciphertext to decrypt.
+        tag: Authentication tag.
+        ad: Associated data (optional).
+
+    Returns:
+        Plaintext message.
+
+    Raises:
+        ValueError: If authentication fails.
+    """
     tag_bits = validate_tag_length(len(tag))
     s = AEGIS256State(key, nonce)
     for block in iter_blocks(zero_pad(ad, RATE_256), RATE_256):
@@ -916,6 +1270,17 @@ def decrypt_aegis256(
 
 
 def aegis128l_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> bytes:
+    """Compute AEGIS-128L MAC.
+
+    Args:
+        key: 16-byte key.
+        nonce: 16-byte nonce.
+        data: Data to authenticate.
+        tag_len: MAC tag length in bytes (16 or 32).
+
+    Returns:
+        MAC tag.
+    """
     tag_bits = validate_tag_length(tag_len)
     s = AEGIS128LState(key, nonce)
     for block in iter_blocks(zero_pad(data, RATE_128L), RATE_128L):
@@ -925,6 +1290,17 @@ def aegis128l_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> b
 
 
 def aegis256_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> bytes:
+    """Compute AEGIS-256 MAC.
+
+    Args:
+        key: 32-byte key.
+        nonce: 32-byte nonce.
+        data: Data to authenticate.
+        tag_len: MAC tag length in bytes (16 or 32).
+
+    Returns:
+        MAC tag.
+    """
     tag_bits = validate_tag_length(tag_len)
     s = AEGIS256State(key, nonce)
     for block in iter_blocks(zero_pad(data, RATE_256), RATE_256):
@@ -934,22 +1310,22 @@ def aegis256_mac(key: bytes, nonce: bytes, data: bytes, tag_len: int = 16) -> by
 
 
 __all__ = [
-    "encrypt_aegis128l",
-    "decrypt_aegis128l",
-    "encrypt_aegis256",
-    "decrypt_aegis256",
     "aegis128l_mac",
-    "aegis256_mac",
-    "encrypt_aegis128x2",
-    "decrypt_aegis128x2",
-    "encrypt_aegis128x4",
-    "decrypt_aegis128x4",
-    "encrypt_aegis256x2",
-    "decrypt_aegis256x2",
-    "encrypt_aegis256x4",
-    "decrypt_aegis256x4",
     "aegis128x2_mac",
     "aegis128x4_mac",
+    "aegis256_mac",
     "aegis256x2_mac",
     "aegis256x4_mac",
+    "decrypt_aegis128l",
+    "decrypt_aegis128x2",
+    "decrypt_aegis128x4",
+    "decrypt_aegis256",
+    "decrypt_aegis256x2",
+    "decrypt_aegis256x4",
+    "encrypt_aegis128l",
+    "encrypt_aegis128x2",
+    "encrypt_aegis128x4",
+    "encrypt_aegis256",
+    "encrypt_aegis256x2",
+    "encrypt_aegis256x4",
 ]

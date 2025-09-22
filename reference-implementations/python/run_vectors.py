@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Callable
 
 from . import aegis
 from .aes import aes_round
@@ -13,20 +14,47 @@ VECTORS = ROOT / "test-vectors"
 
 
 def hex_to_bytes(data: str) -> bytes:
+    """Convert hexadecimal string to bytes.
+
+    Args:
+        data: Hexadecimal string.
+
+    Returns:
+        Bytes representation.
+    """
     return bytes.fromhex(data)
 
 
 def require(condition: bool, message: str) -> None:
+    """Assert a condition with a custom message.
+
+    Args:
+        condition: Condition to check.
+        message: Error message if condition is False.
+
+    Raises:
+        AssertionError: If condition is False.
+    """
     if not condition:
         raise AssertionError(message)
 
 
-def load_json(name: str) -> list[dict]:
+def load_json(name: str) -> list[dict[str, Any]]:
+    """Load test vectors from JSON file.
+
+    Args:
+        name: JSON filename.
+
+    Returns:
+        List of test vector dictionaries.
+    """
     with (VECTORS / name).open("r", encoding="utf-8") as fh:
-        return json.load(fh)
+        data: list[dict[str, Any]] = json.load(fh)
+        return data
 
 
 def test_aes_round() -> None:
+    """Test AES round function against test vectors."""
     vectors = load_json("aesround-test-vector.json")
     for vec in vectors:
         block = hex_to_bytes(vec["in"])
@@ -37,6 +65,7 @@ def test_aes_round() -> None:
 
 
 def verify_update_128l() -> None:
+    """Verify AEGIS-128L state update function."""
     vec = load_json("aegis-128l-test-vectors.json")[0]
     state = [hex_to_bytes(vec[f"S{i}"]) for i in range(8)]
     m0 = hex_to_bytes(vec["M0"])
@@ -48,6 +77,7 @@ def verify_update_128l() -> None:
 
 
 def verify_update_256() -> None:
+    """Verify AEGIS-256 state update function."""
     vec = load_json("aegis-256-test-vectors.json")[0]
     state = [hex_to_bytes(vec[f"S{i}"]) for i in range(6)]
     m = hex_to_bytes(vec["M"])
@@ -58,8 +88,19 @@ def verify_update_256() -> None:
 
 
 def check_aead_vectors(
-    vectors: Sequence[dict], encrypt_fn, decrypt_fn, name: str
+    vectors: Sequence[dict[str, Any]],
+    encrypt_fn: Callable[..., tuple[bytes, bytes]],
+    decrypt_fn: Callable[..., bytes],
+    name: str,
 ) -> None:
+    """Test AEAD encryption/decryption functions against test vectors.
+
+    Args:
+        vectors: Test vectors.
+        encrypt_fn: Encryption function.
+        decrypt_fn: Decryption function.
+        name: Algorithm name for error messages.
+    """
     for vec in vectors[1:]:
         key = hex_to_bytes(vec["key"])
         nonce = hex_to_bytes(vec["nonce"])
@@ -77,7 +118,7 @@ def check_aead_vectors(
                 f"{name} ciphertext mismatch in {vec['name']} (128-bit tag)",
             )
             require(
-                tag128 == tag128_expected, f"{name} tag128 mismatch in {vec['name']}"
+                tag128 == tag128_expected, f"{name} tag128 mismatch in {vec['name']}",
             )
 
             ct, tag256 = encrypt_fn(key, nonce, msg, ad, tag_len=32)
@@ -86,17 +127,17 @@ def check_aead_vectors(
                 f"{name} ciphertext mismatch in {vec['name']} (256-bit tag)",
             )
             require(
-                tag256 == tag256_expected, f"{name} tag256 mismatch in {vec['name']}"
+                tag256 == tag256_expected, f"{name} tag256 mismatch in {vec['name']}",
             )
 
             plain = decrypt_fn(key, nonce, ct_expected, tag128_expected, ad)
             require(
-                plain == msg, f"{name} decrypt mismatch (128-bit tag) in {vec['name']}"
+                plain == msg, f"{name} decrypt mismatch (128-bit tag) in {vec['name']}",
             )
 
             plain = decrypt_fn(key, nonce, ct_expected, tag256_expected, ad)
             require(
-                plain == msg, f"{name} decrypt mismatch (256-bit tag) in {vec['name']}"
+                plain == msg, f"{name} decrypt mismatch (256-bit tag) in {vec['name']}",
             )
         else:
             for bits, tag in ((128, tag128_expected), (256, tag256_expected)):
@@ -104,30 +145,40 @@ def check_aead_vectors(
                     decrypt_fn(key, nonce, ct_expected, tag, ad)
                 except ValueError:
                     continue
-                raise AssertionError(
-                    f"{name} expected decryption failure ({bits}-bit tag) in {vec['name']}"
-                )
+                error_msg = f"{name} expected decryption failure "
+                error_msg += f"({bits}-bit tag) in {vec['name']}"
+                raise AssertionError(error_msg)
 
 
 def test_aegis_128l() -> None:
+    """Test AEGIS-128L implementation."""
     vectors = load_json("aegis-128l-test-vectors.json")
     verify_update_128l()
     check_aead_vectors(
-        vectors, aegis.encrypt_aegis128l, aegis.decrypt_aegis128l, "AEGIS-128L"
+        vectors, aegis.encrypt_aegis128l, aegis.decrypt_aegis128l, "AEGIS-128L",
     )
 
 
 def test_aegis_256() -> None:
+    """Test AEGIS-256 implementation."""
     vectors = load_json("aegis-256-test-vectors.json")
     verify_update_256()
     check_aead_vectors(
-        vectors, aegis.encrypt_aegis256, aegis.decrypt_aegis256, "AEGIS-256"
+        vectors, aegis.encrypt_aegis256, aegis.decrypt_aegis256, "AEGIS-256",
     )
 
 
 def check_initial_state_x(
-    vectors: Sequence[dict], state_cls, degree: int, name: str
+    vectors: Sequence[dict[str, Any]], state_cls: type, degree: int, name: str,
 ) -> None:
+    """Check initial state for AEGIS-X variants.
+
+    Args:
+        vectors: Test vectors.
+        state_cls: State class to test.
+        degree: Parallelization degree.
+        name: Algorithm name for error messages.
+    """
     init = vectors[0]
     key = hex_to_bytes(init["key"])
     nonce = hex_to_bytes(init["nonce"])
@@ -141,27 +192,60 @@ def check_initial_state_x(
         for lane in range(degree):
             expected = hex_to_bytes(init_state[f"V[{idx},{lane}]"])
             require(
-                state.state[idx][lane] == expected, f"{name} V[{idx},{lane}] mismatch"
+                state.state[idx][lane] == expected, f"{name} V[{idx},{lane}] mismatch",
             )
 
 
 def test_aegis_128x(
-    degree: int, filename: str, encrypt_fn, decrypt_fn, name: str
+    degree: int,
+    filename: str,
+    encrypt_fn: Callable[..., tuple[bytes, bytes]],
+    decrypt_fn: Callable[..., bytes],
+    name: str,
 ) -> None:
+    """Test AEGIS-128X variant.
+
+    Args:
+        degree: Parallelization degree.
+        filename: Test vector filename.
+        encrypt_fn: Encryption function.
+        decrypt_fn: Decryption function.
+        name: Algorithm name for error messages.
+    """
     vectors = load_json(filename)
     check_initial_state_x(vectors, aegis.AEGIS128XState, degree, name)
     check_aead_vectors(vectors[2:], encrypt_fn, decrypt_fn, name)
 
 
 def test_aegis_256x(
-    degree: int, filename: str, encrypt_fn, decrypt_fn, name: str
+    degree: int,
+    filename: str,
+    encrypt_fn: Callable[..., tuple[bytes, bytes]],
+    decrypt_fn: Callable[..., bytes],
+    name: str,
 ) -> None:
+    """Test AEGIS-256X variant.
+
+    Args:
+        degree: Parallelization degree.
+        filename: Test vector filename.
+        encrypt_fn: Encryption function.
+        decrypt_fn: Decryption function.
+        name: Algorithm name for error messages.
+    """
     vectors = load_json(filename)
     check_initial_state_x(vectors, aegis.AEGIS256XState, degree, name)
     check_aead_vectors(vectors[2:], encrypt_fn, decrypt_fn, name)
 
 
-def check_mac(vector: dict, mac_fn, name: str) -> None:
+def check_mac(vector: dict[str, Any], mac_fn: Callable[..., bytes], name: str) -> None:
+    """Test MAC function against test vectors.
+
+    Args:
+        vector: Test vector.
+        mac_fn: MAC function.
+        name: Algorithm name for error messages.
+    """
     key = hex_to_bytes(vector["key"])
     nonce = hex_to_bytes(vector["nonce"])
     data = hex_to_bytes(vector["data"])
@@ -176,7 +260,17 @@ def check_mac(vector: dict, mac_fn, name: str) -> None:
     require(tag256 == tag256_expected, f"{name} MAC tag256 mismatch")
 
 
-def check_mac_parallel(vector: dict, state_cls, degree: int, name: str) -> None:
+def check_mac_parallel(
+    vector: dict[str, Any], state_cls: type, degree: int, name: str,
+) -> None:
+    """Test parallel MAC function against test vectors.
+
+    Args:
+        vector: Test vector.
+        state_cls: State class to test.
+        degree: Parallelization degree.
+        name: Algorithm name for error messages.
+    """
     key = hex_to_bytes(vector["key"])
     nonce = hex_to_bytes(vector["nonce"])
     data = hex_to_bytes(vector["data"])
@@ -204,6 +298,7 @@ def check_mac_parallel(vector: dict, state_cls, degree: int, name: str) -> None:
 
 
 def test_macs() -> None:
+    """Test all MAC functions."""
     vectors = load_json("aegismac-test-vectors.json")
 
     check_mac(vectors[0], aegis.aegis128l_mac, "AEGISMAC-128L")
@@ -216,6 +311,7 @@ def test_macs() -> None:
 
 
 def main() -> None:
+    """Run all AEGIS test vectors."""
     test_aes_round()
     test_aegis_128l()
     test_aegis_256()
