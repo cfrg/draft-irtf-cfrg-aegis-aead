@@ -11,7 +11,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 
 | Name                                                                                                                                | Language          |
 | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| [This document's reference implementations](https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/main/reference-implementations) | Zig               |
+| [This document's reference implementations](https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/tree/main/reference-implementations) | Zig and Python    |
 | [CAESAR reference AEGIS-128L implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis128l)               | C                 |
 | [CAESAR reference AEGIS-256 implementations](https://github.com/jedisct1/supercop/tree/master/crypto_aead/aegis256)                 | C                 |
 | [Linux kernel](https://cregit.linuxsources.org/code/5.0/arch/x86/crypto/aegis128l-aesni-glue.c.html)                                | C                 |
