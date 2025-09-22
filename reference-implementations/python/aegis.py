@@ -143,7 +143,7 @@ class AEGIS128LState:
             raise ValueError("AEGIS-128L key and nonce must be 16 bytes")
         k = self.key
         n = self.nonce
-        # Initial state matches the draft definition before the 10 update rounds.
+        # Initial state before the 10 update rounds.
         self.state: List[bytes] = [
             xor_bytes(k, n),
             C1,
@@ -230,7 +230,7 @@ class AEGIS256State:
             raise ValueError("AEGIS-256 key and nonce must be 32 bytes")
         k0, k1 = self.key[:BLOCK_BYTES], self.key[BLOCK_BYTES:]
         n0, n1 = self.nonce[:BLOCK_BYTES], self.nonce[BLOCK_BYTES:]
-        # Seed state follows the draft's Init procedure before the 4 round schedule.
+        # Init procedure before the 4 round schedule.
         self.state: List[bytes] = [
             xor_bytes(k0, n0),
             xor_bytes(k1, n1),
@@ -338,7 +338,7 @@ class AEGIS128XState:
         for lane in range(self.degree):
             tweak = self.ctx[lane]
             for idx in indexes:
-                # The draft injects the lane context into S3/S7 before each update.
+                # Inject the lane context into S3/S7 before each update.
                 self.state[idx][lane] = xor_bytes(self.state[idx][lane], tweak)
 
     def update(self, m0: bytes, m1: bytes) -> None:
