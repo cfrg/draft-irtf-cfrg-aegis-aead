@@ -32,11 +32,11 @@ fn Aegis128L_(comptime tag_bits: u9) type {
         fn update(self: *Self, m0: AesBlock, m1: AesBlock) void {
             const s = self.s;
             self.s = State{
-                aesround(s[7], s[0].xorBlocks(m0)),
+                aesround(s[7], s[0]).xorBlocks(m0),
                 aesround(s[0], s[1]),
                 aesround(s[1], s[2]),
                 aesround(s[2], s[3]),
-                aesround(s[3], s[4].xorBlocks(m1)),
+                aesround(s[3], s[4]).xorBlocks(m1),
                 aesround(s[4], s[5]),
                 aesround(s[5], s[6]),
                 aesround(s[6], s[7]),

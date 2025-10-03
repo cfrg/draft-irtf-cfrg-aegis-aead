@@ -52,7 +52,7 @@ fn Aegis256_(comptime degree: u7, comptime tag_bits: u9) type {
         fn update(self: *Self, m: AesBlockX) void {
             const s = self.s;
             self.s = State{
-                aesround(s[5], s[0].xorBlocks(m)),
+                aesround(s[5], s[0]).xorBlocks(m),
                 aesround(s[0], s[1]),
                 aesround(s[1], s[2]),
                 aesround(s[2], s[3]),
