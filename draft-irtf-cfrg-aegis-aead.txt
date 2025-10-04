@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 6 April 2026                             Individual Contributor
-                                                          3 October 2025
+Expires: 7 April 2026                             Individual Contributor
+                                                          4 October 2025
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 April 2026.
+   This Internet-Draft will expire on 7 April 2026.
 
 Copyright Notice
 
