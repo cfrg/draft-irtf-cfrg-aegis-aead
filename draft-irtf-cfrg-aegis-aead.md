@@ -1145,7 +1145,7 @@ else:
 Update(M0, M1)
 ~~~
 
-The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
+The AEGIS-128X `Update` function is similar to the AEGIS-128L `Update` function, but absorbs `R` (= `256 * D`) bits at once. `M0` and `M1` are `128 * D` bits instead of 128 bits, but are split into 128-bit blocks, each of them updating a different AEGIS-128L state.
 
 Steps:
 
@@ -1562,7 +1562,7 @@ In AEGIS-128X, `V` can be represented as eight 256-bit registers (when `D = 2`) 
 
 The AEGIS parallel modes are specialized and can only improve performance on specific CPUs.
 
-The degrees of parallelism implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
+The degrees of parallelism that implementations are encouraged to support are `2` (for CPUs with 256-bit registers) and `4` (for CPUs with 512-bit registers). The resulting algorithms are called `AEGIS-128X2`, `AEGIS-128X4`, `AEGIS-256X2`, and `AEGIS-256X4`.
 
 The following table summarizes how many bits are processed in parallel (rate), the memory requirements (state size), and the minimum vector register size a CPU should support for optimal performance.
 
@@ -1575,7 +1575,7 @@ The following table summarizes how many bits are processed in parallel (rate), t
 | AEGIS-256X2 |         256 |       256 bits        |              1536 |
 | AEGIS-256X4 |         512 |       512 bits        |              3072 |
 
-Note that architectures with smaller vector registers but with many registers and large pipelines may still benefit from the parallel modes.
+Note that architectures with smaller vector registers, but with many registers and large pipelines, may still benefit from the parallel modes.
 
 Protocols SHOULD opt for a parallel mode only when all the involved parties agree on a specific variant. AEGIS-128L and AEGIS-256 SHOULD remain the default choices.
 
@@ -1754,7 +1754,7 @@ return tag
 
 ## AEGISMAC-256X
 
-AEGISMAC-256X is based on the building blocks of AEGIS-256X but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
+AEGISMAC-256X is based on the building blocks of AEGIS-256X, but replaces the `Finalize` function with a dedicated `FinalizeMac` function.
 
 ### The Mac Function
 
