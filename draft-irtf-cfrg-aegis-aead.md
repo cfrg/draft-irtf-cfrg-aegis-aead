@@ -2913,3 +2913,4 @@ We would like to thank the following individuals for their contributions:
 - Scott Fluhrer for his review of the draft as a member of the CFRG Crypto Review Panel.
 - Yawning Angel, Chris Barber, and Neil Madden for their review of the draft.
 - Gilles Van Assche for reviewing the draft and providing insightful comments on the implications of nonce reuse in AEGIS-128X and AEGIS-256X.
+- Jane Coffin for taking the time to review the draft on behalf of the IRSG.
