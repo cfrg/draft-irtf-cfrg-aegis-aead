@@ -298,7 +298,6 @@ This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and AEGIS-256X AE
 
 The document is a product of the Crypto Forum Research Group (CFRG). It is not an IETF product and is not a standard.
 
-
 --- middle
 
 # Introduction
