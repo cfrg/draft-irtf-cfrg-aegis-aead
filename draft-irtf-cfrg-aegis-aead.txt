@@ -3056,6 +3056,9 @@ Acknowledgments
       comments on the implications of nonce reuse in AEGIS-128X and
       AEGIS-256X.
 
+   *  Jane Coffin for taking the time to review the draft on behalf of
+      the IRSG.
+
 Authors' Addresses
 
    Frank Denis
