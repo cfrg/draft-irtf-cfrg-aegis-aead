@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-24T00:49:25.450211+00:00",
+  "timestamp": "2025-10-05T00:52:26.950450+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -9053,6 +9053,72 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 92,
+      "id": "PR_kwDOKeDGj86sG6jZ",
+      "title": "Address feedback from Jane Coffin",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/92",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-04T19:14:07Z",
+      "updatedAt": "2025-10-04T19:14:28Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "a85ff8bf02fa037856de8fde1604216e72d2a127",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "jcoffin",
+      "headRefOid": "cfa963de763c003e4a7a5aba0f32ecaf783428bb",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj87E0U2D",
+          "commit": {
+            "abbreviatedOid": "cfa963d"
+          },
+          "author": "copilot-pull-request-reviewer",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "## Pull Request Overview\n\nThis PR addresses feedback from Jane Coffin by improving the grammatical structure and readability of the AEGIS AEAD specification document. The changes focus on adding appropriate commas to improve sentence flow and clarity.\n\n- Added commas before \"but\" conjunctions to improve grammatical structure\n- Enhanced readability of complex sentences describing AEGIS algorithm implementations\n- Corrected punctuation in technical descriptions of parallel processing modes\n\n\n\n\n\n---\n\n<sub>**Tip:** Customize your code reviews with copilot-instructions.md. <a href=\"/cfrg/draft-irtf-cfrg-aegis-aead/new/main/.github?filename=copilot-instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Create the file</a> or <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">learn how to get started</a>.</sub>",
+          "createdAt": "2025-10-04T19:14:23Z",
+          "updatedAt": "2025-10-04T19:14:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 93,
+      "id": "PR_kwDOKeDGj86sG7MC",
+      "title": "Thanks Jane Coffin",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/93",
+      "state": "OPEN",
+      "author": "jedisct1",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-04T19:18:48Z",
+      "updatedAt": "2025-10-04T20:09:21Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "f5f07b097d5644f45000650999b9baf5fd76e8b8",
+      "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "jcoffin-ack",
+      "headRefOid": "15b4fa271b1efea69aec4365d8480fdeeee54148",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
