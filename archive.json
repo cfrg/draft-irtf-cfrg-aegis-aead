@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-05T00:52:26.950450+00:00",
+  "timestamp": "2025-10-07T00:46:09.295456+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -9059,24 +9059,26 @@
       "id": "PR_kwDOKeDGj86sG6jZ",
       "title": "Address feedback from Jane Coffin",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/92",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-10-04T19:14:07Z",
-      "updatedAt": "2025-10-04T19:14:28Z",
+      "updatedAt": "2025-10-05T10:31:04Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "a85ff8bf02fa037856de8fde1604216e72d2a127",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "jcoffin",
       "headRefOid": "cfa963de763c003e4a7a5aba0f32ecaf783428bb",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-05T10:31:04Z",
+      "mergedAt": "2025-10-05T10:31:04Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "887cef32b3d8cf29b40869b7a935ca902a93052b"
+      },
       "comments": [],
       "reviews": [
         {
@@ -9091,6 +9093,19 @@
           "createdAt": "2025-10-04T19:14:23Z",
           "updatedAt": "2025-10-04T19:14:23Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOKeDGj87E1XY7",
+          "commit": {
+            "abbreviatedOid": "cfa963d"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Some of these changes are optional, but I agree it helps with readability.",
+          "createdAt": "2025-10-05T10:30:47Z",
+          "updatedAt": "2025-10-05T10:30:47Z",
+          "comments": []
         }
       ]
     },
@@ -9099,26 +9114,42 @@
       "id": "PR_kwDOKeDGj86sG7MC",
       "title": "Thanks Jane Coffin",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/93",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jedisct1",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-10-04T19:18:48Z",
-      "updatedAt": "2025-10-04T20:09:21Z",
+      "updatedAt": "2025-10-05T10:33:28Z",
       "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "baseRefName": "main",
       "baseRefOid": "f5f07b097d5644f45000650999b9baf5fd76e8b8",
       "headRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
       "headRefName": "jcoffin-ack",
       "headRefOid": "15b4fa271b1efea69aec4365d8480fdeeee54148",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-05T10:33:28Z",
+      "mergedAt": "2025-10-05T10:33:28Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "d3ef99846e957f5533cef51b4d15a5d55af086b8"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKeDGj87E1Xif",
+          "commit": {
+            "abbreviatedOid": "15b4fa2"
+          },
+          "author": "samuel-lucas6",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-05T10:32:48Z",
+          "updatedAt": "2025-10-05T10:32:48Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
