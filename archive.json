@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-07T00:46:09.295456+00:00",
+  "timestamp": "2025-10-21T00:50:14.754506+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -1221,6 +1221,30 @@
           "body": "Thanks for letting me know, I haven't been checking that email lately. I'll take a look now so going to close this.",
           "createdAt": "2025-04-22T16:43:56Z",
           "updatedAt": "2025-04-22T16:43:56Z"
+        }
+      ]
+    },
+    {
+      "number": 94,
+      "id": "I_kwDOKeDGj87SZ0Yt",
+      "title": "Guideance on tag truncation",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/94",
+      "state": "OPEN",
+      "author": "tmthrgd",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "It's unfortunately common for many AEADs to be used with a truncated authentication tag, trading less wire size for higher risk of successful forgery. I note that all AEGIS variants are defined for both a 128-bit and 256-bit authentication tag.\n\nMy concern is that there's no explicit guidance about whether or not implementations are allowed to truncate these tags, either truncating the 128-bit tag to less than 128-bits or truncating the 256-bit tag to between 129 and 255-bits. The draft does seem to imply that only 128-bit or 256-bit tags are valid, no where is this explicitly stated.\n\nGiven this is commonly implemented for other AEADs, I fear that implementers might be tempted to perform this same kind of truncation for AEGIS without proper consideration. Without knowing the security implications, I'd suggest either explicit text that affirms that only 128-bit and 256-bit tag sizes are valid, or text indicating how truncation could be performed (but discouraging it).\n\nI understand this may be late in the standardisation process but it felt like a notable omission reading the draft.",
+      "createdAt": "2025-10-19T11:30:51Z",
+      "updatedAt": "2025-10-20T07:54:06Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi,\n\nAEGIS authentication tags can be viewed as the output of a random function, unlike algebraic MACs such as AES-GCM\u2019s GHASH.\n\nThis property implies that truncated tags have well-defined and predictable security properties: the probability of a successful forgery using a t-bit truncated tag is about 2\u207b\u1d57.\n\nWhile the document specifies finalization with 128-bit and 256-bit tags, it does not explicitly forbid truncation.\n\nHowever, supporting truncated tags is not a simple matter. Tag truncation affects multiple aspects of the design, including authentication security, usage limits, commitment guarantees, function definitions, and implementations. Introducing it directly in the specification would add unnecessary complexity, potential for confusion, and a significant risk of misuse. In practice, the vast majority of applications will not (and should not) truncate authentication tags.\n\nEven having two defined tag lengths has already proven somewhat confusing and has introduced interoperability challenges. \n\nAllowing arbitrary tag sizes would make this situation far worse, while also encouraging unsafe choices. We cannot assume that all implementers or users will take the time to understand and respect the resulting usage limits; but we can reasonably expect that some might be tempted to shorten tags to save bandwidth, storage, or CPU cycles.\n\nResearch papers can safely generalize about variable tag lengths. In contrast, an IETF specification must strike a balance between opinionated simplicity and flexibility without shifting too much responsibility and risk to users. Defining exactly two tag lengths was considered a reasonable compromise between security, usability, and interoperability.\n\nUsage of AEGIS with shorter tags can always be specified in a separate document: one focused on concrete, constrained scenarios where reduced security is acceptable, along with appropriate test vectors and clear guidance.\n\nThat said, when minimizing ciphertext expansion is the goal, a wide-block permutation is generally a safer and cleaner solution than truncating nonces or tags in a conventional AEAD scheme.",
+          "createdAt": "2025-10-20T07:54:06Z",
+          "updatedAt": "2025-10-20T07:54:06Z"
         }
       ]
     }
