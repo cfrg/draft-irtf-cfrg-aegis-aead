@@ -305,7 +305,7 @@ The document is a product of the Crypto Forum Research Group (CFRG). It is not a
 This document describes the AEGIS family of Authenticated Encryption with Associated Data (AEAD) algorithms {{AEGIS}}, which were chosen for high-performance applications in the CAESAR (Competition for Authenticated Encryption: Security, Applicability, and Robustness) competition.
 
 Among the finalists, AEGIS-128 was chosen as the winner for this category. However, AEGIS-128L, another finalist, offers enhanced performance and a stronger security margin {{ENP20}} {{JLD22}} {{LIMS21}} {{STSI23}}.
-Additionally, AEGIS-256, which also reached the final round, provides 256-bit security and supports higher usage limits.
+Additionally, AEGIS-256, which also reached the final round, has a 256-bit key and supports higher usage limits.
 
 Therefore, this document specifies the following variants:
 
@@ -1867,9 +1867,7 @@ Regardless of the variant, the `key` and `nonce` are only required by the `Init`
 
 ## Security Guarantees
 
-AEGIS-256 offers 256-bit security against plaintext and state recovery, whereas AEGIS-128L offers 128-bit security.
-
-Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against forgery attacks.
+Under the assumption that the secret key is unknown to the attacker, all AEGIS variants offer at least 128-bit security against plaintext and state recovery as well as forgery attacks.
 
 Encrypting the same message with the same key and nonce but different associated data generates distinct ciphertexts that do not reveal any additional information about the message.
 However, `(key, nonce)` pairs MUST NOT be reused, even if the associated data differs.

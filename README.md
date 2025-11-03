@@ -28,6 +28,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [Zig standard library](https://github.com/ziglang/zig/blob/master/lib/std/crypto/aegis.zig)                                         | Zig               |
 | [aegis.zig](https://codeberg.org/ErikSchlyter/aegis.zig)                                                                            | Zig               |
 | [x13a/py-aegis](https://github.com/x13a/py-aegis)                                                                                   | Python            |
+| [pyaegis](https://github.com/aegis-aead/pyaegis)                                                                                    | Python            |
 | [ericlagergren/aegis](https://github.com/ericlagergren/aegis)                                                                       | Go                |
 | [samuel-lucas6/AEGIS.NET](https://github.com/samuel-lucas6/AEGIS.NET)                                                               | C#                |
 | [arc.crypto](https://github.com/archi-Doc/Arc.Crypto/tree/main/Arc.Crypto/Encryption/Aegis)                                         | C#                |
