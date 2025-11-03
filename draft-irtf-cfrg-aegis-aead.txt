@@ -5,8 +5,8 @@
 Crypto Forum                                                    F. Denis
 Internet-Draft                                               Fastly Inc.
 Intended status: Informational                                  S. Lucas
-Expires: 8 April 2026                             Individual Contributor
-                                                          5 October 2025
+Expires: 7 May 2026                               Individual Contributor
+                                                         3 November 2025
 
 
         The AEGIS Family of Authenticated Encryption Algorithms
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2026.
+   This Internet-Draft will expire on 7 May 2026.
 
 Copyright Notice
 
@@ -187,7 +187,7 @@ Table of Contents
    category.  However, AEGIS-128L, another finalist, offers enhanced
    performance and a stronger security margin [ENP20] [JLD22] [LIMS21]
    [STSI23].  Additionally, AEGIS-256, which also reached the final
-   round, provides 256-bit security and supports higher usage limits.
+   round, has a 256-bit key and supports higher usage limits.
 
    Therefore, this document specifies the following variants:
 
@@ -1927,12 +1927,9 @@ return tag
 
 10.3.  Security Guarantees
 
-   AEGIS-256 offers 256-bit security against plaintext and state
-   recovery, whereas AEGIS-128L offers 128-bit security.
-
    Under the assumption that the secret key is unknown to the attacker,
-   all AEGIS variants offer at least 128-bit security against forgery
-   attacks.
+   all AEGIS variants offer at least 128-bit security against plaintext
+   and state recovery as well as forgery attacks.
 
    Encrypting the same message with the same key and nonce but different
    associated data generates distinct ciphertexts that do not reveal any
