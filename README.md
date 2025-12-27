@@ -40,6 +40,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 | [moonbit-aegis](https://github.com/jedisct1/moonbit-aegis)                                                                          | Moonbit           |
 | [sodium-compat](https://github.com/paragonie/sodium_compat/tree/master/src/Core/AEGIS)                                              | PHP               |
 | [aegis-ts](https://github.com/stknob/aegis-ts)                                                                                      | TypeScript        |
+| [aegis-aead](https://github.com/jedisct1/js-aegis-aead)                                                                             | TypeScript        |
 | [Odin standard library](https://pkg.odin-lang.org/core/crypto/aegis/)                                                               | Odin              |
 
 ### Hardware implementations
