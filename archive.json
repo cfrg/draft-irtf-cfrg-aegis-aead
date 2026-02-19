@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-21T00:50:14.754506+00:00",
+  "timestamp": "2026-02-19T01:10:41.189562+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -1229,15 +1229,15 @@
       "id": "I_kwDOKeDGj87SZ0Yt",
       "title": "Guideance on tag truncation",
       "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/issues/94",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tmthrgd",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "It's unfortunately common for many AEADs to be used with a truncated authentication tag, trading less wire size for higher risk of successful forgery. I note that all AEGIS variants are defined for both a 128-bit and 256-bit authentication tag.\n\nMy concern is that there's no explicit guidance about whether or not implementations are allowed to truncate these tags, either truncating the 128-bit tag to less than 128-bits or truncating the 256-bit tag to between 129 and 255-bits. The draft does seem to imply that only 128-bit or 256-bit tags are valid, no where is this explicitly stated.\n\nGiven this is commonly implemented for other AEADs, I fear that implementers might be tempted to perform this same kind of truncation for AEGIS without proper consideration. Without knowing the security implications, I'd suggest either explicit text that affirms that only 128-bit and 256-bit tag sizes are valid, or text indicating how truncation could be performed (but discouraging it).\n\nI understand this may be late in the standardisation process but it felt like a notable omission reading the draft.",
       "createdAt": "2025-10-19T11:30:51Z",
-      "updatedAt": "2025-10-20T07:54:06Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-18T16:36:29Z",
+      "closedAt": "2026-02-18T16:36:29Z",
       "comments": [
         {
           "author": "jedisct1",
