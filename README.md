@@ -45,10 +45,11 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 
 ### Hardware implementations
 
-| Name                                                                                 | Language      |
-| ------------------------------------------------------------------------------------ | ------------- |
-| [Athena/AEGIS](https://cryptography.gmu.edu/athena/index.php?id=CAESAR_source_codes) | RTL VHDL      |
-| [AEGIS256 UVM Verification](https://github.com/aymanaadel/AEGIS256_UVM_Verification) | SystemVerilog |
+| Name                                                                                                     | Language      |
+| -------------------------------------------------------------------------------------------------------- | ------------- |
+| [Athena/AEGIS](https://cryptography.gmu.edu/athena/index.php?id=CAESAR_source_codes)                     | RTL VHDL      |
+| [An Efficient Hardware Design for Combined AES and AEGIS](https://ieeexplore.ieee.org/document/8806225)  | FPGA          |
+| [AEGIS256 UVM Verification](https://github.com/aymanaadel/AEGIS256_UVM_Verification)                     | SystemVerilog |
 
 ## AEGIS support in TLS stacks
 
