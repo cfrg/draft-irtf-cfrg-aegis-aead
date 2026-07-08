@@ -15,10 +15,10 @@ test {
         aegis256x.Aegis256X4, aegis256x.Aegis256X4_256,
     };
     inline for (aegis_variants) |Aegis| {
-        const key = [_]u8{0x01} ** Aegis.key_length;
-        const nonce = [_]u8{0x02} ** Aegis.nonce_length;
-        const ad = [_]u8{0x03} ** 1000;
-        const msg = [_]u8{0x04} ** 1000;
+        const key: [Aegis.key_length]u8 = @splat(0x01);
+        const nonce: [Aegis.nonce_length]u8 = @splat(0x02);
+        const ad: [1000]u8 = @splat(0x03);
+        const msg: [1000]u8 = @splat(0x04);
         var msg2: [msg.len]u8 = undefined;
         var ct: [msg.len]u8 = undefined;
         const tag = Aegis.encrypt(&ct, &msg, &ad, key, nonce);
@@ -37,8 +37,8 @@ test {
         aegis256x.Aegis256X4, aegis256x.Aegis256X4_256,
     };
     inline for (aegis_variants) |Aegis| {
-        const key = [_]u8{ 0x10, 0x01 } ++ [_]u8{0x00} ** (Aegis.key_length - 2);
-        const nonce = [_]u8{ 0x10, 0x00, 0x02 } ++ [_]u8{0x00} ** (Aegis.nonce_length - 3);
+        const key = [_]u8{ 0x10, 0x01 } ++ @as([Aegis.key_length - 2]u8, @splat(0x00));
+        const nonce = [_]u8{ 0x10, 0x00, 0x02 } ++ @as([Aegis.nonce_length - 3]u8, @splat(0x00));
         var msg: [35]u8 = undefined;
         for (&msg, 0..) |*byte, i| byte.* = @truncate(i);
         _ = Aegis.mac(&msg, key, nonce);
