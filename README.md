@@ -57,6 +57,7 @@ This is the working area for the individual Internet-Draft, "The AEGIS family of
 - [Experimental support for OpenSSL](https://github.com/aegis-aead/openssl/tree/aegis)
 - [Facebook's Fizz](https://github.com/facebookincubator/fizz)
 - [PicoTLS](https://github.com/h2o/picotls)
+- [Picoquic](https://github.com/private-octopus/picoquic)
 - [Zig TLS client](https://ziglang.org/documentation/master/std/#A;std:crypto.tls.CipherSuite)
 
 ## Test vectors
