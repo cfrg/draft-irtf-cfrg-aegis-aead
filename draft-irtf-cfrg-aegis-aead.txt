@@ -2,48 +2,39 @@
 
 
 
-Crypto Forum                                                    F. Denis
-Internet-Draft                                               Fastly Inc.
-Intended status: Informational                                  S. Lucas
-Expires: 9 January 2027                           Individual Contributor
-                                                             8 July 2026
+Internet Research Task Force (IRTF)                             F. Denis
+Request for Comments: 10032                                  Fastly Inc.
+Category: Informational                                         S. Lucas
+ISSN: 2070-1721                                   Individual Contributor
+                                                             August 2026
 
 
-        The AEGIS Family of Authenticated Encryption Algorithms
-                   draft-irtf-cfrg-aegis-aead-latest
+             The AEGIS Authenticated Encryption Algorithms
 
 Abstract
 
    This document describes the AEGIS-128L, AEGIS-256, AEGIS-128X, and
-   AEGIS-256X AES-based authenticated encryption algorithms designed for
-   high-performance applications.
+   AEGIS-256X AES-based authenticated encryption with associated data
+   (AEAD) algorithms designed for high-performance applications.
 
    The document is a product of the Crypto Forum Research Group (CFRG).
-   It is not an IETF product and is not a standard.
-
-Discussion Venues
-
-   This note is to be removed before publishing as an RFC.
-
-   Source for this draft and an issue tracker can be found at
-   https://github.com/cfrg/draft-irtf-cfrg-aegis-aead.
 
 Status of This Memo
 
-   This Internet-Draft is submitted in full conformance with the
-   provisions of BCP 78 and BCP 79.
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
 
-   Internet-Drafts are working documents of the Internet Engineering
-   Task Force (IETF).  Note that other groups may also distribute
-   working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at https://datatracker.ietf.org/drafts/current/.
+   This document is a product of the Internet Research Task Force
+   (IRTF).  The IRTF publishes the results of Internet-related research
+   and development activities.  These results might not be suitable for
+   deployment.  This RFC represents the consensus of the Crypto Forum
+   Research Group of the Internet Research Task Force (IRTF).  Documents
+   approved for publication by the IRSG are not candidates for any level
+   of Internet Standard; see Section 2 of RFC 7841.
 
-   Internet-Drafts are draft documents valid for a maximum of six months
-   and may be updated, replaced, or obsoleted by other documents at any
-   time.  It is inappropriate to use Internet-Drafts as reference
-   material or to cite them other than as "work in progress."
-
-   This Internet-Draft will expire on 9 January 2027.
+   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   https://www.rfc-editor.org/info/rfc10032.
 
 Copyright Notice
 
@@ -51,10 +42,11 @@ Copyright Notice
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents (https://trustee.ietf.org/
-   license-info) in effect on the date of publication of this document.
-   Please review these documents carefully, as they describe your rights
-   and restrictions with respect to this document.
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.
 
 Table of Contents
 
@@ -113,18 +105,17 @@ Table of Contents
      8.4.  AEGISMAC-256X
        8.4.1.  The Mac Function
        8.4.2.  The FinalizeMac Function
-   9.  Implementation Status
-   10. Security Considerations
-     10.1.  Usage Guidelines
-       10.1.1.  Key and Nonce Selection
-       10.1.2.  Committing Security
-       10.1.3.  Multi-User Security
-     10.2.  Implementation Security
-     10.3.  Security Guarantees
-   11. IANA Considerations
-   12. References
-     12.1.  Normative References
-     12.2.  Informative References
+   9.  Security Considerations
+     9.1.  Usage Guidelines
+       9.1.1.  Key and Nonce Selection
+       9.1.2.  Committing Security
+       9.1.3.  Multi-User Security
+     9.2.  Implementation Security
+     9.3.  Security Guarantees
+   10. IANA Considerations
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  AESRound Test Vector
      A.2.  AEGIS-128L Test Vectors
@@ -177,8 +168,8 @@ Table of Contents
 
 1.  Introduction
 
-   This document describes the AEGIS family of Authenticated Encryption
-   with Associated Data (AEAD) algorithms [AEGIS], which were chosen for
+   This document describes the AEGIS family of authenticated encryption
+   with associated data (AEAD) algorithms [AEGIS], which were chosen for
    high-performance applications in the CAESAR (Competition for
    Authenticated Encryption: Security, Applicability, and Robustness)
    competition.
@@ -244,20 +235,23 @@ Table of Contents
    erased from memory before any data has been encrypted or decrypted,
    mitigating cold boot attacks.
 
-   Note that an earlier version of Hongjun Wu and Bart Preneel’s paper
+   Note that an earlier version of Hongjun Wu and Bart Preneel's paper
    introducing AEGIS specified AEGIS-128L and AEGIS-256 with a different
    Finalize function.  We follow the specification of [AEGIS], which can
    be found in the References section of this document.
 
+   This document represents the consensus of the Crypto Forum Research
+   Group (CFRG).  It is not an IETF product and is not a standard.
+
 2.  Conventions and Definitions
 
-   The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”,
-   “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and
-   “OPTIONAL” in this document are to be interpreted as described in
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   Throughout this document, “byte” is used interchangeably with “octet”
+   Throughout this document, "byte" is used interchangeably with "octet"
    and refers to an 8-bit sequence.
 
    Primitives:
@@ -297,7 +291,7 @@ Table of Contents
 
    *  Repeat(n, F): n sequential evaluations of the function F.
 
-   *  CtEq(a, b): compares a and b in constant-time, returning True for
+   *  CtEq(a, b): compares a and b in constant time, returning True for
       an exact match and False otherwise.
 
    AEGIS internal functions:
@@ -360,8 +354,8 @@ Table of Contents
    AEGIS-128L has a 1024-bit state, made of eight 128-bit blocks {S0,
    ...S7}.
 
-   The parameters for this algorithm, whose meaning is defined in
-   [RFC5116], Section 4, are:
+   The parameters for this algorithm, as defined in Section 4 of
+   [RFC5116], are:
 
    *  K_LEN (key length) is 16 bytes (128 bits).
 
@@ -377,8 +371,8 @@ Table of Contents
    *  C_MAX (maximum ciphertext length) = P_MAX + tag length = (2^61 -
       1) + 16 or 32 bytes (in bits: (2^64 - 8) + 128 or 256 bits).
 
-   Distinct associated data inputs, as described in [RFC5116],
-   Section 3, MUST be unambiguously encoded as a single input.  It is up
+   Distinct associated data inputs, as described in Section 3 of
+   [RFC5116], MUST be unambiguously encoded as a single input.  It is up
    to the application to create a structure in the associated data input
    if needed.
 
@@ -707,8 +701,8 @@ Table of Contents
    AEGIS-256 has a 768-bit state, made of six 128-bit blocks {S0,
    ...S5}.
 
-   The parameters for this algorithm, whose meaning is defined in
-   [RFC5116], Section 4, are:
+   The parameters for this algorithm, as defined in Section 4 of
+   [RFC5116], are:
 
    *  K_LEN (key length) is 32 bytes (256 bits).
 
@@ -1040,9 +1034,9 @@ Table of Contents
 
 5.  Parallel Modes
 
-   Some CPUs, such as Intel and Intel-compatible CPUs with the VAES
-   extensions, include instructions to efficiently apply the AES round
-   function to a vector of AES blocks.
+   Some CPUs, such as Intel and Intel-compatible CPUs with the
+   Vectorized AES (VAES) extensions, include instructions to efficiently
+   apply the AES round function to a vector of AES blocks.
 
    AEGIS-128X and AEGIS-256X are optional, specialized modes designed to
    take advantage of these instructions.  They share the same properties
@@ -1056,9 +1050,9 @@ Table of Contents
    allowing parallel updates using vector instructions.
 
    The modes are parameterized by the parallelism degree.  With 256-bit
-   registers, 2 parallel operations can be applied to 128-bit AES
+   registers, two parallel operations can be applied to 128-bit AES
    blocks.  With 512-bit registers, the number of instances can be
-   raised to 4.
+   raised to four.
 
    The state of a parallel mode is represented as a vector of AEGIS-128L
    or AEGIS-256 states.
@@ -1087,9 +1081,9 @@ Table of Contents
 
    Encrypt(msg, ad, key, nonce)
 
-   The Encrypt function of AEGIS-128X resembles that of AEGIS-128L, and
-   similarly, the Encrypt function of AEGIS-256X mirrors that of AEGIS-
-   256, but processes R-bit input blocks per update.
+   The Encrypt function of AEGIS-128X resembles that of AEGIS-128L.
+   Similarly, the Encrypt function of AEGIS-256X mirrors that of AEGIS-
+   256, but it processes R-bit input blocks per update.
 
    Steps:
 
@@ -1114,9 +1108,9 @@ Table of Contents
 
    Decrypt(ct, tag, ad, key, nonce)
 
-   The Decrypt function of AEGIS-128X resembles that of AEGIS-128L, and
-   similarly, the Decrypt function of AEGIS-256X mirrors that of AEGIS-
-   256, but processes R-bit input blocks per update.
+   The Decrypt function of AEGIS-128X resembles that of AEGIS-128L.
+   Similarly, the Decrypt function of AEGIS-256X mirrors that of AEGIS-
+   256, but it processes R-bit input blocks per update.
 
    Steps:
 
@@ -1153,9 +1147,9 @@ Table of Contents
    Update(M0, M1)
 
    The AEGIS-128X Update function is similar to the AEGIS-128L Update
-   function, but absorbs R (= 256 * D) bits at once.  M0 and M1 are 128
-   * D bits instead of 128 bits, but are split into 128-bit blocks, each
-   of them updating a different AEGIS-128L state.
+   function but absorbs R (= 256 * D) bits at once.  M0 and M1 are 128 *
+   D bits instead of 128 bits, but they are split into 128-bit blocks,
+   each of which updates a different AEGIS-128L state.
 
    Steps:
 
@@ -1314,28 +1308,29 @@ Table of Contents
 
    Steps:
 
-t = {}
-u = LE64(ad_len_bits) || LE64(msg_len_bits)
-for i in 0..D:
-    t = t || (V[2,i] ^ u)
+   t = {}
+   u = LE64(ad_len_bits) || LE64(msg_len_bits)
+   for i in 0..D:
+       t = t || (V[2,i] ^ u)
 
-Repeat(7, Update(t, t))
+   Repeat(7, Update(t, t))
 
-if tag_len_bits == 128:
-    tag = ZeroPad({}, 128)
-    for i in 0..D:
-        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
-        tag = tag ^ ti
+   if tag_len_bits == 128:
+       tag = ZeroPad({}, 128)
+       for i in 0..D:
+           ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^
+                V[4,i] ^ V[5,i] ^ V[6,i]
+           tag = tag ^ ti
 
-else:            # 256 bits
-    ti0 = ZeroPad({}, 128)
-    ti1 = ZeroPad({}, 128)
-    for i in 0..D:
-        ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
-        ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
-    tag = ti0 || ti1
+   else:            # 256 bits
+       ti0 = ZeroPad({}, 128)
+       ti1 = ZeroPad({}, 128)
+       for i in 0..D:
+           ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+           ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+       tag = ti0 || ti1
 
-return tag
+   return tag
 
 5.5.  AEGIS-256X
 
@@ -1345,8 +1340,8 @@ return tag
 
    The AEGIS-256X Update function is similar to the AEGIS-256 Update
    function but absorbs R (128 * D) bits at once.  M is 128 * D bits
-   instead of 128 bits and is split into 128-bit blocks, each of them
-   updating a different AEGIS-256 state.
+   instead of 128 bits and is split into 128-bit blocks, each of which
+   updates a different AEGIS-256 state.
 
    Steps:
 
@@ -1555,8 +1550,8 @@ return tag
    performance.
 
     +=============+=============+=======================+============+
-    | Algorithm   | Rate (bits) | Optimal Register Size | State Size |
-    |             |             |                       |     (bits) |
+    | Algorithm   | Rate (Bits) | Optimal Register Size | State Size |
+    |             |             |                       |     (Bits) |
     +=============+=============+=======================+============+
     | AEGIS-128L  |         256 |        128 bits       |       1024 |
     +-------------+-------------+-----------------------+------------+
@@ -1633,8 +1628,8 @@ return tag
 
 8.  AEGIS as a Message Authentication Code
 
-   All AEGIS variants can be used to construct a Message Authentication
-   Code (MAC).
+   All AEGIS variants can be used to construct a message authentication
+   code (MAC).
 
    For all the variants, the Mac function takes a key, a nonce, and data
    as input and produces a 128- or 256-bit tag as output.
@@ -1646,7 +1641,7 @@ return tag
    *  This is the only function that allows the reuse of (key, nonce)
       pairs with different inputs.
 
-   *  AEGIS-based MAC functions MUST NOT be used as hash functions: if
+   *  AEGIS-based MAC functions MUST NOT be used as hash functions.  If
       the key is known, inputs causing state collisions can easily be
       crafted.
 
@@ -1723,47 +1718,49 @@ return tag
 
    Steps:
 
-t = {}
-u = LE64(data_len_bits) || LE64(tag_len_bits)
-for i in 0..D:
-    t = t || (V[2,i] ^ u)
+   t = {}
+   u = LE64(data_len_bits) || LE64(tag_len_bits)
+   for i in 0..D:
+       t = t || (V[2,i] ^ u)
 
-Repeat(7, Update(t, t))
+   Repeat(7, Update(t, t))
 
-tags = {}
-if tag_len_bits == 128:
-    for i in 0..D: # tag from state 0 is included
-        ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i] ^ V[6,i]
-        tags = tags || ti
+   tags = {}
+   if tag_len_bits == 128:
+       for i in 0..D: # tag from state 0 is included
+           ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^
+                V[4,i] ^ V[5,i] ^ V[6,i]
+           tags = tags || ti
 
-else:              # 256 bits
-    for i in 1..D: # tag from state 0 is skipped
-        ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
-        ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
-        tags = tags || (ti0 || ti1)
+   else:              # 256 bits
+       for i in 1..D: # tag from state 0 is skipped
+           ti0 = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
+           ti1 = V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
+           tags = tags || (ti0 || ti1)
 
-if D > 1:
-    # Absorb tags into state 0; other states are not used anymore
-    for v in Split(tags, 256):
-        x0, x1 = Split(v, 128)
-        Absorb(ZeroPad(x0, R / 2) || ZeroPad(x1, R / 2))
+   if D > 1:
+       # Absorb tags into state 0; other states are not used anymore
+       for v in Split(tags, 256):
+           x0, x1 = Split(v, 128)
+           Absorb(ZeroPad(x0, R / 2) || ZeroPad(x1, R / 2))
 
-    u = LE64(D) || LE64(tag_len_bits)
-    t = ZeroPad(V[2,0] ^ u, R)
-    Repeat(7, Update(t, t))
+       u = LE64(D) || LE64(tag_len_bits)
+       t = ZeroPad(V[2,0] ^ u, R)
+       Repeat(7, Update(t, t))
 
-if tag_len_bits == 128:
-    tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^ V[4,0] ^ V[5,0] ^ V[6,0]
-else:            # 256 bits
-    t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
-    t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
-    tag = t0 || t1
+   if tag_len_bits == 128:
+       tag = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0] ^
+             V[4,0] ^ V[5,0] ^ V[6,0]
+   else:            # 256 bits
+       t0 = V[0,0] ^ V[1,0] ^ V[2,0] ^ V[3,0]
+       t1 = V[4,0] ^ V[5,0] ^ V[6,0] ^ V[7,0]
+       tag = t0 || t1
 
-return tag
+   return tag
 
 8.4.  AEGISMAC-256X
 
-   AEGISMAC-256X is based on the building blocks of AEGIS-256X, but
+   AEGISMAC-256X is based on the building blocks of AEGIS-256X but
    replaces the Finalize function with a dedicated FinalizeMac function.
 
 8.4.1.  The Mac Function
@@ -1825,25 +1822,13 @@ return tag
 
    return tag
 
-9.  Implementation Status
+9.  Security Considerations
 
-   _This note is to be removed before publishing as an RFC._
+9.1.  Usage Guidelines
 
-   Multiple implementations of the schemes described in this document
-   have been developed and verified for interoperability.
+9.1.1.  Key and Nonce Selection
 
-   A comprehensive list of known implementations and integrations can be
-   found at https://github.com/cfrg/draft-irtf-cfrg-aegis-aead, which
-   includes reference implementations closely aligned with the
-   pseudocode provided in this document.
-
-10.  Security Considerations
-
-10.1.  Usage Guidelines
-
-10.1.1.  Key and Nonce Selection
-
-   All AEGIS variants MUST be used in a nonce-respecting setting: for a
+   All AEGIS variants MUST be used in a nonce-respecting setting.  For a
    given key, a nonce MUST only be used once, even with different tag
    lengths.  Failure to do so would immediately reveal the bitwise
    difference between two messages.
@@ -1854,13 +1839,14 @@ return tag
    output of a permutation, or a generator with a long period.
 
    With AEGIS-128L and AEGIS-128X, random nonces can safely encrypt up
-   to 2^48 messages using the same key with negligible (~2^-33, to align
-   with NIST guidelines) collision probability.
+   to 2^48 messages using the same key with negligible (~2^-33)
+   collision probability.  This is consistent with Section 8 of
+   [SP800-38D].
 
    With AEGIS-256 and AEGIS-256X, random nonces can be used with no
    practical limits.
 
-10.1.2.  Committing Security
+9.1.2.  Committing Security
 
    An authentication tag may verify under multiple keys, nonces, or
    associated data, but AEGIS is assumed to be key committing in the
@@ -1884,14 +1870,15 @@ return tag
    instance of such a function is SHA-256 [RFC6234].
 
    Alternatively, the associated data can be fed into a collision-
-   resistant KDF, such as HKDF [RFC5869], via the info input to derive
+   resistant key derivation function (KDF), such as the HMAC-based key
+   derivation function (HKDF) [RFC5869], via the info input to derive
    the key parameter.  The ad parameter can then be left empty.  Note
    that the salt input MUST NOT be used since large salts get hashed,
    which affects commitment.  Furthermore, this requires values
    concatenated to form the info input to be unambiguously encoded, like
    by appending their lengths.
 
-10.1.3.  Multi-User Security
+9.1.3.  Multi-User Security
 
    AEGIS nonces match the size of the key.  AEGIS-128L and AEGIS-128X
    feature 128-bit nonces, offering an extra 32 bits compared to the
@@ -1905,7 +1892,7 @@ return tag
    multi-target attacks do not provide any advantage over single-target
    attacks.
 
-10.2.  Implementation Security
+9.2.  Implementation Security
 
    If tag verification fails, the unverified plaintext and computed
    authentication tag MUST NOT be released.  As shown in [VV18], even a
@@ -1925,7 +1912,7 @@ return tag
    Therefore, implementations can overwrite ephemeral keys with zeros
    right after the last Update call of the initialization function.
 
-10.3.  Security Guarantees
+9.3.  Security Guarantees
 
    AEGIS-256 offers 256-bit security against plaintext and state
    recovery, whereas AEGIS-128L offers 128-bit security.
@@ -1958,7 +1945,7 @@ return tag
    advantage in decrypting previously recorded ciphertexts or in
    recovering the encryption key.
 
-   This document extends the original specification by introducing
+   This document extends the AEGIS specification [AEGIS] by introducing
    optional support for 256-bit authentication tags, which are
    constructed similarly to the 128-bit tags.  As shown in [SSI24], with
    256-bit tags, all AEGIS variants achieve more than 128-bit security
@@ -1968,43 +1955,37 @@ return tag
    [ENP20], [LIMS21], [JLD22], [STSI23], [IR23], [BS23], [AIKRS24], and
    [SSI24].
 
-11.  IANA Considerations
+10.  IANA Considerations
 
-   IANA has assigned the following identifiers in the AEAD Algorithms
-   Registry:
+   IANA has assigned the following identifiers in the "AEAD Algorithms"
+   registry and added this document as the reference for each:
 
-                          +=================+====+
-                          | Algorithm Name  | ID |
-                          +=================+====+
-                          | AEAD_AEGIS128L  | 32 |
-                          +-----------------+----+
-                          | AEAD_AEGIS256   | 33 |
-                          +-----------------+----+
-                          | AEAD_AEGIS128X2 | 34 |
-                          +-----------------+----+
-                          | AEAD_AEGIS128X4 | 35 |
-                          +-----------------+----+
-                          | AEAD_AEGIS256X2 | 36 |
-                          +-----------------+----+
-                          | AEAD_AEGIS256X4 | 37 |
-                          +-----------------+----+
+                     +============+=================+
+                     | Numeric ID | Name            |
+                     +============+=================+
+                     | 32         | AEAD_AEGIS128L  |
+                     +------------+-----------------+
+                     | 33         | AEAD_AEGIS256   |
+                     +------------+-----------------+
+                     | 34         | AEAD_AEGIS128X2 |
+                     +------------+-----------------+
+                     | 35         | AEAD_AEGIS128X4 |
+                     +------------+-----------------+
+                     | 36         | AEAD_AEGIS256X2 |
+                     +------------+-----------------+
+                     | 37         | AEAD_AEGIS256X4 |
+                     +------------+-----------------+
 
-                           Table 2: AEGIS entries
-                           in the AEAD Algorithms
-                                  Registry
+                        Table 2: AEGIS Entries in
+                       the AEAD Algorithms Registry
 
-   IANA is requested to update the references of these entries to refer
-   to the final version of this document.
+11.  References
 
-12.  References
+11.1.  Normative References
 
-12.1.  Normative References
-
-   [FIPS-AES] NIST, "Advanced encryption standard (AES)", NIST Federal
-              Information Processing Standards Publications 197,
-              DOI 10.6028/NIST.FIPS.197, November 2001,
-              <https://nvlpubs.nist.gov/nistpubs/FIPS/
-              NIST.FIPS.197.pdf>.
+   [FIPS-AES] NIST, "Advanced Encryption Standard (AES)", NIST FIPS 197,
+              DOI 10.6028/NIST.FIPS.197-upd1, May 2023,
+              <https://doi.org/10.6028/NIST.FIPS.197-upd1>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2029,7 +2010,7 @@ return tag
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-12.2.  Informative References
+11.2.  Informative References
 
    [AEGIS]    Wu, H. and B. Preneel, "AEGIS: A Fast Authenticated
               Encryption Algorithm (v1.1)", 2016,
@@ -2037,10 +2018,10 @@ return tag
 
    [AIKRS24]  Anand, R., Isobe, T., Kundu, A. K., Rahman, M., and S.
               Suryawanshi, "Differential fault attack on AES-based
-              encryption schemes: application to B5G/6G ciphers—Rocca,
+              encryption schemes: application to B5G/6G ciphers-Rocca,
               Rocca-S and AEGIS", Journal of Cryptographic Engineering,
-              2024, DOI 10.1007/s13389-024-00360-6, 2024,
-              <https://doi.org/10.1007/s13389-024-00360-6>.
+              vol. 14, pp. 595-607, DOI 10.1007/s13389-024-00360-6,
+              2024, <https://doi.org/10.1007/s13389-024-00360-6>.
 
    [BS23]     Bonnetain, X. and A. Schrottenloher, "Single-query Quantum
               Hidden Shift Attacks", Cryptology ePrint Archive, Paper
@@ -2053,7 +2034,7 @@ return tag
 
    [ENP20]    Eichlseder, M., Nageler, M., and R. Primas, "Analyzing the
               Linear Keystream Biases in AEGIS", IACR Transactions on
-              Symmetric Cryptology, 2019(4), pp. 348–368,
+              Symmetric Cryptology, vol. 2019, no. 4, pp. 348-368,
               DOI 10.13154/tosc.v2019.i4.348-368, 2020,
               <https://doi.org/10.13154/tosc.v2019.i4.348-368>.
 
@@ -2067,50 +2048,56 @@ return tag
               2023, <https://eprint.iacr.org/2023/1495>.
 
    [JLD22]    Jiao, L., Li, Y., and S. Du, "Guess-and-Determine Attacks
-              on AEGIS", The Computer Journal, vol 65, 2022(8), pp.
-              2221–2230, DOI 10.1093/comjnl/bxab059, 2022,
+              on AEGIS", The Computer Journal, vol. 65, no. 8, pp.
+              2221-2230, DOI 10.1093/comjnl/bxab059, 2022,
               <https://doi.org/10.1093/comjnl/bxab059>.
 
    [LGR21]    Len, J., Grubbs, P., and T. Ristenpart, "Partitioning
               Oracle Attacks", 30th USENIX Security Symposium (USENIX
-              Security 21), pp. 195–212, 2021,
+              Security 21), pp. 195-212, 2021,
               <https://www.usenix.org/conference/usenixsecurity21/
               presentation/len>.
 
    [LIMS21]   Liu, F., Isobe, T., Meier, W., and K. Sakamoto, "Weak Keys
               in Reduced AEGIS and Tiaoxin", IACR Transactions on
-              Symmetric Cryptology, 2021(2), pp. 104–139,
+              Symmetric Cryptology, vol. 2021, no. 2, pp. 104-139,
               DOI 10.46586/tosc.v2021.i2.104-139, 2021,
               <https://doi.org/10.46586/tosc.v2021.i2.104-139>.
 
    [M14]      Minaud, B., "Linear Biases in AEGIS Keystream", Selected
-              Areas in Cryptography. SAC 2014. Lecture Notes in Computer
-              Science, vol 8781, pp. 290–305,
+              Areas in Cryptography (SAC 2014), Lecture Notes in
+              Computer Science, vol. 8781, pp. 290-305,
               DOI 10.1007/978-3-319-13051-4_18, 2014,
               <https://doi.org/10.1007/978-3-319-13051-4_18>.
 
+   [SP800-38D]
+              NIST, "Recommendation for Block Cipher Modes of Operation:
+              Galois/Counter Mode (GCM) and GMAC", NIST SP 800-38D,
+              DOI 10.6028/NIST.SP.800-38D, November 2007,
+              <https://doi.org/10.6028/NIST.SP.800-38D>.
+
    [SSI24]    Shiraya, T., Sakamoto, K., and T. Isobe, "Bit-Wise
               Analysis for Forgery Attacks on AES-Based AEAD Schemes",
-              Advances in Information and Computer Security. IWSEC 2024.
-              Lecture Notes in Computer Science, vol 14977,
-              DOI 10.1007/978-981-97-7737-2_1, 2024,
+              Advances in Information and Computer Security (IWSEC
+              2024), Lecture Notes in Computer Science, vol. 14977, pp.
+              3-22, DOI 10.1007/978-981-97-7737-2_1, 2024,
               <https://doi.org/10.1007/978-981-97-7737-2_1>.
 
    [STSI23]   Shiraya, T., Takeuchi, N., Sakamoto, K., and T. Isobe,
               "MILP-based security evaluation for AEGIS/Tiaoxin-346/
-              Rocca", IET Information Security, vol 17, 2023(3), pp.
+              Rocca", IET Information Security, vol 17, no. 3, pp.
               458-467, DOI 10.1049/ise2.12109, 2023,
               <https://doi.org/10.1049/ise2.12109>.
 
    [TEST-VECTORS]
-              "AEGIS Test Vectors", commit 8e289c40, 2025,
+              "AEGIS Test Vectors", commit 8e289c4, 17 February 2025,
               <https://github.com/cfrg/draft-irtf-cfrg-aegis-
               aead/tree/d3ef9984/test-vectors>.
 
    [VV18]     Vaudenay, S. and D. Vizár, "Can Caesar Beat Galois?",
-              Applied Cryptography and Network Security. ACNS 2018.
-              Lecture Notes in Computer Science, vol 10892, pp. 476–494,
-              DOI 10.1007/978-3-319-93387-0_25, 2018,
+              Applied Cryptography and Network Security (ACNS 2018),
+              Lecture Notes in Computer Science, vol. 10892, pp.
+              476-494, DOI 10.1007/978-3-319-93387-0_25, 2018,
               <https://doi.org/10.1007/978-3-319-93387-0_25>.
 
 Appendix A.  Test Vectors
@@ -2249,7 +2236,7 @@ A.2.6.  Test Vector 5
 
 A.2.7.  Test Vector 6
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10000200000000000000000000000000
 
@@ -2266,7 +2253,7 @@ A.2.7.  Test Vector 6
 
 A.2.8.  Test Vector 7
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10010000000000000000000000000000
 
@@ -2283,7 +2270,7 @@ A.2.8.  Test Vector 7
 
 A.2.9.  Test Vector 8
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10010000000000000000000000000000
 
@@ -2300,7 +2287,7 @@ A.2.9.  Test Vector 8
 
 A.2.10.  Test Vector 9
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10010000000000000000000000000000
 
@@ -2442,7 +2429,7 @@ A.3.6.  Test Vector 5
 
 A.3.7.  Test Vector 6
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10000200000000000000000000000000
            00000000000000000000000000000000
@@ -2461,7 +2448,7 @@ A.3.7.  Test Vector 6
 
 A.3.8.  Test Vector 7
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10010000000000000000000000000000
            00000000000000000000000000000000
@@ -2480,7 +2467,7 @@ A.3.8.  Test Vector 7
 
 A.3.9.  Test Vector 8
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10010000000000000000000000000000
            00000000000000000000000000000000
@@ -2499,7 +2486,7 @@ A.3.9.  Test Vector 8
 
 A.3.10.  Test Vector 9
 
-   This test MUST return a “verification failed” error.
+   This test MUST return a "verification failed" error.
 
    key   : 10010000000000000000000000000000
            00000000000000000000000000000000
@@ -3036,28 +3023,29 @@ Acknowledgments
       catching invalid test vectors, and Daniel Bleichenbacher for many
       helpful suggestions.
 
-   *  Soatok Dreamseeker for his early review of the draft and for
+   *  Soatok Dreamseeker for his early review of the document and for
       suggesting the addition of negative test vectors.
 
-   *  John Preuß Mattsson for his review of the draft and for suggesting
-      how AEGIS should be used in the context of DTLS and QUIC.
+   *  John Preuß Mattsson for his review of the document and for
+      suggesting how AEGIS should be used in the context of DTLS and
+      QUIC.
 
    *  Bart Mennink and Charlotte Lefevre, as well as Takanori Isobe and
       Mostafizar Rahman, for investigating the committing security of
       the schemes specified in this document.
 
-   *  Scott Fluhrer for his review of the draft as a member of the CFRG
-      Crypto Review Panel.
+   *  Scott Fluhrer for his review of the document as a member of the
+      CFRG Crypto Review Panel.
 
    *  Yawning Angel, Chris Barber, and Neil Madden for their review of
-      the draft.
+      the document.
 
-   *  Gilles Van Assche for reviewing the draft and providing insightful
-      comments on the implications of nonce reuse in AEGIS-128X and
-      AEGIS-256X.
+   *  Gilles Van Assche for reviewing the document and providing
+      insightful comments on the implications of nonce reuse in AEGIS-
+      128X and AEGIS-256X.
 
-   *  Jane Coffin for taking the time to review the draft on behalf of
-      the IRSG.
+   *  Jane Coffin for taking the time to review the document on behalf
+      of the IRSG.
 
 Authors' Addresses
 
@@ -3068,4 +3056,4 @@ Authors' Addresses
 
    Samuel Lucas
    Individual Contributor
-   Email: samuel-lucas6@pm.me
+   Email: specifications@samuellucas.com
