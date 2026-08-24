@@ -1,6 +1,6 @@
 ---
 title: "The AEGIS Authenticated Encryption Algorithms"
-docname: draft-irtf-cfrg-aegis-aead-18
+docname: draft-irtf-cfrg-aegis-aead-latest
 category: info
 
 ipr: trust200902
