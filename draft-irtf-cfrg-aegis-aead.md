@@ -1623,6 +1623,8 @@ In the latter case, the tag MUST immediately follow the ciphertext:
 combined_ct = ct || tag
 ~~~
 
+The length of `combined_ct` MUST be less than or equal to `C_MAX`.
+
 # AEGIS as a Stream Cipher
 
 All AEGIS variants can also be used as stream ciphers.
