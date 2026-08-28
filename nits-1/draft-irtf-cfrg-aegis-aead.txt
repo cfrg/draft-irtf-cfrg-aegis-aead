@@ -451,7 +451,7 @@ Table of Contents
    Inputs:
 
    *  ct: the ciphertext to decrypt (length MUST be less than or equal
-      to C_MAX).
+      to P_MAX).
 
    *  tag: the authentication tag.
 
@@ -798,7 +798,7 @@ Table of Contents
    Inputs:
 
    *  ct: the ciphertext to decrypt (length MUST be less than or equal
-      to C_MAX).
+      to P_MAX).
 
    *  tag: the authentication tag.
 
