@@ -377,6 +377,7 @@ Primitives:
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
 - `LE64(x)`: returns the little-endian encoding of unsigned 64-bit integer `x`.
+- `Zeros(n)`: returns an `n`-bit array containing only zero bits.
 - `ZeroPad(x, n)`: returns `x` after appending zeros until its length is a multiple of `n` bits. No padding is added if the length of `x` is already a multiple of `n`, including when `x` is empty.
 - `Truncate(x, n)`: returns the first `n` bits of `x`.
 - `Split(x, n)`: returns `x` split into `n`-bit blocks, ignoring partial blocks.
@@ -1360,15 +1361,15 @@ for i in 0..D:
 Repeat(7, Update(t, t))
 
 if tag_len_bits == 128:
-    tag = ZeroPad({}, 128)
+    tag = Zeros(128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^
              V[4,i] ^ V[5,i] ^ V[6,i]
         tag = tag ^ ti
 
 else:            # 256 bits
-    ti0 = ZeroPad({}, 128)
-    ti1 = ZeroPad({}, 128)
+    ti0 = Zeros(128)
+    ti1 = Zeros(128)
     for i in 0..D:
         ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
         ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
@@ -1568,14 +1569,14 @@ for i in 0..D:
 Repeat(7, Update(t))
 
 if tag_len_bits == 128:
-    tag = ZeroPad({}, 128)
+    tag = Zeros(128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tag = tag ^ ti
 
 else:            # 256 bits
-    ti0 = ZeroPad({}, 128)
-    ti1 = ZeroPad({}, 128)
+    ti0 = Zeros(128)
+    ti1 = Zeros(128)
     for i in 0..D:
         ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
         ti1 = ti1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
