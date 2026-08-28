@@ -492,7 +492,7 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to decrypt (length MUST be less than or equal to `C_MAX`).
+- `ct`: the ciphertext to decrypt (length MUST be less than or equal to `P_MAX`).
 - `tag`: the authentication tag.
 - `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
@@ -829,7 +829,7 @@ Security:
 
 Inputs:
 
-- `ct`: the ciphertext to decrypt (length MUST be less than or equal to `C_MAX`).
+- `ct`: the ciphertext to decrypt (length MUST be less than or equal to `P_MAX`).
 - `tag`: the authentication tag.
 - `ad`: the associated data to authenticate (length MUST be less than or equal to `A_MAX`).
 - `key`: the encryption key.
