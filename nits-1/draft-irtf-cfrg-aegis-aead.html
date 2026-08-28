@@ -1593,28 +1593,31 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.7.1"><code>LE64(x)</code>: returns the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.8">
-          <p id="section-2-4.8.1"><code>Zeros(n)</code>: returns an <code>n</code>-bit array containing only zero bits.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.8.1"><code>Byte(x)</code>: the value <code>x</code> encoded as 8 bits.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.9">
-          <p id="section-2-4.9.1"><code>ZeroPad(x, n)</code>: returns <code>x</code> after appending zeros until its length is a multiple of <code>n</code> bits. No padding is added if the length of <code>x</code> is already a multiple of <code>n</code>, including when <code>x</code> is empty.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.9.1"><code>Zeros(n)</code>: returns an <code>n</code>-bit array containing only zero bits.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
-          <p id="section-2-4.10.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.10.1"><code>ZeroPad(x, n)</code>: returns <code>x</code> after appending zeros until its length is a multiple of <code>n</code> bits. No padding is added if the length of <code>x</code> is already a multiple of <code>n</code>, including when <code>x</code> is empty.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.11">
-          <p id="section-2-4.11.1"><code>Split(x, n)</code>: returns <code>x</code> split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.11.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.12">
-          <p id="section-2-4.12.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>, where <code>0 &lt;= n &lt;= |x|</code>. <code>Tail(x, 0)</code> returns <code>{}</code>.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.12.1"><code>Split(x, n)</code>: returns <code>x</code> split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.13">
-          <p id="section-2-4.13.1"><code>AESRound(in, rk)</code>: a single round of the AES encryption round function, which is the composition of the <code>SubBytes</code>, <code>ShiftRows</code>, <code>MixColumns</code>, and <code>AddRoundKey</code> transformations, as defined in Section 5 of <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>. Here, <code>in</code> is the 128-bit AES input state, and <code>rk</code> is the 128-bit round key.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.13.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>, where <code>0 &lt;= n &lt;= |x|</code>. <code>Tail(x, 0)</code> returns <code>{}</code>.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.14">
-          <p id="section-2-4.14.1"><code>Repeat(n, F)</code>: <code>n</code> sequential evaluations of the function <code>F</code>.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.14.1"><code>AESRound(in, rk)</code>: a single round of the AES encryption round function, which is the composition of the <code>SubBytes</code>, <code>ShiftRows</code>, <code>MixColumns</code>, and <code>AddRoundKey</code> transformations, as defined in Section 5 of <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>. Here, <code>in</code> is the 128-bit AES input state, and <code>rk</code> is the 128-bit round key.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.15">
-          <p id="section-2-4.15.1"><code>CtEq(a, b)</code>: compares <code>a</code> and <code>b</code> in constant time, returning <code>True</code> for an exact match and <code>False</code> otherwise.<a href="#section-2-4.15.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.15.1"><code>Repeat(n, F)</code>: <code>n</code> sequential evaluations of the function <code>F</code>.<a href="#section-2-4.15.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.16">
+          <p id="section-2-4.16.1"><code>CtEq(a, b)</code>: compares <code>a</code> and <code>b</code> in constant time, returning <code>True</code> for an exact match and <code>False</code> otherwise.<a href="#section-2-4.16.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-5">AEGIS internal functions:<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -2621,9 +2624,6 @@ return tag
           <li class="normal" id="section-5.1-1.5">
             <p id="section-5.1-1.5.1"><code>ctx[i]</code>: the <code>i</code>-th context separator. This is a 128-bit mask made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.<a href="#section-5.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-1.6">
-            <p id="section-5.1-1.6.1"><code>Byte(x)</code>: the value <code>x</code> encoded as 8 bits.<a href="#section-5.1-1.6.1" class="pilcrow">¶</a></p>
-</li>
         </ul>
 </section>
 </div>
@@ -3324,7 +3324,7 @@ Stream(len, key, nonce)
 if len == 0:
     return {}
 else:
-    stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+    stream, tag = Encrypt(Zeros(len), {}, key, nonce)
     return stream
 </pre><a href="#section-7-9" class="pilcrow">¶</a>
 </div>

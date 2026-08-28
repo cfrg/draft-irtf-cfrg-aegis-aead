@@ -272,6 +272,8 @@ Table of Contents
    *  LE64(x): returns the little-endian encoding of unsigned 64-bit
       integer x.
 
+   *  Byte(x): the value x encoded as 8 bits.
+
    *  Zeros(n): returns an n-bit array containing only zero bits.
 
    *  ZeroPad(x, n): returns x after appending zeros until its length is
@@ -1078,8 +1080,6 @@ Table of Contents
       of a byte representing the state index, followed by a byte
       representing the highest index and 112 all-zero bits.
 
-   *  Byte(x): the value x encoded as 8 bits.
-
 5.2.  Authenticated Encryption
 
    Encrypt(msg, ad, key, nonce)
@@ -1619,7 +1619,7 @@ Table of Contents
    if len == 0:
        return {}
    else:
-       stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+       stream, tag = Encrypt(Zeros(len), {}, key, nonce)
        return stream
 
    This is equivalent to encrypting a len all-zero bits message without
