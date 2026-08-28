@@ -1593,25 +1593,28 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.7.1"><code>LE64(x)</code>: returns the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.8">
-          <p id="section-2-4.8.1"><code>ZeroPad(x, n)</code>: returns <code>x</code> after appending zeros until its length is a multiple of <code>n</code> bits. No padding is added if the length of <code>x</code> is already a multiple of <code>n</code>, including when <code>x</code> is empty.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.8.1"><code>Zeros(n)</code>: returns an <code>n</code>-bit array containing only zero bits.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.9">
-          <p id="section-2-4.9.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.9.1"><code>ZeroPad(x, n)</code>: returns <code>x</code> after appending zeros until its length is a multiple of <code>n</code> bits. No padding is added if the length of <code>x</code> is already a multiple of <code>n</code>, including when <code>x</code> is empty.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
-          <p id="section-2-4.10.1"><code>Split(x, n)</code>: returns <code>x</code> split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.10.1"><code>Truncate(x, n)</code>: returns the first <code>n</code> bits of <code>x</code>.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.11">
-          <p id="section-2-4.11.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>, where <code>0 &lt;= n &lt;= |x|</code>. <code>Tail(x, 0)</code> returns <code>{}</code>.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.11.1"><code>Split(x, n)</code>: returns <code>x</code> split into <code>n</code>-bit blocks, ignoring partial blocks.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.12">
-          <p id="section-2-4.12.1"><code>AESRound(in, rk)</code>: a single round of the AES encryption round function, which is the composition of the <code>SubBytes</code>, <code>ShiftRows</code>, <code>MixColumns</code>, and <code>AddRoundKey</code> transformations, as defined in Section 5 of <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>. Here, <code>in</code> is the 128-bit AES input state, and <code>rk</code> is the 128-bit round key.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.12.1"><code>Tail(x, n)</code>: returns the last <code>n</code> bits of <code>x</code>, where <code>0 &lt;= n &lt;= |x|</code>. <code>Tail(x, 0)</code> returns <code>{}</code>.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.13">
-          <p id="section-2-4.13.1"><code>Repeat(n, F)</code>: <code>n</code> sequential evaluations of the function <code>F</code>.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.13.1"><code>AESRound(in, rk)</code>: a single round of the AES encryption round function, which is the composition of the <code>SubBytes</code>, <code>ShiftRows</code>, <code>MixColumns</code>, and <code>AddRoundKey</code> transformations, as defined in Section 5 of <span>[<a href="#FIPS-AES" class="cite xref">FIPS-AES</a>]</span>. Here, <code>in</code> is the 128-bit AES input state, and <code>rk</code> is the 128-bit round key.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.14">
-          <p id="section-2-4.14.1"><code>CtEq(a, b)</code>: compares <code>a</code> and <code>b</code> in constant time, returning <code>True</code> for an exact match and <code>False</code> otherwise.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.14.1"><code>Repeat(n, F)</code>: <code>n</code> sequential evaluations of the function <code>F</code>.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.15">
+          <p id="section-2-4.15.1"><code>CtEq(a, b)</code>: compares <code>a</code> and <code>b</code> in constant time, returning <code>True</code> for an exact match and <code>False</code> otherwise.<a href="#section-2-4.15.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-5">AEGIS internal functions:<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -2929,15 +2932,15 @@ for i in 0..D:
 Repeat(7, Update(t, t))
 
 if tag_len_bits == 128:
-    tag = ZeroPad({}, 128)
+    tag = Zeros(128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^
              V[4,i] ^ V[5,i] ^ V[6,i]
         tag = tag ^ ti
 
 else:            # 256 bits
-    ti0 = ZeroPad({}, 128)
-    ti1 = ZeroPad({}, 128)
+    ti0 = Zeros(128)
+    ti1 = Zeros(128)
     for i in 0..D:
         ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i]
         ti1 = ti1 ^ V[4,i] ^ V[5,i] ^ V[6,i] ^ V[7,i]
@@ -3177,14 +3180,14 @@ for i in 0..D:
 Repeat(7, Update(t))
 
 if tag_len_bits == 128:
-    tag = ZeroPad({}, 128)
+    tag = Zeros(128)
     for i in 0..D:
         ti = V[0,i] ^ V[1,i] ^ V[2,i] ^ V[3,i] ^ V[4,i] ^ V[5,i]
         tag = tag ^ ti
 
 else:            # 256 bits
-    ti0 = ZeroPad({}, 128)
-    ti1 = ZeroPad({}, 128)
+    ti0 = Zeros(128)
+    ti1 = Zeros(128)
     for i in 0..D:
         ti0 = ti0 ^ V[0,i] ^ V[1,i] ^ V[2,i]
         ti1 = ti1 ^ V[3,i] ^ V[4,i] ^ V[5,i]
