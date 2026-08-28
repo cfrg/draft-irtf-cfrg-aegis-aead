@@ -377,6 +377,7 @@ Primitives:
 - `a || b`: the concatenation of `a` and `b`.
 - `a mod b`: the remainder of the Euclidean division between `a` as the dividend and `b` as the divisor.
 - `LE64(x)`: returns the little-endian encoding of unsigned 64-bit integer `x`.
+- `Byte(x)`: the value `x` encoded as 8 bits.
 - `Zeros(n)`: returns an `n`-bit array containing only zero bits.
 - `ZeroPad(x, n)`: returns `x` after appending zeros until its length is a multiple of `n` bits. No padding is added if the length of `x` is already a multiple of `n`, including when `x` is empty.
 - `Truncate(x, n)`: returns the first `n` bits of `x`.
@@ -1100,7 +1101,6 @@ The state of a parallel mode is represented as a vector of AEGIS-128L or AEGIS-2
 - `V[j,i]`: the `j`-th AES block of the `i`-th state. `i` is in the `[0..D)` range. For AEGIS-128X, `j` is in the `[0..8)` range, while for AEGIS-256X, `j` is in the `[0..6)` range.
 - `V'[j,i]`: the `j`-th AES block of the next `i`-th state.
 - `ctx[i]`: the `i`-th context separator. This is a 128-bit mask made of a byte representing the state index, followed by a byte representing the highest index and 112 all-zero bits.
-- `Byte(x)`: the value `x` encoded as 8 bits.
 
 ## Authenticated Encryption
 
@@ -1652,7 +1652,7 @@ Steps:
 if len == 0:
     return {}
 else:
-    stream, tag = Encrypt(ZeroPad({ 0 }, len), {}, key, nonce)
+    stream, tag = Encrypt(Zeros(len), {}, key, nonce)
     return stream
 ~~~
 
