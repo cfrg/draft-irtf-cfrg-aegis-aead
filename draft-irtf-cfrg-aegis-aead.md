@@ -850,7 +850,7 @@ ad_blocks = Split(ZeroPad(ad, 128), 128)
 for ai in ad_blocks:
     Absorb(ai)
 
-ct_blocks = Split(ZeroPad(ct, 128), 128)
+ct_blocks = Split(ct, 128)
 cn = Tail(ct, |ct| mod 128)
 
 for ci in ct_blocks:
