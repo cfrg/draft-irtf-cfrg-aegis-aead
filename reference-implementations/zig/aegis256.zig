@@ -17,8 +17,8 @@ fn Aegis256_(comptime tag_bits: u9) type {
         pub const key_length = 32;
         pub const nonce_length = 32;
         pub const tag_length: comptime_int = tag_bits / 8;
-        pub const ad_max_length = 1 << 61;
-        pub const msg_max_length = 1 << 61;
+        pub const ad_max_length = (1 << 61) - 1;
+        pub const msg_max_length = (1 << 61) - 1;
         pub const ct_max_length = msg_max_length + tag_length;
 
         const State = [6]AesBlock;
@@ -164,7 +164,7 @@ fn Aegis256_(comptime tag_bits: u9) type {
             key: [key_length]u8,
             nonce: [nonce_length]u8,
         ) AuthenticationError!void {
-            assert(ct.len <= ct_max_length);
+            assert(ct.len <= msg_max_length);
             assert(ad.len <= ad_max_length);
             assert(ct.len == msg.len);
             var aegis = init(key, nonce);
