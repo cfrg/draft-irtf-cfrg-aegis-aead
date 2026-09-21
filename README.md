@@ -1,11 +1,8 @@
 # The AEGIS Family Of Authenticated Encryption Algorithms
 
-This is the working area for the individual Internet-Draft, "The AEGIS family of authenticated encryption algorithms".
+This repository preserves the working area for the Internet-Draft that became [RFC 10032, "The AEGIS Authenticated Encryption Algorithms"](https://www.rfc-editor.org/rfc/rfc10032.html).
 
-* [Editor's Copy](https://cfrg.github.io/draft-irtf-cfrg-aegis-aead/#go.draft-irtf-cfrg-aegis-aead.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-irtf-cfrg-aegis-aead)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aegis-aead)
-* [Compare Editor's Copy to Individual Draft](https://cfrg.github.io/draft-irtf-cfrg-aegis-aead/#go.draft-irtf-cfrg-aegis-aead.diff)
+* [RFC 10032](https://www.rfc-editor.org/rfc/rfc10032.html)
 
 ## Known Implementations
 
