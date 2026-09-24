@@ -1,10 +1,8 @@
 # Early adopters of AEGIS
 
-AEGIS is specified in RFC 10032 and listed in OWASP ASVS and ETSI security-standard drafts.
+AEGIS is specified in RFC 10032.
 
-The Belgian Data Protection Authority recommends AEGIS-256.
-
-Adopters include Meta, Google Cloud, OVHcloud, Surfshark, Tigerbeetle and Turso, alongside the projects listed below.
+Early adopters include Meta, Google Cloud, OVHcloud, Surfshark, Tigerbeetle and Turso, alongside the projects listed below.
 
 - [Early adopters of AEGIS](#early-adopters-of-aegis)
   - [Standards and recommendations](#standards-and-recommendations)
@@ -39,7 +37,7 @@ The original AEGIS-128, named in some of these documents, is distinct from AEGIS
 
 | Company or product                                                                                             | How it uses AEGIS                                                                                                                                                     | Variants                                        |
 | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [Meta Fizz](https://github.com/facebookincubator/fizz/blob/main/fizz/protocol/MultiBackendFactory.cpp)         | Optional AEGIS cipher suites in Meta's TLS 1.3 stack.                                                                                                                 | AEGIS-128L, AEGIS-256, AEGIS-128X2, AEGIS-128X4 |
+| [Meta](https://github.com/facebookincubator/fizz/blob/main/fizz/protocol/MultiBackendFactory.cpp)              | Optional AEGIS cipher suites in Meta's TLS 1.3 stack.                                                                                                                 | AEGIS-128L, AEGIS-256, AEGIS-128X2, AEGIS-128X4 |
 | [Google Cloud](https://www.youtube.com/watch?v=GOHc8dITEQA)                                                    | Data-at-rest encryption, reported in the description of Bill Buchanan's interview with AEGIS co-designer Bart Preneel.                                                | Not specified                                   |
 | [OVHcloud / OverTheBox](https://github.com/ovh/overthebox-feeds/blob/master/glorytun-udp/Makefile)             | Encrypted internet-connection aggregation through [Glorytun](https://github.com/angt/glorytun/blob/v0.3.4/README.md), which uses AEGIS-256 on AES-NI-capable systems. | AEGIS-256                                       |
 | [Surfshark Dausos](https://surfshark.com/blog/surfshark-launches-a-vpn-protocol)                               | VPN protocol using AEGIS for tunnel encryption.                                                                                                                       | AEGIS-256X2                                     |
