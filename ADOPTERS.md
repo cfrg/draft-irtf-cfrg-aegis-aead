@@ -14,6 +14,8 @@ In the tables, **all six** means AEGIS-128L, AEGIS-256, AEGIS-128X2, AEGIS-128X4
 
 ## Standards and recommendations
 
+[ETSI](https://www.etsi.org/about/), the European Telecommunications Standards Institute, is a standards organization recognized by the European Union that develops global standards for telecommunications, cybersecurity, and other digital technologies.
+
 | Organization or document                                                                                                                                                                                               | Status                                                 | AEGIS coverage                                                                                                                                         |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [IRTF CFRG: RFC 10032](https://www.rfc-editor.org/rfc/rfc10032.html)                                                                                                                                                   | Informational RFC, September 2026                      | Specifies AEGIS-128L, AEGIS-256, and the parallel AEGIS-128X and AEGIS-256X modes.                                                                     |
