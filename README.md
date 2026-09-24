@@ -19,6 +19,7 @@ This repository preserves the working area for the Internet-Draft that became [R
 | [aegis-bitsliced](https://github.com/aegis-aead/aegis-bitsliced)                                                                    | C                 |
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                       | C++               |
 | [aegis](https://crates.io/crates/aegis)                                                                                             | Rust              |
+| [philbin](https://codeberg.org/Valloric/philbin)                                                                                    | Rust              |
 | [raycrypt](https://github.com/somehybrid/raycrypt/tree/main/src/aeads/aegis256)                                                     | Rust              |
 | [crypto-rust](https://github.com/sayantn/crypto-rust/tree/master/src/)                                                              | Rust              |
 | [aegis-cl](https://github.com/conradludgate/aegis-cl)                                                                               | Rust              |
@@ -42,11 +43,11 @@ This repository preserves the working area for the Internet-Draft that became [R
 
 ### Hardware implementations
 
-| Name                                                                                                     | Language      |
-| -------------------------------------------------------------------------------------------------------- | ------------- |
-| [Athena/AEGIS](https://cryptography.gmu.edu/athena/index.php?id=CAESAR_source_codes)                     | RTL VHDL      |
-| [An Efficient Hardware Design for Combined AES and AEGIS](https://ieeexplore.ieee.org/document/8806225)  | FPGA          |
-| [AEGIS256 UVM Verification](https://github.com/aymanaadel/AEGIS256_UVM_Verification)                     | SystemVerilog |
+| Name                                                                                                    | Language      |
+| ------------------------------------------------------------------------------------------------------- | ------------- |
+| [Athena/AEGIS](https://cryptography.gmu.edu/athena/index.php?id=CAESAR_source_codes)                    | RTL VHDL      |
+| [An Efficient Hardware Design for Combined AES and AEGIS](https://ieeexplore.ieee.org/document/8806225) | FPGA          |
+| [AEGIS256 UVM Verification](https://github.com/aymanaadel/AEGIS256_UVM_Verification)                    | SystemVerilog |
 
 ## AEGIS support in TLS stacks
 
