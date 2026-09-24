@@ -3,6 +3,7 @@
 This repository preserves the working area for the Internet-Draft that became [RFC 10032, "The AEGIS Authenticated Encryption Algorithms"](https://www.rfc-editor.org/rfc/rfc10032.html).
 
 * [RFC 10032](https://www.rfc-editor.org/rfc/rfc10032.html)
+* [Early adopters](ADOPTERS.md): projects, companies, and standards adopting AEGIS
 
 ## Known Implementations
 
