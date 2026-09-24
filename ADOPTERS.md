@@ -1,8 +1,10 @@
 # Early adopters of AEGIS
 
 AEGIS is specified in RFC 10032 and listed in OWASP ASVS and ETSI security-standard drafts.
+
 The Belgian Data Protection Authority recommends AEGIS-256.
-Adopters include Meta's Fizz TLS library, Google Cloud, OVHcloud's OverTheBox, Surfshark, and Turso, alongside the projects listed below.
+
+Adopters include Meta, Google Cloud, OVHcloud, Surfshark, Tigerbeetle and Turso, alongside the projects listed below.
 
 - [Early adopters of AEGIS](#early-adopters-of-aegis)
   - [Standards and recommendations](#standards-and-recommendations)
