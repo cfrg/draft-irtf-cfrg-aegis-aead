@@ -1,4 +1,4 @@
-# Early adopters of AEGIS (RFC 10032)
+# Early adopters of AEGIS ([RFC 10032](https://www.rfc-editor.org/info/rfc10032/))
 
 Early adopters of the AEGIS family of authenticated encryption algorithms include Meta, Google Cloud, OVHcloud, Surfshark, Tigerbeetle and Turso, alongside the projects listed below.
 
