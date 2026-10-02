@@ -52,6 +52,7 @@ The original AEGIS-128, named in some of these documents, is distinct from AEGIS
 - [Bill Buchanan interviews Bart Preneel](https://www.youtube.com/watch?v=GOHc8dITEQA), an AEGIS co-designer; the interview's published description reports Google Cloud's use of AEGIS for data-at-rest encryption.
 - [Turso introduces native database encryption](https://turso.tech/blog/introducing-fast-native-encryption-in-turso-database), including its choice of AEGIS and performance measurements.
 - [S2: Your data, your keys](https://s2.dev/blog/encryption) explains customer-supplied-key encryption and recommends AEGIS-256 for stream records.
+- [Why Hoodik Uses the Fastest Modern Cipher](https://hoodik.io/blog/aegis-128l-hardware-accelerated-encryption)
 
 ## Databases and storage
 
