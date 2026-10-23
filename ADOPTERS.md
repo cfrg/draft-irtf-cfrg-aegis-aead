@@ -45,6 +45,7 @@ The original AEGIS-128, named in some of these documents, is distinct from AEGIS
 | [S2 and s2-lite](https://s2.dev/)                                                 | Customer-supplied-key record encryption in the cloud service and self-hosted stream store.                                                      | AEGIS-256                                       |
 | [Category Labs / Monad](https://www.category.xyz/)                                | Authenticated UDP transport in monad-bft's Noise-based protocol.                                                                                | AEGIS-128L                                      |
 | [NordVPN (NepTUN / libtelio)](https://nordvpn.com/)                               | AEGIS [cipher negotiation](https://github.com/NordSecurity/libtelio/pull/1988) for the NepTUN VPN engine.                                       | AEGIS-256, AEGIS-256X2, AEGIS-256X4             |
+| [2FAGuard](https://2faguard.app/)                                                 | Windows TOTP authenticator; encrypts secret keys, account names, and notes.                                                                     | AEGIS-256                                       |
 
 ## Coverage and interviews
 
