@@ -19,6 +19,7 @@ This repository preserves the working area for the Internet-Draft that became [R
 | [libaegis](https://github.com/aegis-aead/libaegis)                                                                                  | C                 |
 | [aegis-bitsliced](https://github.com/aegis-aead/aegis-bitsliced)                                                                    | C                 |
 | [google/aegis-cipher](https://github.com/google/aegis_cipher)                                                                       | C++               |
+| [stdx/crypto](https://github.com/rust-stdx/stdx)                                                                                    | Rust              |
 | [aegis](https://crates.io/crates/aegis)                                                                                             | Rust              |
 | [philbin](https://codeberg.org/Valloric/philbin)                                                                                    | Rust              |
 | [raycrypt](https://github.com/somehybrid/raycrypt/tree/main/src/aeads/aegis256)                                                     | Rust              |
