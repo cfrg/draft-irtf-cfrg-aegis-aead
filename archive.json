@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-19T01:10:41.189562+00:00",
+  "timestamp": "2026-11-22T03:55:09.173329+00:00",
   "repo": "cfrg/draft-irtf-cfrg-aegis-aead",
   "labels": [
     {
@@ -9174,6 +9174,49 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 95,
+      "id": "PR_kwDOKeDGj88AAAABQV-Nlg",
+      "title": "Add stdx/crypto in the implementation list in README.md",
+      "url": "https://github.com/cfrg/draft-irtf-cfrg-aegis-aead/pull/95",
+      "state": "MERGED",
+      "author": "skerkour",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "A pure-Rust implementation of the AEGIS family of authenticated ciphers.\n\nSupports VAES-512.",
+      "createdAt": "2026-11-19T08:50:37Z",
+      "updatedAt": "2026-11-19T14:34:28Z",
+      "baseRepository": "cfrg/draft-irtf-cfrg-aegis-aead",
+      "baseRefName": "main",
+      "baseRefOid": "2cce80e76c4408dc0039a15975e5b9b2f5860202",
+      "headRepository": "skerkour/draft-irtf-cfrg-aegis-aead",
+      "headRefName": "patch-2",
+      "headRefOid": "e59706b9627aca6497aab5fb59a5278c5316d8b3",
+      "closedAt": "2026-11-19T13:22:32Z",
+      "mergedAt": "2026-11-19T13:22:32Z",
+      "mergedBy": "jedisct1",
+      "mergeCommit": {
+        "oid": "616cb4f0473d4da40a1de642544b8edc2743811e"
+      },
+      "comments": [
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you for this new implementation!",
+          "createdAt": "2026-11-19T13:22:45Z",
+          "updatedAt": "2026-11-19T13:22:45Z"
+        },
+        {
+          "author": "jedisct1",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Is the addition of AEGIS-128X also planned?",
+          "createdAt": "2026-11-19T14:34:28Z",
+          "updatedAt": "2026-11-19T14:34:28Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
